@@ -1,0 +1,1229 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Все курсы | TouchSpace Академия</title>
+  <style>
+    :root {
+      --blue: #0a84ff;
+      --blue-2: #5f93ff;
+      --soft: #e4edff;
+      --ink: #111827;
+      --muted: #6b7280;
+      --page: #eef4ff;
+      --card: #fff;
+      --shadow: 0 24px 80px rgba(24, 45, 90, 0.12);
+      --shadow-soft: 0 14px 38px rgba(24, 45, 90, 0.08);
+      --max: 1500px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f8fbff 0%, var(--page) 48%, #f6f9ff 100%);
+      color: var(--ink);
+      font-family: Inter, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .page {
+      max-width: var(--max); margin: 0 auto; padding: 24px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 76px minmax(0, 1fr); gap: 24px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 22px;
+      z-index: 60;
+      height: calc(100vh - 44px);
+      min-height: 520px;
+      padding: 18px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+      overflow: visible;
+    }
+
+    .nav {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 10px;
+      overflow: visible;
+    }
+
+    .nav__item {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 56px;
+      height: 56px;
+      border: 0;
+      border-radius: 18px;
+      background: transparent;
+      cursor: pointer;
+      transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .nav__item:hover {
+      background: rgba(10, 132, 255, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .nav__item.is-active {
+      background: var(--blue);
+      box-shadow: 0 12px 28px rgba(10, 132, 255, 0.26);
+    }
+
+    .nav__item img {
+      width: 25px;
+      height: 25px;
+      object-fit: contain;
+      transition: filter 180ms ease;
+    }
+
+    .nav__item.is-active img {
+      filter: brightness(0) invert(1);
+    }
+
+    .nav__item::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: calc(100% + 12px);
+      top: 50%;
+      z-index: 100;
+      padding: 10px 13px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 16px 38px rgba(24, 45, 90, 0.14);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-6px, -50%);
+      transition: opacity 160ms ease, transform 160ms ease;
+      backdrop-filter: blur(14px);
+    }
+
+    .nav__item::before {
+      content: "";
+      position: absolute;
+      left: calc(100% + 7px);
+      top: 50%;
+      z-index: 101;
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.94);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-6px, -50%) rotate(45deg);
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .nav__item:hover::after,
+    .nav__item:hover::before,
+    .nav__item:focus-visible::after,
+    .nav__item:focus-visible::before {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+
+    .main {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 260px minmax(260px, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .wordmark {
+      font-size: 28px;
+      font-weight: 950;
+      line-height: 0.82;
+      letter-spacing: -0.065em;
+    }
+
+    .wordmark span {
+      display: block;
+    }
+
+    .wordmark span:last-child {
+      padding-left: 74px;
+    }
+
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 62px;
+      padding: 0 22px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow-soft);
+      color: #9aa4b2;
+    }
+
+    .search input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 16px;
+    }
+
+    .header-actions {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .notification-wrap {
+      position: relative;
+    }
+
+    .notification {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 62px;
+      height: 62px;
+      border: 0;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow-soft);
+      cursor: pointer;
+      transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .notification:hover,
+    .notification.is-open {
+      background: #fff;
+      box-shadow: 0 18px 42px rgba(95, 147, 255, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .notification::after {
+      content: "";
+      position: absolute;
+      right: 17px;
+      top: 16px;
+      width: 9px;
+      height: 9px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      background: #ff7a59;
+    }
+
+    .notification img {
+      width: 25px;
+      height: 25px;
+      object-fit: contain;
+    }
+
+    .notification-panel {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 14px);
+      z-index: 80;
+      width: min(380px, calc(100vw - 48px));
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: 26px;
+      background: radial-gradient(circle at 88% 10%, rgba(95, 147, 255, 0.18), transparent 32%), rgba(255, 255, 255, 0.94);
+      box-shadow: 0 26px 70px rgba(24, 45, 90, 0.18);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px) scale(0.98);
+      transform-origin: top right;
+      transition: opacity 180ms ease, transform 180ms ease;
+      backdrop-filter: blur(18px);
+    }
+
+    .notification-panel.is-open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    .notification-panel::before {
+      content: "";
+      position: absolute;
+      right: 23px;
+      top: -6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.94);
+      transform: rotate(45deg);
+    }
+
+    .notification-panel__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .notification-panel__head strong {
+      font-size: 18px;
+      letter-spacing: -0.03em;
+    }
+
+    .notification-panel__count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .notification-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .notification-item {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 12px;
+      padding: 12px;
+      border: 0;
+      border-radius: 18px;
+      background: rgba(244, 248, 255, 0.82);
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .notification-item__icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #e4edff, #f7fbff);
+      color: var(--blue);
+      font-weight: 950;
+    }
+
+    .notification-item__copy strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 14px;
+      line-height: 1.16;
+    }
+
+    .notification-item__copy span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .notification-panel__foot {
+      width: 100%;
+      min-height: 40px;
+      margin-top: 10px;
+      border: 0;
+      border-radius: 16px;
+      background: #fff;
+      color: var(--blue);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 222px;
+      height: 62px;
+      padding: 8px 10px 8px 18px;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .user__name {
+      display: block;
+      font-weight: 800;
+    }
+
+    .user__role {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      margin-left: auto;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--blue), #8ee2ff);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .catalog-hero {
+      position: relative;
+      overflow: hidden;
+      padding: 42px;
+      border-radius: 34px;
+      background: linear-gradient(135deg, #5f93ff 0%, #e4edff 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .catalog-hero::before,
+    .catalog-hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .catalog-hero::before {
+      right: -70px;
+      top: -80px;
+      width: 260px;
+      height: 260px;
+    }
+
+    .catalog-hero::after {
+      right: 28%;
+      bottom: -100px;
+      width: 220px;
+      height: 220px;
+    }
+
+    .catalog-hero__content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 28px;
+      align-items: end;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      min-height: 34px;
+      align-items: center;
+      padding: 0 15px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.34);
+      color: #fff;
+      font-weight: 900;
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      max-width: 850px;
+      margin: 18px 0 0;
+      color: #fff;
+      font-size: clamp(42px, 6vw, 86px);
+      line-height: 0.92;
+      letter-spacing: -0.07em;
+    }
+
+    .catalog-summary {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .summary-card {
+      min-height: 112px;
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--ink);
+      backdrop-filter: blur(16px);
+    }
+
+    .summary-card strong {
+      display: block;
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .summary-card span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .page-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 0.7fr);
+      gap: 22px;
+      align-items: end;
+      margin-top: 4px;
+    }
+
+    .page-title h1 {
+      max-width: 960px;
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(44px, 6vw, 84px);
+      line-height: 0.92;
+      letter-spacing: -0.07em;
+    }
+
+    .page-title p {
+      max-width: 640px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat-tile {
+      min-height: 92px;
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow);
+    }
+
+    .stat-tile strong {
+      display: block;
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .stat-tile span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .hashtag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .hashtag {
+      min-height: 42px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: 0 12px 32px rgba(24, 45, 90, 0.08);
+      color: var(--muted);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .hashtag.is-active {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .section {
+      margin-top: 34px;
+    }
+
+    .section-head {
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(32px, 4.2vw, 58px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .category-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      min-height: 132px;
+      padding: 20px;
+      border: 0;
+      border-radius: 28px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .category-card::after {
+      content: "";
+      position: absolute;
+      right: -34px;
+      bottom: -42px;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: var(--category-glow, #e4edff);
+    }
+
+    .category-card__icon {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
+      background: var(--category-glow, #e4edff);
+      color: var(--blue);
+      font-size: 26px;
+      font-weight: 950;
+    }
+
+    .category-card__label {
+      display: inline-flex;
+      min-height: 32px;
+      align-items: center;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--blue);
+      font-weight: 900;
+    }
+
+    .category-card strong {
+      position: relative;
+      z-index: 1;
+      display: block;
+      max-width: 420px;
+      margin-top: 10px;
+      font-size: 26px;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .category-card small {
+      position: relative;
+      z-index: 1;
+      display: block;
+      margin-top: 12px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .category-card__meta {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      min-width: 88px;
+      min-height: 64px;
+      border-radius: 20px;
+      background: #f6f9ff;
+      color: var(--ink);
+      font-weight: 950;
+    }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+    }
+
+    .featured-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 310px;
+      padding: 28px;
+      border-radius: 32px;
+      background: linear-gradient(135deg, #ffffff 0%, #edf4ff 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .featured-card--primary {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 260px;
+      gap: 20px;
+      background: linear-gradient(135deg, #ffffff 0%, #e4edff 52%, #dff6ff 100%);
+    }
+
+    .badge {
+      display: inline-flex;
+      width: fit-content;
+      min-height: 32px;
+      align-items: center;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: #eef5ff;
+      color: var(--blue);
+      font-weight: 900;
+    }
+
+    .featured-card h3 {
+      margin: 20px 0 12px;
+      font-size: clamp(28px, 3.4vw, 44px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    .featured-card p {
+      max-width: 560px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.42;
+    }
+
+    .featured-card img {
+      align-self: end;
+      width: 100%;
+      max-height: 250px;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 30px rgba(95, 147, 255, 0.18));
+    }
+
+    .mini-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .mini-card {
+      min-height: 146px;
+      padding: 22px;
+      border-radius: 28px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .mini-card h3 {
+      margin: 12px 0 8px;
+      font-size: 26px;
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+    }
+
+    .mini-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding: 8px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.74);
+      box-shadow: var(--shadow);
+    }
+
+    .course-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .course-toolbar .filters {
+      margin: 0;
+    }
+
+    .course-count {
+      color: var(--muted);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .filter {
+      min-height: 44px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 17px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .filter.is-active {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .course-card {
+      min-height: 438px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 32px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .course-card[hidden] {
+      display: none;
+    }
+
+    .course-card__image {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 190px;
+      margin: 12px;
+      border-radius: 24px;
+      background: var(--art-bg, linear-gradient(135deg, #edf5ff, #dbe9ff));
+      overflow: hidden;
+    }
+
+    .course-card__image::after {
+      content: attr(data-badge);
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 92px;
+      min-height: 38px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 900;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .course-card__image img {
+      width: min(78%, 190px);
+      max-height: 174px;
+      object-fit: contain;
+      filter: drop-shadow(0 22px 30px rgba(24, 45, 90, 0.16));
+    }
+
+    .art-blue { --art-bg: linear-gradient(135deg, #eaf3ff 0%, #d8e7ff 52%, #eef6ff 100%); }
+    .art-violet { --art-bg: linear-gradient(135deg, #f3efff 0%, #e4eaff 52%, #eef8ff 100%); }
+    .art-mint { --art-bg: linear-gradient(135deg, #ecfbf6 0%, #e4edff 52%, #f8fbff 100%); }
+    .art-cream { --art-bg: linear-gradient(135deg, #fff7e8 0%, #eef4ff 54%, #f8fbff 100%); }
+    .art-rose { --art-bg: linear-gradient(135deg, #fff0f7 0%, #e8efff 54%, #f8fbff 100%); }
+    .art-sky { --art-bg: linear-gradient(135deg, #e8f8ff 0%, #dcecff 54%, #f8fbff 100%); }
+
+    .course-card__body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 8px 24px 24px;
+    }
+
+    .course-card__body .badge {
+      margin-top: 10px;
+    }
+
+    .course-card h3 {
+      margin: 12px 0 10px;
+      font-size: 25px;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+    }
+
+    .course-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .course-card__foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 24px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .level {
+      color: var(--blue);
+    }
+
+    .course-status {
+      width: fit-content;
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: #f3f7ff;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .course-status--done {
+      background: #e9fbf3;
+      color: #16a36b;
+    }
+
+    .course-status--progress {
+      background: #edf5ff;
+      color: var(--blue);
+    }
+
+    .course-status--new {
+      background: #fff3e8;
+      color: #e86f33;
+    }
+
+    .course-progress {
+      height: 8px;
+      margin-top: 18px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #eef3fb;
+    }
+
+    .course-progress span {
+      display: block;
+      width: var(--progress, 0%);
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #5f93ff, #8ee2ff);
+    }
+
+    @media (max-width: 1120px) {
+      .header,
+      .page-intro,
+      .catalog-hero__content,
+      .featured-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .category-grid,
+      .course-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        padding: 14px;
+      }
+
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+        min-height: 0;
+        padding: 10px;
+      }
+
+      .nav {
+        display: flex;
+        overflow-x: auto;
+      }
+
+      .header,
+      .stats-row,
+      .catalog-summary,
+      .category-grid,
+      .course-grid,
+      .featured-card--primary {
+        grid-template-columns: 1fr;
+      }
+
+      .category-card {
+        grid-template-columns: 56px minmax(0, 1fr);
+      }
+
+      .category-card__icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 18px;
+        font-size: 20px;
+      }
+
+      .category-card__meta {
+        grid-column: 1 / -1;
+        min-height: 48px;
+      }
+
+      .course-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .catalog-hero {
+        padding: 28px;
+      }
+
+      .user {
+        min-width: 0;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+
+      <main class="main">
+        <header class="header" data-search-placeholder="Найти курс, урок, тест или бренд"></header>
+
+        <section class="page-intro">
+          <div class="page-title">
+            <h1>Каталог курсов TouchSpace</h1>
+            <p>Выбирайте обучение по роли, направлению и текущему прогрессу. Все модули собраны так, чтобы быстро находить нужные знания и возвращаться к незавершенным темам.</p>
+          </div>
+          <div class="stats-row" aria-label="Статистика каталога">
+            <div class="stat-tile"><strong>36</strong><span>курсов</span></div>
+            <div class="stat-tile"><strong>124</strong><span>модуля</span></div>
+            <div class="stat-tile"><strong>18</strong><span>тестов</span></div>
+            <div class="stat-tile"><strong>4</strong><span>раздела</span></div>
+          </div>
+        </section>
+
+        <div class="hashtag-row" aria-label="Быстрые фильтры">
+          <button class="hashtag is-active" type="button" data-filter="all">#все</button>
+          <button class="hashtag" type="button" data-filter="brands">#бренды</button>
+          <button class="hashtag" type="button" data-filter="product">#товарные_категории</button>
+          <button class="hashtag" type="button" data-filter="sales">#продажи</button>
+          <button class="hashtag" type="button" data-filter="ai">#ai</button>
+          <button class="hashtag" type="button" data-filter="progress">#продолжить</button>
+        </div>
+
+
+
+        <section class="section">
+          <div class="section-head">
+            <h2>Все курсы</h2>
+          </div>
+          <div class="course-toolbar">
+            <div class="filters" role="tablist">
+              <button class="filter is-active" type="button" data-filter="all">Все</button>
+              <button class="filter" type="button" data-filter="brands">Бренды</button>
+              <button class="filter" type="button" data-filter="product">Товарные категории</button>
+              <button class="filter" type="button" data-filter="sales">Продажи</button>
+              <button class="filter" type="button" data-filter="ai">AI</button>
+              <button class="filter" type="button" data-filter="progress">В процессе</button>
+            </div>
+            <span class="course-count">Показано 6 из 36</span>
+          </div>
+          <div class="course-grid">
+            <article class="course-card" data-category="product" data-status="done" data-href="course-catalog.html">
+              <div class="course-card__image art-blue" data-badge="12 уроков"><img src="icons/5.png" alt=""></div>
+              <div class="course-card__body">
+                <span class="course-status course-status--done">Пройдено</span>
+                <span class="badge">База</span>
+                <h3>Продуктовая линейка TouchSpace</h3>
+                <p>Ключевые продукты, сценарии применения и аргументы для разных типов клиентов.</p>
+                <div class="course-progress" style="--progress:100%"><span></span></div>
+                <div class="course-card__foot"><span class="level">Начальный</span><span>1 ч 40 мин</span></div>
+              </div>
+            </article>
+            <article class="course-card" data-category="sales" data-status="progress" data-href="course-sales.html">
+              <div class="course-card__image art-violet" data-badge="Практика"><img src="icons/6.png" alt=""></div>
+              <div class="course-card__body">
+                <span class="course-status course-status--progress">30% пройдено</span>
+                <span class="badge">Продажи</span>
+                <h3>Консультационная продажа</h3>
+                <p>Выявление потребности, сбор контекста и переход к решению без давления.</p>
+                <div class="course-progress" style="--progress:30%"><span></span></div>
+                <div class="course-card__foot"><span class="level">Средний</span><span>2 ч 15 мин</span></div>
+              </div>
+            </article>
+            <article class="course-card" data-category="product" data-status="progress" data-href="course-demo.html">
+              <div class="course-card__image art-mint" data-badge="Сертификат"><img src="icons/7.png" alt=""></div>
+              <div class="course-card__body">
+                <span class="course-status course-status--progress">68% пройдено</span>
+                <span class="badge">Платформа</span>
+                <h3>Настройка и демонстрация кабинета</h3>
+                <p>Навигация, аналитика, роли, отчеты и демонстрация ценности клиенту.</p>
+                <div class="course-progress" style="--progress:68%"><span></span></div>
+                <div class="course-card__foot"><span class="level">Средний</span><span>1 ч 55 мин</span></div>
+              </div>
+            </article>
+            <article class="course-card" data-category="brands" data-status="new" data-href="course-brand-arguments.html">
+              <div class="course-card__image art-cream" data-badge="Новый"><img src="icons/8.png" alt=""></div>
+              <div class="course-card__body">
+                <span class="course-status course-status--new">Не начато</span>
+                <span class="badge">Бренды</span>
+                <h3>Аргументы по брендовым решениям</h3>
+                <p>Связки ценности, возражений и примеров внедрения для разных отраслей.</p>
+                <div class="course-progress" style="--progress:0%"><span></span></div>
+                <div class="course-card__foot"><span class="level">Продвинутый</span><span>58 мин</span></div>
+              </div>
+            </article>
+            <article class="course-card" data-category="sales" data-status="progress" data-href="course-objections.html">
+              <div class="course-card__image art-rose" data-badge="Тренажер"><img src="icons/9.png" alt=""></div>
+              <div class="course-card__body">
+                <span class="course-status course-status--progress">45% пройдено</span>
+                <span class="badge">Навыки</span>
+                <h3>Работа с возражениями</h3>
+                <p>Интерактивные диалоги и подсказки для сложных переговоров.</p>
+                <div class="course-progress" style="--progress:45%"><span></span></div>
+                <div class="course-card__foot"><span class="level">Средний</span><span>1 ч 20 мин</span></div>
+              </div>
+            </article>
+            <article class="course-card" data-category="ai" data-status="new" data-href="course-ai.html">
+              <div class="course-card__image art-sky" data-badge="AI"><img src="icons/5.png" alt=""></div>
+              <div class="course-card__body">
+                <span class="course-status course-status--new">Не начато</span>
+                <span class="badge">AI</span>
+                <h3>AI-помощник для менеджера</h3>
+                <p>Как готовиться к встречам, резюмировать звонки и собирать follow-up быстрее.</p>
+                <div class="course-progress" style="--progress:0%"><span></span></div>
+                <div class="course-card__foot"><span class="level">Начальный</span><span>46 мин</span></div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav__item'));
+      if (!navItems.length) return;
+
+      navItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+          var href = item.getAttribute('data-href');
+
+          navItems.forEach(function (button) {
+            button.classList.remove('is-active');
+            button.removeAttribute('aria-current');
+          });
+
+          item.classList.add('is-active');
+          item.setAttribute('aria-current', 'page');
+
+          if (href && window.location.pathname.split('/').pop() !== href) {
+            window.location.href = href;
+          }
+        });
+      });
+    })();
+
+    (function () {
+      var controls = Array.prototype.slice.call(document.querySelectorAll('[data-filter]'));
+      var filterButtons = Array.prototype.slice.call(document.querySelectorAll('.filter[data-filter]'));
+      var hashtagButtons = Array.prototype.slice.call(document.querySelectorAll('.hashtag[data-filter]'));
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.course-card[data-category]'));
+      var catalog = document.querySelector('.filters');
+      var count = document.querySelector('.course-count');
+      if (!controls.length || !cards.length) return;
+
+      function applyFilter(value) {
+        filterButtons.forEach(function (button) {
+          button.classList.toggle('is-active', button.getAttribute('data-filter') === value);
+        });
+
+        hashtagButtons.forEach(function (button) {
+          button.classList.toggle('is-active', button.getAttribute('data-filter') === value);
+        });
+
+        var visibleCount = 0;
+
+        cards.forEach(function (card) {
+          var match = value === 'all' ||
+            card.getAttribute('data-category') === value ||
+            card.getAttribute('data-status') === value;
+
+          card.hidden = !match;
+
+          if (match) {
+            visibleCount += 1;
+          }
+        });
+
+        if (count) {
+          count.textContent = 'Показано ' + visibleCount + ' из 36';
+        }
+      }
+
+      controls.forEach(function (control) {
+        control.addEventListener('click', function () {
+          var value = control.getAttribute('data-filter');
+          applyFilter(value);
+
+          if (control.classList.contains('category-card') && catalog) {
+            catalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    })();
+  </script>
+  <script src="shared-header.js"></script>
+</body>
+</html>

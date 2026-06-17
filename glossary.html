@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Глоссарий | TouchSpace Академия</title>
+  <style>
+    :root {
+      --blue: #0a84ff;
+      --ink: #111827;
+      --muted: #64748b;
+      --line: #dfe7f3;
+      --page: #eef4ff;
+      --card: #fff;
+      --soft: #eef5ff;
+      --green: #23c483;
+      --orange: #ff8a3d;
+      --shadow-soft: 0 14px 38px rgba(24, 45, 90, .08);
+      --max: 1500px;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(180deg, #f8fbff 0%, var(--page) 50%, #f6f9ff 100%); color: var(--ink); font-family: Inter, "SF Pro Display", "Segoe UI", Arial, sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+
+    .page { max-width: var(--max); margin: 0 auto; padding: 24px; }
+    .shell { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 24px; }
+    .sidebar { position: sticky; top: 22px; z-index: 60; height: calc(100vh - 44px); min-height: 520px; padding: 18px 10px; border: 1px solid rgba(255,255,255,.8); border-radius: 26px; background: rgba(255,255,255,.78); box-shadow: var(--shadow-soft); backdrop-filter: blur(18px); }
+    .nav { display: grid; gap: 10px; }
+    .main { min-width: 0; }
+    .header { display: grid; grid-template-columns: 260px minmax(260px, 1fr) auto; gap: 18px; align-items: center; margin-bottom: 22px; }
+    .wordmark { font-size: 28px; font-weight: 950; line-height: .82; letter-spacing: -.065em; }
+    .wordmark span { display: block; }
+    .wordmark span:last-child { padding-left: 74px; }
+    .search { display: flex; align-items: center; gap: 12px; height: 62px; padding: 0 22px; border: 1px solid rgba(255,255,255,.9); border-radius: 22px; background: rgba(255,255,255,.86); box-shadow: var(--shadow-soft); color: #9aa4b2; }
+    .search input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 16px; }
+
+    .hero,
+    .glossary-panel {
+      border: 1px solid rgba(255,255,255,.88);
+      border-radius: 30px;
+      background: rgba(255,255,255,.84);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 22px;
+      align-items: end;
+      margin-bottom: 22px;
+      padding: 28px;
+    }
+
+    .path { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; color: #6b7280; font-size: 13px; font-weight: 850; }
+    .path a { color: #177be8; }
+    .eyebrow { display: inline-flex; align-items: center; width: fit-content; min-height: 34px; margin-bottom: 14px; padding: 0 13px; border-radius: 999px; background: var(--soft); color: #177be8; font-size: 13px; font-weight: 900; }
+    .hero h1 { margin: 0; font-size: clamp(38px, 4.5vw, 60px); line-height: .96; letter-spacing: -.055em; }
+    .hero p { max-width: 720px; margin: 12px 0 0; color: var(--muted); font-size: 16px; line-height: 1.55; }
+
+    .glossary-stats { display: grid; gap: 10px; }
+    .stat { padding: 16px; border: 1px solid var(--line); border-radius: 20px; background: #fff; }
+    .stat strong { display: block; font-size: 28px; line-height: 1; letter-spacing: -.04em; }
+    .stat span { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; font-weight: 850; }
+
+    .glossary-panel { padding: 18px; }
+    .glossary-toolbar { display: grid; grid-template-columns: minmax(260px, 1fr) auto; gap: 12px; align-items: center; margin-bottom: 16px; }
+    .term-search { display: flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 15px; border: 1px solid var(--line); border-radius: 17px; background: #f7faff; color: #8a97aa; }
+    .term-search svg { width: 19px; height: 19px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .term-search input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); }
+    .result-count { color: var(--muted); font-size: 13px; font-weight: 850; white-space: nowrap; }
+
+    .section-list { display: grid; gap: 12px; }
+    .glossary-section { border: 1px solid var(--line); border-radius: 22px; background: #fff; overflow: hidden; }
+    .glossary-section[open] { box-shadow: 0 12px 30px rgba(24,45,90,.06); }
+    .glossary-section summary { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 72px; padding: 14px 16px; cursor: pointer; list-style: none; }
+    .glossary-section summary::-webkit-details-marker { display: none; }
+    .section-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 16px; background: linear-gradient(135deg, var(--blue), #32c48d); color: #fff; font-weight: 950; }
+    .section-title strong { display: block; font-size: 18px; line-height: 1.15; }
+    .section-title span { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; line-height: 1.35; }
+    .section-count { display: inline-flex; align-items: center; justify-content: center; min-width: 34px; height: 34px; padding: 0 10px; border-radius: 999px; background: var(--soft); color: #177be8; font-size: 13px; font-weight: 950; }
+    .section-body { display: grid; gap: 8px; padding: 0 16px 16px 72px; }
+
+    .term { border: 1px solid #e9f1ff; border-radius: 16px; background: #f8fbff; overflow: hidden; }
+    .term summary { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 54px; padding: 12px 14px; cursor: pointer; list-style: none; }
+    .term summary::-webkit-details-marker { display: none; }
+    .term-name { font-weight: 950; line-height: 1.2; }
+    .term-tag { flex: 0 0 auto; padding: 6px 9px; border-radius: 999px; background: #fff; color: #526174; font-size: 11px; font-weight: 900; }
+    .term-description { padding: 0 14px 14px; color: #40516a; font-size: 14px; line-height: 1.5; }
+    .term-description p { margin: 0; }
+    .term-description b { color: var(--ink); }
+    .empty { display: none; padding: 34px; border: 1px dashed #c7d6ea; border-radius: 20px; background: #f8fbff; color: var(--muted); text-align: center; font-weight: 850; }
+    .is-hidden { display: none !important; }
+
+    @media (max-width: 900px) {
+      .hero,
+      .glossary-toolbar { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .page { padding: 14px; }
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; min-height: 0; padding: 10px; }
+      .nav { grid-template-columns: repeat(6, minmax(48px, 1fr)); }
+      .nav__item { width: 100%; }
+      .header { grid-template-columns: 1fr; }
+      .section-body { padding-left: 16px; }
+      .glossary-section summary { grid-template-columns: 40px minmax(0, 1fr); }
+      .section-count { grid-column: 2; justify-self: start; }
+    }
+  </style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Найти термин или раздел"></header>
+
+        <section class="hero">
+          <div>
+            <nav class="path" aria-label="Хлебные крошки">
+              <a href="index.html">Разделы</a><span>/</span><span>Глоссарий</span>
+            </nav>
+            <span class="eyebrow">База терминов</span>
+            <h1>Глоссарий</h1>
+            <p>Термины Академии сгруппированы по разделам. Откройте нужный раздел, затем раскройте термин, чтобы увидеть короткое объяснение и контекст применения.</p>
+          </div>
+          <aside class="glossary-stats" aria-label="Сводка">
+            <div class="stat"><strong data-section-total>0</strong><span>разделов</span></div>
+            <div class="stat"><strong data-term-total>0</strong><span>терминов</span></div>
+          </aside>
+        </section>
+
+        <section class="glossary-panel" aria-labelledby="glossary-title">
+          <div class="glossary-toolbar">
+            <label class="term-search">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input id="term-search" type="search" placeholder="Поиск по термину, разделу или описанию">
+            </label>
+            <span class="result-count" id="result-count"></span>
+          </div>
+
+          <h2 id="glossary-title" class="is-hidden">Разделы глоссария</h2>
+          <div class="section-list" id="section-list"></div>
+          <div class="empty" id="empty-state">Ничего не найдено</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var sections = [
+        {
+          title: "Продажи и консультация",
+          icon: "П",
+          description: "Понятия, которые помогают вести диалог с клиентом и объяснять ценность продукта.",
+          terms: [
+            { name: "Потребность клиента", tag: "Продажи", description: "Причина, по которой клиент ищет решение. В Академии потребность формулируют через задачу клиента: что он хочет улучшить, упростить или избежать." },
+            { name: "Возражение", tag: "Диалог", description: "Сомнение или барьер клиента. Возражение не нужно сбивать силой: его уточняют, признают и связывают с аргументом продукта." },
+            { name: "Аргумент ценности", tag: "Практика", description: "Связка свойства продукта с пользой для клиента. Например: <b>водостойкость</b> важна не сама по себе, а потому что пол спокойнее использовать на кухне или в прихожей." }
+          ]
+        },
+        {
+          title: "Продукт и материалы",
+          icon: "М",
+          description: "Базовые продуктовые термины, которые встречаются в уроках по брендам и каталогам.",
+          terms: [
+            { name: "Ламинат", tag: "Категория", description: "Многослойное напольное покрытие на основе HDF-плиты. В продажах важно объяснять не только внешний вид, но и класс нагрузки, влагостойкость и замковую систему." },
+            { name: "AquaSafe", tag: "Технология", description: "Технология защиты от влаги у Pergo. Термин полезен, когда клиент спрашивает про кухню, прихожую, уборку или случайно пролитую воду." },
+            { name: "TitanX", tag: "Покрытие", description: "Защитный слой Pergo, связанный с износостойкостью и долговечностью поверхности. В консультации его лучше переводить в понятный сценарий: меньше следов от повседневной нагрузки." }
+          ]
+        },
+        {
+          title: "Обучение и прогресс",
+          icon: "О",
+          description: "Термины интерфейса Академии: курсы, тесты, статусы и достижения.",
+          terms: [
+            { name: "Курс", tag: "Академия", description: "Последовательность уроков и проверочных заданий по одной теме: бренду, продуктовой категории или навыку продаж." },
+            { name: "Тест", tag: "Проверка", description: "Контрольный блок после урока или курса. Он показывает, какие темы уже понятны, а какие стоит повторить перед консультацией с клиентом." },
+            { name: "Сертификат", tag: "Результат", description: "Отметка о завершении курса или успешной проверке знаний. Сертификат фиксирует прогресс сотрудника внутри Академии." }
+          ]
+        },
+        {
+          title: "Каталог и подбор",
+          icon: "К",
+          description: "Слова, которые помогают работать с ассортиментом и быстро подбирать подходящие позиции.",
+          terms: [
+            { name: "Фильтр", tag: "Каталог", description: "Инструмент сужения списка товаров по параметрам: бренду, коллекции, классу, влагостойкости, оттенку или цене." },
+            { name: "Коллекция", tag: "Ассортимент", description: "Группа продуктов бренда с общей логикой дизайна, характеристик или позиционирования. Коллекции удобно сравнивать между собой в консультации." },
+            { name: "Сценарий использования", tag: "Подбор", description: "Контекст, в котором клиент будет использовать продукт: квартира, кухня, детская, коммерческое помещение, активная семья или ремонт под аренду." }
+          ]
+        }
+      ];
+
+      var sectionList = document.getElementById("section-list");
+      var searchInput = document.getElementById("term-search");
+      var emptyState = document.getElementById("empty-state");
+      var resultCount = document.getElementById("result-count");
+
+      function matches(section, term, query) {
+        if (!query) return true;
+        return [section.title, section.description, term.name, term.tag, term.description]
+          .join(" ")
+          .toLowerCase()
+          .indexOf(query) >= 0;
+      }
+
+      function render() {
+        var query = searchInput.value.trim().toLowerCase();
+        var visibleTerms = 0;
+
+        sectionList.innerHTML = sections.map(function (section, index) {
+          var terms = section.terms.filter(function (term) {
+            return matches(section, term, query);
+          });
+          visibleTerms += terms.length;
+          if (!terms.length) return "";
+
+          return '<details class="glossary-section"' + (query ? ' open' : '') + '>' +
+            '<summary>' +
+              '<span class="section-icon">' + section.icon + '</span>' +
+              '<span class="section-title"><strong>' + section.title + '</strong><span>' + section.description + '</span></span>' +
+              '<span class="section-count">' + terms.length + '</span>' +
+            '</summary>' +
+            '<div class="section-body">' +
+              terms.map(function (term, termIndex) {
+                return '<details class="term"' + (query ? ' open' : '') + '>' +
+                  '<summary><span class="term-name">' + term.name + '</span><span class="term-tag">' + term.tag + '</span></summary>' +
+                  '<div class="term-description"><p>' + term.description + '</p></div>' +
+                '</details>';
+              }).join("") +
+            '</div>' +
+          '</details>';
+        }).join("");
+
+        emptyState.style.display = visibleTerms ? "none" : "block";
+        resultCount.textContent = visibleTerms + " из " + sections.reduce(function (sum, section) { return sum + section.terms.length; }, 0) + " терминов";
+      }
+
+      document.querySelector("[data-section-total]").textContent = sections.length;
+      document.querySelector("[data-term-total]").textContent = sections.reduce(function (sum, section) {
+        return sum + section.terms.length;
+      }, 0);
+      searchInput.addEventListener("input", render);
+      render();
+    })();
+  </script>
+</body>
+</html>

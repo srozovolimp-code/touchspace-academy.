@@ -1,0 +1,1848 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TouchSpace Академия</title>
+  <style>
+    :root {
+      --blue: #0a84ff;
+      --blue-2: #5f93ff;
+      --ink: #111827;
+      --muted: #6b7280;
+      --line: #dfe6f2;
+      --page: #f4f6fb;
+      --card: #ffffff;
+      --soft: #edf4ff;
+      --green: #23c483;
+      --pink: #d95a9b;
+      --orange: #ff8a3d;
+      --shadow: 0 24px 80px rgba(24, 45, 90, 0.12);
+      --shadow-soft: 0 14px 38px rgba(24, 45, 90, 0.08);
+      --radius: 28px;
+      --radius-lg: 38px;
+      --max: 1500px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(10, 132, 255, 0.12), transparent 32%),
+        linear-gradient(180deg, #f8fbff 0%, var(--page) 40%, #eef3fb 100%);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: default;
+    }
+
+    .page {
+      max-width: var(--max); margin: 0 auto; padding: 24px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 76px minmax(0, 1fr); gap: 24px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 22px;
+      z-index: 60;
+      height: calc(100vh - 44px);
+      min-height: 520px;
+      padding: 18px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+      overflow: visible;
+    }
+
+    .nav {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 10px;
+      overflow: visible;
+    }
+
+    .nav__item {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 56px;
+      height: 56px;
+      border: 0;
+      border-radius: 18px;
+      background: transparent;
+      color: #8a94a6;
+      cursor: pointer;
+      transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .nav__item:hover {
+      background: rgba(10, 132, 255, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .nav__item.is-active {
+      color: #fff;
+      background: var(--blue);
+      box-shadow: 0 12px 28px rgba(10, 132, 255, 0.26);
+    }
+
+    .nav__item img {
+      width: 25px;
+      height: 25px;
+      object-fit: contain;
+      transition: filter 180ms ease, opacity 180ms ease;
+    }
+
+    .nav__item.is-active img {
+      filter: brightness(0) invert(1);
+    }
+
+    .nav__item::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: calc(100% + 12px);
+      top: 50%;
+      z-index: 100;
+      padding: 10px 13px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 16px 38px rgba(24, 45, 90, 0.14);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-6px, -50%);
+      transition: opacity 160ms ease, transform 160ms ease;
+      backdrop-filter: blur(14px);
+    }
+
+    .nav__item::before {
+      content: "";
+      position: absolute;
+      left: calc(100% + 7px);
+      top: 50%;
+      z-index: 101;
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.94);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-6px, -50%) rotate(45deg);
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .nav__item:hover::after,
+    .nav__item:hover::before,
+    .nav__item:focus-visible::after,
+    .nav__item:focus-visible::before {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+
+    .nav__item:focus-visible {
+      outline: 3px solid rgba(10, 132, 255, 0.22);
+      outline-offset: 3px;
+    }
+
+    .main {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 260px minmax(260px, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .wordmark {
+      font-size: 28px;
+      font-weight: 950;
+      line-height: 0.82;
+      letter-spacing: -0.065em;
+    }
+
+    .wordmark span {
+      display: block;
+    }
+
+    .wordmark span:last-child {
+      padding-left: 74px;
+    }
+
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 62px;
+      padding: 0 22px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow-soft);
+      color: #9aa4b2;
+    }
+
+    .search input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 16px;
+    }
+
+    .header-actions {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .notification-wrap {
+      position: relative;
+    }
+
+    .notification {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 62px;
+      height: 62px;
+      border: 0;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow-soft);
+      color: #9aa4b2;
+      cursor: pointer;
+      transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .notification:hover,
+    .notification.is-open {
+      background: #fff;
+      box-shadow: 0 18px 42px rgba(95, 147, 255, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .notification::after {
+      content: "";
+      position: absolute;
+      right: 17px;
+      top: 16px;
+      width: 9px;
+      height: 9px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      background: var(--orange);
+    }
+
+    .notification img {
+      width: 25px;
+      height: 25px;
+      object-fit: contain;
+    }
+
+    .notification-panel {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 14px);
+      z-index: 80;
+      width: min(380px, calc(100vw - 48px));
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 88% 10%, rgba(95, 147, 255, 0.18), transparent 32%),
+        rgba(255, 255, 255, 0.94);
+      box-shadow: 0 26px 70px rgba(24, 45, 90, 0.18);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px) scale(0.98);
+      transform-origin: top right;
+      transition: opacity 180ms ease, transform 180ms ease;
+      backdrop-filter: blur(18px);
+    }
+
+    .notification-panel.is-open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    .notification-panel::before {
+      content: "";
+      position: absolute;
+      right: 23px;
+      top: -6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.94);
+      transform: rotate(45deg);
+    }
+
+    .notification-panel__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .notification-panel__head strong {
+      font-size: 18px;
+      letter-spacing: -0.03em;
+    }
+
+    .notification-panel__count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .notification-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .notification-item {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 12px;
+      padding: 12px;
+      border: 0;
+      border-radius: 18px;
+      background: rgba(244, 248, 255, 0.82);
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: background 180ms ease, transform 180ms ease;
+    }
+
+    .notification-item:hover {
+      background: #fff;
+      transform: translateY(-1px);
+    }
+
+    .notification-item__icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #e4edff, #f7fbff);
+      color: var(--blue);
+      font-weight: 950;
+    }
+
+    .notification-item__copy strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 14px;
+      line-height: 1.16;
+    }
+
+    .notification-item__copy span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .notification-panel__foot {
+      width: 100%;
+      min-height: 40px;
+      margin-top: 10px;
+      border: 0;
+      border-radius: 16px;
+      background: #fff;
+      color: var(--blue);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 222px;
+      height: 62px;
+      padding: 8px 10px 8px 18px;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .user__meta {
+      min-width: 0;
+    }
+
+    .user__name {
+      display: block;
+      font-weight: 800;
+    }
+
+    .user__role {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      margin-left: auto;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--blue), #8ee2ff);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+      gap: 32px;
+      min-height: 430px;
+      padding: 42px;
+      border-radius: 40px;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.34), transparent 24%),
+        radial-gradient(circle at 84% 14%, rgba(228, 237, 255, 0.76), transparent 28%),
+        radial-gradient(circle at 72% 88%, rgba(95, 147, 255, 0.20), transparent 30%),
+        linear-gradient(135deg, #5f93ff 0%, #7ca8ff 42%, #e4edff 156%);
+      color: #fff;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .hero > *:not(.hero-icons) {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(90deg, rgba(8, 22, 52, 0.20), rgba(8, 22, 52, 0.02)),
+        linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: auto, 72px 72px, 72px 72px;
+      mask-image: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(0,0,0,0.18));
+    }
+
+    .hero-icons {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-icon {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      color: rgba(255, 255, 255, 0.26);
+      filter: drop-shadow(0 16px 30px rgba(0, 45, 120, 0.18));
+    }
+
+    .hero-icon svg {
+      width: 100%;
+      height: 100%;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .hero-icon--book {
+      left: 7%;
+      bottom: 11%;
+      width: 104px;
+      height: 104px;
+      transform: rotate(-13deg);
+    }
+
+    .hero-icon--bulb {
+      left: 42%;
+      top: 10%;
+      width: 118px;
+      height: 118px;
+      color: rgba(255, 255, 255, 0.20);
+      transform: rotate(8deg);
+    }
+
+    .hero-icon--target {
+      right: 10%;
+      top: 9%;
+      width: 142px;
+      height: 142px;
+      color: rgba(255, 255, 255, 0.18);
+    }
+
+    .hero-icon--chart {
+      right: 31%;
+      bottom: 8%;
+      width: 120px;
+      height: 120px;
+      color: rgba(255, 255, 255, 0.16);
+      transform: rotate(11deg);
+    }
+
+    .hero-icon--star {
+      left: 32%;
+      bottom: 23%;
+      width: 72px;
+      height: 72px;
+      color: rgba(255, 255, 255, 0.24);
+      transform: rotate(18deg);
+    }
+
+    .hero-icon--star-small {
+      right: 4%;
+      bottom: 20%;
+      width: 58px;
+      height: 58px;
+      color: rgba(255, 255, 255, 0.19);
+      transform: rotate(-18deg);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      min-height: 34px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      color: inherit;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    h1 {
+      max-width: 650px;
+      margin: 22px 0 18px;
+      font-size: clamp(42px, 5vw, 74px);
+      line-height: 0.94;
+      letter-spacing: -0.045em;
+    }
+
+    .hero__text {
+      max-width: 560px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 19px;
+      line-height: 1.55;
+    }
+
+    .hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 0 24px;
+      border: 0;
+      border-radius: 18px;
+      font-weight: 800;
+    }
+
+    .btn--light {
+      background: #fff;
+      color: var(--blue);
+    }
+
+    .btn--ghost {
+      background: rgba(255, 255, 255, 0.16);
+      color: #fff;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32);
+    }
+
+    .hero-panel {
+      align-self: end;
+      padding: 24px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--ink);
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.12);
+    }
+
+    .hero-panel__top {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .hero-panel h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-panel p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .progress-bar {
+      height: 12px;
+      border-radius: 999px;
+      background: #e8eef8;
+      overflow: hidden;
+    }
+
+    .progress-bar span {
+      display: block;
+      width: 68%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue), #64d2ff);
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .metric {
+      padding: 16px 12px;
+      border-radius: 20px;
+      background: #f2f7ff;
+      text-align: center;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .section {
+      margin-top: 34px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(30px, 3.8vw, 52px);
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .section-head p {
+      max-width: 420px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(330px, 0.75fr);
+      gap: 20px;
+    }
+
+    .updates {
+      display: grid;
+      gap: 14px;
+    }
+
+    .update-card {
+      display: grid;
+      grid-template-columns: 168px minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      min-height: 148px;
+      padding: 14px 18px 14px 14px;
+      border-radius: 28px;
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .thumb {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 120px;
+      border-radius: 22px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.85), transparent 27%),
+        linear-gradient(135deg, #edf5ff, #dbe9ff);
+    }
+
+    .thumb::before {
+      content: "";
+      position: absolute;
+      inset: auto -24px -34px auto;
+      width: 98px;
+      height: 98px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.34);
+    }
+
+    .thumb::after {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: 16px;
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.30);
+      transform: rotate(12deg);
+    }
+
+    .thumb img {
+      position: relative;
+      z-index: 1;
+      width: min(92%, 128px);
+      max-height: 112px;
+      object-fit: contain;
+      filter: drop-shadow(0 18px 24px rgba(24, 45, 90, 0.16));
+    }
+
+    .thumb--sales {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.86), transparent 28%),
+        linear-gradient(135deg, #e7f1ff 0%, #d8e7ff 52%, #c9ddff 100%);
+    }
+
+    .thumb--product {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.86), transparent 28%),
+        linear-gradient(135deg, #f1edff 0%, #e3e9ff 52%, #d9f0ff 100%);
+    }
+
+    .thumb--platform {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.86), transparent 28%),
+        linear-gradient(135deg, #eaf8ff 0%, #e4edff 48%, #dff7ef 100%);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .update-card h3 {
+      margin: 10px 0 8px;
+      font-size: 24px;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .update-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .duration {
+      align-self: stretch;
+      display: grid;
+      place-items: center;
+      min-width: 92px;
+      border-radius: 22px;
+      background: #f7f9fd;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .progress-card {
+      padding: 24px;
+      border-radius: 32px;
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .progress-card h3 {
+      margin: 0 0 20px;
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .rings {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+
+    .ring {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 10px;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .ring__metric {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      min-width: 54px;
+      min-height: 42px;
+      padding: 7px 8px 6px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: inset 0 0 0 1px rgba(217, 229, 246, 0.86), 0 12px 28px rgba(24, 45, 90, 0.08);
+      color: var(--ink);
+      line-height: 1;
+      backdrop-filter: blur(10px);
+    }
+
+    .ring__number {
+      display: block;
+      font-size: 22px;
+      font-weight: 950;
+      letter-spacing: 0;
+    }
+
+    .ring__unit {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 950;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .ring svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .ring__track,
+    .ring__value {
+      fill: none;
+      stroke-width: 9;
+    }
+
+    .ring__track {
+      stroke: #e8edf6;
+    }
+
+    .ring__value {
+      stroke-linecap: round;
+      stroke-dasharray: 238.76;
+      stroke-dashoffset: calc(238.76 - (238.76 * var(--value) / 100));
+    }
+
+    .ring-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .xp-card {
+      position: relative;
+      margin-top: 20px;
+      padding: 26px 24px 24px;
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 92% 18%, rgba(95, 147, 255, 0.14), transparent 28%),
+        linear-gradient(135deg, #ffffff 0%, #f4f8ff 48%, #eef5ff 100%);
+      color: var(--ink);
+      box-shadow: inset 0 0 0 1px rgba(223, 230, 242, 0.72);
+      overflow: hidden;
+    }
+
+    .xp-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .xp-card strong {
+      display: inline-block;
+      margin: 22px 0 26px;
+      border-bottom: 3px solid var(--blue);
+      color: #000;
+      font-family: "Courier New", monospace;
+      font-size: 54px;
+      line-height: 0.86;
+      letter-spacing: -0.06em;
+    }
+
+    .xp-card__score {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .xp-card__star {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 18px rgba(255, 138, 61, 0.22));
+    }
+
+    .xp-card__hint {
+      color: #1f2937 !important;
+      font-family: "Courier New", monospace;
+      font-size: 22px;
+      line-height: 1.25;
+      letter-spacing: -0.04em;
+      text-align: center;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 8px;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .tab {
+      min-height: 46px;
+      padding: 0 22px;
+      border: 0;
+      border-radius: 18px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 900;
+    }
+
+    .tab.is-active {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .course-card {
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 32px;
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .course-card__image {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 190px;
+      margin: 12px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.88), transparent 28%),
+        linear-gradient(135deg, #edf5ff 0%, #dbe9ff 56%, #f7fbff 100%);
+      overflow: hidden;
+    }
+
+    .course-card__image::before {
+      content: "";
+      position: absolute;
+      right: -42px;
+      bottom: -54px;
+      width: 148px;
+      height: 148px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.36);
+    }
+
+    .course-card__image::after {
+      content: attr(data-badge);
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 92px;
+      min-height: 38px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.9);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 900;
+      text-align: center;
+      line-height: 1;
+      box-shadow: 0 10px 24px rgba(24, 45, 90, 0.08);
+    }
+
+    .course-card__image img {
+      position: relative;
+      z-index: 1;
+      width: min(78%, 190px);
+      max-height: 174px;
+      object-fit: contain;
+      filter: drop-shadow(0 22px 30px rgba(24, 45, 90, 0.16));
+    }
+
+    .course-art--blue {
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,0.9), transparent 30%),
+        linear-gradient(135deg, #eaf3ff 0%, #d8e7ff 52%, #eef6ff 100%);
+    }
+
+    .course-art--violet {
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,0.9), transparent 30%),
+        linear-gradient(135deg, #f3efff 0%, #e4eaff 52%, #eef8ff 100%);
+    }
+
+    .course-art--mint {
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,0.9), transparent 30%),
+        linear-gradient(135deg, #ecfbf6 0%, #e4edff 52%, #f8fbff 100%);
+    }
+
+    .course-art--cream {
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,0.92), transparent 30%),
+        linear-gradient(135deg, #fff7e8 0%, #eef4ff 54%, #f8fbff 100%);
+    }
+
+    .course-art--rose {
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,0.92), transparent 30%),
+        linear-gradient(135deg, #fff0f7 0%, #e8efff 54%, #f8fbff 100%);
+    }
+
+    .course-art--sky {
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,0.92), transparent 30%),
+        linear-gradient(135deg, #e8f8ff 0%, #dcecff 54%, #f8fbff 100%);
+    }
+
+    .course-card__body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 8px 24px 24px;
+    }
+
+    .course-card h3 {
+      margin: 8px 0 10px;
+      font-size: 25px;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+    }
+
+    .course-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .course-card__foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: auto;
+      padding-top: 24px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .level {
+      color: var(--blue);
+    }
+
+    .show-all-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 18px;
+    }
+
+    .show-all-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--blue);
+      font: inherit;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .show-all-button::after {
+      content: "→";
+      font-size: 18px;
+      line-height: 1;
+      transition: transform 180ms ease;
+    }
+
+    .show-all-button:hover::after {
+      transform: translateX(4px);
+    }
+
+    .show-all-button:focus-visible {
+      outline: 3px solid rgba(10, 132, 255, 0.22);
+      outline-offset: 5px;
+      border-radius: 999px;
+    }
+
+    .path-slider {
+      position: relative;
+      margin-top: 18px;
+      padding: 0 64px;
+    }
+
+    .path-slider__viewport {
+      position: relative;
+      overflow: visible;
+    }
+
+    .path-slider__track {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.1fr) minmax(0, 0.92fr);
+      gap: 24px;
+      align-items: center;
+      min-height: 450px;
+    }
+
+    .path-card {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      min-height: 340px;
+      padding: 22px;
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.42), transparent 28%),
+        var(--path-bg, linear-gradient(135deg, #eaf3ff, #dcecff));
+      color: #fff;
+      box-shadow: 0 18px 42px rgba(95, 147, 255, 0.10);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 420ms ease, opacity 420ms ease, filter 420ms ease;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .path-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 24% 18%, rgba(255,255,255,0.28), transparent 24%),
+        radial-gradient(circle at 82% 84%, rgba(255,255,255,0.18), transparent 30%);
+    }
+
+    .path-card.is-visible {
+      display: flex;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .path-card.is-center {
+      min-height: 410px;
+      padding: 26px;
+      box-shadow: 0 24px 60px rgba(95, 147, 255, 0.14);
+    }
+
+    .path-card.is-side {
+      filter: saturate(0.94);
+    }
+
+    .path-card__badge {
+      align-self: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.22);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 900;
+      backdrop-filter: blur(10px);
+    }
+
+    .path-card h3 {
+      max-width: 300px;
+      margin: 22px auto 0;
+      font-size: 24px;
+      line-height: 1.12;
+      letter-spacing: -0.04em;
+      text-align: center;
+    }
+
+    .path-card.is-center h3 {
+      font-size: 30px;
+    }
+
+    .path-card p {
+      margin: 14px 0 0;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.44;
+      text-align: center;
+    }
+
+    .path-card__art {
+      display: grid;
+      place-items: end center;
+      flex: 1;
+      min-height: 165px;
+      margin: 8px -20px -24px;
+    }
+
+    .path-card__art img {
+      width: min(82%, 220px);
+      max-height: 220px;
+      object-fit: contain;
+      filter: drop-shadow(0 18px 28px rgba(95, 147, 255, 0.18));
+    }
+
+    .path-card.is-center .path-card__art img {
+      width: min(88%, 280px);
+      max-height: 270px;
+    }
+
+    .path-card--blue {
+      --path-bg: linear-gradient(135deg, #5f93ff 0%, #9dbbff 100%);
+    }
+
+    .path-card--mint {
+      --path-bg: linear-gradient(135deg, #74dcb6 0%, #d6f4e9 100%);
+    }
+
+    .path-card--violet {
+      --path-bg: linear-gradient(135deg, #9da7ff 0%, #e4e8ff 100%);
+    }
+
+    .path-card--cream {
+      --path-bg: linear-gradient(135deg, #ffc77d 0%, #fff0cf 100%);
+    }
+
+    .path-card--rose {
+      --path-bg: linear-gradient(135deg, #f5a3c8 0%, #f8dce9 100%);
+    }
+
+    .path-card--sky {
+      --path-bg: linear-gradient(135deg, #78d7ff 0%, #dff6ff 100%);
+    }
+
+    .path-slider__controls {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .path-slider__button {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      border: 0;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+      color: var(--ink);
+      pointer-events: auto;
+    }
+
+    .path-slider__button svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .path-section .section-head {
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .path-section .section-head h2 {
+      font-size: clamp(38px, 4.6vw, 60px);
+      line-height: 0.98;
+    }
+
+    @media (max-width: 1120px) {
+      .hero,
+      .dashboard-grid,
+      .path-slider__viewport {
+        grid-template-columns: 1fr;
+      }
+
+      .course-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        padding: 14px;
+      }
+
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        display: flex;
+        align-items: center;
+        height: auto;
+        min-height: 0;
+        padding: 10px;
+      }
+
+      .nav {
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+      }
+
+      .nav__item {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+      }
+
+      .header {
+        grid-template-columns: 1fr;
+      }
+
+      .wordmark {
+        font-size: 26px;
+      }
+
+      .wordmark span:last-child {
+        padding-left: 68px;
+      }
+
+      .header-actions {
+        justify-content: space-between;
+      }
+
+      .user {
+        min-width: 0;
+      }
+
+      .hero {
+        padding: 26px;
+        border-radius: 30px;
+      }
+
+      .hero-metrics,
+      .rings,
+      .course-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .update-card {
+        grid-template-columns: 1fr;
+      }
+
+      .duration {
+        min-height: 54px;
+      }
+
+      .path-slider__viewport,
+      .path-slider__track {
+        min-height: 0;
+        height: auto;
+      }
+
+      .path-slider {
+        padding: 0 52px;
+      }
+
+      .path-slider__track {
+        grid-template-columns: 1fr;
+      }
+
+      .path-card {
+        min-height: 320px;
+      }
+
+      .path-card.is-center {
+        min-height: 380px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+
+      <main class="main">
+        <header class="header" data-search-placeholder="Найти курс, урок, тест или бренд"></header>
+
+        <section class="hero">
+          <div class="hero-icons" aria-hidden="true">
+            <span class="hero-icon hero-icon--book">
+              <svg viewBox="0 0 64 64"><path d="M10 14h18c5 0 8 3 8 8v30c0-5-3-8-8-8H10V14Z"></path><path d="M54 14H36c-5 0-8 3-8 8v30c0-5 3-8 8-8h18V14Z"></path><path d="M18 24h10M18 32h10M44 24h-8M46 32H36"></path></svg>
+            </span>
+            <span class="hero-icon hero-icon--bulb">
+              <svg viewBox="0 0 64 64"><path d="M23 50h18"></path><path d="M25 56h14"></path><path d="M21 28a11 11 0 1 1 22 0c0 5-3 8-6 12-2 2-2 5-2 7h-6c0-2 0-5-2-7-3-4-6-7-6-12Z"></path><path d="M32 7v6M14 14l4 4M50 14l-4 4M9 31h6M49 31h6"></path></svg>
+            </span>
+            <span class="hero-icon hero-icon--target">
+              <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="28"></circle><circle cx="40" cy="40" r="17"></circle><circle cx="40" cy="40" r="6"></circle><path d="M55 25 69 11M58 11h11v11"></path></svg>
+            </span>
+            <span class="hero-icon hero-icon--chart">
+              <svg viewBox="0 0 64 64"><path d="M10 52h44"></path><path d="M16 44V28M30 44V16M44 44V24"></path><path d="m16 28 14-12 14 8 10-12"></path></svg>
+            </span>
+            <span class="hero-icon hero-icon--star">
+              <svg viewBox="0 0 64 64"><path d="m32 7 7 17 18 2-14 12 4 18-15-10-15 10 4-18L7 26l18-2 7-17Z"></path></svg>
+            </span>
+            <span class="hero-icon hero-icon--star hero-icon--star-small">
+              <svg viewBox="0 0 64 64"><path d="m32 7 7 17 18 2-14 12 4 18-15-10-15 10 4-18L7 26l18-2 7-17Z"></path></svg>
+            </span>
+          </div>
+          <div>
+            <span class="eyebrow">Новая траектория обучения</span>
+            <h1>Все знания TouchSpace в одной академии</h1>
+            <p class="hero__text">Короткие уроки, продуктовые сценарии, тренажеры продаж и тесты для команды. Учитесь по ролям, отслеживайте прогресс и быстрее доводите знания до результата.</p>
+            <div class="hero__actions">
+              <button class="btn btn--light" type="button" onclick="window.location.href='student-dashboard.html'">Продолжить обучение</button>
+              <button class="btn btn--ghost" type="button" onclick="window.location.href='courses.html'">Открыть каталог</button>
+            </div>
+          </div>
+          <aside class="hero-panel">
+            <div class="hero-panel__top">
+              <div>
+                <h2>Ваш путь: эксперт платформы</h2>
+                <p><span data-student-value="completedCourses">1</span> курса завершено · <span data-student-value="activeCourses">2</span> активных</p>
+              </div>
+              <span class="tag"><span data-student-value="avgProgress">72</span>%</span>
+            </div>
+            <div class="progress-bar"><span data-student-progress></span></div>
+            <div class="hero-metrics">
+              <div class="metric"><strong>56</strong><span>курсов</span></div>
+              <div class="metric"><strong>24</strong><span>бренда</span></div>
+              <div class="metric"><strong data-student-value="passedTests">1</strong><span>тестов пройдено</span></div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="section path-section">
+          <div class="section-head">
+            <div>
+              <h2>Новое в академии</h2>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="updates">
+              <article class="update-card">
+                <div class="thumb thumb--sales">
+                  <img src="icons/1.png" alt="">
+                </div>
+                <div>
+                  <span class="tag">Продажи</span>
+                  <h3>Как проводить демо без лишней воды</h3>
+                  <p>Сценарий встречи, структура вопросов и готовые формулировки для сильной презентации платформы.</p>
+                </div>
+                <div class="duration">28 мин</div>
+              </article>
+
+              <article class="update-card">
+                <div class="thumb thumb--product">
+                  <img src="icons/2.png" alt="">
+                </div>
+                <div>
+                  <span class="tag">Продукт</span>
+                  <h3>Обновления кабинета клиента</h3>
+                  <p>Что изменилось в интерфейсе, какие сценарии стали быстрее и как объяснять ценность клиенту.</p>
+                </div>
+                <div class="duration">16 мин</div>
+              </article>
+
+              <article class="update-card">
+                <div class="thumb thumb--platform">
+                  <img src="icons/3.png" alt="">
+                </div>
+                <div>
+                  <span class="tag">Платформа</span>
+                  <h3>Быстрый старт для новой команды</h3>
+                  <p>Маршрут онбординга: от базовых модулей до первых самостоятельных консультаций.</p>
+                </div>
+                <div class="duration">42 мин</div>
+              </article>
+            </div>
+
+            <aside class="progress-card">
+              <h3>Прогресс недели</h3>
+              <div class="rings">
+                <div>
+                  <div class="ring" style="--value: 72">
+                    <svg viewBox="0 0 92 92" aria-hidden="true">
+                      <defs><linearGradient id="ringBlue" x1="12" y1="12" x2="80" y2="80"><stop stop-color="#8DB6FF"/><stop offset="1" stop-color="#C9DAFF"/></linearGradient></defs>
+                      <circle class="ring__track" cx="46" cy="46" r="38"></circle>
+                      <circle class="ring__value" cx="46" cy="46" r="38" stroke="url(#ringBlue)"></circle>
+                    </svg>
+                    <span class="ring__metric"><span class="ring__number" data-student-value="level">7</span><span class="ring__unit">ур.</span></span>
+                  </div>
+                  <span class="ring-label">уровень</span>
+                </div>
+                <div>
+                  <div class="ring" style="--value: 46">
+                    <svg viewBox="0 0 92 92" aria-hidden="true">
+                      <defs><linearGradient id="ringRose" x1="12" y1="12" x2="80" y2="80"><stop stop-color="#E9A8CB"/><stop offset="1" stop-color="#F4D4E4"/></linearGradient></defs>
+                      <circle class="ring__track" cx="46" cy="46" r="38"></circle>
+                      <circle class="ring__value" cx="46" cy="46" r="38" stroke="url(#ringRose)"></circle>
+                    </svg>
+                    <span class="ring__metric"><span class="ring__number" data-student-value="avgProgress">72</span><span class="ring__unit">%</span></span>
+                  </div>
+                  <span class="ring-label">курсы</span>
+                </div>
+                <div>
+                  <div class="ring" style="--value: 78">
+                    <svg viewBox="0 0 92 92" aria-hidden="true">
+                      <defs><linearGradient id="ringMint" x1="12" y1="12" x2="80" y2="80"><stop stop-color="#9DE2C6"/><stop offset="1" stop-color="#D6F4E9"/></linearGradient></defs>
+                      <circle class="ring__track" cx="46" cy="46" r="38"></circle>
+                      <circle class="ring__value" cx="46" cy="46" r="38" stroke="url(#ringMint)"></circle>
+                    </svg>
+                    <span class="ring__metric"><span class="ring__number" data-student-value="passedTests">1</span><span class="ring__unit">тест</span></span>
+                  </div>
+                  <span class="ring-label">тесты</span>
+                </div>
+              </div>
+              <div class="xp-card">
+                <p>Очки опыта</p>
+                <div class="xp-card__score">
+                  <strong><span data-student-value="xp">680</span>/<span data-student-value="nextLevelXp">1000</span></strong>
+                  <img class="xp-card__star" src="icons/Star.svg" alt="">
+                </div>
+                <p class="xp-card__hint">До 5 уровня осталось собрать всего 500 очков</p>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div>
+              <h2>Более 30 программ<br>для продаж и роста</h2>
+            </div>
+          </div>
+
+          <div class="tabs" role="tablist">
+            <button class="tab is-active" type="button">Бренды</button>
+            <button class="tab" type="button">Товары</button>
+            <button class="tab" type="button">Продажи</button>
+            <button class="tab" type="button">AI</button>
+          </div>
+
+          <div class="course-grid">
+            <article class="course-card">
+              <div class="course-card__image course-art--blue" data-badge="12 уроков">
+                <img src="icons/5.png" alt="">
+              </div>
+              <div class="course-card__body">
+                <span class="tag">База</span>
+                <h3>Продуктовая линейка TouchSpace</h3>
+                <p>Разберите ключевые продукты, сценарии применения и аргументы для разных типов клиентов.</p>
+                <div class="course-card__foot"><span class="level">Начальный</span><span>1 ч 40 мин</span></div>
+              </div>
+            </article>
+
+            <article class="course-card">
+              <div class="course-card__image course-art--violet" data-badge="Практика">
+                <img src="icons/6.png" alt="">
+              </div>
+              <div class="course-card__body">
+                <span class="tag">Продажи</span>
+                <h3>Консультационная продажа</h3>
+                <p>Учимся выявлять потребность, собирать контекст и вести клиента к решению без давления.</p>
+                <div class="course-card__foot"><span class="level">Средний</span><span>2 ч 15 мин</span></div>
+              </div>
+            </article>
+
+            <article class="course-card">
+              <div class="course-card__image course-art--mint" data-badge="Сертификат">
+                <img src="icons/7.png" alt="">
+              </div>
+              <div class="course-card__body">
+                <span class="tag">Платформа</span>
+                <h3>Настройка и демонстрация кабинета</h3>
+                <p>Покажите интерфейс уверенно: от навигации до аналитики, ролей и отчетов.</p>
+                <div class="course-card__foot"><span class="level">Средний</span><span>1 ч 55 мин</span></div>
+              </div>
+            </article>
+
+            <article class="course-card">
+              <div class="course-card__image course-art--cream" data-badge="Новый">
+                <img src="icons/8.png" alt="">
+              </div>
+              <div class="course-card__body">
+                <span class="tag">Бренды</span>
+                <h3>Аргументы по брендовым решениям</h3>
+                <p>Готовые связки ценности, возражений и примеров внедрения для разных отраслей.</p>
+                <div class="course-card__foot"><span class="level">Продвинутый</span><span>58 мин</span></div>
+              </div>
+            </article>
+
+            <article class="course-card">
+              <div class="course-card__image course-art--rose" data-badge="Тренажер">
+                <img src="icons/9.png" alt="">
+              </div>
+              <div class="course-card__body">
+                <span class="tag">Навыки</span>
+                <h3>Работа с возражениями</h3>
+                <p>Интерактивные диалоги и подсказки для сложных переговоров: цена, сроки, конкуренты.</p>
+                <div class="course-card__foot"><span class="level">Средний</span><span>1 ч 20 мин</span></div>
+              </div>
+            </article>
+
+            <article class="course-card">
+              <div class="course-card__image course-art--sky" data-badge="AI">
+                <img src="icons/5.png" alt="">
+              </div>
+              <div class="course-card__body">
+                <span class="tag">AI</span>
+                <h3>AI-помощник для менеджера</h3>
+                <p>Как готовиться к встречам, резюмировать звонки и собирать follow-up быстрее.</p>
+                <div class="course-card__foot"><span class="level">Начальный</span><span>46 мин</span></div>
+              </div>
+            </article>
+          </div>
+          <div class="show-all-row">
+            <button class="show-all-button" type="button">Показать все</button>
+          </div>
+        </section>
+
+        <section class="section path-section">
+          <div class="section-head">
+            <div>
+              <h2>Сделайте первый шаг<br>к высоким продажам</h2>
+            </div>
+          </div>
+
+          <div class="path-slider" data-path-slider>
+            <div class="path-slider__viewport">
+              <div class="path-slider__track">
+                <article class="path-card path-card--blue">
+                  <span class="path-card__badge">5 модулей</span>
+                  <h3>Быстро войти в продукт</h3>
+                  <p>База платформы, ценность и первый тест для уверенного старта.</p>
+                  <div class="path-card__art"><img src="icons/5.png" alt=""></div>
+                </article>
+
+                <article class="path-card path-card--mint">
+                  <span class="path-card__badge">12 модулей</span>
+                  <h3>Стать экспертом TouchSpace</h3>
+                  <p>Глубокая программа по продукту, продажам и демонстрациям.</p>
+                  <div class="path-card__art"><img src="icons/6.png" alt=""></div>
+                </article>
+
+                <article class="path-card path-card--violet">
+                  <span class="path-card__badge">8 модулей</span>
+                  <h3>Развивать команду продаж</h3>
+                  <p>Наставничество, контроль прогресса и единый стандарт знаний.</p>
+                  <div class="path-card__art"><img src="icons/7.png" alt=""></div>
+                </article>
+
+                <article class="path-card path-card--cream">
+                  <span class="path-card__badge">6 модулей</span>
+                  <h3>Прокачать продуктовые аргументы</h3>
+                  <p>Готовые связки ценности для отраслей и разных типов клиентов.</p>
+                  <div class="path-card__art"><img src="icons/8.png" alt=""></div>
+                </article>
+
+                <article class="path-card path-card--rose">
+                  <span class="path-card__badge">4 модуля</span>
+                  <h3>Снимать сложные возражения</h3>
+                  <p>Тренажеры диалогов: цена, сроки, конкуренты и сомнения.</p>
+                  <div class="path-card__art"><img src="icons/9.png" alt=""></div>
+                </article>
+
+                <article class="path-card path-card--sky">
+                  <span class="path-card__badge">3 модуля</span>
+                  <h3>Использовать AI в продажах</h3>
+                  <p>Подготовка к встречам, follow-up и быстрые резюме звонков.</p>
+                  <div class="path-card__art"><img src="icons/5.png" alt=""></div>
+                </article>
+              </div>
+            </div>
+            <div class="path-slider__controls">
+              <button class="path-slider__button" type="button" data-path-prev aria-label="Предыдущая карточка">
+                <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"></path></svg>
+              </button>
+              <button class="path-slider__button" type="button" data-path-next aria-label="Следующая карточка">
+                <svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"></path></svg>
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav__item'));
+      if (!navItems.length) return;
+
+      navItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+          var href = item.getAttribute('data-href');
+
+          navItems.forEach(function (button) {
+            button.classList.remove('is-active');
+            button.removeAttribute('aria-current');
+          });
+
+          item.classList.add('is-active');
+          item.setAttribute('aria-current', 'page');
+
+          if (href && window.location.pathname.split('/').pop() !== href) {
+            window.location.href = href;
+          }
+        });
+      });
+    })();
+
+    (function () {
+      var slider = document.querySelector('[data-path-slider]');
+      if (!slider) return;
+
+      var cards = Array.prototype.slice.call(slider.querySelectorAll('.path-card'));
+      var prev = slider.querySelector('[data-path-prev]');
+      var next = slider.querySelector('[data-path-next]');
+      var active = 1;
+
+      function wrap(index) {
+        return (index + cards.length) % cards.length;
+      }
+
+      function render() {
+        cards.forEach(function (card) {
+          card.classList.remove('is-visible', 'is-center', 'is-side');
+          card.style.removeProperty('order');
+        });
+
+        [-1, 0, 1].forEach(function (offset, i) {
+          var card = cards[wrap(active + offset)];
+
+          card.classList.add('is-visible', i === 1 ? 'is-center' : 'is-side');
+          card.style.order = i;
+        });
+      }
+
+      prev.addEventListener('click', function () {
+        active = wrap(active - 1);
+        render();
+      });
+
+      next.addEventListener('click', function () {
+        active = wrap(active + 1);
+        render();
+      });
+
+      render();
+    })();
+  </script>
+  <script src="shared-header.js"></script>
+</body>
+</html>

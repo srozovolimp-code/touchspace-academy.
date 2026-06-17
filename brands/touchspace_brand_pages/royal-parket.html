@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Royal Parket | TouchSpace Академия</title>
+  <link rel="stylesheet" href="../../shared-header.css">
+  <link rel="stylesheet" href="../../mobile-responsive.css">
+  <style>
+    :root { --blue:#0a84ff; --ink:#111827; --muted:#66758a; --line:#dfe6f2; --page:#eef4ff; --green:#23c483; --shadow:0 24px 80px rgba(24,45,90,.12); --shadow-soft:0 14px 38px rgba(24,45,90,.08); --max:1500px; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:linear-gradient(180deg,#f8fbff 0%,var(--page) 52%,#f6f9ff 100%); font-family:Inter,"SF Pro Display","Segoe UI",Arial,sans-serif; overflow-x:hidden; }
+    a { color:inherit; text-decoration:none; }
+    button { font:inherit; }
+    .page { max-width:var(--max); margin:0 auto; padding:24px; }
+    .shell { display:grid; grid-template-columns:76px minmax(0,1fr); gap:24px; }
+    .sidebar { position:sticky; top:22px; z-index:60; height:calc(100vh - 44px); min-height:520px; padding:18px 10px; border:1px solid rgba(255,255,255,.8); border-radius:26px; background:rgba(255,255,255,.78); box-shadow:var(--shadow-soft); backdrop-filter:blur(18px); }
+    .nav { display:grid; gap:10px; }
+    .nav__item { display:grid; place-items:center; width:56px; height:56px; border:0; border-radius:18px; background:transparent; cursor:pointer; }
+    .nav__item:hover { background:rgba(10,132,255,.08); }
+    .nav__item.is-active { background:var(--blue); box-shadow:0 12px 28px rgba(10,132,255,.26); }
+    .nav__item img { width:25px; height:25px; object-fit:contain; }
+    .nav__item.is-active img { filter:brightness(0) invert(1); }
+    .main { min-width:0; }
+    .header { display:grid; grid-template-columns:260px minmax(260px,1fr) auto; gap:18px; align-items:center; margin-bottom:22px; }
+    .topline { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; padding:16px 18px; border:1px solid rgba(255,255,255,.9); border-radius:28px; background:rgba(255,255,255,.88); box-shadow:var(--shadow-soft); }
+    .breadcrumb { display:flex; flex-wrap:wrap; gap:8px; color:#65758b; font-size:13px; font-weight:850; }
+    .breadcrumb a { color:var(--blue); }
+    .back-link { min-height:38px; padding:10px 13px; border-radius:999px; background:#edf4ff; color:#36506f; font-size:13px; font-weight:900; }
+    .module-shell { display:grid; grid-template-columns:310px minmax(0,1fr); min-height:calc(100vh - 150px); border:1px solid rgba(255,255,255,.92); border-radius:38px; background:rgba(255,255,255,.74); box-shadow:var(--shadow); overflow:hidden; }
+    .course-panel { display:flex; flex-direction:column; min-height:100%; background:#fff; border-right:1px solid var(--line); }
+    .course-cover { position:relative; min-height:270px; padding:22px; display:flex; flex-direction:column; justify-content:flex-end; overflow:hidden; color:#fff; background:#1f2937; }
+    .course-cover:before { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(17,24,39,.08),rgba(17,24,39,.78)),url('../../images/calitex_realistic/calitex-showroom-collection.jpg') center/cover; transform:scale(1.02); }
+    .course-cover > * { position:relative; z-index:1; }
+    .brand-logo { display:grid; place-items:center; width:118px; height:70px; margin-bottom:22px; padding:12px; border-radius:22px; background:rgba(255,255,255,.94); box-shadow:0 18px 40px rgba(0,0,0,.18); }
+.brand-hero-actions { position:relative; z-index:2; display:flex; align-items:center; gap:10px; margin-bottom:22px; }
+.brand-hero-actions .brand-logo { margin-bottom:0; }
+.brand-hero-favorite { display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border:1px solid rgba(255,255,255,.9); border-radius:16px; background:rgba(255,255,255,.94); color:var(--blue); font-size:0; box-shadow:0 18px 40px rgba(0,0,0,.16); cursor:pointer; transition:color 160ms ease, background 160ms ease, border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease; }
+.brand-hero-favorite::before { content:"♡"; font-size:24px; line-height:1; transform:translateY(-1px); }
+.brand-hero-favorite:hover { transform:translateY(-1px); color:var(--blue); border-color:rgba(10,132,255,.34); background:rgba(237,244,255,.96); }
+.brand-hero-favorite[data-favorite-toggle].is-favorite { color:var(--blue)!important; border-color:rgba(10,132,255,.42)!important; background:#edf4ff!important; box-shadow:0 18px 42px rgba(10,132,255,.2)!important; }
+.brand-hero-favorite[data-favorite-toggle].is-favorite::before { content:"♥"; }
+    .brand-logo img { max-width:100%; max-height:100%; object-fit:contain; }
+    .course-cover h1 { margin:0; max-width:250px; font-size:31px; line-height:1.02; letter-spacing:-.045em; }
+    .course-cover p { margin:12px 0 0; color:rgba(255,255,255,.82); font-size:13px; font-weight:750; line-height:1.45; }
+    .course-progress { padding:18px 20px; border-bottom:1px solid var(--line); }
+    .progress-row { display:flex; justify-content:space-between; gap:10px; color:#66758a; font-size:12px; font-weight:900; }
+    .progress-track { height:9px; margin-top:10px; border-radius:999px; background:#e8eef7; overflow:hidden; }
+    .progress-track span { display:block; height:100%; width:0%; border-radius:inherit; background:linear-gradient(90deg,var(--blue),#70adff); transition:width 260ms ease; }
+    .lesson-list { display:grid; gap:8px; padding:16px; overflow:auto; }
+    .lesson-tab { width:100%; display:grid; grid-template-columns:34px minmax(0,1fr) 18px; gap:10px; align-items:center; padding:12px; border:0; border-radius:18px; background:transparent; color:#66758a; text-align:left; cursor:pointer; }
+    .lesson-tab:hover { background:#f7faff; }
+    .lesson-tab.is-active { background:#edf4ff; color:var(--ink); }
+    .lesson-tab.is-done .tab-check { border-color:rgba(35,196,131,.55); background:rgba(35,196,131,.12); color:var(--green); }
+    .tab-num { display:grid; place-items:center; width:34px; height:34px; border-radius:14px; background:#f2f6fc; color:var(--blue); font-size:13px; font-weight:950; }
+    .lesson-tab.is-active .tab-num { background:var(--blue); color:#fff; }
+    .tab-title { display:block; font-size:13px; font-weight:950; line-height:1.2; }
+    .tab-meta { display:block; margin-top:3px; color:#8a97aa; font-size:11px; font-weight:850; }
+    .tab-check { display:grid; place-items:center; width:18px; height:18px; border:2px solid #d1dae8; border-radius:999px; font-size:10px; font-weight:950; }
+    .stage { position:relative; min-height:720px; padding:30px; overflow:hidden; background:linear-gradient(180deg,#fff 0%,#f7fbff 100%); }
+    .stage-toolbar { position:relative; z-index:5; display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
+    .stage-count { color:#8a97aa; font-size:13px; font-weight:900; }
+    .stage-actions { display:flex; gap:8px; }
+    .icon-btn { display:grid; place-items:center; width:42px; height:42px; border:1px solid var(--line); border-radius:16px; background:#fff; color:var(--blue); font-weight:950; cursor:pointer; box-shadow:0 10px 24px rgba(24,45,90,.07); }
+    .icon-btn:disabled { opacity:.35; cursor:not-allowed; }
+    .lesson-slide { display:none; min-height:610px; }
+    .lesson-slide.is-active { display:block; animation:lessonIn 520ms cubic-bezier(.2,.8,.2,1) both; }
+    .lesson-slide.is-leaving-up { display:block; position:absolute; inset:90px 30px 30px; animation:lessonOutUp 360ms ease both; pointer-events:none; }
+    .lesson-slide.is-leaving-down { display:block; position:absolute; inset:90px 30px 30px; animation:lessonOutDown 360ms ease both; pointer-events:none; }
+    @keyframes lessonIn { from { opacity:0; transform:translateY(34px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes lessonOutUp { to { opacity:0; transform:translateY(-34px); } }
+    @keyframes lessonOutDown { to { opacity:0; transform:translateY(34px); } }
+    .lesson-kicker { display:inline-flex; align-items:center; min-height:34px; padding:8px 12px; border-radius:999px; background:#edf4ff; color:var(--blue); font-size:13px; font-weight:950; }
+    .lesson-title { margin:22px 0 12px; max-width:900px; font-size:clamp(42px,6vw,82px); line-height:.9; letter-spacing:-.07em; }
+    .lesson-lead { max-width:800px; margin:0; color:#66758a; font-size:18px; font-weight:700; line-height:1.55; }
+    .blocks { display:grid; gap:16px; margin-top:28px; }
+    .block { opacity:0; transform:translateY(20px); }
+    .lesson-slide.is-active .block { animation:blockIn 520ms ease both; }
+    .lesson-slide.is-active .block:nth-child(1) { animation-delay:120ms; }
+    .lesson-slide.is-active .block:nth-child(2) { animation-delay:220ms; }
+    .lesson-slide.is-active .block:nth-child(3) { animation-delay:320ms; }
+    .lesson-slide.is-active .block:nth-child(4) { animation-delay:420ms; }
+    @keyframes blockIn { to { opacity:1; transform:none; } }
+    .number-list { display:grid; gap:11px; margin:0; padding:0; list-style:none; counter-reset:item; }
+    .number-list li { counter-increment:item; display:flex; align-items:flex-start; gap:14px; min-height:76px; padding:16px 18px; border-radius:24px; background:#f7faff; color:#34445a; font-weight:850; line-height:1.42; overflow:hidden; }
+    .number-list li:before { content:counter(item); display:grid; place-items:center; flex:0 0 46px; width:46px; height:46px; border-radius:17px; background:#fff; color:var(--blue); box-shadow:0 8px 18px rgba(24,45,90,.07); font-weight:950; line-height:1; }
+    .number-list li span { display:block; min-width:0; padding-top:2px; overflow-wrap:anywhere; }
+    .quote { position:relative; min-height:190px; padding:34px 38px 30px 132px; border-radius:30px; background:linear-gradient(135deg,#fff 0%,#f7fbff 100%); border:1px solid rgba(223,230,242,.92); color:var(--ink); box-shadow:0 18px 46px rgba(24,45,90,.09); overflow:hidden; }
+    .quote:before { content:"“"; position:absolute; left:28px; top:8px; color:rgba(10,132,255,.12); font-family:Georgia,"Times New Roman",serif; font-size:170px; line-height:.85; letter-spacing:0; }
+    .quote:after { content:""; position:absolute; right:-70px; bottom:-95px; width:230px; height:230px; border-radius:50%; background:rgba(10,132,255,.07); }
+    .quote p { position:relative; z-index:1; max-width:820px; margin:0; color:#26364f; font-family:Georgia,"Times New Roman",serif; font-size:clamp(22px,2.5vw,34px); font-weight:500; line-height:1.28; letter-spacing:0; }
+    .quote b { position:relative; z-index:1; display:inline-flex; margin-top:22px; min-height:32px; align-items:center; padding:8px 12px; border-radius:999px; background:#edf4ff; color:var(--blue); font-family:Inter,"SF Pro Display","Segoe UI",Arial,sans-serif; font-size:12px; font-weight:950; }
+    .timeline { display:grid; gap:12px; }
+    .timeline-item { display:grid; grid-template-columns:112px minmax(0,1fr); gap:16px; padding:17px; border-radius:26px; background:#f7faff; border:1px solid rgba(223,230,242,.78); }
+    .timeline-date { display:grid; place-items:center; min-height:56px; border-radius:18px; background:#fff; color:var(--blue); font-weight:950; box-shadow:0 8px 18px rgba(24,45,90,.07); }
+    .timeline-item h3 { margin:0; font-size:22px; line-height:1.08; letter-spacing:-.035em; }
+    .timeline-item p { margin:8px 0 0; color:#66758a; font-weight:680; line-height:1.5; }
+    .accordion { display:grid; gap:10px; }
+    .acc-item { border:1px solid var(--line); border-radius:24px; background:#fff; overflow:hidden; box-shadow:0 10px 24px rgba(24,45,90,.05); }
+    .acc-btn { width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:18px; border:0; background:transparent; color:var(--ink); text-align:left; font-weight:950; cursor:pointer; }
+    .acc-btn span { display:grid; place-items:center; width:28px; height:28px; border-radius:999px; background:#edf4ff; color:var(--blue); flex:0 0 auto; }
+    .acc-panel { display:grid; grid-template-rows:0fr; transition:grid-template-rows 240ms ease; }
+    .acc-panel > div { overflow:hidden; }
+    .acc-panel p { margin:0; padding:0 18px 18px; color:#66758a; font-weight:680; line-height:1.5; }
+    .acc-item.is-open .acc-panel { grid-template-rows:1fr; }
+    .acc-item.is-open .acc-btn span { background:var(--blue); color:#fff; }
+    .slide-footer { display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-top:26px; padding-top:18px; border-top:1px solid var(--line); }
+    .btn { display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:14px 18px; border-radius:17px; border:1px solid transparent; background:var(--blue); color:#fff; font-size:13px; font-weight:950; box-shadow:0 12px 28px rgba(10,132,255,.22); cursor:pointer; }
+    .btn.ghost { background:rgba(255,255,255,.82); color:var(--blue); border-color:rgba(10,132,255,.18); box-shadow:none; }
+    .final-card { max-width:880px; padding:34px; border-radius:34px; background:radial-gradient(circle at 84% 10%,rgba(35,196,131,.18),transparent 34%),linear-gradient(135deg,#fff,#edf5ff); box-shadow:var(--shadow-soft); }
+    .quiz { display:grid; gap:14px; margin-top:22px; }
+    .quiz-note { margin:0; padding:14px 16px; border-radius:20px; background:#edf4ff; color:#45607f; font-size:13px; font-weight:850; line-height:1.45; }
+    .match-grid { display:grid; gap:10px; }
+    .match-row { display:grid; grid-template-columns:minmax(170px,.85fr) minmax(220px,1fr); gap:10px; align-items:center; padding:11px; border:1px solid var(--line); border-radius:16px; background:#fff; }
+    .match-row span { color:#34445a; font-weight:850; line-height:1.35; }
+    .match-row select, .short-answer { width:100%; min-height:44px; border:1px solid var(--line); border-radius:14px; background:#fff; padding:10px 12px; color:#34445a; font:inherit; font-weight:760; outline:none; }
+    .match-row select:focus, .short-answer:focus { border-color:rgba(10,132,255,.5); box-shadow:0 0 0 4px rgba(10,132,255,.08); }
+    .question { padding:18px; border-radius:22px; background:#f7faff; border:1px solid rgba(223,230,242,.72); }
+    .question.is-correct { border-color:rgba(35,196,131,.42); background:#f2fbf7; }
+    .question.is-wrong { border-color:rgba(220,38,38,.24); background:#fff6f6; }
+    .question strong { display:block; margin-bottom:10px; }
+    .answers { display:grid; gap:8px; }
+    .answers label { display:flex; gap:9px; align-items:flex-start; padding:10px 12px; border:1px solid var(--line); border-radius:14px; background:#fff; cursor:pointer; color:#34445a; font-weight:760; line-height:1.42; }
+    .result { font-weight:950; color:#66758a; }
+    .result.good { color:var(--green); }
+    .result.bad { color:#dc2626; }
+    @media(max-width:1180px){.module-shell{grid-template-columns:1fr}.course-panel{border-right:0;border-bottom:1px solid var(--line)}.course-cover{min-height:230px}.lesson-list{grid-template-columns:repeat(5,minmax(180px,1fr)); overflow:auto}.stage{min-height:680px}}
+    @media(max-width:900px){.match-row{grid-template-columns:1fr}.shell{grid-template-columns:1fr}.sidebar{position:static;height:auto;min-height:0}.nav{grid-template-columns:repeat(6,1fr)}.nav__item{width:100%}.header{grid-template-columns:1fr}.page{padding:14px 12px 40px}.module-shell{border-radius:30px}.stage{padding:20px;min-height:660px}.lesson-title{font-size:44px}.lesson-list{grid-template-columns:1fr}.timeline-item{grid-template-columns:1fr}.number-list li{gap:12px;padding:14px;min-height:70px}.number-list li:before{flex-basis:40px;width:40px;height:40px;border-radius:15px}.quote{padding:92px 24px 24px}.quote:before{left:20px;top:10px;font-size:118px}.quote p{font-size:23px}}
+
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Поиск по модулю Royal Parket"></header>
+        <div class="topline">
+          <nav class="breadcrumb" aria-label="Хлебные крошки"><a href="../../brands.html">Бренды</a><span>/</span><span>Royal Parket</span><span>/</span><span>HTML-модуль</span></nav>
+          <a class="back-link" href="../../brands.html">Назад к брендам</a>
+        </div>
+
+        <section class="module-shell" aria-label="Учебный модуль Royal Parket">
+          <aside class="course-panel">
+            <div class="course-cover">
+              <div class="brand-hero-actions"><div class="brand-logo"><img alt="Royal Parket" src="images/brand-logos/royal-parket.png"></div><button class="brand-hero-favorite" type="button" aria-label="Добавить Royal Parket в избранное" aria-pressed="false" data-favorite-toggle data-favorite-id="brand-royal-parket" data-favorite-title="Royal Parket" data-favorite-type="Бренд" data-favorite-url="brands/touchspace_brand_pages/royal-parket.html" data-favorite-description="Брендовый модуль TouchSpace Академии: уроки, аргументы продажи и итоговая проверка.">В избранное</button></div>
+              <h1>Royal Parket — брендовый модуль</h1>
+              <p>5 уроков, интерактивные блоки и итоговая проверка.</p>
+            </div>
+            <div class="course-progress">
+              <div class="progress-row"><span data-progress-label>Урок 1 из 5</span><span data-progress-percent>20%</span></div>
+              <div class="progress-track"><span data-progress-bar></span></div>
+            </div>
+            <div class="lesson-list" data-lesson-list>
+              <button class="lesson-tab is-active" type="button" data-go="0"><span class="tab-num">1</span><span><span class="tab-title">О бренде Royal Parket</span><span class="tab-meta">позиционирование</span></span><span class="tab-check"></span></button>
+              <button class="lesson-tab" type="button" data-go="1"><span class="tab-num">2</span><span><span class="tab-title">Ассортимент</span><span class="tab-meta">категории и коллекции</span></span><span class="tab-check"></span></button>
+              <button class="lesson-tab" type="button" data-go="2"><span class="tab-num">3</span><span><span class="tab-title">Подбор продукта</span><span class="tab-meta">что проверить</span></span><span class="tab-check"></span></button>
+              <button class="lesson-tab" type="button" data-go="3"><span class="tab-num">4</span><span><span class="tab-title">Как продавать</span><span class="tab-meta">сценарии и возражения</span></span><span class="tab-check"></span></button>
+              <button class="lesson-tab" type="button" data-go="4"><span class="tab-num">✓</span><span><span class="tab-title">Итоговый тест</span><span class="tab-meta">проверка знаний</span></span><span class="tab-check"></span></button>
+            </div>
+          </aside>
+
+          <div class="stage">
+            <div class="stage-toolbar">
+              <div class="stage-count" data-stage-count>Урок 1 из 5</div>
+              <div class="stage-actions"><button class="icon-btn" type="button" data-prev aria-label="Предыдущий урок">↑</button><button class="icon-btn" type="button" data-next aria-label="Следующий урок">↓</button></div>
+            </div>
+
+            <article class="lesson-slide is-active" data-slide>
+              <span class="lesson-kicker">Урок 1</span>
+              <h2 class="lesson-title">О бренде Royal Parket</h2>
+              <p class="lesson-lead">Бренд деревянных покрытий с акцентом на инженерную доску, елку и паркетную доску для проектных интерьеров.</p>
+              <div class="blocks">
+                <ol class="number-list block"><li><span>В каталоге TouchSpace: 3 категории, 4 коллекции, 53 позиции.</span></li><li><span>Главная задача реселлера: переводить ассортимент Royal Parket в понятные клиенту интерьерные сценарии.</span></li><li><span>Обещания по продукту должны опираться на конкретный артикул, а не на бренд в целом.</span></li></ol>
+                <div class="quote block"><p>Royal Parket нужно продавать не как случайную карточку в каталоге, а как осознанный выбор под задачу клиента: помещение, нагрузку, внешний вид и монтаж.</p><b>Главная мысль</b></div>
+                <div class="timeline block"><article class="timeline-item"><div class="timeline-date">01</div><div><h3>Понять запрос</h3><p>Выяснить помещение, нагрузку, бюджет, ожидания по внешнему виду и ограничения по монтажу для Royal Parket.</p></div></article><article class="timeline-item"><div class="timeline-date">02</div><div><h3>Сверить категорию</h3><p>Не смешивать категории: Инженерная доска, Паркет елка, Паркетная доска. У каждой категории свои правила подбора и эксплуатации.</p></div></article><article class="timeline-item"><div class="timeline-date">03</div><div><h3>Выбрать коллекцию</h3><p>Использовать коллекции как язык интерьерного сценария: Angle, Authentica, Click 130, Click 150.</p></div></article><article class="timeline-item"><div class="timeline-date">04</div><div><h3>Проверить артикул</h3><p>Финальное обещание клиенту должно опираться на карточку конкретного товара, инструкцию и условия монтажа.</p></div></article></div>
+              </div>
+              <div class="slide-footer"><span></span><button class="btn" type="button" data-next>Перейти к ассортименту</button></div>
+            </article>
+
+            <article class="lesson-slide" data-slide>
+              <span class="lesson-kicker">Урок 2</span>
+              <h2 class="lesson-title">Ассортимент Royal Parket</h2>
+              <p class="lesson-lead">Этот блок помогает быстро понять, какие категории и коллекции есть в каталоге, и не смешивать разные продуктовые логики.</p>
+              <div class="blocks">
+                <div class="accordion block"><article class="acc-item is-open"><button class="acc-btn" type="button">Инженерная доска <span>-</span></button><div class="acc-panel"><div><p>Проверяйте конструкцию, толщину ценного слоя, тип основания, способ монтажа, геометрию помещения и требования к микроклимату. В этой категории: 1 коллекция и 19 позиций. Коллекции: Authentica.</p></div></div></article><article class="acc-item"><button class="acc-btn" type="button">Паркет елка <span>+</span></button><div class="acc-panel"><div><p>Уточняйте формат елки, направление укладки, запас на подрезку, подготовку основания и ожидания клиента по рисунку пола. В этой категории: 1 коллекция и 19 позиций. Коллекции: Angle.</p></div></div></article><article class="acc-item"><button class="acc-btn" type="button">Паркетная доска <span>+</span></button><div class="acc-panel"><div><p>Уточняйте породу, селекцию, покрытие, формат планки, совместимость с теплым полом, влажность помещения и требования к уходу. В этой категории: 2 коллекции и 15 позиций. Коллекции: Click 130, Click 150.</p></div></div></article></div>
+                <ol class="number-list block"><li><span>Всего в матрице: 53 позиции.</span></li><li><span>Категории: Инженерная доска, Паркет елка, Паркетная доска.</span></li><li><span>Коллекции стоит использовать как подсказку по визуальному сценарию: Angle, Authentica, Click 130, Click 150.</span></li></ol>
+                <div class="quote block"><p>Сначала категория и сценарий помещения, затем коллекция и конкретный артикул. Такой порядок снижает риск неправильной рекомендации.</p><b>Правило подбора</b></div>
+              </div>
+              <div class="slide-footer"><button class="btn ghost" type="button" data-prev>Назад</button><button class="btn" type="button" data-next>Перейти к подбору продукта</button></div>
+            </article>
+
+            <article class="lesson-slide" data-slide>
+              <span class="lesson-kicker">Урок 3</span>
+              <h2 class="lesson-title">Подбор продукта</h2>
+              <p class="lesson-lead">Чтобы рекомендация была профессиональной, нужно проверить условия эксплуатации, монтаж и технические ограничения до финального предложения.</p>
+              <div class="blocks">
+                <ol class="number-list block"><li><span>тип помещения, влажность и ежедневная нагрузка</span></li><li><span>ровность, прочность и подготовка основания</span></li><li><span>формат покрытия, толщина, конструкция и способ монтажа</span></li><li><span>совместимость с теплым полом и требования к подложке</span></li><li><span>запас на подрезку, сроки поставки и комплектующие</span></li><li><span>ограничения конкретной коллекции и артикула</span></li></ol>
+                <div class="quote block"><p>Сильная консультация строится не на красивом названии коллекции, а на связке: задача клиента, материал, монтаж, ограничения и ожидаемый результат.</p><b>Главный вывод</b></div>
+                <div class="accordion block"><article class="acc-item is-open"><button class="acc-btn" type="button">Инженерная доска <span>-</span></button><div class="acc-panel"><div><p>Проверяйте конструкцию, толщину ценного слоя, тип основания, способ монтажа, геометрию помещения и требования к микроклимату.</p></div></div></article><article class="acc-item"><button class="acc-btn" type="button">Паркет елка <span>+</span></button><div class="acc-panel"><div><p>Уточняйте формат елки, направление укладки, запас на подрезку, подготовку основания и ожидания клиента по рисунку пола.</p></div></div></article><article class="acc-item"><button class="acc-btn" type="button">Паркетная доска <span>+</span></button><div class="acc-panel"><div><p>Уточняйте породу, селекцию, покрытие, формат планки, совместимость с теплым полом, влажность помещения и требования к уходу.</p></div></div></article></div>
+              </div>
+              <div class="slide-footer"><button class="btn ghost" type="button" data-prev>Назад</button><button class="btn" type="button" data-next>Перейти к продаже</button></div>
+            </article>
+
+            <article class="lesson-slide" data-slide>
+              <span class="lesson-kicker">Урок 4</span>
+              <h2 class="lesson-title">Как продавать Royal Parket</h2>
+              <p class="lesson-lead">Продажа должна звучать спокойно: выясняем сценарий, переводим свойства в пользу и закрываем возражения без давления.</p>
+              <div class="blocks">
+                <div class="accordion block"><article class="acc-item is-open"><button class="acc-btn" type="button">Прагматик <span>-</span></button><div class="acc-panel"><div><p>Покажите долговечность, предсказуемость монтажа, срок службы и снижение риска переделок.</p></div></div></article><article class="acc-item"><button class="acc-btn" type="button">Эстет <span>+</span></button><div class="acc-panel"><div><p>Свяжите коллекцию с интерьерной задачей: цвет, фактура, формат, масштаб рисунка и ощущение материала.</p></div></div></article><article class="acc-item"><button class="acc-btn" type="button">Семейный сценарий <span>+</span></button><div class="acc-panel"><div><p>Говорите про ежедневную нагрузку, уборку, гостей, детей, домашних животных и спокойствие после покупки.</p></div></div></article><article class="acc-item"><button class="acc-btn" type="button">Проектный покупатель <span>+</span></button><div class="acc-panel"><div><p>Подчеркните совместимость, сроки, стабильность поставки, количество позиций и контроль технических параметров.</p></div></div></article></div>
+                <ol class="number-list block"><li><span>Спросите, где будет использоваться Royal Parket и какая там нагрузка.</span></li><li><span>Уточните основание, монтаж, высоту покрытия и требования к уходу.</span></li><li><span>Покажите 2-3 коллекции, объясняя не только декор, но и применимость.</span></li><li><span>Финально сверяйте артикул, комплектующие, запас и инструкцию.</span></li></ol>
+                <div class="accordion block"><article class="acc-item is-open"><button class="acc-btn" type="button">Почему нельзя выбрать только по цвету? <span>-</span></button><div class="acc-panel"><div><p>Потому что одинаковый визуальный эффект может иметь разные материалы, монтаж, толщину, ограничения и требования к основанию.</p></div></div></article><article class="acc-item"><button class="acc-btn" type="button">Раз бренд подходит, можно брать любую коллекцию? <span>+</span></button><div class="acc-panel"><div><p>Нет. У Royal Parket нужно проверять конкретную категорию, коллекцию и артикул: именно они определяют свойства продукта.</p></div></div></article><article class="acc-item"><button class="acc-btn" type="button">Можно обещать универсальную влагостойкость? <span>+</span></button><div class="acc-panel"><div><p>Только если это подтверждено карточкой конкретного товара и инструкцией. Нельзя переносить свойства одной коллекции на весь бренд.</p></div></div></article><article class="acc-item"><button class="acc-btn" type="button">Как объяснить цену? <span>+</span></button><div class="acc-panel"><div><p>Связывайте цену с задачей клиента: срок службы, стабильность результата, внешний вид, монтаж, гарантийные условия и отсутствие лишних рисков.</p></div></div></article></div>
+                <div class="quote block"><p>Royal Parket легче продавать, когда реселлер говорит не только о красоте, но и о последствиях выбора: спокойствие, срок службы, монтаж и совместимость.</p><b>Формула продажи</b></div>
+              </div>
+              <div class="slide-footer"><button class="btn ghost" type="button" data-prev>Назад</button><button class="btn" type="button" data-next>Перейти к итоговому тесту</button></div>
+            </article>
+
+            <article class="lesson-slide" data-slide>
+              <span class="lesson-kicker">Финиш</span>
+              <div class="final-card block">
+                <h2 class="lesson-title">Итоговый тест Royal Parket</h2>
+                <p class="lesson-lead">Проверьте, насколько уверенно вы различаете категорию, коллекцию, сценарий клиента и правила корректной рекомендации.</p>
+                
+                <div class="quiz" data-rich-quiz>
+  <p class="quiz-note">Тест собран из модулей библиотеки: один ответ, несколько ответов, соответствие, верно/неверно и короткий ответ.</p>
+  <div class="question" data-type="single" data-correct="1"><strong>1. С чего лучше начинать консультацию по Royal Parket?</strong><div class="answers"><label><input type="radio" name="q1" value="0"><span>С самой дорогой коллекции или максимальной скидки</span></label><label><input type="radio" name="q1" value="1"><span>С помещения, сценария эксплуатации, ожиданий клиента и ограничений объекта</span></label><label><input type="radio" name="q1" value="2"><span>С обещания одинаковых свойств всему бренду</span></label></div></div>
+  <div class="question" data-type="multiple" data-correct="0,1,2,4"><strong>2. Что нужно проверить до финальной рекомендации?</strong><div class="answers"><label><input type="checkbox" name="q2" value="0"><span>Категорию и конкретную коллекцию: Инженерная доска, Паркет елка, Паркетная доска</span></label><label><input type="checkbox" name="q2" value="1"><span>Артикул, конструкцию, монтаж и ограничения производителя</span></label><label><input type="checkbox" name="q2" value="2"><span>Помещение, нагрузку, влажность, основание и совместимость с теплым полом</span></label><label><input type="checkbox" name="q2" value="3"><span>Только цвет на экране и наличие скидки</span></label><label><input type="checkbox" name="q2" value="4"><span>Ожидания клиента по уходу, срокам и внешнему виду</span></label></div></div>
+  <div class="question" data-type="matching"><strong>3. Соотнесите запрос клиента и правильный акцент консультации.</strong><div class="match-grid"><div class="match-row"><span>Нужен спокойный интерьер</span><select data-match data-correct="design"><option value="">Выберите ответ</option><option value="discount">Начать с максимальной скидки</option><option value="design">Показать визуальный сценарий, оттенок, фактуру и коллекции: Angle, Authentica, Click 130, Click 150</option><option value="tech">Проверить только толщину упаковки</option></select></div><div class="match-row"><span>Есть сомнения по эксплуатации</span><select data-match data-correct="usage"><option value="">Выберите ответ</option><option value="usage">Обсудить нагрузку, уход, условия помещения и ограничения артикула</option><option value="design">Показать только красивую фотографию</option><option value="discount">Сказать, что бренд подходит всегда</option></select></div><div class="match-row"><span>Клиент сравнивает цену</span><select data-match data-correct="value"><option value="">Выберите ответ</option><option value="value">Вернуть разговор к ценности решения, сроку службы, монтажу и рискам</option><option value="discount">Сразу обещать любую скидку</option><option value="design">Не обсуждать характеристики</option></select></div></div></div>
+  <div class="question" data-type="true_false" data-correct="0"><strong>4. Верно ли, что свойства одной коллекции Royal Parket можно автоматически переносить на весь бренд?</strong><div class="answers"><label><input type="radio" name="q4" value="1"><span>Верно</span></label><label><input type="radio" name="q4" value="0"><span>Неверно</span></label></div></div>
+  <div class="question" data-type="single" data-correct="2"><strong>5. Как корректно работать с категорией «Инженерная доска»?</strong><div class="answers"><label><input type="radio" name="q5" value="0"><span>Выбирать только по названию бренда</span></label><label><input type="radio" name="q5" value="1"><span>Показывать все позиции подряд без фильтрации</span></label><label><input type="radio" name="q5" value="2"><span>Сначала сверить сценарий клиента, затем коллекцию, артикул, монтаж и ограничения</span></label></div></div>
+  <div class="question" data-type="short" data-accepted="диагностика|диагностика потребности|бриф|проверка условий|техническая диагностика"><strong>6. Как одним термином назвать уточнение условий помещения, ожиданий клиента и ограничений до рекомендации продукта?</strong><input class="short-answer" type="text" placeholder="Введите короткий ответ"></div>
+  <div class="question" data-type="matching"><strong>7. Соотнесите продуктовую логику и действие реселлера.</strong><div class="match-grid"><div class="match-row"><span>Инженерная доска</span><select data-match data-correct="article"><option value="">Выберите ответ</option><option value="article">Проверить артикул, монтаж, основание и ограничения</option><option value="random">Выбрать случайную позицию по цвету</option><option value="promise">Пообещать универсальное применение</option></select></div><div class="match-row"><span>Паркет елка</span><select data-match data-correct="scenario"><option value="">Выберите ответ</option><option value="scenario">Объяснить сценарий использования и отличия от других категорий</option><option value="promise">Не уточнять условия объекта</option><option value="random">Опираться только на картинку</option></select></div><div class="match-row"><span>Паркетная доска</span><select data-match data-correct="finish"><option value="">Выберите ответ</option><option value="finish">Финально сверить комплектующие, запас и инструкцию</option><option value="random">Сразу закрыть продажу без проверки</option><option value="promise">Перенести свойства с другой коллекции</option></select></div></div></div>
+  <div class="slide-footer"><button class="btn ghost" type="button" data-prev>Назад</button><button class="btn" type="button" data-check>Проверить ответы</button><span class="result" data-result></span></div>
+</div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="../../shared-header.js"></script>
+
+  <script>
+    (function () {
+      var slides = Array.prototype.slice.call(document.querySelectorAll('[data-slide]'));
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-go]'));
+      var progressBar = document.querySelector('[data-progress-bar]');
+      var progressLabel = document.querySelector('[data-progress-label]');
+      var progressPercent = document.querySelector('[data-progress-percent]');
+      var stageCount = document.querySelector('[data-stage-count]');
+      var current = 0;
+
+      function go(index) {
+        if (index < 0 || index >= slides.length || index === current) return;
+        if (slides[current] && slides[current].querySelector('[data-rich-quiz]')) resetQuiz();
+        var old = current;
+        current = index;
+        slides[old].classList.remove('is-active');
+        slides[old].classList.add(index > old ? 'is-leaving-up' : 'is-leaving-down');
+        setTimeout(function () {
+          slides[old].classList.remove('is-leaving-up', 'is-leaving-down');
+        }, 380);
+        slides[current].classList.add('is-active');
+        update();
+      }
+
+function resetQuiz() {
+  var quiz = document.querySelector('[data-rich-quiz]');
+  if (!quiz) return;
+  quiz.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(function (input) {
+    input.checked = false;
+  });
+  quiz.querySelectorAll('select').forEach(function (select) {
+    select.value = '';
+  });
+  quiz.querySelectorAll('.short-answer').forEach(function (input) {
+    input.value = '';
+  });
+  quiz.querySelectorAll('.question').forEach(function (question) {
+    question.classList.remove('is-correct', 'is-wrong');
+  });
+  var out = quiz.querySelector('[data-result]');
+  if (out) {
+    out.className = 'result';
+    out.textContent = '';
+  }
+}
+
+      function update() {
+        var percent = Math.round((current + 1) / slides.length * 100);
+        if (progressBar) progressBar.style.width = percent + '%';
+        if (progressLabel) progressLabel.textContent = 'Урок ' + (current + 1) + ' из ' + slides.length;
+        if (progressPercent) progressPercent.textContent = percent + '%';
+        if (stageCount) stageCount.textContent = 'Урок ' + (current + 1) + ' из ' + slides.length;
+        tabs.forEach(function (tab, index) {
+          tab.classList.toggle('is-active', index === current);
+          tab.classList.toggle('is-done', index < current);
+          var check = tab.querySelector('.tab-check');
+          if (check) check.textContent = index < current ? '✓' : '';
+        });
+        document.querySelectorAll('[data-prev]').forEach(function (button) { button.disabled = current === 0; });
+        document.querySelectorAll('[data-next]').forEach(function (button) { button.disabled = current === slides.length - 1; });
+      }
+
+      document.addEventListener('click', function (event) {
+        var next = event.target.closest('[data-next]');
+        var prev = event.target.closest('[data-prev]');
+        var tab = event.target.closest('[data-go]');
+        var acc = event.target.closest('.acc-btn');
+        var check = event.target.closest('[data-check]');
+        if (next) go(current + 1);
+        if (prev) go(current - 1);
+        if (tab) go(Number(tab.getAttribute('data-go')));
+        if (acc) {
+          var item = acc.closest('.acc-item');
+          var group = acc.closest('.accordion');
+          Array.prototype.slice.call(group.querySelectorAll('.acc-item')).forEach(function (node) {
+            if (node !== item) {
+              node.classList.remove('is-open');
+              var marker = node.querySelector('.acc-btn span');
+              if (marker) marker.textContent = '+';
+            }
+          });
+          item.classList.toggle('is-open');
+          var span = acc.querySelector('span');
+          if (span) span.textContent = item.classList.contains('is-open') ? '-' : '+';
+        }
+        if (check) {
+          var questions = Array.prototype.slice.call(document.querySelectorAll('.question'));
+          var score = 0;
+          var answered = 0;
+          function sortedValues(nodes) {
+            return Array.prototype.slice.call(nodes).map(function (node) { return node.value; }).sort().join(',');
+          }
+          function normalize(value) {
+            return String(value || '').trim().toLowerCase().replace(/ё/g, 'е').replace(/ +/g, ' ');
+          }
+          questions.forEach(function (q) {
+            var type = q.dataset.type || 'single';
+            var isAnswered = false;
+            var isCorrect = false;
+            if (type === 'multiple') {
+              var checked = q.querySelectorAll('input:checked');
+              isAnswered = checked.length > 0;
+              isCorrect = sortedValues(checked) === String(q.dataset.correct || '').split(',').sort().join(',');
+            } else if (type === 'matching') {
+              var selects = Array.prototype.slice.call(q.querySelectorAll('[data-match]'));
+              isAnswered = selects.every(function (select) { return select.value; });
+              isCorrect = isAnswered && selects.every(function (select) { return select.value === select.dataset.correct; });
+            } else if (type === 'short') {
+              var input = q.querySelector('.short-answer');
+              var value = normalize(input ? input.value : '');
+              var accepted = String(q.dataset.accepted || '').split('|').map(normalize);
+              isAnswered = Boolean(value);
+              isCorrect = accepted.indexOf(value) !== -1;
+            } else {
+              var chosen = q.querySelector('input:checked');
+              isAnswered = Boolean(chosen);
+              isCorrect = isAnswered && Number(chosen.value) === Number(q.dataset.correct);
+            }
+            if (isAnswered) answered += 1;
+            if (isCorrect) score += 1;
+            q.classList.toggle('is-correct', isAnswered && isCorrect);
+            q.classList.toggle('is-wrong', isAnswered && !isCorrect);
+          });
+          var out = document.querySelector('[data-result]');
+          if (!out) return;
+          out.className = 'result ' + (score >= Math.ceil(questions.length * 0.7) && answered === questions.length ? 'good' : 'bad');
+          out.textContent = answered < questions.length ? 'Ответьте на все вопросы' : ('Результат: ' + score + ' из ' + questions.length + '. Проходной порог: ' + Math.ceil(questions.length * 0.7));
+        }
+      });
+
+      window.addEventListener('pagehide', resetQuiz);
+      window.addEventListener('pageshow', function (event) { if (event.persisted) resetQuiz(); });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'ArrowDown' || event.key === 'PageDown') go(current + 1);
+        if (event.key === 'ArrowUp' || event.key === 'PageUp') go(current - 1);
+      });
+
+      update();
+    })();
+  </script>
+  <script src="../../lesson-scheduler.js"></script>
+</body>
+</html>

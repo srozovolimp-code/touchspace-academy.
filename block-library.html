@@ -1,0 +1,1352 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TouchSpace Академия - единая библиотека блоков</title>
+  <style>
+    :root {
+      --bg: #eef4ff;
+      --surface: rgba(255,255,255,.86);
+      --surface-strong: #fff;
+      --ink: #172033;
+      --muted: #69768f;
+      --line: rgba(23,32,51,.09);
+      --blue: #0a84ff;
+      --blue-2: #5f93ff;
+      --green: #24b47e;
+      --orange: #ff9f1c;
+      --red: #e5484d;
+      --violet: #7c5cff;
+      --blue-soft: #e7f1ff;
+      --green-soft: #eaf8f2;
+      --orange-soft: #fff6e8;
+      --red-soft: #fff0f0;
+      --violet-soft: #f0edff;
+      --radius-sm: 16px;
+      --radius-md: 24px;
+      --radius-lg: 32px;
+      --radius-xl: 40px;
+      --shadow: 0 24px 70px rgba(36,72,130,.13);
+      --shadow-soft: 0 16px 44px rgba(36,72,130,.09);
+      --max: 1500px;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 3% 0, rgba(10,132,255,.15), transparent 32%),
+        radial-gradient(circle at 96% 4%, rgba(124,92,255,.13), transparent 28%),
+        linear-gradient(180deg, #f8fbff 0, var(--bg) 52%, #f6f8fd 100%);
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+
+    .page { max-width: var(--max); margin: 0 auto; padding: 24px; }
+    .shell { display: grid; grid-template-columns: 78px minmax(0,1fr); gap: 24px; align-items: start; }
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      height: calc(100vh - 36px);
+      border-radius: 34px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 10px;
+      z-index: 10;
+    }
+    .logo {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--blue), var(--blue-2));
+      color: #fff;
+      font-weight: 950;
+      box-shadow: 0 16px 32px rgba(10,132,255,.26);
+    }
+    .side-nav { display: grid; gap: 9px; width: 100%; }
+    .side-link {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      margin: 0 auto;
+      border-radius: 18px;
+      color: var(--muted);
+      font-weight: 950;
+      transition: .18s;
+    }
+    .side-link:hover, .side-link.active { color: var(--blue); background: var(--blue-soft); }
+    .side-link span {
+      position: absolute;
+      left: 58px;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 7px 9px;
+      border-radius: 10px;
+      background: #182033;
+      color: #fff;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: .18s;
+    }
+    .side-link:hover span { opacity: 1; }
+
+    .main { min-width: 0; }
+    .topbar {
+      position: sticky;
+      top: 18px;
+      z-index: 8;
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 24px;
+      padding: 14px;
+      border-radius: 28px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+    }
+    .search {
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 18px;
+      background: #f3f7ff;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-weight: 760;
+    }
+    .actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+    .btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      min-height: 42px;
+      padding: 10px 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #fff;
+      color: #42516a;
+      font-weight: 850;
+      cursor: pointer;
+    }
+    .btn.primary { background: var(--blue); color: #fff; border-color: var(--blue); box-shadow: 0 12px 28px rgba(10,132,255,.22); }
+    .btn.ghost { background: rgba(255,255,255,.72); }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 16px; font-size: clamp(36px,5.2vw,72px); line-height: .92; letter-spacing: -.06em; }
+    h2 { margin-bottom: 12px; font-size: clamp(27px,3.1vw,42px); line-height: 1; letter-spacing: -.045em; }
+    h3 { margin-bottom: 8px; font-size: 21px; line-height: 1.12; letter-spacing: -.028em; }
+    .eyebrow { margin: 0 0 12px; color: var(--blue); text-transform: uppercase; letter-spacing: .11em; font-size: 12px; font-weight: 950; }
+    .lead { color: var(--muted); font-size: 18px; line-height: 1.55; max-width: 800px; }
+    .muted { color: var(--muted); line-height: 1.52; }
+
+    .tag, .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.76);
+      color: #44506a;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+    .tag.blue { background: var(--blue-soft); color: #176ac7; border-color: rgba(10,132,255,.16); }
+    .tag.green { background: var(--green-soft); color: #137b56; border-color: rgba(36,180,126,.2); }
+    .tag.orange { background: var(--orange-soft); color: #a86100; border-color: rgba(255,159,28,.23); }
+    .tag.red { background: var(--red-soft); color: #b92d35; border-color: rgba(229,72,77,.2); }
+    .tag.violet { background: var(--violet-soft); color: #5c46c7; border-color: rgba(124,92,255,.22); }
+    .code-name {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: #f2f6ff;
+      border: 1px solid var(--line);
+      color: #47566f;
+      font-size: 12px;
+      font-weight: 900;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .hero {
+      margin-bottom: 24px;
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.94), rgba(255,255,255,.68)),
+        radial-gradient(circle at 78% 18%, rgba(10,132,255,.16), transparent 34%);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 34px;
+      display: grid;
+      grid-template-columns: minmax(0,1.38fr) minmax(280px,.62fr);
+      gap: 24px;
+      overflow: hidden;
+    }
+    .hero-card {
+      min-height: 260px;
+      border-radius: 34px;
+      background: radial-gradient(circle at 24% 14%, rgba(255,255,255,.95), transparent 28%), linear-gradient(135deg, rgba(10,132,255,.16), rgba(124,92,255,.10));
+      border: 1px solid rgba(10,132,255,.16);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .layout { display: grid; grid-template-columns: 270px minmax(0,1fr); gap: 24px; align-items: start; }
+    .library-nav {
+      position: sticky;
+      top: 112px;
+      max-height: calc(100vh - 132px);
+      overflow: auto;
+      border-radius: 30px;
+      background: rgba(255,255,255,.76);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+      padding: 18px;
+    }
+    .library-nav a {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 15px;
+      color: #52617a;
+      font-size: 14px;
+      font-weight: 790;
+      margin-bottom: 5px;
+    }
+    .library-nav a:hover { color: var(--blue); background: var(--blue-soft); }
+    .section { margin-bottom: 30px; scroll-margin-top: 112px; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin: 0 0 14px; }
+    .section-head p { margin: 0; max-width: 760px; color: var(--muted); line-height: 1.5; }
+
+    .block-card {
+      margin-bottom: 18px;
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+    .block-meta {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .block-name { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .block-desc { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .preview {
+      border-radius: 26px;
+      background: #f6f9ff;
+      border: 1px solid var(--line);
+      padding: 18px;
+      overflow: hidden;
+    }
+
+    .grid-2, .grid-3, .grid-4, .metric-grid { display: grid; gap: 14px; }
+    .grid-2 { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .grid-3, .metric-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+    .grid-4 { grid-template-columns: repeat(4,minmax(0,1fr)); }
+    .mini-card, .metric, .panel, .course-card, .task-card, .student-card, .brand-card {
+      display: block;
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,.86);
+      border: 1px solid var(--line);
+      padding: 16px;
+      box-shadow: 0 14px 34px rgba(36,72,130,.06);
+    }
+    .mini-card p, .course-card p, .task-card p, .student-card p, .brand-card p { margin-bottom: 0; color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .metric strong { display: block; font-size: 28px; letter-spacing: -.04em; }
+    .metric span { color: var(--muted); font-size: 14px; }
+
+    .academy-shell-preview { display: grid; grid-template-columns: 70px minmax(0,1fr); gap: 14px; }
+    .academy-nav-preview { min-height: 230px; display: grid; place-items: center; color: var(--blue); font-weight: 950; }
+    .header-preview { display: grid; grid-template-columns: 190px minmax(0,1fr) auto; gap: 12px; align-items: center; }
+    .wordmark-preview { font-size: 25px; font-weight: 950; line-height: .88; letter-spacing: -.05em; }
+    .notification-preview, .avatar-preview {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+      font-weight: 950;
+      color: var(--blue);
+    }
+
+    .brand-hero-template {
+      display: grid;
+      grid-template-columns: minmax(0,1.08fr) minmax(280px,.92fr);
+      gap: 18px;
+      border-radius: 30px;
+      background: #fff;
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+    .brand-hero-copy { padding: 28px; }
+    .brand-hero-title { margin: 16px 0 12px; font-size: clamp(30px,4.5vw,56px); line-height: .96; letter-spacing: -.055em; font-weight: 950; }
+    .brand-hero-media {
+      min-height: 270px;
+      margin: 28px;
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(17,24,39,.02), rgba(17,24,39,.32)),
+        linear-gradient(135deg, #e9f3ff, #fff);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: #36506f;
+      font-weight: 950;
+      padding: 20px;
+    }
+    .brand-photo-hero {
+      position: relative;
+      min-height: 390px;
+      display: grid;
+      align-items: end;
+      padding: 28px;
+      border-radius: 30px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(17,24,39,.04), rgba(17,24,39,.62)),
+        linear-gradient(135deg, #dcecff, #ffffff);
+    }
+    .brand-photo-hero__copy {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      color: #fff;
+    }
+    .brand-photo-hero__copy .muted { color: rgba(255,255,255,.82); }
+    .brand-photo-hero__copy .brand-pill { background: rgba(255,255,255,.88); }
+    .brand-pills { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 16px 0 0; list-style: none; }
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 9px 12px;
+      border-radius: 15px;
+      background: rgba(255,255,255,.76);
+      border: 1px solid rgba(10,132,255,.16);
+      color: #243246;
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .brand-pill i { width: 4px; align-self: stretch; border-radius: 999px; background: linear-gradient(180deg, var(--blue), var(--green)); }
+
+    .structure-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; }
+    .number-badge {
+      width: fit-content;
+      min-width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      padding: 0 10px;
+      margin-bottom: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(10,132,255,.2);
+      background: linear-gradient(180deg, #fff 0%, var(--blue-soft) 100%);
+      color: var(--blue);
+      font-weight: 950;
+    }
+    .timeline { display: grid; gap: 12px; }
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 96px minmax(0,1fr);
+      gap: 14px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255,255,255,.78);
+    }
+    .year { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; border-radius: 15px; background: var(--blue-soft); color: var(--blue); font-weight: 950; }
+    .media-scene { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .media-box {
+      min-height: 220px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #edf5ff, #fff);
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      color: #36506f;
+      font-weight: 950;
+      text-align: center;
+      padding: 16px;
+    }
+
+    .tech-map { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
+    .tech-matrix { display: grid; gap: 12px; }
+    .tech-row { display: grid; grid-template-columns: 1fr 1fr 1.35fr; gap: 12px; padding: 14px; border-radius: 22px; background: #f7faff; border: 1px solid var(--line); }
+    .tech-cell { padding: 14px; border-radius: 18px; background: #fff; border: 1px solid var(--line); }
+    .tech-cell small { display: block; margin-bottom: 7px; color: var(--muted); font-size: 11px; font-weight: 950; text-transform: uppercase; letter-spacing: .04em; }
+    .tech-cell b { display: block; color: var(--ink); line-height: 1.25; }
+    .tech-cell p { margin: 0; color: var(--muted); font-size: 13px; font-weight: 700; line-height: 1.45; }
+
+    .sales-table { display: grid; gap: 10px; }
+    .sales-row { display: grid; grid-template-columns: .9fr 1.1fr; gap: 10px; }
+    .sales-cell, .mistake-cell {
+      padding: 14px;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: #29364d;
+      line-height: 1.42;
+    }
+    .sales-cell.good, .mistake-cell.good { background: var(--green-soft); border-color: rgba(36,180,126,.25); }
+    .mistake-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .mistake-cell.bad { background: var(--red-soft); border-color: rgba(229,72,77,.2); }
+    .step-list { display: grid; gap: 10px; }
+    .step-item { position: relative; padding-left: 18px; border-left: 3px solid rgba(10,132,255,.16); }
+    .quote-band {
+      padding: 22px;
+      border-radius: 24px;
+      background: #f7faff;
+      border: 1px solid var(--line);
+    }
+    .quote-band strong { display: block; font-size: clamp(22px,2.8vw,36px); line-height: 1.08; letter-spacing: -.04em; }
+
+    .question-card { background: rgba(255,255,255,.86); border: 1px solid var(--line); border-radius: 28px; padding: 22px; }
+    .answers { display: grid; gap: 10px; margin-top: 16px; }
+    .answer-option {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-height: 48px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 12px 14px;
+      font-weight: 780;
+    }
+    .answer-option.correct { background: var(--green-soft); border-color: rgba(36,180,126,.48); }
+    .answer-option.wrong { background: var(--red-soft); border-color: rgba(229,72,77,.48); }
+    .answer-dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #b8c1d2; flex: 0 0 auto; }
+    .matching { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+    .match-list { display: grid; gap: 10px; }
+    .match-card {
+      min-height: 76px;
+      border-radius: 18px;
+      padding: 13px 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      line-height: 1.32;
+      font-weight: 760;
+    }
+    .match-card.fixed { background: #f7f9fe; color: #33415c; }
+
+    .course-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+    .course-art {
+      min-height: 120px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #dcecff, #fff);
+      display: grid;
+      place-items: center;
+      color: var(--blue);
+      font-weight: 950;
+    }
+    .progress { height: 9px; border-radius: 999px; background: #e8eef8; overflow: hidden; }
+    .progress i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--blue), var(--blue-2)); }
+    .path-row { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; }
+    .path-card { min-height: 170px; border-radius: 28px; padding: 18px; background: #fff; border: 1px solid var(--line); display: flex; flex-direction: column; justify-content: space-between; }
+
+    .task-layout-preview { display: grid; grid-template-columns: 1.1fr .9fr; gap: 14px; }
+    .calendar-strip { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 8px; }
+    .day {
+      min-height: 86px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 10px;
+      text-align: left;
+      color: var(--ink);
+      font-weight: 850;
+    }
+    .day.is-today { border-color: rgba(10,132,255,.32); background: var(--blue-soft); }
+    .task-columns { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
+    .task-column { display: grid; gap: 10px; }
+    .task-column-title { color: var(--muted); font-size: 12px; font-weight: 950; text-transform: uppercase; letter-spacing: .06em; }
+    .task-card { min-height: 132px; }
+
+    .admin-layout { display: grid; grid-template-columns: 220px minmax(0,1fr) 260px; gap: 14px; }
+    .admin-panel { min-height: 300px; border-radius: 24px; border: 1px solid var(--line); background: rgba(255,255,255,.82); padding: 14px; }
+    .module-button { width: 100%; text-align: left; border: 1px solid var(--line); background: #fff; border-radius: 16px; padding: 12px; margin-bottom: 8px; color: #33415c; font-weight: 850; }
+    .builder-item { border-radius: 20px; border: 1px solid rgba(10,132,255,.25); background: #f7fbff; padding: 14px; margin-bottom: 10px; }
+    .field { display: grid; gap: 6px; margin-bottom: 10px; }
+    .field label { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 950; }
+    .input { width: 100%; border-radius: 14px; border: 1px solid var(--line); padding: 10px 12px; background: #fff; color: var(--ink); outline: none; }
+
+    .student-hero { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(280px,.8fr); gap: 18px; }
+    .student-name { display: flex; align-items: center; gap: 12px; }
+    .student-avatar { width: 48px; height: 48px; border-radius: 17px; display: grid; place-items: center; background: linear-gradient(135deg, var(--blue), #8ee2ff); color: #fff; font-weight: 950; }
+    .test-card { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 14px; align-items: center; padding: 16px; border-radius: 22px; background: #fff; border: 1px solid var(--line); }
+    .score { display: grid; place-items: center; min-width: 66px; height: 54px; border-radius: 18px; font-weight: 950; }
+    .score.pass { background: var(--green-soft); color: #137b56; }
+    .score.fail { background: var(--red-soft); color: #b92d35; }
+    .achievement-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
+    .achievement { border-radius: 22px; background: #fff; border: 1px solid var(--line); padding: 16px; min-height: 145px; }
+    .achievement.locked { opacity: .55; filter: grayscale(.7); }
+    .badge-icon { width: 46px; height: 46px; border-radius: 18px; display: grid; place-items: center; background: var(--blue-soft); color: var(--blue); font-size: 22px; margin-bottom: 12px; }
+    .certificate { border-radius: 26px; padding: 24px; background: linear-gradient(135deg, rgba(255,255,255,.94), rgba(255,255,255,.72)), radial-gradient(circle at 88% 10%, rgba(255,159,28,.22), transparent 30%); border: 1px solid rgba(255,159,28,.28); }
+
+    .code-panel {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 20px;
+      background: #141b2d;
+      color: #eaf1ff;
+      overflow: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-panel.open { display: block; }
+    .footer { color: var(--muted); padding: 24px 0 0; text-align: center; font-size: 13px; }
+
+    @media (max-width: 1120px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .layout { grid-template-columns: 1fr; }
+      .library-nav { position: relative; top: auto; max-height: none; }
+      .hero, .brand-hero-template, .student-hero, .task-layout-preview, .admin-layout { grid-template-columns: 1fr; }
+      .grid-4, .structure-grid, .tech-map, .achievement-grid, .path-row { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .course-grid, .task-columns { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width: 760px) {
+      .page { width: min(100% - 20px, var(--max)); padding-top: 10px; }
+      .topbar { position: relative; top: auto; grid-template-columns: 1fr; }
+      .hero { padding: 22px; border-radius: 30px; }
+      .block-meta, .grid-2, .grid-3, .grid-4, .metric-grid, .structure-grid, .media-scene, .tech-map, .tech-row, .sales-row, .mistake-grid, .matching, .course-grid, .path-row, .task-columns, .calendar-strip, .achievement-grid, .header-preview { grid-template-columns: 1fr; }
+      .section-head { align-items: start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar">
+        <a class="logo" href="#top">TS</a>
+        <nav class="side-nav">
+          <a class="side-link active" href="#top">⌂<span>Верх</span></a>
+          <a class="side-link" href="#shell">▦<span>Каркас</span></a>
+          <a class="side-link" href="#brand">B<span>Бренды</span></a>
+          <a class="side-link" href="#learning">◉<span>Уроки</span></a>
+          <a class="side-link" href="#sales">₽<span>Продажи</span></a>
+          <a class="side-link" href="#tests">✓<span>Тесты</span></a>
+          <a class="side-link" href="#portal">P<span>Портал</span></a>
+          <a class="side-link" href="#workspaces">★<span>Кабинеты</span></a>
+        </nav>
+      </aside>
+
+      <main class="main" id="top">
+        <div class="topbar">
+          <div class="search">⌕ Единая библиотека шаблонов TouchSpace Академии</div>
+          <div class="actions">
+            <span class="pill">Утверждённые блоки: <b>27</b></span>
+            <a class="btn ghost" href="block-library-disputed.html">Спорные блоки</a>
+            <button class="btn primary" onclick="window.print()">Печать</button>
+          </div>
+        </div>
+
+        <section class="hero">
+          <div>
+            <p class="eyebrow">TouchSpace Academy UI Kit</p>
+            <h1>Библиотека блоков для сборки обучения</h1>
+            <p class="lead">Это единый набор шаблонов для портала: страницы курсов, брендов, уроков, задач, тестов, кабинета администратора и кабинета реселлера. Новые страницы собираем из этих блоков, а не придумываем структуру заново.</p>
+            <div class="actions" style="justify-content:flex-start">
+              <a class="btn primary" href="#brand">Брендовые уроки</a>
+              <a class="btn" href="#portal">Портал</a>
+              <a class="btn" href="#rules">Правила</a>
+            </div>
+          </div>
+          <div class="hero-card">
+            <div>
+              <p class="eyebrow">Статус</p>
+              <h3>Основной стандарт для дальнейшей сборки</h3>
+              <p class="block-desc">Спорные и временные решения вынесены в отдельный файл, чтобы не смешивать их с эталоном.</p>
+            </div>
+            <div class="metric-grid">
+              <div class="metric"><strong>9</strong><span>разделов</span></div>
+              <div class="metric"><strong>27</strong><span>блоков</span></div>
+              <div class="metric"><strong>1</strong><span>язык UI</span></div>
+            </div>
+          </div>
+        </section>
+
+        <div class="layout">
+          <nav class="library-nav">
+            <h3>Разделы</h3>
+            <a href="#shell">Каркас портала <small>2</small></a>
+            <a href="#base">База UI <small>3</small></a>
+            <a href="#brand">Брендовые страницы <small>6</small></a>
+            <a href="#learning">Учебные блоки <small>2</small></a>
+            <a href="#sales">Продажи <small>3</small></a>
+            <a href="#tests">Тесты <small>3</small></a>
+            <a href="#portal">Портальные блоки <small>4</small></a>
+            <a href="#workspaces">Кабинеты <small>4</small></a>
+            <a href="#rules">Правила <small>✓</small></a>
+          </nav>
+
+          <div>
+            <section class="section" id="shell">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">01 / Portal Shell</p>
+                  <h2>Каркас портала</h2>
+                  <p>Общий слой навигации и страницы. Его используем на всех экранах Академии.</p>
+                </div>
+              </div>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Общий shell страницы</h3><span class="code-name">.page .shell .sidebar .main</span><span class="tag blue">обязательный</span></div>
+                    <p class="block-desc">Левая вертикальная навигация и основная область контента. Подходит для главной, брендов, курсов, задач и уроков.</p>
+                  </div>
+                  <button class="btn" data-code="shell-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="academy-shell-preview">
+                    <div class="mini-card academy-nav-preview">NAV</div>
+                    <div class="mini-card">
+                      <p class="eyebrow">Main</p>
+                      <h3>Основная область</h3>
+                      <p>Внутри живут hero, учебные секции, карточки курсов, тесты и рабочие панели.</p>
+                    </div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="shell-code">&lt;div class="page"&gt;
+  &lt;div class="shell"&gt;
+    &lt;aside class="sidebar"&gt;...&lt;/aside&gt;
+    &lt;main class="main"&gt;...&lt;/main&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Header: wordmark, search, user</h3><span class="code-name">.header .search .user</span><span class="tag">портал</span></div>
+                    <p class="block-desc">Шапка из рабочих страниц: логотип, поиск, уведомления и профиль пользователя.</p>
+                  </div>
+                  <button class="btn" data-code="header-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="header-preview">
+                    <div class="wordmark-preview">TouchSpace<br>Academy</div>
+                    <div class="search">⌕ Найти курс, бренд или задачу</div>
+                    <div class="actions"><div class="notification-preview">!</div><div class="avatar-preview">ОР</div></div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="header-code">&lt;header class="header"&gt;
+  &lt;div class="wordmark"&gt;TouchSpace&lt;span&gt;Academy&lt;/span&gt;&lt;/div&gt;
+  &lt;label class="search"&gt;&lt;input placeholder="Найти курс"&gt;&lt;/label&gt;
+  &lt;div class="header-actions"&gt;...&lt;/div&gt;
+&lt;/header&gt;</pre>
+              </article>
+            </section>
+
+            <section class="section" id="base">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">02 / Base UI</p>
+                  <h2>Базовые блоки</h2>
+                  <p>Универсальные строительные элементы, которые повторяются на разных страницах.</p>
+                </div>
+              </div>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Page hero</h3><span class="code-name">.hero .hero-card</span><span class="tag green">главный экран</span></div>
+                    <p class="block-desc">Вводный блок для раздела, курса или кабинета. Слева смысл, справа статус/метрики.</p>
+                  </div>
+                  <button class="btn" data-code="page-hero-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="hero" style="margin:0">
+                    <div><p class="eyebrow">Курс</p><h2>Базовый курс по бренду</h2><p class="lead">Короткий маршрут по истории, продукту, технологиям и продажам.</p><button class="btn primary">Начать</button></div>
+                    <div class="hero-card"><h3>Прогресс</h3><div class="progress"><i style="width:42%"></i></div></div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="page-hero-code">&lt;section class="hero"&gt;
+  &lt;div&gt;...&lt;/div&gt;
+  &lt;aside class="hero-card"&gt;...&lt;/aside&gt;
+&lt;/section&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Метрики</h3><span class="code-name">.metric-grid .metric</span><span class="tag">цифры</span></div>
+                    <p class="block-desc">Короткие показатели: прогресс, количество модулей, тестов, XP, сертификатов.</p>
+                  </div>
+                  <button class="btn" data-code="metric-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="metric-grid">
+                    <div class="metric"><strong>12</strong><span>уроков</span></div>
+                    <div class="metric"><strong>86%</strong><span>средний результат</span></div>
+                    <div class="metric"><strong>4</strong><span>сертификата</span></div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="metric-code">&lt;div class="metric-grid"&gt;
+  &lt;div class="metric"&gt;&lt;strong&gt;12&lt;/strong&gt;&lt;span&gt;уроков&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Карточная сетка</h3><span class="code-name">.grid-3 .mini-card</span><span class="tag">универсальный</span></div>
+                    <p class="block-desc">Для фактов, преимуществ, уроков, этапов, категорий и правил.</p>
+                  </div>
+                  <button class="btn" data-code="cards-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="grid-3">
+                    <div class="mini-card"><strong>01. Смысл</strong><p>Что должен понять реселлер.</p></div>
+                    <div class="mini-card"><strong>02. Практика</strong><p>Как применить в разговоре.</p></div>
+                    <div class="mini-card"><strong>03. Проверка</strong><p>Как закрепить знание.</p></div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="cards-code">&lt;div class="grid-3"&gt;
+  &lt;article class="mini-card"&gt;...&lt;/article&gt;
+&lt;/div&gt;</pre>
+              </article>
+            </section>
+
+            <section class="section" id="brand">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">03 / Brand Lessons</p>
+                  <h2>Брендовые страницы</h2>
+                  <p>Шаблоны, которые уже использовались в Calitex и Pergo. Дальше бренды собираем из этой структуры.</p>
+                </div>
+              </div>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Full photo brand hero</h3><span class="code-name">.brand-photo-hero</span><span class="tag green">основной</span></div>
+                    <p class="block-desc">Основной hero для академии бренда: реальное фото продукта или интерьера на весь блок, текст поверх изображения.</p>
+                  </div>
+                  <button class="btn" data-code="brand-hero-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="brand-photo-hero">
+                    <div class="brand-photo-hero__copy">
+                      <span class="tag blue">Академия бренда</span>
+                      <div class="brand-hero-title">Бренд, который нужно объяснять через сценарии жизни</div>
+                      <p class="muted">Этот блок задаёт рамку урока: история, философия, технологии и продажный язык.</p>
+                      <ul class="brand-pills">
+                        <li class="brand-pill"><i></i>История и философия</li>
+                        <li class="brand-pill"><i></i>Технологии</li>
+                        <li class="brand-pill"><i></i>Продажа</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="brand-hero-code">&lt;section class="brand-photo-hero"&gt;
+  &lt;div class="brand-photo-hero__copy"&gt;...&lt;/div&gt;
+&lt;/section&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Course structure grid</h3><span class="code-name">.structure-grid</span><span class="tag">содержание</span></div>
+                    <p class="block-desc">Карта урока из 4 блоков: история, продукт, технологии, продажи.</p>
+                  </div>
+                  <button class="btn" data-code="structure-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="structure-grid">
+                    <div class="mini-card"><div class="number-badge">1</div><strong>История</strong><p>Откуда бренд и почему это важно.</p></div>
+                    <div class="mini-card"><div class="number-badge">2</div><strong>Философия</strong><p>Какую идею продаёт продукт.</p></div>
+                    <div class="mini-card"><div class="number-badge">3</div><strong>Технологии</strong><p>Что доказывает ценность.</p></div>
+                    <div class="mini-card"><div class="number-badge">4</div><strong>Продажа</strong><p>Как говорить с клиентом.</p></div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="structure-code">&lt;div class="structure-grid"&gt;
+  &lt;article class="mini-card"&gt;&lt;div class="number-badge"&gt;1&lt;/div&gt;...&lt;/article&gt;
+&lt;/div&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>History timeline</h3><span class="code-name">.timeline .timeline-item</span><span class="tag">история</span></div>
+                    <p class="block-desc">Вертикальная хронология: год/этап слева, смысл справа. Используется для происхождения бренда.</p>
+                  </div>
+                  <button class="btn" data-code="timeline-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="timeline">
+                    <div class="timeline-item"><span class="year">1970-е</span><div><h3>Идея продукта</h3><p class="muted">Появляется инженерная задача, из которой вырастает бренд.</p></div></div>
+                    <div class="timeline-item"><span class="year">1980</span><div><h3>Первый рынок</h3><p class="muted">Технология становится коммерческим продуктом.</p></div></div>
+                    <div class="timeline-item"><span class="year">сейчас</span><div><h3>Позиционирование</h3><p class="muted">Бренд продаётся через спокойствие, сценарии и долгий срок.</p></div></div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="timeline-code">&lt;div class="timeline"&gt;
+  &lt;div class="timeline-item"&gt;&lt;span class="year"&gt;1980&lt;/span&gt;...&lt;/div&gt;
+&lt;/div&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Media scene / reverse scene</h3><span class="code-name">.media-scene</span><span class="tag">визуал</span></div>
+                    <p class="block-desc">Две колонки: текстовая панель и визуальная зона. Можно менять порядок для ритма страницы.</p>
+                  </div>
+                  <button class="btn" data-code="media-scene-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="media-scene">
+                    <div class="mini-card"><span class="tag blue">Сценарий</span><h3>Почему клиенту важно это решение</h3><p>Блок переводит свойство продукта в бытовую ситуацию.</p></div>
+                    <div class="media-box">Фото интерьера / схема / продукт</div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="media-scene-code">&lt;div class="media-scene"&gt;
+  &lt;article class="mini-card"&gt;...&lt;/article&gt;
+  &lt;div class="media-box"&gt;...&lt;/div&gt;
+&lt;/div&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Technology map</h3><span class="code-name">.tech-map</span><span class="tag violet">технологии</span></div>
+                    <p class="block-desc">Короткие карточки технологий или преимуществ перед подробным объяснением.</p>
+                  </div>
+                  <button class="btn" data-code="tech-map-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="tech-map">
+                    <div class="mini-card"><strong>Защита</strong><p>Меньше царапин и бытового износа.</p></div>
+                    <div class="mini-card"><strong>Влага</strong><p>Системная защита стыков и кромок.</p></div>
+                    <div class="mini-card"><strong>Замок</strong><p>Стабильность соединения.</p></div>
+                    <div class="mini-card"><strong>Дизайн</strong><p>Естественное ощущение поверхности.</p></div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="tech-map-code">&lt;div class="tech-map"&gt;
+  &lt;article class="mini-card"&gt;...&lt;/article&gt;
+&lt;/div&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Technology matrix</h3><span class="code-name">.tech-matrix .tech-row</span><span class="tag violet">разбор</span></div>
+                    <p class="block-desc">Три колонки: технология, что делает, как объяснить клиенту.</p>
+                  </div>
+                  <button class="btn" data-code="tech-matrix-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="tech-matrix">
+                    <div class="tech-row">
+                      <div class="tech-cell"><small>Технология</small><b>Защитный слой</b></div>
+                      <div class="tech-cell"><small>Что делает</small><b>Снижает бытовой износ</b></div>
+                      <div class="tech-cell"><small>Как сказать</small><p>Пол остаётся спокойным решением, а не вещью, которую нужно постоянно беречь.</p></div>
+                    </div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="tech-matrix-code">&lt;div class="tech-row"&gt;
+  &lt;div class="tech-cell"&gt;&lt;small&gt;Технология&lt;/small&gt;...&lt;/div&gt;
+&lt;/div&gt;</pre>
+              </article>
+            </section>
+
+            <section class="section" id="learning">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">04 / Learning</p>
+                  <h2>Учебные блоки</h2>
+                  <p>Компоненты, которые превращают страницу в урок: мысль, объяснение, практика, закрепление.</p>
+                </div>
+              </div>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Big idea / ключевая мысль</h3><span class="code-name">.quote-band</span><span class="tag green">смысл</span></div>
+                    <p class="block-desc">Сильный тезис, который реселлер должен запомнить после блока.</p>
+                  </div>
+                  <button class="btn" data-code="quote-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="quote-band">
+                    <strong>Продаём не характеристику, а спокойствие клиента после покупки.</strong>
+                    <p class="muted" style="margin:12px 0 0">Используется после объяснения технологии или философии бренда.</p>
+                  </div>
+                </div>
+                <pre class="code-panel" id="quote-code">&lt;div class="quote-band"&gt;
+  &lt;strong&gt;Ключевая мысль&lt;/strong&gt;
+&lt;/div&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Explain cards</h3><span class="code-name">.grid-3 .mini-card</span><span class="tag">теория</span></div>
+                    <p class="block-desc">Три-пять коротких объяснений в одном смысловом блоке.</p>
+                  </div>
+                  <button class="btn" data-code="explain-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="grid-3">
+                    <div class="mini-card"><span class="tag blue">Что это</span><h3>Тезис</h3><p>Короткое определение.</p></div>
+                    <div class="mini-card"><span class="tag green">Зачем</span><h3>Польза</h3><p>Что это меняет для клиента.</p></div>
+                    <div class="mini-card"><span class="tag orange">Как сказать</span><h3>Фраза</h3><p>Готовая формулировка продавца.</p></div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="explain-code">&lt;div class="grid-3"&gt;
+  &lt;article class="mini-card"&gt;&lt;span class="tag"&gt;Что это&lt;/span&gt;...&lt;/article&gt;
+&lt;/div&gt;</pre>
+              </article>
+            </section>
+
+            <section class="section" id="sales">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">05 / Sales</p>
+                  <h2>Продажные блоки</h2>
+                  <p>Модули, которые переводят знания о продукте в язык продавца.</p>
+                </div>
+              </div>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Sales translation</h3><span class="code-name">.sales-table .sales-row</span><span class="tag green">аргументы</span></div>
+                    <p class="block-desc">Две колонки: характеристика продукта → как сказать клиенту.</p>
+                  </div>
+                  <button class="btn" data-code="sales-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="sales-table">
+                    <div class="sales-row">
+                      <div class="sales-cell"><strong>Влагозащита</strong><br>Технология защищает стык и кромку.</div>
+                      <div class="sales-cell good"><strong>Фраза продавца</strong><br>У вас есть время спокойно убрать случайный пролив, а не бежать за тряпкой в панике.</div>
+                    </div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="sales-code">&lt;div class="sales-row"&gt;
+  &lt;div class="sales-cell"&gt;Характеристика&lt;/div&gt;
+  &lt;div class="sales-cell good"&gt;Фраза продавца&lt;/div&gt;
+&lt;/div&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Mistake correction</h3><span class="code-name">.mistake-grid</span><span class="tag red">ошибки</span></div>
+                    <p class="block-desc">Три колонки: ошибка → почему плохо → как лучше.</p>
+                  </div>
+                  <button class="btn" data-code="mistake-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="mistake-grid">
+                    <div class="mistake-cell bad"><strong>Ошибка</strong><p>Оправдывать цену.</p></div>
+                    <div class="mistake-cell"><strong>Почему плохо</strong><p>Позиция бренда становится слабее.</p></div>
+                    <div class="mistake-cell good"><strong>Как лучше</strong><p>Сначала выяснить сценарий жизни клиента.</p></div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="mistake-code">&lt;div class="mistake-grid"&gt;...&lt;/div&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Sales formula steps</h3><span class="code-name">.step-list .step-item</span><span class="tag orange">алгоритм</span></div>
+                    <p class="block-desc">Пошаговая формула продажи: потребность, страх, решение, ценность.</p>
+                  </div>
+                  <button class="btn" data-code="steps-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="step-list">
+                    <div class="step-item"><span class="tag blue">Шаг 1</span><h3>Выяснить сценарий</h3><p class="muted">Где будет укладка, кто живёт, какие нагрузки и страхи.</p></div>
+                    <div class="step-item"><span class="tag blue">Шаг 2</span><h3>Показать решение</h3><p class="muted">Связать технологию с конкретной проблемой клиента.</p></div>
+                    <div class="step-item"><span class="tag blue">Шаг 3</span><h3>Зафиксировать ценность</h3><p class="muted">Перевести цену в годы спокойствия и отсутствие проблем.</p></div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="steps-code">&lt;div class="step-list"&gt;
+  &lt;div class="step-item"&gt;...&lt;/div&gt;
+&lt;/div&gt;</pre>
+              </article>
+            </section>
+
+            <section class="section" id="tests">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">06 / Tests</p>
+                  <h2>Тестовые блоки</h2>
+                  <p>Стандартные формы проверки знаний. Старый inline-квиз из брендовых страниц вынесен в спорные блоки.</p>
+                </div>
+              </div>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Single choice</h3><span class="code-name">question_single</span><span class="tag">1 ответ</span></div>
+                    <p class="block-desc">Один правильный вариант. Состояния correct/wrong используются после проверки.</p>
+                  </div>
+                  <button class="btn" data-code="single-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="question-card">
+                    <h3>Как лучше начинать объяснение премиального покрытия?</h3>
+                    <div class="answers">
+                      <div class="answer-option"><i class="answer-dot"></i>С цены за квадратный метр</div>
+                      <div class="answer-option correct"><i class="answer-dot"></i>С задачи клиента и желаемого эффекта</div>
+                      <div class="answer-option"><i class="answer-dot"></i>С перечисления всех коллекций подряд</div>
+                    </div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="single-code">{
+  "type": "question_single",
+  "options": [{"text": "...", "correct": true}]
+}</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Multiple choice</h3><span class="code-name">question_multiple</span><span class="tag">несколько</span></div>
+                    <p class="block-desc">Несколько правильных ответов. Подходит для признаков, форматов, аргументов.</p>
+                  </div>
+                  <button class="btn" data-code="multiple-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="question-card">
+                    <h3>Какие элементы помогают продавать интерьерный сценарий?</h3>
+                    <div class="answers">
+                      <div class="answer-option correct">☑ Формат укладки</div>
+                      <div class="answer-option correct">☑ Сценарий комнаты</div>
+                      <div class="answer-option correct">☑ Страх клиента</div>
+                      <div class="answer-option wrong">☒ Случайная скидка без объяснения</div>
+                    </div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="multiple-code">{
+  "type": "question_multiple",
+  "options": [{"text": "...", "correct": true}]
+}</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Matching true swap</h3><span class="code-name">matching_true_swap</span><span class="tag violet">эталон</span></div>
+                    <p class="block-desc">Слева фиксированные утверждения, справа карточки ответов. Перетаскивание работает только как обмен двух карточек.</p>
+                  </div>
+                  <button class="btn" data-code="matching-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="matching">
+                    <div class="match-list">
+                      <div class="match-card fixed">Премиальный продукт нельзя сводить только к цене.</div>
+                      <div class="match-card fixed">Формат укладки помогает продавать интерьер.</div>
+                    </div>
+                    <div class="match-list">
+                      <div class="match-card">Иначе бренд превращается в строку прайса.</div>
+                      <div class="match-card">Ёлка и шеврон усиливают визуальный эффект.</div>
+                    </div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="matching-code">{
+  "type": "matching_true_swap",
+  "behavior": "swap_only"
+}</pre>
+              </article>
+            </section>
+
+            <section class="section" id="portal">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">07 / Portal Pages</p>
+                  <h2>Блоки портала</h2>
+                  <p>Шаблоны с главной, каталога брендов, списка курсов и задач.</p>
+                </div>
+              </div>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Course card grid</h3><span class="code-name">.course-grid .course-card</span><span class="tag blue">курсы</span></div>
+                    <p class="block-desc">Карточки курсов с арт-зоной, названием, описанием, уровнем и длительностью.</p>
+                  </div>
+                  <button class="btn" data-code="course-grid-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="course-grid">
+                    <article class="course-card"><div class="course-art">12 уроков</div><h3>Брендовый курс</h3><p>История, технологии, продажа.</p><div class="actions" style="justify-content:flex-start;margin-top:12px"><span class="tag blue">Начальный</span><span class="tag">1 ч 40 мин</span></div></article>
+                    <article class="course-card"><div class="course-art">Практика</div><h3>Тренажёр продаж</h3><p>Сценарии и возражения.</p><div class="actions" style="justify-content:flex-start;margin-top:12px"><span class="tag orange">Средний</span><span class="tag">58 мин</span></div></article>
+                    <article class="course-card"><div class="course-art">Сертификат</div><h3>Итоговый тест</h3><p>Проверка знаний команды.</p><div class="actions" style="justify-content:flex-start;margin-top:12px"><span class="tag green">Зачёт</span><span class="tag">25 мин</span></div></article>
+                  </div>
+                </div>
+                <pre class="code-panel" id="course-grid-code">&lt;div class="course-grid"&gt;
+  &lt;article class="course-card"&gt;...&lt;/article&gt;
+&lt;/div&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Learning path cards</h3><span class="code-name">.path-row .path-card</span><span class="tag violet">маршруты</span></div>
+                    <p class="block-desc">Горизонтальные маршруты обучения: бренд, продажи, продукт, тестирование.</p>
+                  </div>
+                  <button class="btn" data-code="path-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="path-row">
+                    <div class="path-card"><span class="tag blue">5 модулей</span><h3>Бренды</h3><p>Логика позиционирования.</p></div>
+                    <div class="path-card"><span class="tag green">12 модулей</span><h3>Продажи</h3><p>Сценарии и возражения.</p></div>
+                    <div class="path-card"><span class="tag orange">8 модулей</span><h3>Продукт</h3><p>Категории покрытий.</p></div>
+                    <div class="path-card"><span class="tag violet">4 модуля</span><h3>Контроль</h3><p>Тесты и отчёты.</p></div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="path-code">&lt;div class="path-row"&gt;
+  &lt;article class="path-card"&gt;...&lt;/article&gt;
+&lt;/div&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Brand catalog card</h3><span class="code-name">.brand-card</span><span class="tag green">каталог</span></div>
+                    <p class="block-desc">Карточка бренда в каталоге: статус, краткое описание, CTA на обучение.</p>
+                  </div>
+                  <button class="btn" data-code="brand-card-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="grid-3">
+                    <article class="brand-card"><span class="tag green">готово</span><h3>Pergo</h3><p>Философия, технологии, продажа.</p><button class="btn primary" style="margin-top:14px">Открыть</button></article>
+                    <article class="brand-card"><span class="tag green">готово</span><h3>Calitex</h3><p>Комфорт, надёжность, сценарии.</p><button class="btn primary" style="margin-top:14px">Открыть</button></article>
+                    <article class="brand-card"><span class="tag orange">в работе</span><h3>Следующий бренд</h3><p>Собирается из этой библиотеки.</p><button class="btn" style="margin-top:14px">Черновик</button></article>
+                  </div>
+                </div>
+                <pre class="code-panel" id="brand-card-code">&lt;article class="brand-card"&gt;
+  &lt;span class="tag green"&gt;готово&lt;/span&gt;
+  &lt;h3&gt;Название&lt;/h3&gt;
+&lt;/article&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Calendar and tasks</h3><span class="code-name">.calendar-strip .task-columns</span><span class="tag orange">задачи</span></div>
+                    <p class="block-desc">Блоки из страницы задач: календарная лента и канбан задач.</p>
+                  </div>
+                  <button class="btn" data-code="tasks-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="task-layout-preview">
+                    <div class="panel">
+                      <h3>Календарь</h3>
+                      <div class="calendar-strip">
+                        <button class="day"><strong>1</strong><br>Урок</button>
+                        <button class="day"><strong>3</strong><br>Бренды</button>
+                        <button class="day is-today"><strong>5</strong><br>Сегодня</button>
+                        <button class="day"><strong>9</strong><br>AI</button>
+                        <button class="day"><strong>17</strong><br>Возражения</button>
+                        <button class="day"><strong>22</strong><br>Сертификат</button>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <h3>Задачи</h3>
+                      <div class="task-columns">
+                        <div class="task-column"><span class="task-column-title">Сделать</span><article class="task-card"><h3>Пройти урок</h3><p>28 мин · сегодня</p></article></div>
+                        <div class="task-column"><span class="task-column-title">В процессе</span><article class="task-card"><h3>Тренажёр</h3><div class="progress"><i style="width:45%"></i></div></article></div>
+                        <div class="task-column"><span class="task-column-title">Контроль</span><article class="task-card"><h3>Отчёт</h3><p>Назначил руководитель</p></article></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="tasks-code">&lt;div class="calendar-strip"&gt;...&lt;/div&gt;
+&lt;div class="task-columns"&gt;...&lt;/div&gt;</pre>
+              </article>
+            </section>
+
+            <section class="section" id="workspaces">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">08 / Workspaces</p>
+                  <h2>Кабинеты администратора и реселлера</h2>
+                  <p>Рабочие интерфейсы для управления тестами, прогрессом, достижениями и сертификатами.</p>
+                </div>
+              </div>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Admin test builder</h3><span class="code-name">.admin-layout</span><span class="tag orange">админка</span></div>
+                    <p class="block-desc">Три зоны: библиотека модулей, состав теста, редактор выбранного элемента.</p>
+                  </div>
+                  <button class="btn" data-code="admin-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="admin-layout">
+                    <div class="admin-panel"><h3>Модули</h3><button class="module-button">Один ответ</button><button class="module-button">Несколько ответов</button><button class="module-button">Соответствие true swap</button></div>
+                    <div class="admin-panel"><h3>Состав теста</h3><div class="builder-item"><strong>01. Позиционирование</strong><p class="block-desc">Один ответ · 1 балл</p></div><div class="builder-item"><strong>02. Форматы</strong><p class="block-desc">Несколько ответов · 2 балла</p></div></div>
+                    <div class="admin-panel"><h3>Редактор</h3><div class="field"><label>Вопрос</label><input class="input" value="Текст вопроса"></div><button class="btn primary" style="width:100%">Применить</button></div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="admin-code">&lt;div class="admin-layout"&gt;
+  &lt;aside class="admin-panel"&gt;Модули&lt;/aside&gt;
+  &lt;section class="admin-panel"&gt;Состав&lt;/section&gt;
+  &lt;aside class="admin-panel"&gt;Редактор&lt;/aside&gt;
+&lt;/div&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Reseller hero and XP</h3><span class="code-name">.student-hero</span><span class="tag green">реселлер</span></div>
+                    <p class="block-desc">Hero личного кабинета с профилем, уровнем и прогрессом опыта.</p>
+                  </div>
+                  <button class="btn" data-code="student-hero-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="student-hero">
+                    <div class="student-card"><p class="eyebrow">Личный кабинет</p><h2>Кабинет реселлера</h2><p>Активные курсы, тесты, достижения и сертификаты.</p></div>
+                    <div class="student-card"><div class="student-name"><div class="student-avatar">СР</div><div><b>Сергей Розов</b><br><span class="muted">Уровень 7 · продавец-консультант</span></div></div><div class="progress" style="margin-top:16px"><i style="width:68%"></i></div></div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="student-hero-code">&lt;section class="student-hero"&gt;...&lt;/section&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Reseller course and test cards</h3><span class="code-name">.student-card .test-card</span><span class="tag blue">прогресс</span></div>
+                    <p class="block-desc">Активные курсы, проваленные попытки и история тестирования.</p>
+                  </div>
+                  <button class="btn" data-code="student-cards-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="grid-2">
+                    <article class="student-card"><span class="tag blue">Активный курс</span><h3>Pergo: философия продаж</h3><p>Пройдено 3 из 5 модулей.</p><div class="progress" style="margin:12px 0"><i style="width:60%"></i></div><button class="btn primary">Продолжить</button></article>
+                    <article class="test-card"><div><h3>Тест по аргументам</h3><p>Pergo · 05.06.2026 · пройден</p><span class="tag green">зачтено</span></div><div class="score pass">92%</div></article>
+                  </div>
+                </div>
+                <pre class="code-panel" id="student-cards-code">&lt;article class="student-card"&gt;...&lt;/article&gt;
+&lt;article class="test-card"&gt;...&lt;/article&gt;</pre>
+              </article>
+
+              <article class="block-card">
+                <div class="block-meta">
+                  <div>
+                    <div class="block-name"><h3>Achievements and certificate</h3><span class="code-name">.achievement-grid .certificate</span><span class="tag violet">награды</span></div>
+                    <p class="block-desc">Открытые/закрытые достижения и сертификат за курс.</p>
+                  </div>
+                  <button class="btn" data-code="achievements-code">Код</button>
+                </div>
+                <div class="preview">
+                  <div class="achievement-grid">
+                    <div class="achievement"><div class="badge-icon">★</div><h3>Первый тест</h3><p>Пройден первый тест Академии.</p></div>
+                    <div class="achievement"><div class="badge-icon">✓</div><h3>Без ошибок</h3><p>Тест закрыт на 100%.</p></div>
+                    <div class="achievement locked"><div class="badge-icon">◆</div><h3>Эксперт брендов</h3><p>Закрыть 5 брендовых курсов.</p></div>
+                    <div class="certificate"><p class="eyebrow">Сертификат</p><h3>Брендовый курс</h3><p class="muted">Подтверждает успешное прохождение.</p></div>
+                  </div>
+                </div>
+                <pre class="code-panel" id="achievements-code">&lt;div class="achievement-grid"&gt;...&lt;/div&gt;
+&lt;div class="certificate"&gt;...&lt;/div&gt;</pre>
+              </article>
+            </section>
+
+            <section class="section" id="rules">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">09 / Assembly Rules</p>
+                  <h2>Правила сборки страниц</h2>
+                  <p>Короткий регламент, чтобы следующие страницы не расползались по стилю и логике.</p>
+                </div>
+              </div>
+              <article class="block-card">
+                <div class="preview">
+                  <div class="grid-3">
+                    <div class="mini-card"><strong>01. Сначала библиотека</strong><p>Новый блок создаём только если текущие шаблоны не покрывают задачу.</p></div>
+                    <div class="mini-card"><strong>02. Shell не меняем</strong><p>Каркас `.page > .shell > .sidebar > .main` остаётся общим для портала.</p></div>
+                    <div class="mini-card"><strong>03. Брендовый урок</strong><p>Hero → структура → история → философия → технологии → продажи.</p></div>
+                    <div class="mini-card"><strong>04. Продажа через сценарий</strong><p>Технологии объясняем через страх, пользу и фразу продавца.</p></div>
+                    <div class="mini-card"><strong>05. Тесты отдельно</strong><p>Тестовые блоки живут как типы вопросов, не как встроенный mini-quiz в конце бренда.</p></div>
+                    <div class="mini-card"><strong>06. Спорное отдельно</strong><p>Временные решения смотреть в `block-library-disputed.html` перед утверждением.</p></div>
+                  </div>
+                </div>
+              </article>
+            </section>
+
+            <div class="footer">TouchSpace Академия · Единая библиотека блоков · Версия 2.0</div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('[data-code]').forEach(function(button) {
+      button.addEventListener('click', function() {
+        var panel = document.getElementById(button.dataset.code);
+        if (!panel) return;
+        panel.classList.toggle('open');
+        button.textContent = panel.classList.contains('open') ? 'Скрыть' : 'Код';
+      });
+    });
+
+    var navLinks = Array.prototype.slice.call(document.querySelectorAll('.library-nav a'));
+    var sections = navLinks.map(function(a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+    function onScroll() {
+      var active = sections[0];
+      sections.forEach(function(section) {
+        if (section.getBoundingClientRect().top < 140) active = section;
+      });
+      navLinks.forEach(function(a) { a.style.background = ''; });
+      var link = navLinks.find(function(a) { return a.getAttribute('href') === '#' + active.id; });
+      if (link) link.style.background = 'var(--blue-soft)';
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  </script>
+</body>
+</html>

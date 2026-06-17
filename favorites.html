@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Избранное | TouchSpace Академия</title>
+  <style>
+    :root {
+      --blue: #0a84ff;
+      --blue-2: #5f93ff;
+      --soft: #e4edff;
+      --ink: #111827;
+      --muted: #6b7280;
+      --page: #eef4ff;
+      --card: #fff;
+      --shadow: 0 24px 80px rgba(24, 45, 90, 0.12);
+      --shadow-soft: 0 14px 38px rgba(24, 45, 90, 0.08);
+      --max: 1500px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f8fbff 0%, var(--page) 48%, #f6f9ff 100%);
+      color: var(--ink);
+      font-family: Inter, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+    }
+
+    button,
+    input { font: inherit; }
+
+    button { cursor: pointer; }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: var(--max); margin: 0 auto; padding: 24px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 76px minmax(0, 1fr); gap: 24px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 22px;
+      z-index: 60;
+      height: calc(100vh - 44px);
+      min-height: 520px;
+      padding: 18px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+      overflow: visible;
+    }
+
+    .main {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 260px minmax(260px, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .wordmark {
+      font-size: 28px;
+      font-weight: 950;
+      line-height: 0.82;
+      letter-spacing: 0;
+    }
+
+    .wordmark span { display: block; }
+
+    .wordmark span:last-child { padding-left: 74px; }
+
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 62px;
+      padding: 0 22px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow-soft);
+      color: #9aa4b2;
+    }
+
+    .search input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 16px;
+    }
+
+    .header-actions {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .notification-wrap { position: relative; }
+
+    .notification {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 62px;
+      height: 62px;
+      border: 0;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow-soft);
+      transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .notification:hover,
+    .notification.is-open {
+      background: #fff;
+      box-shadow: 0 18px 42px rgba(95, 147, 255, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .notification::after {
+      content: "";
+      position: absolute;
+      right: 17px;
+      top: 16px;
+      width: 9px;
+      height: 9px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      background: #ff7a59;
+    }
+
+    .notification img {
+      width: 25px;
+      height: 25px;
+      object-fit: contain;
+    }
+
+    .notification-panel {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 14px);
+      z-index: 80;
+      width: min(380px, calc(100vw - 48px));
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: 26px;
+      background: radial-gradient(circle at 88% 10%, rgba(95, 147, 255, 0.18), transparent 32%), rgba(255, 255, 255, 0.94);
+      box-shadow: 0 26px 70px rgba(24, 45, 90, 0.18);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px) scale(0.98);
+      transform-origin: top right;
+      transition: opacity 180ms ease, transform 180ms ease;
+      backdrop-filter: blur(18px);
+    }
+
+    .notification-panel.is-open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    .notification-panel::before {
+      content: "";
+      position: absolute;
+      right: 23px;
+      top: -6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.94);
+      transform: rotate(45deg);
+    }
+
+    .notification-panel__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .notification-panel__head strong {
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .notification-panel__count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .notification-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .notification-item {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 12px;
+      padding: 12px;
+      border: 0;
+      border-radius: 18px;
+      background: rgba(244, 248, 255, 0.82);
+      color: inherit;
+      text-align: left;
+    }
+
+    .notification-item__icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #e4edff, #f7fbff);
+      color: var(--blue);
+      font-weight: 950;
+    }
+
+    .notification-item__copy strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 14px;
+      line-height: 1.16;
+    }
+
+    .notification-item__copy span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .notification-panel__foot {
+      width: 100%;
+      min-height: 40px;
+      margin-top: 10px;
+      border: 0;
+      border-radius: 16px;
+      background: #fff;
+      color: var(--blue);
+      font-weight: 900;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 222px;
+      height: 62px;
+      padding: 8px 10px 8px 18px;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .user__name {
+      display: block;
+      font-weight: 800;
+    }
+
+    .user__role {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      margin-left: auto;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--blue), #8ee2ff);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .page-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 0.7fr);
+      gap: 22px;
+      align-items: end;
+      margin-top: 4px;
+    }
+
+    .page-title h1 {
+      max-width: 960px;
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(44px, 6vw, 84px);
+      line-height: 0.92;
+      letter-spacing: 0;
+    }
+
+    .page-title p {
+      max-width: 640px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat-tile {
+      min-height: 92px;
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow);
+    }
+
+    .stat-tile strong {
+      display: block;
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .stat-tile span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .hashtag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .hashtag {
+      min-height: 42px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: 0 12px 32px rgba(24, 45, 90, 0.08);
+      color: var(--muted);
+      font-weight: 900;
+    }
+
+    .hashtag.is-active {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .section {
+      margin-top: 34px;
+    }
+
+    .section-head {
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(32px, 4.2vw, 58px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .course-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0;
+      padding: 8px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.74);
+      box-shadow: var(--shadow);
+    }
+
+    .filter {
+      min-height: 44px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 17px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 900;
+    }
+
+    .filter.is-active {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .course-count {
+      color: var(--muted);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .course-card {
+      min-height: 438px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 32px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .course-card[hidden] { display: none; }
+
+    .course-card__image {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 190px;
+      margin: 12px;
+      border-radius: 24px;
+      background: var(--art-bg, linear-gradient(135deg, #edf5ff, #dbe9ff));
+      overflow: hidden;
+    }
+
+    .course-card__image::after {
+      content: attr(data-badge);
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 92px;
+      min-height: 38px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 900;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .favorite-mark {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      width: 92px;
+      height: 92px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--blue);
+      font-size: 42px;
+      font-weight: 950;
+      box-shadow: 0 18px 38px rgba(24, 45, 90, 0.12);
+    }
+
+    .art-blue { --art-bg: linear-gradient(135deg, #eaf3ff 0%, #d8e7ff 52%, #eef6ff 100%); }
+    .art-violet { --art-bg: linear-gradient(135deg, #f3efff 0%, #e4eaff 52%, #eef8ff 100%); }
+    .art-mint { --art-bg: linear-gradient(135deg, #ecfbf6 0%, #e4edff 52%, #f8fbff 100%); }
+
+    .course-card__body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 8px 24px 24px;
+    }
+
+    .badge {
+      display: inline-flex;
+      width: fit-content;
+      min-height: 32px;
+      align-items: center;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: #eef5ff;
+      color: var(--blue);
+      font-weight: 900;
+    }
+
+    .course-card h3 {
+      margin: 12px 0 10px;
+      font-size: 25px;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .course-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .course-card__foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 24px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .course-card__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 15px;
+      border: 0;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .btn--primary {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 12px 28px rgba(10, 132, 255, 0.22);
+    }
+
+    .btn--ghost {
+      background: #f3f7ff;
+      color: var(--muted);
+    }
+
+    .favorites-empty {
+      display: none;
+      min-height: 220px;
+      padding: 28px;
+      border-radius: 32px;
+      background: linear-gradient(135deg, #ffffff 0%, #edf4ff 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .favorites-empty.is-visible {
+      display: grid;
+      align-content: center;
+      gap: 10px;
+    }
+
+    .favorites-empty h3 {
+      margin: 0;
+      font-size: clamp(28px, 3.4vw, 44px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .favorites-empty p {
+      max-width: 680px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.42;
+    }
+
+    @media (max-width: 1120px) {
+      .header,
+      .page-intro {
+        grid-template-columns: 1fr;
+      }
+
+      .course-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page { padding: 14px; }
+
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 10px;
+        height: auto;
+        min-height: 0;
+        padding: 10px;
+        border-radius: 22px;
+      }
+
+      .main { display: block; }
+
+      .header {
+        margin-bottom: 18px;
+      }
+
+      .wordmark span:last-child {
+        padding-left: 0;
+      }
+
+      .stats-row,
+      .course-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .course-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .course-count {
+        white-space: normal;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+
+      <main class="main">
+        <header class="header" data-search-placeholder="Поиск в избранном"></header>
+
+        <section class="page-intro" aria-label="Избранные материалы">
+          <div class="page-title">
+            <h1>Избранное</h1>
+            <p>Личная подборка брендовых страниц и учебных материалов, к которым удобно возвращаться во время обучения.</p>
+            <div class="hashtag-row" aria-label="Быстрые разделы">
+              <button class="hashtag is-active" type="button">#бренды</button>
+              <button class="hashtag" type="button">#материалы</button>
+              <button class="hashtag" type="button">#быстрый доступ</button>
+            </div>
+          </div>
+
+          <div class="stats-row">
+            <div class="stat-tile">
+              <strong data-favorites-total>0</strong>
+              <span>в избранном</span>
+            </div>
+            <div class="stat-tile">
+              <strong data-favorites-brand-total>0</strong>
+              <span>брендов</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" aria-label="Список избранного">
+          <div class="section-head">
+            <h2>Материалы</h2>
+          </div>
+
+          <div class="course-toolbar">
+            <div class="filters" aria-label="Фильтр избранного">
+              <button class="filter is-active" type="button" data-favorite-filter="all">Все</button>
+              <button class="filter" type="button" data-favorite-filter="Бренд">Бренды</button>
+            </div>
+            <div class="course-count" data-favorites-visible-count>0 материалов</div>
+          </div>
+
+          <div class="course-grid" data-favorites-list></div>
+
+          <div class="favorites-empty" data-favorites-empty>
+            <h3>В избранном пока пусто</h3>
+            <p>Откройте страницу бренда Pergo или Calitex и нажмите “В избранное”. После этого материал появится здесь и в счётчике бокового меню.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var activeFilter = "all";
+
+      function escapeHtml(value) {
+        return String(value || "").replace(/[&<>"']/g, function (char) {
+          return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "\"": "&quot;",
+            "'": "&#039;"
+          }[char];
+        });
+      }
+
+      function pluralMaterials(count) {
+        var last = count % 10;
+        var lastTwo = count % 100;
+        if (last === 1 && lastTwo !== 11) return count + " материал";
+        if (last >= 2 && last <= 4 && (lastTwo < 12 || lastTwo > 14)) return count + " материала";
+        return count + " материалов";
+      }
+
+      function cardArt(index) {
+        return ["art-blue", "art-violet", "art-mint"][index % 3];
+      }
+
+      function renderFavoritesPage() {
+        var list = document.querySelector("[data-favorites-list]");
+        var empty = document.querySelector("[data-favorites-empty]");
+        var total = document.querySelector("[data-favorites-total]");
+        var brandTotal = document.querySelector("[data-favorites-brand-total]");
+        var visibleCount = document.querySelector("[data-favorites-visible-count]");
+        var api = window.TouchSpaceAcademy;
+        var favorites = api && api.getFavorites ? api.getFavorites() : [];
+        var visible = activeFilter === "all" ? favorites : favorites.filter(function (item) {
+          return item.type === activeFilter;
+        });
+
+        if (!list || !empty || !total || !brandTotal || !visibleCount) return;
+
+        total.textContent = favorites.length;
+        brandTotal.textContent = favorites.filter(function (item) { return item.type === "Бренд"; }).length;
+        visibleCount.textContent = pluralMaterials(visible.length);
+        empty.classList.toggle("is-visible", visible.length === 0);
+        list.hidden = visible.length === 0;
+        list.innerHTML = visible.map(function (item, index) {
+          return '<article class="course-card" data-favorite-card="' + escapeHtml(item.id) + '">' +
+            '<div class="course-card__image ' + cardArt(index) + '" data-badge="' + escapeHtml(item.type || "Материал") + '">' +
+              '<div class="favorite-mark">★</div>' +
+            '</div>' +
+            '<div class="course-card__body">' +
+              '<span class="badge">' + escapeHtml(item.type || "Материал") + '</span>' +
+              '<h3>' + escapeHtml(item.title) + '</h3>' +
+              '<p>' + escapeHtml(item.description) + '</p>' +
+              '<div class="course-card__actions">' +
+                '<a class="btn btn--primary" href="' + escapeHtml(item.url) + '">Открыть</a>' +
+                '<button class="btn btn--ghost" type="button" data-remove-favorite="' + escapeHtml(item.id) + '">Убрать</button>' +
+              '</div>' +
+              '<div class="course-card__foot">' +
+                '<span>Избранное</span>' +
+                '<span>Быстрый доступ</span>' +
+              '</div>' +
+            '</div>' +
+          '</article>';
+        }).join("");
+
+        list.querySelectorAll("[data-remove-favorite]").forEach(function (button) {
+          button.addEventListener("click", function () {
+            var id = button.getAttribute("data-remove-favorite");
+            var item = favorites.find(function (favorite) { return favorite.id === id; });
+            if (item && api && api.toggleFavorite) {
+              api.toggleFavorite(item);
+              renderFavoritesPage();
+            }
+          });
+        });
+      }
+
+      document.querySelectorAll("[data-favorite-filter]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          activeFilter = button.getAttribute("data-favorite-filter");
+          document.querySelectorAll("[data-favorite-filter]").forEach(function (item) {
+            item.classList.toggle("is-active", item === button);
+          });
+          renderFavoritesPage();
+        });
+      });
+
+      renderFavoritesPage();
+      window.addEventListener("ts-academy-favorites-change", renderFavoritesPage);
+    })();
+  </script>
+</body>
+</html>

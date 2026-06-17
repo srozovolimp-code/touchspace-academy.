@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Администрирование реселлеров | TouchSpace Академия</title>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+  <style>
+    :root { --blue:#0a84ff; --ink:#111827; --muted:#66758a; --line:#dfe6f2; --page:#eef4ff; --green:#23c483; --orange:#ff8a3d; --shadow:0 14px 38px rgba(24,45,90,.08); --max:1500px; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:linear-gradient(180deg,#f8fbff 0%,var(--page) 56%,#f6f9ff 100%); font-family:Inter,"SF Pro Display","Segoe UI",Arial,sans-serif; }
+    a { color:inherit; text-decoration:none; }
+    button,input,select { font:inherit; }
+    button { cursor:pointer; }
+    .page { max-width:var(--max); margin:0 auto; padding:24px; }
+    .shell { display:grid; grid-template-columns:76px minmax(0,1fr); gap:24px; }
+    .main { min-width:0; }
+    .hero,.panel,.toolbar { border:1px solid rgba(255,255,255,.88); border-radius:28px; background:rgba(255,255,255,.86); box-shadow:var(--shadow); }
+    .hero { display:flex; justify-content:space-between; gap:20px; align-items:flex-end; margin-bottom:16px; padding:28px; }
+    .eyebrow { display:inline-flex; min-height:32px; align-items:center; width:fit-content; margin-bottom:12px; padding:0 12px; border-radius:999px; background:#eef5ff; color:#177be8; font-size:12px; font-weight:900; }
+    h1 { margin:0; font-size:clamp(34px,4vw,56px); line-height:.98; letter-spacing:-.05em; }
+    .hero p,.panel p { margin:9px 0 0; color:var(--muted); font-size:14px; line-height:1.5; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:10px; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:42px; border:0; border-radius:15px; padding:0 15px; background:var(--blue); color:#fff; font-weight:950; box-shadow:0 12px 28px rgba(10,132,255,.2); }
+    .btn.secondary { border:1px solid var(--line); background:#fff; color:#177be8; box-shadow:none; }
+    .toolbar { display:grid; grid-template-columns:minmax(220px,1fr) 220px 190px; gap:12px; margin-bottom:16px; padding:14px; }
+    .input,.select { width:100%; min-height:44px; border:1px solid var(--line); border-radius:15px; background:#fff; padding:0 13px; color:var(--ink); outline:none; }
+    .input:focus,.select:focus { border-color:rgba(10,132,255,.5); box-shadow:0 0 0 4px rgba(10,132,255,.08); }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-bottom:16px; }
+    .metric,.card { border:1px solid var(--line); border-radius:22px; background:#fff; }
+    .metric { padding:16px; }
+    .metric strong { display:block; font-size:28px; letter-spacing:-.04em; }
+    .metric span { display:block; margin-top:6px; color:var(--muted); font-size:12px; font-weight:850; }
+    .panel { padding:20px; }
+    .tree { display:grid; gap:12px; margin-top:14px; }
+    .company-node { overflow:hidden; border:1px solid var(--line); border-radius:22px; background:#fff; }
+    .company-head { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:16px 18px; background:linear-gradient(180deg,#fff 0%,#f7fbff 100%); border-bottom:1px solid var(--line); }
+    .company-title { display:flex; align-items:center; gap:12px; min-width:0; }
+    .company-icon { display:grid; place-items:center; flex:0 0 42px; width:42px; height:42px; border-radius:15px; background:#edf7ff; color:#177be8; font-weight:950; }
+    .company-title strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:17px; }
+    .company-title small { display:block; margin-top:4px; color:var(--muted); font-size:12px; font-weight:800; }
+    .store-list { display:grid; gap:10px; padding:14px; }
+    .store-node { border:1px solid #e8eef7; border-radius:18px; background:#fbfdff; }
+    .store-head { display:flex; justify-content:space-between; gap:12px; padding:12px 14px; border-bottom:1px solid #e8eef7; }
+    .store-head strong { display:block; font-size:15px; }
+    .reseller-list { display:grid; gap:8px; padding:10px; }
+    .reseller-row { display:grid; grid-template-columns:minmax(190px,1fr) 145px 130px; gap:12px; align-items:center; padding:12px; border-radius:16px; background:#fff; border:1px solid #edf2f8; }
+    .person { display:flex; gap:12px; align-items:center; min-width:0; }
+    .avatar { display:grid; place-items:center; flex:0 0 42px; width:42px; height:42px; border-radius:15px; background:linear-gradient(135deg,#2f8cff,#32c48d); color:#fff; font-weight:950; }
+    .name { min-width:0; }
+    .name strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:15px; }
+    .name small,.muted { display:block; color:var(--muted); font-size:12px; font-weight:750; line-height:1.35; }
+    .badge { display:inline-flex; align-items:center; justify-content:center; min-height:28px; width:fit-content; padding:0 10px; border-radius:999px; background:#edf7ff; color:#177be8; font-size:12px; font-weight:900; }
+    .badge.green { background:#eafaf3; color:#139861; }
+    .empty { padding:22px; border:1px dashed rgba(23,32,51,.18); border-radius:20px; color:var(--muted); text-align:center; }
+    @media(max-width:1050px){.hero{display:grid}.toolbar{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.reseller-row{grid-template-columns:1fr}.hero-actions{justify-content:flex-start}}
+    @media(max-width:760px){.page{padding:14px}.shell{grid-template-columns:1fr}.hero{padding:22px;border-radius:24px}h1{font-size:36px}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Поиск реселлеров"></header>
+        <section class="hero">
+          <div>
+            <span class="eyebrow">Администратор платформы</span>
+            <h1>Администрирование реселлеров</h1>
+            <p>Чистая служебная страница: здесь видны аккаунты реселлеров, их компании, торговые точки и состояние доступа без перехода в персональный кабинет.</p>
+          </div>
+          <div class="hero-actions">
+            <a class="btn" href="admin-dashboard.html">Добавить аккаунт</a>
+            <a class="btn secondary" href="admin-companies.html">Компании</a>
+          </div>
+        </section>
+        <section class="grid" aria-label="Сводка">
+          <div class="metric"><strong data-total>0</strong><span>реселлеров</span></div>
+          <div class="metric"><strong data-active>0</strong><span>активных доступов</span></div>
+          <div class="metric"><strong data-companies>0</strong><span>компаний и торговых точек</span></div>
+        </section>
+        <section class="toolbar" aria-label="Фильтры">
+          <input class="input" data-search placeholder="Найти по имени, email или компании">
+          <select class="select" data-company><option value="">Все компании</option></select>
+          <select class="select" data-status><option value="">Все статусы</option><option value="active">Активен</option><option value="draft">Приглашение</option></select>
+        </section>
+        <section class="panel">
+          <h2>Реестр реселлеров</h2>
+          <p>Страница показывает управленческий список аккаунтов. Кнопки личного входа сюда специально не добавлены.</p>
+          <div class="tree" data-list></div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var fallback = [
+        { name:"Сергей Розов", email:"srozov@example.ru", company:"Дом паркета · ТТ Север", status:"active", courses:7 },
+        { name:"Анна Владимирова", email:"anna@example.ru", company:"Рога и Копыта · Флагман", status:"active", courses:5 },
+        { name:"Иван Петров", email:"petrov@example.ru", company:"Интерьер Маркет · ТТ Юг", status:"draft", courses:0 }
+      ];
+      var list = document.querySelector("[data-list]");
+      var search = document.querySelector("[data-search]");
+      var company = document.querySelector("[data-company]");
+      var status = document.querySelector("[data-status]");
+      var total = document.querySelector("[data-total]");
+      var active = document.querySelector("[data-active]");
+      var companies = document.querySelector("[data-companies]");
+      function esc(value){return String(value || "").replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+      function splitCompany(value) {
+        var parts = String(value || "").split(/[·,]/).map(function(part){return part.trim();}).filter(Boolean);
+        return {
+          company: parts[0] || "Без компании",
+          store: parts.slice(1).join(" · ") || "Основная торговая точка"
+        };
+      }
+      function source(){
+        var api = window.TouchSpaceAcademy || {};
+        var managed = api.getManagedUsers ? api.getManagedUsers().filter(function(user){return user.type === "student";}) : [];
+        return (managed.length ? managed : fallback).map(function(user,index){
+          var placement = splitCompany(user.company || fallback[index % fallback.length].company);
+          return { name:user.name, email:user.email || "email не указан", company:placement.company, store:placement.store, status:user.status || (index === 2 ? "draft" : "active"), courses:user.courses || (index + 3) };
+        });
+      }
+      function fillCompanies(rows){
+        var current = company.value;
+        var api = window.TouchSpaceAcademy || {};
+        var savedCompanies = api.getAdminCompanies ? api.getAdminCompanies().map(function(item){return item.name;}) : [];
+        var names = Array.from(new Set(rows.map(function(row){return row.company;}).concat(savedCompanies))).filter(Boolean).sort();
+        company.innerHTML = '<option value="">Все компании</option>' + names.map(function(name){return '<option value="' + esc(name) + '">' + esc(name) + '</option>';}).join("");
+        company.value = names.indexOf(current) >= 0 ? current : "";
+      }
+      function groupRows(rows) {
+        var tree = {};
+        rows.forEach(function(row) {
+          tree[row.company] = tree[row.company] || {};
+          tree[row.company][row.store] = tree[row.company][row.store] || [];
+          tree[row.company][row.store].push(row);
+        });
+        return tree;
+      }
+      function render(){
+        var rows = source();
+        fillCompanies(rows);
+        var q = search.value.trim().toLowerCase();
+        var companyValue = company.value;
+        var statusValue = status.value;
+        var filtered = rows.filter(function(row){
+          var haystack = [row.name,row.email,row.company,row.store].join(" ").toLowerCase();
+          return (!q || haystack.indexOf(q) >= 0) && (!companyValue || row.company === companyValue) && (!statusValue || row.status === statusValue);
+        });
+        total.textContent = rows.length;
+        active.textContent = rows.filter(function(row){return row.status === "active";}).length;
+        companies.textContent = new Set(rows.map(function(row){return row.company + " / " + row.store;})).size;
+        if (!filtered.length) {
+          list.innerHTML = '<div class="empty">По этим фильтрам реселлеры не найдены.</div>';
+          return;
+        }
+        var tree = groupRows(filtered);
+        list.innerHTML = Object.keys(tree).sort().map(function(companyName){
+          var stores = tree[companyName];
+          var companyCount = Object.keys(stores).reduce(function(sum,storeName){return sum + stores[storeName].length;},0);
+          return '<article class="company-node"><div class="company-head"><div class="company-title"><div class="company-icon">К</div><div><strong>' + esc(companyName) + '</strong><small>' + Object.keys(stores).length + ' торговых точек</small></div></div><span class="badge green">' + companyCount + ' реселлеров</span></div><div class="store-list">' +
+            Object.keys(stores).sort().map(function(storeName){
+              var resellers = stores[storeName];
+              return '<section class="store-node"><div class="store-head"><strong>' + esc(storeName) + '</strong><span class="muted">' + resellers.length + ' реселлеров</span></div><div class="reseller-list">' +
+                resellers.map(function(row){
+                  var statusText = row.status === "active" ? "Активен" : "Приглашение";
+                  var initials = row.name.split(/\s+/).map(function(part){return part.charAt(0);}).join("").slice(0,2).toUpperCase();
+                  return '<div class="reseller-row"><div class="person"><div class="avatar">' + esc(initials) + '</div><div class="name"><strong>' + esc(row.name) + '</strong><small>' + esc(row.email) + '</small></div></div><span class="badge ' + (row.status === "active" ? "green" : "") + '">' + statusText + '</span><span class="muted">' + esc(row.courses) + ' курсов</span></div>';
+                }).join("") +
+              '</div></section>';
+            }).join("") +
+          '</div></article>';
+        }).join("");
+      }
+      [search,company,status].forEach(function(node){node.addEventListener("input",render);node.addEventListener("change",render);});
+      window.addEventListener("ts-academy-admin-accounts-change", render);
+      window.addEventListener("ts-academy-admin-companies-change", render);
+      render();
+    })();
+  </script>
+</body>
+</html>

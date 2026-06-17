@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TouchSpace Академия — кабинет администратора тестов</title>
+  <style>
+    :root{
+      --bg:#eef4ff;--bg2:#f7f9ff;--card:rgba(255,255,255,.84);--card2:#fff;--text:#172033;--muted:#69758c;--blue:#0a84ff;--blue2:#5f93ff;--green:#35a777;--red:#d95656;--amber:#f0a735;--line:rgba(23,32,51,.09);--shadow:0 24px 70px rgba(36,72,130,.12);--shadow2:0 16px 42px rgba(36,72,130,.10);--r1:18px;--r2:24px;--r3:34px;--side:76px;--max:1500px;
+    }
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:radial-gradient(circle at 22% 3%,#dbeaff 0,transparent 30%),linear-gradient(135deg,var(--bg),var(--bg2));color:var(--text)}
+    a{color:inherit;text-decoration:none} button,input,textarea,select{font:inherit}.page{max-width:var(--max);margin:0 auto;padding:24px}.shell{display:grid;grid-template-columns:var(--side) minmax(0,1fr);gap:24px}.sidebar{position:sticky;top:24px;height:calc(100vh - 48px);border:1px solid var(--line);background:rgba(255,255,255,.72);backdrop-filter:blur(18px);border-radius:32px;box-shadow:var(--shadow2);display:flex;flex-direction:column;align-items:center;padding:18px 10px;gap:14px}.brand-dot{width:42px;height:42px;border-radius:16px;background:linear-gradient(135deg,var(--blue),var(--blue2));display:grid;place-items:center;color:#fff;font-weight:950;box-shadow:0 12px 26px rgba(10,132,255,.25)}.navicon{width:46px;height:46px;border-radius:18px;display:grid;place-items:center;color:#7b8799;background:rgba(255,255,255,.56);border:1px solid transparent;font-weight:900}.navicon.active,.navicon:hover{background:#fff;color:var(--blue);border-color:var(--line);box-shadow:0 10px 25px rgba(36,72,130,.08)}.main{min-width:0}.topbar{height:68px;display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:14px}.crumbs{font-size:14px;color:var(--muted);font-weight:700}.top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.search{background:rgba(255,255,255,.74);border:1px solid var(--line);height:48px;border-radius:18px;display:flex;align-items:center;padding:0 18px;min-width:280px;color:var(--muted);box-shadow:0 10px 30px rgba(36,72,130,.06)}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r3);box-shadow:var(--shadow);backdrop-filter:blur(18px)}.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:17px;padding:12px 16px;background:var(--blue);color:#fff;font-weight:850;box-shadow:0 14px 28px rgba(10,132,255,.22);cursor:pointer}.btn.secondary{background:#fff;color:var(--text);border:1px solid var(--line);box-shadow:var(--shadow2)}.btn.ghost{background:rgba(255,255,255,.56);color:#4f5d72;border:1px solid var(--line);box-shadow:none}.btn.danger{background:#fff5f5;color:#a43d3d;border:1px solid rgba(217,86,86,.24);box-shadow:none}.btn.small{padding:9px 12px;border-radius:14px;font-size:13px}.eyebrow{display:inline-flex;gap:8px;align-items:center;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.09em;color:var(--blue);margin:0 0 12px}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;color:#4d5b71;font-weight:800;font-size:12px}.admin-hero{padding:30px;margin-bottom:22px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:22px;align-items:end}.admin-hero h1{margin:0 0 12px;font-size:48px;line-height:.98;letter-spacing:-.058em}.admin-hero p{margin:0;color:var(--muted);line-height:1.55;max-width:900px}.hero-stats{display:grid;grid-template-columns:repeat(3,112px);gap:10px}.stat{background:#fff;border:1px solid var(--line);border-radius:22px;padding:14px}.stat b{font-size:24px;display:block;letter-spacing:-.04em}.stat span{font-size:12px;color:var(--muted);font-weight:750}.builder{display:grid;grid-template-columns:286px minmax(410px,1fr) 360px;gap:18px;align-items:start}.panel{padding:18px;border-radius:28px;background:rgba(255,255,255,.70);border:1px solid var(--line);box-shadow:var(--shadow2);backdrop-filter:blur(16px)}.panel.sticky{position:sticky;top:24px}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px}.panel-head h2{font-size:16px;margin:0;letter-spacing:-.02em}.panel-head p{font-size:13px;color:var(--muted);margin:5px 0 0;line-height:1.35}.module-list{display:grid;gap:10px}.module-tile{width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:20px;padding:13px;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}.module-tile:hover{transform:translateY(-1px);border-color:rgba(10,132,255,.28);box-shadow:0 12px 28px rgba(36,72,130,.08)}.module-tile strong{display:block;font-size:14px;margin-bottom:6px}.module-tile span{display:block;color:var(--muted);font-size:12px;line-height:1.35}.module-type{display:inline-flex;margin-bottom:9px;border-radius:999px;background:#edf5ff;color:var(--blue);font-size:11px;font-weight:900;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}.canvas-card{padding:0;overflow:hidden}.test-meta{padding:18px;display:grid;grid-template-columns:1.2fr .8fr;gap:12px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.56)}.field{display:grid;gap:7px}.field label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:#718095}.input,.textarea,.select{width:100%;border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px 13px;color:var(--text);outline:none}.textarea{min-height:92px;resize:vertical;line-height:1.45}.input:focus,.textarea:focus,.select:focus{border-color:rgba(10,132,255,.5);box-shadow:0 0 0 4px rgba(10,132,255,.08)}.canvas-toolbar{padding:14px 18px;display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px solid var(--line)}.canvas-toolbar b{letter-spacing:-.02em}.question-list{padding:18px;display:grid;gap:12px;min-height:360px}.empty{border:1px dashed rgba(23,32,51,.18);background:rgba(255,255,255,.48);border-radius:26px;padding:34px;text-align:center;color:var(--muted);line-height:1.5}.q-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:15px;cursor:pointer;box-shadow:0 10px 26px rgba(36,72,130,.06);transition:border-color .14s ease,box-shadow .14s ease,transform .14s ease}.q-card.selected{border-color:rgba(10,132,255,.64);box-shadow:0 0 0 4px rgba(10,132,255,.09),0 12px 28px rgba(36,72,130,.08)}.q-card:hover{transform:translateY(-1px)}.q-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.q-title{display:flex;gap:11px;align-items:flex-start}.q-num{width:36px;height:36px;border-radius:14px;background:#edf5ff;color:var(--blue);display:grid;place-items:center;font-weight:950;flex:0 0 auto}.q-title strong{display:block;font-size:15px;letter-spacing:-.02em}.q-title span{display:block;color:var(--muted);font-size:12px;margin-top:4px}.q-actions{display:flex;gap:6px}.preview{margin-top:12px;border-radius:18px;background:#f7faff;border:1px solid rgba(23,32,51,.06);padding:12px}.preview-list{display:grid;gap:8px;margin-top:10px}.preview-answer{background:#fff;border:1px solid var(--line);border-radius:14px;padding:9px 10px;font-size:13px}.preview-answer.correct{border-color:rgba(53,167,119,.34);background:#f2fbf7}.preview-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}.editor-body{display:grid;gap:13px}.editor-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.editor-actions .btn{width:100%}.editor-empty{color:var(--muted);line-height:1.5;background:#fff;border:1px dashed rgba(23,32,51,.18);border-radius:22px;padding:22px}.answer-editor-list,.pair-editor-list{display:grid;gap:10px}.answer-edit,.pair-edit{background:#fff;border:1px solid var(--line);border-radius:18px;padding:11px;display:grid;gap:9px}.answer-line{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center}.answer-line input[type="radio"],.answer-line input[type="checkbox"]{width:18px;height:18px}.mini-label{font-size:11px;color:var(--muted);font-weight:850;text-transform:uppercase;letter-spacing:.07em}.pair-edit{grid-template-columns:1fr 1fr auto;align-items:end}.json-box{min-height:150px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;white-space:pre;overflow:auto}.toast{position:fixed;right:24px;bottom:24px;background:#172033;color:#fff;border-radius:18px;padding:13px 15px;box-shadow:0 18px 44px rgba(23,32,51,.25);opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translateY(0)}
+    .inline-edit{width:100%;border:1px solid transparent;background:rgba(255,255,255,.74);border-radius:14px;padding:9px 10px;color:var(--text);outline:none;line-height:1.35;transition:border-color .14s ease,box-shadow .14s ease,background .14s ease}.inline-edit:hover{border-color:rgba(10,132,255,.18);background:#fff}.inline-edit:focus{border-color:rgba(10,132,255,.50);box-shadow:0 0 0 4px rgba(10,132,255,.08);background:#fff}.inline-question{font-size:16px;margin:0 0 10px;min-height:44px;resize:vertical}.inline-title{font-weight:850;font-size:15px;letter-spacing:-.02em;padding:5px 7px;margin:-5px -7px 0}.preview-answer.inline-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}.preview-answer.inline-row .inline-edit{background:transparent;padding:4px 6px;margin:-4px -6px}.preview-answer.inline-row.correct{border-color:rgba(53,167,119,.34);background:#f2fbf7}.inline-correct{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:900;color:#718095;cursor:pointer;white-space:nowrap}.inline-correct.is-on{color:#1d8e62;border-color:rgba(53,167,119,.35);background:#eaf8f1}.preview-pair.inline-pair{grid-template-columns:1fr 1fr}.preview-pair .preview-answer{min-width:0}.field-hint{font-size:11px;color:#7a879a;line-height:1.35;margin-top:-4px}.autoclear-note{border:1px solid rgba(10,132,255,.12);background:#f5faff;border-radius:16px;padding:10px 12px;color:#607087;font-size:12px;line-height:1.4}
+
+    @media(max-width:1240px){.builder{grid-template-columns:250px minmax(360px,1fr)}.editor-panel{grid-column:1/-1;position:relative!important;top:auto!important}.admin-hero{grid-template-columns:1fr}.hero-stats{grid-template-columns:repeat(3,1fr)}}
+
+    .student-overlay{position:fixed;inset:0;z-index:50;display:none;overflow:auto;background:radial-gradient(circle at 18% 0,#dcecff 0,transparent 34%),linear-gradient(135deg,#eef4ff,#f8fbff);padding:28px;color:var(--text)}
+    .student-overlay.show{display:block}
+    .student-shell{max-width:1180px;margin:0 auto;padding:0 0 42px}
+    .student-head{position:sticky;top:0;z-index:30;margin-bottom:20px;padding:22px 24px;border-radius:0 0 32px 32px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-top:0;box-shadow:var(--shadow);backdrop-filter:blur(22px);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;transition:transform .22s ease, opacity .18s ease, box-shadow .18s ease;will-change:transform}.student-head.is-hidden{transform:translateY(calc(-100% - 8px));opacity:.96;box-shadow:none;pointer-events:none}.student-head.is-pinned{transform:translateY(0)}
+    .student-head h2{margin:0 0 8px;font-size:36px;line-height:1;letter-spacing:-.055em}.student-head p{margin:0;color:var(--muted);line-height:1.45;max-width:760px}.student-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+    .student-body{display:grid;gap:16px}.student-q{background:rgba(255,255,255,.84);border:1px solid var(--line);border-radius:30px;box-shadow:var(--shadow2);padding:20px;backdrop-filter:blur(16px)}.student-q h3{margin:0 0 14px;font-size:22px;line-height:1.18;letter-spacing:-.035em}.student-q p{margin:0;color:var(--muted);line-height:1.55}.student-q .textarea{background:#fff;min-height:116px;margin-top:10px}
+    .student-option{display:grid;grid-template-columns:22px minmax(0,1fr);gap:12px;align-items:center;padding:13px 14px;border:1px solid var(--line);border-radius:18px;background:#fff;margin:8px 0;cursor:pointer;transition:border-color .14s ease,box-shadow .14s ease,background .14s ease,transform .14s ease}.student-option:hover{border-color:rgba(10,132,255,.28);box-shadow:0 10px 24px rgba(36,72,130,.07);transform:translateY(-1px)}.student-option input{width:18px;height:18px;accent-color:var(--blue)}.student-option:has(input:checked){background:#f0f7ff;border-color:rgba(10,132,255,.42);box-shadow:0 0 0 4px rgba(10,132,255,.06)}.student-option.correct{background:#effbf5!important;border-color:rgba(53,167,119,.48)!important;box-shadow:0 0 0 4px rgba(53,167,119,.08)!important}.student-option.wrong{background:#fff4f4!important;border-color:rgba(217,86,86,.42)!important;box-shadow:0 0 0 4px rgba(217,86,86,.08)!important}.student-option.correct span::after{content:"  ✓ верно";color:#1d8e62;font-size:12px;font-weight:900}.student-option.wrong span::after{content:"  ✕ неверно";color:#b54343;font-size:12px;font-weight:900}.student-option span{font-weight:750;color:#26344a}
+    .student-match{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-top:10px}.student-statement,.student-answer{min-height:64px;border-radius:18px;padding:13px 14px;display:flex;align-items:center;line-height:1.35}.student-statement{background:#f7faff;border:1px solid rgba(23,32,51,.07);font-weight:760;color:#26344a}.student-answer{background:#fff;border:1px solid var(--line);font-weight:800;cursor:grab;box-shadow:0 8px 20px rgba(36,72,130,.06);transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease,background .14s ease}.student-answer:hover{border-color:rgba(10,132,255,.28);transform:translateY(-1px)}.student-answer.active{border-color:rgba(10,132,255,.55);background:#edf6ff;box-shadow:0 0 0 4px rgba(10,132,255,.08)}.student-answer.over{border-color:rgba(10,132,255,.58);box-shadow:0 0 0 4px rgba(10,132,255,.10),0 14px 28px rgba(36,72,130,.10)}.student-answer.correct{border-color:rgba(53,167,119,.42);background:#f0fbf6}.student-answer.wrong{border-color:rgba(217,86,86,.32);background:#fff6f6}
+    .student-result{display:none;background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:30px;box-shadow:var(--shadow);padding:22px}.student-result.show{display:block}.student-result b{display:block;font-size:32px;letter-spacing:-.04em}.student-result b.ok{color:#1d8e62}.student-result b.bad{color:#b54343}.student-result p{margin:8px 0 0;color:var(--muted);line-height:1.45}
+
+    @media(max-width:860px){.student-overlay{padding:14px}.student-head{position:sticky;top:0;grid-template-columns:1fr}.student-head h2{font-size:30px}.student-actions{justify-content:flex-start}.student-match{grid-template-columns:1fr}.page{padding:14px}.shell{grid-template-columns:1fr}.sidebar{position:relative;height:auto;top:0;flex-direction:row;border-radius:24px;overflow:auto}.topbar{height:auto;flex-direction:column;align-items:flex-start}.search{min-width:100%}.builder{grid-template-columns:1fr}.panel.sticky{position:relative;top:auto}.admin-hero h1{font-size:36px}.test-meta{grid-template-columns:1fr}.pair-edit{grid-template-columns:1fr}.preview-pair{grid-template-columns:1fr}.hero-stats{grid-template-columns:1fr 1fr 1fr}}
+    @media(max-width:560px){.hero-stats{grid-template-columns:1fr}.q-top{flex-direction:column}.q-actions{width:100%}.q-actions .btn{flex:1}.admin-hero{padding:22px}.panel{padding:14px}}
+  </style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+<div class="page"><div class="shell">
+  <aside class="sidebar" aria-label="Навигация"></aside>
+  <main class="main">
+    <header class="header" data-search-placeholder="Поиск по модулям и вопросам"></header>
+    <div class="topbar"><div class="crumbs">TouchSpace Академия / Кабинет администратора / Конструктор тестов</div><div class="top-actions"><button class="btn secondary small" data-load-demo>Демо-данные</button></div></div>
+    <section class="admin-hero card">
+      <div><p class="eyebrow">Администратор · Конструктор тестов</p><h1>Кабинет создания тестов</h1><p>Прототип поля администратора: модули доступны слева, тест собирается в центре, выбранный вопрос редактируется справа. Для вопросных модулей можно менять формулировки, варианты ответов и правильные ответы.</p></div>
+      <div class="hero-stats"><div class="stat"><b data-stat-modules>6</b><span>модулей</span></div><div class="stat"><b data-stat-questions>0</b><span>в тесте</span></div><div class="stat"><b data-stat-points>0</b><span>баллов</span></div></div>
+    </section>
+    <section class="builder">
+      <aside class="panel sticky">
+        <div class="panel-head"><div><h2>Библиотека модулей</h2><p>Нажмите на модуль, чтобы добавить его в тест.</p></div></div>
+        <div class="module-list" data-module-list></div>
+      </aside>
+      <section class="canvas-card card">
+        <div class="test-meta">
+          <div class="field"><label>Название теста</label><input class="input" data-test-title value="Coswick: расширенный тест для реселлера"></div>
+          <div class="field"><label>Проходной балл</label><input class="input" data-pass-score type="number" min="1" value="12"></div>
+          <div class="field" style="grid-column:1/-1"><label>Описание</label><textarea class="textarea" data-test-description>Сценарная проверка: ассортимент, аргументация, подбор под клиента, возражения и корректные обещания по продукту.</textarea></div>
+        </div>
+        <div class="canvas-toolbar"><b>Состав теста</b><div class="top-actions"><button class="btn small preview-launch" data-test-run>▶ Тестовый запуск</button><button class="btn ghost small" data-export-json>Экспорт JSON</button><button class="btn ghost small" data-clear-test>Очистить</button></div></div>
+        <div class="question-list" data-question-list></div>
+      </section>
+      <aside class="panel sticky editor-panel">
+        <div class="panel-head"><div><h2>Редактор модуля</h2><p>Выберите вопрос в центре или добавьте новый модуль.</p></div></div>
+        <div class="editor-body" data-editor></div>
+      </aside>
+    </section>
+  </main>
+</div></div>
+<div class="toast" data-toast></div>
+<div class="student-overlay" data-student-overlay><div class="student-shell"><div class="student-head"><div><p class="eyebrow">Тестовый запуск</p><h2 data-student-title>Предпросмотр теста</h2><p data-student-desc></p></div><div class="student-actions"><button class="btn secondary small" data-student-check>Проверить</button><button class="btn ghost small" data-student-restart>Начать заново</button><button class="btn danger small" data-student-close>Вернуться к редактированию</button></div></div><div class="student-body" data-student-body></div></div></div>
+<script>
+(function(){
+  var moduleDefs = [
+    {type:'single_choice', label:'Один правильный ответ', tag:'Вопрос', desc:'Сценарный вопрос с одним точным решением.', defaults:{title:'Сценарный вопрос с одним ответом', question:'Клиент просит покрытие для кухни-гостиной. Что уточнить первым?', points:1, answers:[{text:'Условия эксплуатации и ожидания по уходу', correct:true},{text:'Только желаемую скидку', correct:false},{text:'Сразу назвать самую дорогую коллекцию', correct:false}]}},
+    {type:'multiple_choice', label:'Несколько правильных ответов', tag:'Вопрос', desc:'Чек-лист с несколькими важными действиями.', defaults:{title:'Профессиональный чек-лист', question:'Что нужно проверить перед рекомендацией покрытия?', points:2, answers:[{text:'Тип помещения и нагрузку', correct:true},{text:'Основание и требования к монтажу', correct:true},{text:'Ожидания по дизайну и уходу', correct:true},{text:'Только наличие акции', correct:false}]}},
+    {type:'true_false', label:'Верно / неверно', tag:'Вопрос', desc:'Быстрая проверка корректности утверждения.', defaults:{title:'Проверка утверждения', question:'Свойства одной коллекции можно автоматически переносить на весь бренд.', points:1, correct:false}},
+    {type:'matching_true_swap', label:'Соответствие с перестановкой', tag:'Вопрос', desc:'Две колонки: запрос клиента и правильный аргумент.', defaults:{title:'Соотнесите запрос и аргумент', question:'Переместите ответы напротив правильных запросов клиента.', points:3, pairs:[{statement:'Клиент хочет спокойный премиальный интерьер', answer:'Покажите натуральные оттенки и крупный формат.'},{statement:'Клиент боится сложного ухода', answer:'Обсудите режим эксплуатации и правила обслуживания.'},{statement:'Клиент сравнивает только цену', answer:'Верните разговор к сроку службы, внешнему виду и задачам помещения.'}]}},
+    {type:'short_text', label:'Короткий текстовый ответ', tag:'Вопрос', desc:'Проверка термина, понятия или короткой формулировки.', defaults:{title:'Короткий ответ', question:'Как одним словом назвать уточнение задачи клиента перед подбором продукта?', points:2, accepted:['диагностика','диагностика потребности','бриф']}},
+    {type:'info_block', label:'Информационный блок', tag:'Контент', desc:'Вводная, подсказка или смысловой переход без оценки.', defaults:{title:'Пояснение перед блоком', text:'Используйте этот блок, чтобы дать вводный контекст перед группой вопросов.', points:0}}
+  ];
+  var state = {items:[], selectedId:null};
+  var els = {
+    modules:document.querySelector('[data-module-list]'), list:document.querySelector('[data-question-list]'), editor:document.querySelector('[data-editor]'),
+    title:document.querySelector('[data-test-title]'), pass:document.querySelector('[data-pass-score]'), desc:document.querySelector('[data-test-description]'),
+    statQ:document.querySelector('[data-stat-questions]'), statP:document.querySelector('[data-stat-points]'), toast:document.querySelector('[data-toast]'), student:document.querySelector('[data-student-overlay]'), studentHead:document.querySelector('.student-head'), studentBody:document.querySelector('[data-student-body]'), studentTitle:document.querySelector('[data-student-title]'), studentDesc:document.querySelector('[data-student-desc]')
+  };
+  function uid(){ return 'q_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7); }
+  function clone(o){ return JSON.parse(JSON.stringify(o)); }
+  function def(type){ return moduleDefs.find(function(m){return m.type===type;}); }
+  function selected(){ return state.items.find(function(i){return i.id===state.selectedId;}); }
+  function toast(msg){ els.toast.textContent = msg; els.toast.classList.add('show'); setTimeout(function(){els.toast.classList.remove('show');},1600); }
+  function points(){ return state.items.reduce(function(s,i){return s + (Number(i.points)||0);},0); }
+  function renderModules(){
+    els.modules.innerHTML = moduleDefs.map(function(m){return '<button class="module-tile" data-add="'+m.type+'"><span class="module-type">'+m.tag+'</span><strong>'+m.label+'</strong><span>'+m.desc+'</span></button>';}).join('');
+    els.modules.querySelectorAll('[data-add]').forEach(function(btn){btn.addEventListener('click',function(){addModule(btn.dataset.add);});});
+    document.querySelector('[data-stat-modules]').textContent = moduleDefs.length;
+  }
+  function addModule(type){ var d=def(type); var item=Object.assign({id:uid(), type:type}, clone(d.defaults)); state.items.push(item); state.selectedId=item.id; render(); toast('Модуль добавлен'); }
+  function typeLabel(type){ var d=def(type); return d?d.label:type; }
+  function move(id, dir){ var i=state.items.findIndex(function(x){return x.id===id;}); var j=i+dir; if(i<0||j<0||j>=state.items.length)return; var t=state.items[i]; state.items[i]=state.items[j]; state.items[j]=t; render(); }
+  function remove(id){ var i=state.items.findIndex(function(x){return x.id===id;}); if(i<0)return; state.items.splice(i,1); if(state.selectedId===id) state.selectedId=state.items[0] ? state.items[0].id : null; render(); }
+  function duplicate(id){ var item=state.items.find(function(x){return x.id===id;}); if(!item)return; var copy=clone(item); copy.id=uid(); copy.title += ' — копия'; state.items.push(copy); state.selectedId=copy.id; render(); }
+  function preview(item){
+    var qInput = '<textarea class="inline-edit inline-question" data-inline-question="'+item.id+'">'+escapeHtml(item.question||item.text||'')+'</textarea>';
+    if(item.type==='single_choice'||item.type==='multiple_choice') return qInput+'<div class="preview-list">'+item.answers.map(function(a,i){return '<div class="preview-answer inline-row '+(a.correct?'correct':'')+'"><input class="inline-edit" data-inline-answer="'+item.id+'" data-answer-index="'+i+'" value="'+attr(a.text)+'"><button class="inline-correct '+(a.correct?'is-on':'')+'" data-inline-correct="'+item.id+'" data-answer-index="'+i+'">'+(a.correct?'Верный':'Неверный')+'</button></div>';}).join('')+'</div>';
+    if(item.type==='true_false') return qInput+'<div class="preview-list"><button class="preview-answer inline-row '+(item.correct?'correct':'')+'" data-inline-tf="'+item.id+'" data-tf="true"><span>Верно</span><span class="inline-correct '+(item.correct?'is-on':'')+'">'+(item.correct?'Верный':'Выбрать')+'</span></button><button class="preview-answer inline-row '+(!item.correct?'correct':'')+'" data-inline-tf="'+item.id+'" data-tf="false"><span>Неверно</span><span class="inline-correct '+(!item.correct?'is-on':'')+'">'+(!item.correct?'Верный':'Выбрать')+'</span></button></div>';
+    if(item.type==='matching_true_swap') return qInput+'<div class="preview-list">'+item.pairs.map(function(p,i){return '<div class="preview-pair inline-pair"><div class="preview-answer"><input class="inline-edit" data-inline-pair-statement="'+item.id+'" data-pair-index="'+i+'" value="'+attr(p.statement)+'"></div><div class="preview-answer correct"><input class="inline-edit" data-inline-pair-answer="'+item.id+'" data-pair-index="'+i+'" value="'+attr(p.answer)+'"></div></div>';}).join('')+'</div>';
+    if(item.type==='short_text') return qInput+'<div class="preview-list"><textarea class="inline-edit" data-inline-accepted="'+item.id+'">'+escapeHtml(item.accepted.join('\n'))+'</textarea></div>';
+    if(item.type==='info_block') return '<textarea class="inline-edit inline-question" data-inline-info="'+item.id+'">'+escapeHtml(item.text||'')+'</textarea>';
+    return qInput;
+  }
+  function renderList(){
+    if(!state.items.length){ els.list.innerHTML='<div class="empty"><b>Тест пока пустой.</b><br>Добавьте модуль из библиотеки слева. Вопросы появятся здесь, а параметры выбранного вопроса — справа.</div>'; return; }
+    els.list.innerHTML = state.items.map(function(item,idx){return '<article class="q-card '+(item.id===state.selectedId?'selected':'')+'" data-select="'+item.id+'"><div class="q-top"><div class="q-title"><span class="q-num">'+String(idx+1).padStart(2,'0')+'</span><div><input class="inline-edit inline-title" data-inline-title="'+item.id+'" value="'+attr(item.title||typeLabel(item.type))+'"><span>'+typeLabel(item.type)+' · '+(Number(item.points)||0)+' балл.</span></div></div><div class="q-actions"><button class="btn ghost small" data-up="'+item.id+'">↑</button><button class="btn ghost small" data-down="'+item.id+'">↓</button><button class="btn ghost small" data-copy="'+item.id+'">⧉</button><button class="btn danger small" data-delete="'+item.id+'">×</button></div></div><div class="preview">'+preview(item)+'</div></article>';}).join('');
+    els.list.querySelectorAll('[data-select]').forEach(function(card){card.addEventListener('click',function(e){ if(e.target.closest('button')||e.target.closest('input')||e.target.closest('textarea')||e.target.closest('select'))return; state.selectedId=card.dataset.select; render(); });});
+    els.list.querySelectorAll('[data-up]').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();move(b.dataset.up,-1);});});
+    els.list.querySelectorAll('[data-down]').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();move(b.dataset.down,1);});});
+    els.list.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();duplicate(b.dataset.copy);});});
+    els.list.querySelectorAll('[data-delete]').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();remove(b.dataset.delete);});});
+    bindInlineCanvas();
+  }
+  function findItem(id){ return state.items.find(function(x){return x.id===id;}); }
+  function syncEditorIfSelected(id){ if(state.selectedId===id) renderEditor(); }
+  function bindInlineCanvas(){
+    els.list.querySelectorAll('input, textarea, button').forEach(function(el){ el.addEventListener('click',function(e){e.stopPropagation();}); el.addEventListener('mousedown',function(e){e.stopPropagation();}); });
+    els.list.querySelectorAll('[data-inline-title]').forEach(function(input){input.addEventListener('focus',function(){state.selectedId=input.dataset.inlineTitle; markSelectedOnly();}); input.addEventListener('input',function(){var item=findItem(input.dataset.inlineTitle); if(item){item.title=input.value; syncEditorIfSelected(item.id); renderStats();}});});
+    els.list.querySelectorAll('[data-inline-question]').forEach(function(input){input.addEventListener('focus',function(){state.selectedId=input.dataset.inlineQuestion; markSelectedOnly();}); input.addEventListener('input',function(){var item=findItem(input.dataset.inlineQuestion); if(item){item.question=input.value; syncEditorIfSelected(item.id);}});});
+    els.list.querySelectorAll('[data-inline-info]').forEach(function(input){input.addEventListener('focus',function(){state.selectedId=input.dataset.inlineInfo; markSelectedOnly();}); input.addEventListener('input',function(){var item=findItem(input.dataset.inlineInfo); if(item){item.text=input.value; syncEditorIfSelected(item.id);}});});
+    els.list.querySelectorAll('[data-inline-answer]').forEach(function(input){input.addEventListener('focus',function(){state.selectedId=input.dataset.inlineAnswer; markSelectedOnly();}); input.addEventListener('input',function(){var item=findItem(input.dataset.inlineAnswer), i=Number(input.dataset.answerIndex); if(item&&item.answers[i]){item.answers[i].text=input.value; syncEditorIfSelected(item.id);}});});
+    els.list.querySelectorAll('[data-inline-correct]').forEach(function(btn){btn.addEventListener('click',function(e){e.preventDefault(); var item=findItem(btn.dataset.inlineCorrect), i=Number(btn.dataset.answerIndex); if(!item||!item.answers[i])return; state.selectedId=item.id; if(item.type==='single_choice') item.answers.forEach(function(a,idx){a.correct=idx===i;}); else item.answers[i].correct=!item.answers[i].correct; render();});});
+    els.list.querySelectorAll('[data-inline-tf]').forEach(function(btn){btn.addEventListener('click',function(e){e.preventDefault(); var item=findItem(btn.dataset.inlineTf); if(!item)return; state.selectedId=item.id; item.correct=btn.dataset.tf==='true'; render();});});
+    els.list.querySelectorAll('[data-inline-pair-statement]').forEach(function(input){input.addEventListener('focus',function(){state.selectedId=input.dataset.inlinePairStatement; markSelectedOnly();}); input.addEventListener('input',function(){var item=findItem(input.dataset.inlinePairStatement), i=Number(input.dataset.pairIndex); if(item&&item.pairs[i]){item.pairs[i].statement=input.value; syncEditorIfSelected(item.id);}});});
+    els.list.querySelectorAll('[data-inline-pair-answer]').forEach(function(input){input.addEventListener('focus',function(){state.selectedId=input.dataset.inlinePairAnswer; markSelectedOnly();}); input.addEventListener('input',function(){var item=findItem(input.dataset.inlinePairAnswer), i=Number(input.dataset.pairIndex); if(item&&item.pairs[i]){item.pairs[i].answer=input.value; syncEditorIfSelected(item.id);}});});
+    els.list.querySelectorAll('[data-inline-accepted]').forEach(function(input){input.addEventListener('focus',function(){state.selectedId=input.dataset.inlineAccepted; markSelectedOnly();}); input.addEventListener('input',function(){var item=findItem(input.dataset.inlineAccepted); if(item){item.accepted=input.value.split('\n').map(function(s){return s.trim();}).filter(Boolean); syncEditorIfSelected(item.id);}});});
+  }
+  function markSelectedOnly(){ els.list.querySelectorAll('.q-card').forEach(function(card){card.classList.toggle('selected', card.dataset.select===state.selectedId);}); }
+  function editorCommon(item){ return '<div class="field"><label>Название блока</label><input class="input" data-edit="title" value="'+attr(item.title||'')+'"></div><div class="field"><label>Вопрос / инструкция</label><textarea class="textarea" data-edit="question">'+escapeHtml(item.question||'')+'</textarea></div><div class="field"><label>Баллы</label><input class="input" data-edit="points" type="number" min="0" value="'+(Number(item.points)||0)+'"></div>'; }
+  function renderEditor(){ var item=selected(); if(!item){ els.editor.innerHTML='<div class="editor-empty">Выберите модуль в составе теста или добавьте новый вопрос из библиотеки. Здесь появятся поля для редактирования текста, ответов и правильных вариантов.</div>'; return; }
+    var html='<span class="chip">'+typeLabel(item.type)+'</span><div class="autoclear-note">Поля можно редактировать прямо в карточке теста. В правой панели стандартный текст очищается при первом фокусе.</div>'+editorCommon(item);
+    if(item.type==='single_choice'||item.type==='multiple_choice') html += answerEditor(item);
+    if(item.type==='true_false') html += trueFalseEditor(item);
+    if(item.type==='matching_true_swap') html += pairEditor(item);
+    if(item.type==='short_text') html += shortTextEditor(item);
+    if(item.type==='info_block') html = '<span class="chip">Информационный блок</span><div class="autoclear-note">Этот блок можно править прямо в карточке теста. Стандартный текст справа очищается при первом фокусе.</div><div class="field"><label>Заголовок</label><input class="input" data-edit="title" value="'+attr(item.title||'')+'"></div><div class="field"><label>Текст</label><textarea class="textarea" data-edit="text">'+escapeHtml(item.text||'')+'</textarea></div>';
+    html += '<div class="editor-actions"><button class="btn secondary" data-save-silent>Применить изменения</button><button class="btn" data-editor-test-run>▶ Тестовый запуск</button></div>';
+    els.editor.innerHTML=html; bindEditor(item);
+  }
+  function answerEditor(item){ return '<div class="field"><label>Варианты ответов</label><div class="answer-editor-list">'+item.answers.map(function(a,i){return '<div class="answer-edit"><div class="answer-line"><input type="'+(item.type==='single_choice'?'radio':'checkbox')+'" name="correct" data-correct="'+i+'" '+(a.correct?'checked':'')+'><input class="input" data-answer-text="'+i+'" value="'+attr(a.text)+'"><button class="btn danger small" data-answer-del="'+i+'">×</button></div><span class="mini-label">'+(a.correct?'правильный':'неправильный')+'</span></div>';}).join('')+'</div></div><button class="btn ghost small" data-answer-add>+ Добавить ответ</button>'; }
+  function trueFalseEditor(item){ return '<div class="field"><label>Правильный ответ</label><select class="select" data-edit="correct"><option value="true" '+(item.correct?'selected':'')+'>Верно</option><option value="false" '+(!item.correct?'selected':'')+'>Неверно</option></select></div>'; }
+  function pairEditor(item){ return '<div class="field"><label>Пары соответствия</label><div class="pair-editor-list">'+item.pairs.map(function(p,i){return '<div class="pair-edit"><div class="field"><span class="mini-label">Утверждение</span><input class="input" data-pair-statement="'+i+'" value="'+attr(p.statement)+'"></div><div class="field"><span class="mini-label">Правильный ответ</span><input class="input" data-pair-answer="'+i+'" value="'+attr(p.answer)+'"></div><button class="btn danger small" data-pair-del="'+i+'">×</button></div>';}).join('')+'</div></div><button class="btn ghost small" data-pair-add>+ Добавить пару</button><div class="preview-answer">В ученическом режиме этот модуль рендерится как <b>matching_true_swap</b>: утверждения закреплены, ответы меняются местами только попарно.</div>'; }
+  function shortTextEditor(item){ return '<div class="field"><label>Допустимые ответы</label><textarea class="textarea" data-accepted>'+escapeHtml(item.accepted.join('\n'))+'</textarea><span class="mini-label">каждый вариант с новой строки</span></div>'; }
+  function shouldAutoClear(v){ return ['Новый вариант','Новое утверждение','Новый ответ','Новый вопрос','Новая инструкция','Название вопроса','Новый информационный блок','Краткий текст для участника.'].indexOf(String(v||'').trim())>=0; }
+  function attachAutoClear(root){
+    root.querySelectorAll('input.input, textarea.textarea').forEach(function(el){
+      if(el.dataset.autoclearBound)return; el.dataset.autoclearBound='1';
+      el.addEventListener('focus',function(){
+        if(el.dataset.cleared==='1')return;
+        if(shouldAutoClear(el.value)){ el.value=''; el.dataset.cleared='1'; el.dispatchEvent(new Event('input',{bubbles:true})); }
+        else { try{ el.select(); }catch(e){} }
+      });
+    });
+  }
+  function bindEditor(item){
+    attachAutoClear(els.editor);
+    els.editor.querySelectorAll('[data-edit]').forEach(function(input){input.addEventListener('input',function(){ var k=input.dataset.edit; var val=input.value; if(input.type==='number') val=Number(val); if(k==='correct') val=val==='true'; item[k]=val; renderStats(); renderList(); });});
+    els.editor.querySelectorAll('[data-answer-text]').forEach(function(input){input.addEventListener('input',function(){item.answers[Number(input.dataset.answerText)].text=input.value; renderList();});});
+    els.editor.querySelectorAll('[data-correct]').forEach(function(input){input.addEventListener('change',function(){ var i=Number(input.dataset.correct); if(item.type==='single_choice') item.answers.forEach(function(a,idx){a.correct=idx===i;}); else item.answers[i].correct=input.checked; renderEditor(); renderList();});});
+    var addA=els.editor.querySelector('[data-answer-add]'); if(addA) addA.addEventListener('click',function(){item.answers.push({text:'Новый вариант',correct:false});renderEditor();renderList(); var fresh=els.editor.querySelector('[data-answer-text="'+(item.answers.length-1)+'"]'); if(fresh){fresh.focus();}});
+    els.editor.querySelectorAll('[data-answer-del]').forEach(function(b){b.addEventListener('click',function(){item.answers.splice(Number(b.dataset.answerDel),1); if(item.type==='single_choice'&&!item.answers.some(function(a){return a.correct;})&&item.answers[0])item.answers[0].correct=true; renderEditor();renderList();});});
+    els.editor.querySelectorAll('[data-pair-statement]').forEach(function(input){input.addEventListener('input',function(){item.pairs[Number(input.dataset.pairStatement)].statement=input.value;renderList();});});
+    els.editor.querySelectorAll('[data-pair-answer]').forEach(function(input){input.addEventListener('input',function(){item.pairs[Number(input.dataset.pairAnswer)].answer=input.value;renderList();});});
+    var addP=els.editor.querySelector('[data-pair-add]'); if(addP) addP.addEventListener('click',function(){item.pairs.push({statement:'Новое утверждение',answer:'Новый ответ'});renderEditor();renderList(); var fresh=els.editor.querySelector('[data-pair-statement="'+(item.pairs.length-1)+'"]'); if(fresh){fresh.focus();}});
+    els.editor.querySelectorAll('[data-pair-del]').forEach(function(b){b.addEventListener('click',function(){item.pairs.splice(Number(b.dataset.pairDel),1);renderEditor();renderList();});});
+    var acc=els.editor.querySelector('[data-accepted]'); if(acc) acc.addEventListener('input',function(){item.accepted=acc.value.split('\n').map(function(s){return s.trim();}).filter(Boolean);renderList();});
+    var save=els.editor.querySelector('[data-save-silent]'); if(save) save.addEventListener('click',function(){render();toast('Изменения применены');});
+    var run=els.editor.querySelector('[data-editor-test-run]'); if(run) run.addEventListener('click',function(){render();startStudentPreview();});
+  }
+
+  var studentState = {items:[], answers:{}, selectedMatch:null};
+  function shuffle(arr){ var a=arr.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  var studentScrollMemory = {last:0, ticking:false};
+  function resetStudentHead(){
+    studentScrollMemory.last = 0;
+    if(els.studentHead){
+      els.studentHead.classList.remove('is-hidden');
+      els.studentHead.classList.add('is-pinned');
+    }
+    if(els.student){ els.student.scrollTop = 0; }
+  }
+  function updateStudentHeadOnScroll(){
+    if(!els.studentHead || !els.student.classList.contains('show')) return;
+    var current = els.student.scrollTop || 0;
+    var delta = current - studentScrollMemory.last;
+    if(Math.abs(delta) < 8) return;
+    if(current < 24 || delta < 0){
+      els.studentHead.classList.remove('is-hidden');
+      els.studentHead.classList.add('is-pinned');
+    } else if(delta > 0){
+      els.studentHead.classList.add('is-hidden');
+      els.studentHead.classList.remove('is-pinned');
+    }
+    studentScrollMemory.last = current;
+  }
+  function startStudentPreview(){
+    if(!state.items.length){ toast('Добавьте хотя бы один вопрос'); return; }
+    studentState = {items:clone(state.items), answers:{}, selectedMatch:null};
+    els.studentTitle.textContent = els.title.value || 'Тестовый запуск';
+    els.studentDesc.textContent = (els.desc.value || '') + ' Это режим ученика для проверки собранного теста.';
+    studentState.items.forEach(function(item){
+      if(item.type==='matching_true_swap') studentState.answers[item.id] = shuffle(item.pairs.map(function(p,i){return {text:p.answer, correctIndex:i};}));
+      if(item.type==='single_choice') studentState.answers[item.id] = null;
+      if(item.type==='multiple_choice') studentState.answers[item.id] = [];
+      if(item.type==='true_false') studentState.answers[item.id] = null;
+      if(item.type==='short_text') studentState.answers[item.id] = '';
+    });
+    renderStudentPreview(false);
+    els.student.classList.add('show');
+    resetStudentHead();
+  }
+  function closeStudentPreview(){ els.student.classList.remove('show'); if(els.studentHead){els.studentHead.classList.remove('is-hidden','is-pinned');} }
+  function renderStudentPreview(checked){
+    var questionNo=0;
+    els.studentBody.innerHTML = studentState.items.map(function(item){
+      if(item.type==='info_block') return '<section class="student-q"><h3>'+escapeHtml(item.title||'Пояснение')+'</h3><p>'+escapeHtml(item.text||'')+'</p></section>';
+      questionNo++;
+      var html='<section class="student-q" data-student-q="'+item.id+'"><h3>'+questionNo+'. '+escapeHtml(item.question||item.title||typeLabel(item.type))+'</h3>';
+      if(item.type==='single_choice'){
+        var singleAttempted = studentState.answers[item.id] !== null && studentState.answers[item.id] !== undefined;
+        html += item.answers.map(function(a,i){
+          var picked = studentState.answers[item.id]===i;
+          var cls = (checked && singleAttempted) ? (a.correct ? ' correct' : (picked ? ' wrong' : '')) : '';
+          return '<label class="student-option'+cls+'"><input type="radio" name="s_'+item.id+'" data-student-single="'+item.id+'" value="'+i+'" '+(picked?'checked':'')+'><span>'+escapeHtml(a.text)+'</span></label>';
+        }).join('');
+      } else if(item.type==='multiple_choice'){
+        var multiAttempted = (studentState.answers[item.id]||[]).length > 0;
+        html += item.answers.map(function(a,i){
+          var picked = (studentState.answers[item.id]||[]).indexOf(i)>=0;
+          var cls = (checked && multiAttempted) ? (a.correct ? ' correct' : (picked ? ' wrong' : '')) : '';
+          return '<label class="student-option'+cls+'"><input type="checkbox" data-student-multi="'+item.id+'" value="'+i+'" '+(picked?'checked':'')+'><span>'+escapeHtml(a.text)+'</span></label>';
+        }).join('');
+      } else if(item.type==='true_false'){
+        var tPicked = studentState.answers[item.id]===true;
+        var fPicked = studentState.answers[item.id]===false;
+        var tfAttempted = tPicked || fPicked;
+        var tCls = (checked && tfAttempted) ? (item.correct===true ? ' correct' : (tPicked ? ' wrong' : '')) : '';
+        var fCls = (checked && tfAttempted) ? (item.correct===false ? ' correct' : (fPicked ? ' wrong' : '')) : '';
+        html += '<label class="student-option'+tCls+'"><input type="radio" name="s_'+item.id+'" data-student-tf="'+item.id+'" value="true" '+(tPicked?'checked':'')+'><span>Верно</span></label><label class="student-option'+fCls+'"><input type="radio" name="s_'+item.id+'" data-student-tf="'+item.id+'" value="false" '+(fPicked?'checked':'')+'><span>Неверно</span></label>';
+      } else if(item.type==='short_text'){
+        var rawText = String(studentState.answers[item.id]||'').trim();
+        var val = rawText.toLowerCase();
+        var ok = (item.accepted||[]).some(function(a){return String(a).trim().toLowerCase()===val;});
+        html += '<textarea class="textarea" data-student-text="'+item.id+'" placeholder="Введите ответ">'+escapeHtml(studentState.answers[item.id]||'')+'</textarea>';
+        if(checked && rawText) html += '<div class="preview-answer '+(ok?'correct':'wrong')+'" style="margin-top:10px">'+(ok?'Ответ засчитан':'Ответ не засчитан. Допустимые варианты: '+(item.accepted||[]).map(escapeHtml).join(', '))+'</div>';
+      } else if(item.type==='matching_true_swap'){
+        var answers=studentState.answers[item.id]||[];
+        html += '<div class="student-match">'+item.pairs.map(function(p,i){ var ans=answers[i]||{text:''}; var cls=checked?(ans.correctIndex===i?' correct':' wrong'):''; return '<div class="student-statement">'+escapeHtml(p.statement)+'</div><div class="student-answer'+cls+'" draggable="true" data-student-match="'+item.id+'" data-match-index="'+i+'">'+escapeHtml(ans.text)+'</div>';}).join('')+'</div>';
+      }
+      html += '</section>';
+      return html;
+    }).join('') + '<section class="student-result '+(checked?'show':'')+'" data-student-result></section>';
+    bindStudentPreview();
+    if(checked) showStudentResult();
+  }
+  function bindStudentPreview(){
+    els.studentBody.querySelectorAll('[data-student-single]').forEach(function(input){input.addEventListener('change',function(){studentState.answers[input.dataset.studentSingle]=Number(input.value);});});
+    els.studentBody.querySelectorAll('[data-student-multi]').forEach(function(input){input.addEventListener('change',function(){var id=input.dataset.studentMulti; var arr=studentState.answers[id]||[]; var v=Number(input.value); if(input.checked&&arr.indexOf(v)<0)arr.push(v); if(!input.checked)arr=arr.filter(function(x){return x!==v;}); studentState.answers[id]=arr;});});
+    els.studentBody.querySelectorAll('[data-student-tf]').forEach(function(input){input.addEventListener('change',function(){studentState.answers[input.dataset.studentTf]=input.value==='true';});});
+    els.studentBody.querySelectorAll('[data-student-text]').forEach(function(input){input.addEventListener('input',function(){studentState.answers[input.dataset.studentText]=input.value;});});
+    els.studentBody.querySelectorAll('[data-student-match]').forEach(function(card){
+      card.addEventListener('dragstart',function(e){ e.dataTransfer.setData('text/plain', card.dataset.matchIndex); studentState.selectedMatch={id:card.dataset.studentMatch, index:Number(card.dataset.matchIndex)}; card.classList.add('active'); });
+      card.addEventListener('dragend',function(){ card.classList.remove('active'); els.studentBody.querySelectorAll('.student-answer.over').forEach(function(x){x.classList.remove('over');}); });
+      card.addEventListener('dragover',function(e){ e.preventDefault(); card.classList.add('over'); });
+      card.addEventListener('dragleave',function(){ card.classList.remove('over'); });
+      card.addEventListener('drop',function(e){ e.preventDefault(); var from=studentState.selectedMatch; var to={id:card.dataset.studentMatch, index:Number(card.dataset.matchIndex)}; if(from&&from.id===to.id&&from.index!==to.index){ var arr=studentState.answers[to.id]; var t=arr[from.index]; arr[from.index]=arr[to.index]; arr[to.index]=t; renderStudentPreview(false); } });
+      card.addEventListener('click',function(){ var current={id:card.dataset.studentMatch, index:Number(card.dataset.matchIndex)}; if(!studentState.selectedMatch||studentState.selectedMatch.id!==current.id){ studentState.selectedMatch=current; card.classList.add('active'); return; } if(studentState.selectedMatch.index!==current.index){ var arr=studentState.answers[current.id]; var t=arr[studentState.selectedMatch.index]; arr[studentState.selectedMatch.index]=arr[current.index]; arr[current.index]=t; studentState.selectedMatch=null; renderStudentPreview(false); } });
+    });
+  }
+  function gradeStudent(){
+    var score=0,total=0;
+    studentState.items.forEach(function(item){ if(item.type==='info_block')return; total += Number(item.points)||0; var ok=false;
+      if(item.type==='single_choice'){ var i=studentState.answers[item.id]; ok= item.answers[i] && item.answers[i].correct; }
+      if(item.type==='multiple_choice'){ var chosen=(studentState.answers[item.id]||[]).slice().sort().join(','); var correct=item.answers.map(function(a,i){return a.correct?i:null;}).filter(function(x){return x!==null;}).sort().join(','); ok=chosen===correct; }
+      if(item.type==='true_false'){ ok=studentState.answers[item.id]===item.correct; }
+      if(item.type==='short_text'){ var val=String(studentState.answers[item.id]||'').trim().toLowerCase(); ok=(item.accepted||[]).some(function(a){return String(a).trim().toLowerCase()===val;}); }
+      if(item.type==='matching_true_swap'){ ok=(studentState.answers[item.id]||[]).every(function(a,i){return a.correctIndex===i;}); }
+      if(ok) score += Number(item.points)||0;
+    });
+    return {score:score,total:total,pass:Number(els.pass.value)||0};
+  }
+  function checkStudentPreview(){ renderStudentPreview(true); }
+  function showStudentResult(){ var r=gradeStudent(); var pass=r.score>=r.pass; var box=els.studentBody.querySelector('[data-student-result]'); if(box) box.innerHTML='<b class="'+(pass?'ok':'bad')+'">'+r.score+' из '+r.total+' баллов</b><p>'+(pass?'Проходной балл набран.':'Проходной балл не набран.')+' Порог: '+r.pass+'.</p>'; }
+
+  function renderStats(){ els.statQ.textContent=state.items.filter(function(i){return i.type!=='info_block';}).length; els.statP.textContent=points(); }
+  function render(){ renderStats(); renderList(); renderEditor(); }
+  function exportJson(){ return {title:els.title.value, description:els.desc.value, pass_score:Number(els.pass.value)||0, total_points:points(), modules:state.items}; }
+  function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+  function attr(s){ return escapeHtml(s).replace(/"/g,'&quot;'); }
+  document.querySelectorAll('[data-test-run]').forEach(function(btn){btn.addEventListener('click',function(){startStudentPreview();});});
+  document.querySelector('[data-student-close]').addEventListener('click',function(){closeStudentPreview();});
+  document.querySelector('[data-student-check]').addEventListener('click',function(){checkStudentPreview();});
+  document.querySelector('[data-student-restart]').addEventListener('click',function(){startStudentPreview();});
+  els.student.addEventListener('scroll',function(){ if(studentScrollMemory.ticking) return; studentScrollMemory.ticking=true; requestAnimationFrame(function(){ updateStudentHeadOnScroll(); studentScrollMemory.ticking=false; }); },{passive:true});
+  document.querySelector('[data-export-json]').addEventListener('click',function(){
+    var data=JSON.stringify(exportJson(),null,2); var item={id:uid(),type:'info_block',title:'Экспорт JSON',text:data,points:0}; state.items.push(item); state.selectedId=item.id; render(); var area=document.createElement('textarea'); area.value=data; document.body.appendChild(area); area.select(); try{document.execCommand('copy');toast('JSON скопирован и добавлен ниже');}catch(e){toast('JSON добавлен в тест');} area.remove();
+  });
+  document.querySelector('[data-clear-test]').addEventListener('click',function(){state.items=[];state.selectedId=null;render();});
+  document.querySelector('[data-load-demo]').addEventListener('click',function(){ loadDemo(); toast('Демо-тест загружен'); });
+  function loadDemo(){
+    state.items=[
+      {id:uid(),type:'info_block',title:'Сценарий теста',text:'Тест проверяет не запоминание рекламных фраз, а умение реселлера вести консультацию: выявить задачу клиента, подобрать аргумент и не обещать лишнего.',points:0},
+      {id:uid(),type:'single_choice',title:'Старт консультации',question:'Клиент говорит: «Хочу красивый деревянный пол в гостиную, но не хочу ошибиться с уходом». Какой первый вопрос самый полезный?',points:1,answers:[{text:'Какая у вас площадь и какой бюджет за квадратный метр?',correct:false},{text:'Как вы планируете пользоваться помещением и какой уход для вас приемлем?',correct:true},{text:'Вам точно нужна самая дорогая коллекция Coswick?',correct:false},{text:'Показать все коллекции подряд без уточнений',correct:false}]},
+      {id:uid(),type:'multiple_choice',title:'Что проверить до рекомендации',question:'Выберите параметры, которые нужно уточнить до предложения коллекции Coswick.',points:2,answers:[{text:'Тип помещения и ожидаемую нагрузку',correct:true},{text:'Основание, монтаж и совместимость с условиями объекта',correct:true},{text:'Желаемый визуальный эффект: спокойный, выразительный, классический',correct:true},{text:'Только текущий размер скидки',correct:false},{text:'Готовность клиента соблюдать рекомендации по уходу',correct:true}]},
+      {id:uid(),type:'matching_true_swap',title:'Потребность клиента и аргумент',question:'Соотнесите запрос клиента с корректным смыслом аргумента.',points:3,pairs:[{statement:'Нужен статусный, но спокойный интерьер',answer:'Покажите натуральные оттенки, фактуру дерева и крупный формат.'},{statement:'Клиент боится сложного ухода',answer:'Объясните правила эксплуатации и подберите решение под реальный сценарий.'},{statement:'Клиент сравнивает только цену',answer:'Верните разговор к сроку службы, внешнему виду и ценности для проекта.'},{statement:'Дизайнер просит выразительный рисунок',answer:'Говорите языком сценариев: формат, селекция, оттенок, ритм укладки.'}]},
+      {id:uid(),type:'true_false',title:'Корректность обещаний',question:'Верно ли, что свойства одной коллекции Coswick можно автоматически переносить на весь бренд?',points:1,correct:false},
+      {id:uid(),type:'single_choice',title:'Возражение по цене',question:'Клиент говорит: «У конкурента дешевле». Какой ответ лучше сохраняет ценность бренда?',points:1,answers:[{text:'Сразу дать максимальную скидку, не обсуждая задачу',correct:false},{text:'Объяснить различия в материале, внешнем виде, сервисе и пригодности под сценарий клиента',correct:true},{text:'Сказать, что дешевый вариант всегда плохой',correct:false},{text:'Уйти от разговора и показать другой бренд',correct:false}]},
+      {id:uid(),type:'multiple_choice',title:'Профессиональная аргументация',question:'Какие утверждения помогают продавать деревянные покрытия профессионально?',points:2,answers:[{text:'Важно связывать продукт с интерьерной задачей клиента',correct:true},{text:'Нужно проверять технические ограничения до обещаний',correct:true},{text:'Фактура и формат влияют на восприятие пространства',correct:true},{text:'Достаточно назвать страну бренда и цену',correct:false},{text:'Уход и эксплуатация должны быть проговорены заранее',correct:true}]},
+      {id:uid(),type:'matching_true_swap',title:'Категория и логика продажи',question:'Сопоставьте категорию аргумента с правильным акцентом консультации.',points:3,pairs:[{statement:'Дизайн',answer:'Цвет, селекция, формат, рисунок укладки и общий образ помещения.'},{statement:'Эксплуатация',answer:'Нагрузка, уход, ограничения и ожидаемый режим использования.'},{statement:'Монтаж',answer:'Основание, технология работ и требования производителя.'},{statement:'Коммерческий аргумент',answer:'Ценность решения, срок службы, сервис и уверенность клиента.'}]},
+      {id:uid(),type:'short_text',title:'Короткий ответ',question:'Как одним термином назвать уточнение условий помещения, ожиданий клиента и ограничений до рекомендации продукта?',points:2,accepted:['диагностика','диагностика потребности','техническая диагностика','проверка условий','бриф']},
+      {id:uid(),type:'info_block',title:'Финальный блок',text:'Последние вопросы проверяют аккуратность в обещаниях и умение не подменять консультацию скидкой.',points:0},
+      {id:uid(),type:'single_choice',title:'Что нельзя обещать без проверки',question:'Что нельзя обещать клиенту без проверки карточки конкретного артикула и условий объекта?',points:1,answers:[{text:'Общий характер визуального эффекта по образцу',correct:false},{text:'Факт, что покрытие подойдет для любых условий без ограничений',correct:true},{text:'Необходимость соблюдать инструкцию по монтажу',correct:false},{text:'Возможность подобрать близкий по настроению оттенок',correct:false}]},
+      {id:uid(),type:'true_false',title:'Роль коллекции',question:'Верно ли, что коллекция помогает выбрать визуальный сценарий, но не отменяет проверку технических параметров?',points:1,correct:true}
+    ]; state.selectedId=state.items[0].id; render();
+  }
+  renderModules(); loadDemo();
+})();
+</script>
+<script src="shared-header.js"></script>
+</body>
+</html>

@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Мероприятия | TouchSpace Академия</title>
+  <style>
+    :root {
+      --blue: #0a84ff;
+      --green: #23c483;
+      --ink: #111827;
+      --muted: #64748b;
+      --line: #dfe7f3;
+      --page: #eef4ff;
+      --card: rgba(255,255,255,.84);
+      --shadow: 0 18px 44px rgba(24,45,90,.09);
+      --shadow-strong: 0 26px 78px rgba(24,45,90,.15);
+      --max: 1500px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(180deg,#f8fbff 0%,var(--page) 52%,#f6f9ff 100%); color: var(--ink); font-family: Inter,"SF Pro Display","Segoe UI",Arial,sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    .page { max-width: var(--max); margin: 0 auto; padding: 24px; }
+    .shell { display: grid; grid-template-columns: 76px minmax(0,1fr); gap: 24px; }
+    .main { min-width: 0; }
+    .hero, .panel, .toolbar { border: 1px solid rgba(255,255,255,.88); border-radius: 32px; background: var(--card); box-shadow: var(--shadow); backdrop-filter: blur(16px); }
+    .hero { display: grid; grid-template-columns: minmax(0,1fr) 430px; gap: 22px; align-items: stretch; margin-bottom: 18px; padding: 28px; }
+    .path { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; color: #6b7280; font-size: 13px; font-weight: 850; }
+    .path a { color: #177be8; }
+    .eyebrow { display: inline-flex; align-items: center; min-height: 34px; width: fit-content; margin-bottom: 14px; padding: 0 13px; border-radius: 999px; background: #eef5ff; color: #177be8; font-size: 13px; font-weight: 900; }
+    h1 { margin: 0; font-size: clamp(38px,4.5vw,62px); line-height: .96; letter-spacing: -.055em; }
+    .hero p { max-width: 820px; margin: 12px 0 0; color: var(--muted); font-size: 16px; line-height: 1.55; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 15px; border: 0; border-radius: 15px; background: var(--blue); color: #fff; font-weight: 950; box-shadow: 0 12px 28px rgba(10,132,255,.22); }
+    .btn.secondary { border: 1px solid var(--line); background: #fff; color: #177be8; box-shadow: none; }
+    .btn.ghost { border: 1px solid var(--line); background: #f7faff; color: #4b5870; box-shadow: none; }
+    .btn.is-joined { background: #ecfbf5; color: #16865a; box-shadow: none; }
+    .featured { position: relative; display: grid; align-content: space-between; gap: 18px; min-height: 330px; padding: 24px; border: 1px solid rgba(10,132,255,.18); border-radius: 28px; background: linear-gradient(135deg,#fff 0%,#f7fbff 54%,#eaf4ff 100%); box-shadow: var(--shadow-strong); overflow: hidden; }
+    .featured:before { content: ""; position: absolute; right: -70px; top: -80px; width: 220px; height: 220px; border-radius: 70px; background: linear-gradient(135deg,rgba(10,132,255,.18),rgba(35,196,131,.12)); transform: rotate(18deg); }
+    .featured > * { position: relative; }
+    .featured-icon { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 22px; background: #fff; border: 1px solid var(--line); box-shadow: 0 12px 26px rgba(24,45,90,.08); }
+    .featured-icon img { width: 30px; height: 30px; object-fit: contain; }
+    .featured h2 { margin: 12px 0 8px; font-size: 28px; line-height: 1.04; letter-spacing: -.035em; }
+    .featured p { margin: 0; font-size: 14px; }
+    .featured-meta, .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill { display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px; border-radius: 999px; background: #f1f6ff; color: #36506f; font-size: 12px; font-weight: 900; }
+    .pill.green { background: #ecfbf5; color: #16865a; }
+    .pill.orange { background: #fff6e8; color: #a86100; }
+    .toolbar { display: grid; grid-template-columns: minmax(240px,1fr) auto; gap: 14px; align-items: center; margin-bottom: 18px; padding: 14px; border-radius: 24px; }
+    .search-field { display: flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 15px; border: 1px solid var(--line); border-radius: 17px; background: #f7faff; color: #8a97aa; }
+    .search-field input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    .tab { min-height: 40px; padding: 0 13px; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: #4f5d72; font-size: 13px; font-weight: 900; }
+    .tab.is-active { border-color: var(--blue); background: var(--blue); color: #fff; box-shadow: 0 12px 24px rgba(10,132,255,.18); }
+    .layout { display: grid; grid-template-columns: minmax(0,1fr) 360px; gap: 18px; align-items: start; }
+    .panel { padding: 18px; }
+    .panel.sticky { position: sticky; top: 22px; }
+    .panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+    .panel-head h2 { margin: 0; font-size: 22px; line-height: 1.08; letter-spacing: -.025em; }
+    .panel-head p { margin: 5px 0 0; color: var(--muted); font-size: 13px; line-height: 1.35; }
+    .panel-tools { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+    .view-toggle { display: inline-flex; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: #f7faff; }
+    .view-button { min-height: 30px; padding: 0 10px; border: 0; border-radius: 999px; background: transparent; color: #6a7890; font-size: 12px; font-weight: 900; }
+    .view-button.is-active { background: #fff; color: #177be8; box-shadow: 0 6px 16px rgba(24,45,90,.08); }
+    .event-list { display: grid; gap: 12px; }
+    .event-card { display: grid; grid-template-columns: 92px minmax(0,1fr) auto; gap: 16px; align-items: center; padding: 16px; border: 1px solid var(--line); border-radius: 24px; background: #fff; box-shadow: 0 10px 26px rgba(24,45,90,.05); cursor: pointer; }
+    .event-image { display: none; overflow: hidden; background: #eef5ff; }
+    .event-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .event-date { display: grid; place-items: center; min-height: 82px; border-radius: 20px; background: #f1f6ff; color: #177be8; text-align: center; font-weight: 950; }
+    .event-date b { display: block; font-size: 27px; line-height: .95; letter-spacing: -.04em; }
+    .event-date span { display: block; margin-top: 5px; font-size: 12px; text-transform: uppercase; }
+    .event-card h3 { margin: 0 0 7px; font-size: 19px; line-height: 1.15; letter-spacing: -.025em; }
+    .event-card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.42; }
+    .event-card .meta { margin-top: 11px; }
+    .event-side { display: grid; justify-items: end; gap: 8px; min-width: 150px; }
+    .seats { color: var(--muted); font-size: 12px; font-weight: 850; }
+    .event-list.is-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+    .event-list.is-grid .event-card { position: relative; display: flex; min-height: 100%; flex-direction: column; align-items: stretch; gap: 0; padding: 0; overflow: hidden; border-radius: 28px; }
+    .event-list.is-grid .event-image { display: block; height: 172px; }
+    .event-list.is-grid .event-date { position: absolute; top: 12px; left: 12px; z-index: 2; width: 70px; min-height: 66px; border: 1px solid rgba(255,255,255,.72); background: rgba(255,255,255,.92); box-shadow: 0 12px 28px rgba(24,45,90,.14); backdrop-filter: blur(12px); }
+    .event-list.is-grid .event-content { display: grid; gap: 0; padding: 16px 16px 0; }
+    .event-list.is-grid .event-side { display: flex; justify-content: space-between; align-items: center; justify-items: stretch; min-width: 0; padding: 14px 16px 16px; margin-top: auto; }
+    .event-list.is-list .event-image { display: none; }
+    .calendar-list { display: grid; gap: 10px; }
+    .calendar-item { display: grid; grid-template-columns: 46px minmax(0,1fr); gap: 10px; align-items: center; padding: 12px; border: 1px solid #e9f1ff; border-radius: 18px; background: #fff; }
+    .calendar-dot { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 17px; background: #eef5ff; color: #177be8; font-weight: 950; }
+    .calendar-item strong { display: block; font-size: 14px; line-height: 1.2; }
+    .calendar-item span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; font-weight: 750; }
+    .event-detail { position: fixed; inset: 0; z-index: 120; display: none; padding: 24px; overflow: auto; background: rgba(15,25,42,.46); backdrop-filter: blur(16px); }
+    .event-detail.is-open { display: block; }
+    .detail-page { width: min(1180px,100%); margin: 0 auto; border: 1px solid rgba(255,255,255,.9); border-radius: 34px; background: linear-gradient(180deg,#fff 0%,#f8fbff 100%); box-shadow: 0 34px 90px rgba(15,25,42,.28); overflow: hidden; }
+    .detail-hero { display: grid; grid-template-columns: minmax(0,1fr) 390px; gap: 24px; align-items: stretch; padding: 24px; }
+    .detail-copy { display: grid; align-content: space-between; gap: 20px; min-height: 420px; padding: 10px 0; }
+    .detail-copy h2 { margin: 10px 0 10px; font-size: clamp(34px,4vw,58px); line-height: .96; letter-spacing: -.055em; }
+    .detail-copy p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.55; }
+    .detail-image { min-height: 420px; border-radius: 28px; overflow: hidden; background: #eef5ff; }
+    .detail-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .detail-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .close-detail { display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 15px; background: #fff; color: #6a7890; font-size: 24px; line-height: 1; }
+    .detail-stats { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
+    .detail-stat { padding: 14px; border: 1px solid var(--line); border-radius: 20px; background: #fff; }
+    .detail-stat strong { display: block; font-size: 24px; line-height: 1; letter-spacing: -.04em; }
+    .detail-stat span { display: block; margin-top: 7px; color: var(--muted); font-size: 12px; font-weight: 850; line-height: 1.25; }
+    .detail-body { display: grid; grid-template-columns: minmax(0,1fr) 360px; gap: 18px; padding: 0 24px 24px; }
+    .detail-section { padding: 18px; border: 1px solid var(--line); border-radius: 26px; background: #fff; }
+    .detail-section h3 { margin: 0 0 12px; font-size: 20px; line-height: 1.1; letter-spacing: -.025em; }
+    .detail-section p { margin: 0; color: var(--muted); line-height: 1.5; }
+    .detail-plan { display: grid; gap: 10px; margin-top: 14px; }
+    .detail-plan li { margin-left: 18px; color: #334155; line-height: 1.42; }
+    .speaker-list { display: grid; gap: 12px; }
+    .speaker-card { display: grid; grid-template-columns: 74px minmax(0,1fr); gap: 12px; align-items: center; padding: 12px; border: 1px solid #e9f1ff; border-radius: 20px; background: #f8fbff; }
+    .speaker-card img { width: 74px; height: 74px; border-radius: 24px; object-fit: cover; display: block; }
+    .speaker-card strong { display: block; font-size: 15px; line-height: 1.15; }
+    .speaker-card span { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; font-weight: 750; line-height: 1.35; }
+    .event-card .btn.ghost { box-shadow: none; }
+    .empty { display: none; padding: 30px 18px; border: 1px dashed #c7d6ea; border-radius: 22px; background: #f8fbff; color: var(--muted); text-align: center; font-weight: 850; }
+    .empty.is-visible { display: block; }
+    .supplier-event {
+      display: none;
+      margin-bottom: 18px;
+      padding: 18px;
+      border: 1px solid rgba(10,132,255,.16);
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(255,255,255,.92), rgba(238,245,255,.88));
+      box-shadow: var(--shadow);
+    }
+    .supplier-event.is-visible { display: block; }
+    .supplier-event__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+    .supplier-event__head h2 { margin: 0; font-size: 24px; line-height: 1.08; letter-spacing: -.025em; }
+    .supplier-event__head p { max-width: 760px; margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .supplier-event-form { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
+    .supplier-field { display: grid; gap: 7px; }
+    .supplier-field.full { grid-column: 1 / -1; }
+    .supplier-field.wide { grid-column: span 2; }
+    .supplier-field label { color: #718095; font-size: 12px; font-weight: 950; letter-spacing: .06em; text-transform: uppercase; }
+    .supplier-input, .supplier-textarea, .supplier-select {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      color: var(--ink);
+      outline: 0;
+      padding: 12px 13px;
+    }
+    .supplier-textarea { min-height: 92px; resize: vertical; line-height: 1.45; }
+    .supplier-input:focus, .supplier-textarea:focus, .supplier-select:focus {
+      border-color: rgba(10,132,255,.5);
+      box-shadow: 0 0 0 4px rgba(10,132,255,.08);
+    }
+    .supplier-event__actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+    .muted { color: var(--muted); font-size: 13px; font-weight: 800; }
+    .moderation-list { display: grid; gap: 8px; margin-top: 14px; }
+    .moderation-item { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 12px; border: 1px solid #dfeafe; border-radius: 18px; background: #fff; }
+    .moderation-item strong { display: block; font-size: 14px; line-height: 1.2; }
+    .moderation-item span:not(.pill) { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; font-weight: 750; }
+    .supplier-event-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 130;
+      display: none;
+      padding: 24px;
+      overflow: auto;
+      background: rgba(15,25,42,.42);
+      backdrop-filter: blur(14px);
+    }
+    .supplier-event-modal.is-open { display: block; }
+    .supplier-event-modal__card {
+      width: min(980px,100%);
+      margin: 0 auto;
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 30px;
+      background: linear-gradient(180deg,#fff 0%,#f8fbff 100%);
+      box-shadow: 0 34px 90px rgba(15,25,42,.28);
+    }
+    .supplier-event-modal__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
+    .supplier-event-modal__head h2 { margin: 0; font-size: 26px; line-height: 1.06; letter-spacing: -.03em; }
+    .supplier-event-modal__head p { margin: 7px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .modal-close { display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 15px; background: #fff; color: #6a7890; font-size: 24px; line-height: 1; flex: 0 0 auto; }
+    .toast { position: fixed; right: 24px; bottom: 24px; z-index: 100; max-width: 320px; padding: 13px 15px; border-radius: 18px; background: #172033; color: #fff; box-shadow: 0 18px 44px rgba(23,32,51,.25); opacity: 0; transform: translateY(10px); pointer-events: none; transition: .2s; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    @media (max-width: 1120px) {
+      .hero, .layout { grid-template-columns: 1fr; }
+      .panel.sticky { position: static; }
+    }
+    @media (max-width: 820px) {
+      .page { padding: 14px; }
+      .shell, .toolbar { grid-template-columns: 1fr; }
+      .tabs { justify-content: flex-start; }
+      .panel-head { display: grid; }
+      .panel-tools { justify-content: flex-start; }
+      .event-list.is-grid { grid-template-columns: 1fr; }
+      .detail-hero, .detail-body { grid-template-columns: 1fr; }
+      .detail-copy { min-height: 0; }
+      .detail-image { min-height: 280px; }
+      .detail-stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .event-card { grid-template-columns: 74px minmax(0,1fr); }
+      .event-side { grid-column: 2; justify-items: start; min-width: 0; }
+      .event-date { min-height: 74px; }
+      .supplier-event-form { grid-template-columns: 1fr; }
+      .supplier-field.wide { grid-column: auto; }
+    }
+    @media (max-width: 560px) {
+      .hero, .panel { border-radius: 24px; padding: 18px; }
+      h1 { font-size: 38px; }
+      .featured h2 { font-size: 23px; }
+      .event-card { grid-template-columns: 1fr; }
+      .event-side { grid-column: auto; }
+      .event-date { width: 86px; }
+      .event-detail { padding: 10px; }
+      .detail-page { border-radius: 26px; }
+      .detail-hero, .detail-body { padding: 16px; }
+      .detail-stats { grid-template-columns: 1fr; }
+    }
+  </style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Найти мероприятие, бренд или тему"></header>
+
+        <section class="hero">
+          <div>
+            <nav class="path"><a href="index.html">Разделы</a><span>/</span><span>Мероприятия</span></nav>
+            <span class="eyebrow">Календарь Академии</span>
+            <h1>Мероприятия</h1>
+            <p>Вебинары, очные тренинги, бренд-дни и деловые встречи для реселлеров, продавцов, поставщиков и руководителей компаний.</p>
+            <div class="hero-actions">
+              <a class="btn" href="#events-list">Смотреть расписание</a>
+              <button class="btn secondary" type="button" data-filter-shortcut="online">Только онлайн</button>
+            </div>
+          </div>
+
+          <article class="featured" data-featured-event>
+            <div>
+              <div class="featured-meta"><span class="pill orange">Главное событие</span><span class="pill">25 июня</span><span class="pill green">очно + онлайн</span></div>
+              <div class="featured-icon"><img src="icons/meropriyatiya.png" alt=""></div>
+              <h2>Большой бренд-день: напольные покрытия 2026</h2>
+              <p>Разбор коллекций Pergo, Calitex и Coswick, практикум по аргументации и живая сессия вопросов с поставщиками.</p>
+            </div>
+            <div>
+              <div class="featured-meta"><span class="pill">11:00</span><span class="pill">3 часа</span><span class="pill">42 места</span></div>
+              <div class="hero-actions"><button class="btn" type="button" data-join="brand-day">Записаться</button><button class="btn ghost" type="button" data-details="brand-day">Подробнее</button></div>
+            </div>
+          </article>
+        </section>
+
+        <section class="supplier-event" data-supplier-event aria-label="Создание мероприятия поставщика">
+          <div class="supplier-event__head">
+            <div>
+              <span class="eyebrow">Поставщик</span>
+              <h2>Мероприятия поставщика</h2>
+              <p>Создавайте вебинары, бренд-дни и очные встречи. После отправки мероприятие попадёт на модерацию и появится в расписании после проверки.</p>
+            </div>
+            <span class="pill">модерация</span>
+          </div>
+          <div class="supplier-event__actions">
+            <button class="btn" type="button" data-open-event-create>Создать мероприятие</button>
+            <span class="muted">В pop-up доступно одиночное и массовое создание.</span>
+          </div>
+          <div class="moderation-list" data-event-moderation-list></div>
+        </section>
+
+        <section class="supplier-event-modal" data-event-create-modal aria-hidden="true">
+          <div class="supplier-event-modal__card" role="dialog" aria-modal="true" aria-label="Создание мероприятия">
+            <div class="supplier-event-modal__head">
+              <div>
+                <span class="eyebrow">Новое мероприятие</span>
+                <h2>Отправка на модерацию</h2>
+                <p>Заполните одну карточку или вставьте несколько строк в массовую загрузку. Формат строки: название; дата; время; формат; место; места.</p>
+              </div>
+              <button class="modal-close" type="button" data-close-event-create aria-label="Закрыть">×</button>
+            </div>
+          <form class="supplier-event-form" data-supplier-event-form>
+            <div class="supplier-field wide">
+              <label for="supplier-event-title">Название</label>
+              <input class="supplier-input" id="supplier-event-title" name="title" placeholder="Например: Бренд-день Calitex для продавцов">
+            </div>
+            <div class="supplier-field">
+              <label for="supplier-event-type">Тип</label>
+              <select class="supplier-select" id="supplier-event-type" name="type">
+                <option>Бренд-день</option>
+                <option>Вебинар</option>
+                <option>Очный тренинг</option>
+                <option>Бизнес-встреча</option>
+              </select>
+            </div>
+            <div class="supplier-field">
+              <label for="supplier-event-date">Дата</label>
+              <input class="supplier-input" id="supplier-event-date" name="date" type="date">
+            </div>
+            <div class="supplier-field">
+              <label for="supplier-event-time">Время</label>
+              <input class="supplier-input" id="supplier-event-time" name="time" type="time">
+            </div>
+            <div class="supplier-field">
+              <label for="supplier-event-format">Формат</label>
+              <select class="supplier-select" id="supplier-event-format" name="format">
+                <option>онлайн</option>
+                <option>очно</option>
+                <option>очно + онлайн</option>
+              </select>
+            </div>
+            <div class="supplier-field wide">
+              <label for="supplier-event-place">Место проведения</label>
+              <input class="supplier-input" id="supplier-event-place" name="place" placeholder="Zoom, шоурум, город и адрес">
+            </div>
+            <div class="supplier-field">
+              <label for="supplier-event-seats">Количество мест</label>
+              <input class="supplier-input" id="supplier-event-seats" name="seats" type="number" min="1" value="30">
+            </div>
+            <div class="supplier-field full">
+              <label for="supplier-event-speakers">Спикеры</label>
+              <input class="supplier-input" id="supplier-event-speakers" name="speakers" placeholder="Имена и роли через запятую">
+            </div>
+            <div class="supplier-field full">
+              <label for="supplier-event-desc">Описание</label>
+              <textarea class="supplier-textarea" id="supplier-event-desc" name="description" placeholder="Тема, программа, для кого мероприятие и что участник получит."></textarea>
+            </div>
+            <div class="supplier-field full">
+              <label for="supplier-event-bulk">Массовая загрузка</label>
+              <textarea class="supplier-textarea" id="supplier-event-bulk" name="bulk" placeholder="Бренд-день Calitex; 2026-07-20; 12:00; онлайн; Zoom; 80&#10;Практикум Pergo; 2026-07-22; 15:00; очно; Шоурум Москва; 25"></textarea>
+            </div>
+          </form>
+          <div class="supplier-event__actions">
+            <button class="btn" type="button" data-submit-event>Отправить на модерацию</button>
+            <span class="muted">Заявка сохраняется в прототипе.</span>
+          </div>
+          </div>
+        </section>
+
+        <section class="toolbar" aria-label="Поиск и фильтры мероприятий">
+          <label class="search-field">
+            <span>Поиск</span>
+            <input id="event-search" type="search" placeholder="Тема, бренд, город или формат">
+          </label>
+          <div class="tabs" role="tablist" aria-label="Тип мероприятий">
+            <button class="tab is-active" type="button" data-filter="all">Все</button>
+            <button class="tab" type="button" data-filter="online">Онлайн</button>
+            <button class="tab" type="button" data-filter="offline">Очно</button>
+            <button class="tab" type="button" data-filter="brand">Бренд-дни</button>
+            <button class="tab" type="button" data-filter="business">Бизнес</button>
+          </div>
+        </section>
+
+        <div class="layout">
+          <section class="panel" id="events-list">
+            <div class="panel-head">
+              <div>
+                <h2>Ближайшие мероприятия</h2>
+                <p>Запись сохраняется в браузере, чтобы прототип сразу показывал состояние участника.</p>
+              </div>
+              <div class="panel-tools">
+                <div class="view-toggle" aria-label="Вид мероприятий">
+                  <button class="view-button is-active" type="button" data-view="grid">Плитка</button>
+                  <button class="view-button" type="button" data-view="list">Список</button>
+                </div>
+                <span class="pill" data-count>0 событий</span>
+              </div>
+            </div>
+            <div class="event-list" data-event-list></div>
+            <div class="empty" data-empty>По этому фильтру мероприятий не найдено</div>
+          </section>
+
+          <aside class="panel sticky">
+            <div class="panel-head">
+              <div>
+                <h2>Мой календарь</h2>
+                <p>Мероприятия, на которые пользователь записался.</p>
+              </div>
+            </div>
+            <div class="calendar-list" data-calendar-list></div>
+            <div class="empty" data-calendar-empty>Пока нет записей</div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <section class="event-detail" data-event-detail aria-hidden="true">
+    <div class="detail-page" role="dialog" aria-modal="true" aria-label="Карточка мероприятия" data-detail-page></div>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var storageKey = "touchspaceJoinedEvents";
+      var supplierEventKey = "touchspaceSupplierEventModeration";
+      var joined = loadJoined();
+      var activeFilter = "all";
+      var viewMode = "grid";
+      var search = document.getElementById("event-search");
+      var supplierEventBlock = document.querySelector("[data-supplier-event]");
+      var supplierEventModal = document.querySelector("[data-event-create-modal]");
+      var supplierEventForm = document.querySelector("[data-supplier-event-form]");
+      var supplierEventList = document.querySelector("[data-event-moderation-list]");
+      var events = [
+        { id: "brand-day", day: "25", month: "июн", title: "Большой бренд-день: напольные покрытия 2026", desc: "Коллекции Pergo, Calitex и Coswick, живые разборы аргументов и ответы поставщиков.", topic: "Как уверенно продавать напольные покрытия через сценарии клиента, технологии брендов и понятную аргументацию.", type: "brand", format: "очно + онлайн", time: "11:00", duration: "3 часа", seats: 42, booked: 27, location: "Москва, шоурум TouchSpace + трансляция", image: "images/calitex_realistic/calitex-showroom-collection.jpg", tags: ["Pergo", "Calitex", "Coswick"], speakers: ["brand", "sales", "showroom"], agenda: ["Ключевые отличия коллекций Pergo, Calitex и Coswick", "Практикум по аргументам для кухни, прихожей и активного дома", "Разбор вопросов участников и сценариев продажи"] },
+        { id: "webinar-objections", day: "28", month: "июн", title: "Вебинар: работа с возражениями клиента", desc: "Как переводить вопросы о цене, воде и износе в спокойный сценарий продажи.", topic: "Методика ответа на возражения без давления: цена, долговечность, вода, монтаж и сравнение брендов.", type: "online", format: "онлайн", time: "14:00", duration: "75 минут", seats: 120, booked: 66, location: "Zoom", image: "images/pergo_images_webp_wide_block_4_1/11_Заглушка_под_долговечность_фактура.webp", tags: ["Продажи", "Практика"], speakers: ["sales", "brand"], agenda: ["Карта типовых возражений", "Фразы для спокойного перевода в пользу продукта", "Мини-разборы ответов участников"] },
+        { id: "seller-supervisor", day: "02", month: "июл", title: "Тренинг для супервайзеров компаний", desc: "Как читать прогресс учеников, назначать повторение и разбирать проваленные тесты.", topic: "Работа руководителя с учебной статистикой команды: регулярность, слабые места, сертификаты и повторное обучение.", type: "business", format: "онлайн", time: "10:30", duration: "90 минут", seats: 60, booked: 31, location: "TouchSpace", image: "images/calitex_realistic/calitex-archive-team.jpg", tags: ["Руководителям", "Статистика"], speakers: ["sales"], agenda: ["Какие метрики смотреть каждую неделю", "Как обсуждать проваленные тесты без демотивации", "Как связать обучение с планом продаж"] },
+        { id: "showroom-practice", day: "08", month: "июл", title: "Практикум в шоуруме: подбор под интерьер", desc: "Очная встреча с разбором кейсов: кухня, прихожая, активный дом и коммерческие зоны.", topic: "Подбор покрытия под интерьер, эксплуатацию и ожидания клиента на реальных образцах.", type: "offline", format: "очно", time: "12:00", duration: "2 часа", seats: 18, booked: 12, location: "Санкт-Петербург, шоурум TouchSpace", image: "images/calitex_realistic/calitex-living-room-floor.jpg", tags: ["Шоурум", "Подбор"], speakers: ["showroom", "brand"], agenda: ["Кейсы под разные помещения", "Работа с образцами и фактурами", "Как объяснять различия клиенту без перегруза"] },
+        { id: "supplier-demo", day: "15", month: "июл", title: "Демо для поставщиков: как запускать бренд на платформе", desc: "Страница бренда, тесты, модерация и отслеживание реселлеров по своим брендам.", topic: "Запуск бренда на платформе: от страницы и тестов до аналитики по компаниям и реселлерам.", type: "business", format: "онлайн", time: "16:00", duration: "60 минут", seats: 80, booked: 34, location: "TouchSpace", image: "images/calitex_realistic/calitex-material-lab.jpg", tags: ["Поставщикам", "Бренды"], speakers: ["brand", "sales"], agenda: ["Структура страницы бренда", "Конструктор тестов и модерация", "Как поставщик видит компании и реселлеров"] }
+      ];
+
+      var speakers = {
+        brand: { name: "Оксана Розова", role: "Бренд-тренер TouchSpace", photo: "images/events/speaker-brand-trainer.png" },
+        sales: { name: "Алексей Миронов", role: "Методолог продаж и обучения", photo: "images/events/speaker-sales-methodology.png" },
+        showroom: { name: "Мария Ковалёва", role: "Эксперт по интерьерному подбору", photo: "images/events/speaker-showroom-expert.png" }
+      };
+
+      function loadJoined() {
+        try {
+          var value = JSON.parse(localStorage.getItem(storageKey) || "[]");
+          return Array.isArray(value) ? new Set(value) : new Set();
+        } catch (error) {
+          return new Set();
+        }
+      }
+
+      function saveJoined() {
+        localStorage.setItem(storageKey, JSON.stringify(Array.from(joined)));
+      }
+
+      function toast(text) {
+        var el = document.getElementById("toast");
+        el.textContent = text;
+        el.classList.add("show");
+        clearTimeout(toast.timer);
+        toast.timer = setTimeout(function () { el.classList.remove("show"); }, 1700);
+      }
+
+      function isSupplierAccount() {
+        return window.TouchSpaceAcademy &&
+          window.TouchSpaceAcademy.getActiveUser &&
+          window.TouchSpaceAcademy.getActiveUser().id === "supplier";
+      }
+
+      function loadSupplierEvents() {
+        try {
+          var items = JSON.parse(localStorage.getItem(supplierEventKey) || "[]");
+          return Array.isArray(items) ? items : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function saveSupplierEvents(items) {
+        localStorage.setItem(supplierEventKey, JSON.stringify(items));
+      }
+
+      function renderSupplierEvents() {
+        if (!supplierEventList) return;
+        var items = loadSupplierEvents();
+        supplierEventList.innerHTML = items.length ? items.map(function (item) {
+          return '<article class="moderation-item"><div><strong>' + item.title + '</strong><span>' + item.type + ' · ' + item.date + ' ' + item.time + ' · ' + item.format + '</span></div><span class="pill">на модерации</span></article>';
+        }).join("") : '<div class="moderation-item"><div><strong>Нет мероприятий на модерации</strong><span>После отправки заявка появится здесь.</span></div></div>';
+      }
+
+      function setupSupplierEvents() {
+        if (!supplierEventBlock) return;
+        supplierEventBlock.classList.toggle("is-visible", isSupplierAccount());
+        renderSupplierEvents();
+      }
+
+      function openEventCreateModal() {
+        if (!supplierEventModal) return;
+        supplierEventModal.classList.add("is-open");
+        supplierEventModal.setAttribute("aria-hidden", "false");
+      }
+
+      function closeEventCreateModal() {
+        if (!supplierEventModal) return;
+        supplierEventModal.classList.remove("is-open");
+        supplierEventModal.setAttribute("aria-hidden", "true");
+      }
+
+      function eventFromFormData(formData) {
+        return {
+          title: String(formData.get("title") || "").trim(),
+          type: String(formData.get("type") || "Мероприятие"),
+          date: String(formData.get("date") || ""),
+          time: String(formData.get("time") || ""),
+          format: String(formData.get("format") || ""),
+          place: String(formData.get("place") || ""),
+          seats: String(formData.get("seats") || ""),
+          speakers: String(formData.get("speakers") || ""),
+          description: String(formData.get("description") || ""),
+          status: "На модерации",
+          sentAt: new Date().toLocaleDateString("ru-RU")
+        };
+      }
+
+      function eventsFromBulk(value) {
+        return String(value || "").split(/\n+/).map(function (line) {
+          var parts = line.split(";").map(function (part) { return part.trim(); });
+          if (!parts[0]) return null;
+          return {
+            title: parts[0],
+            type: "Массовая загрузка",
+            date: parts[1] || "",
+            time: parts[2] || "",
+            format: parts[3] || "",
+            place: parts[4] || "",
+            seats: parts[5] || "",
+            speakers: "",
+            description: "Создано из массовой загрузки поставщика.",
+            status: "На модерации",
+            sentAt: new Date().toLocaleDateString("ru-RU")
+          };
+        }).filter(Boolean);
+      }
+
+      function matchesFilter(event) {
+        if (activeFilter === "all") return true;
+        if (activeFilter === "brand") return event.type === "brand";
+        if (activeFilter === "business") return event.type === "business";
+        return event.format.indexOf(activeFilter === "online" ? "онлайн" : "очно") >= 0;
+      }
+
+      function matchesSearch(event) {
+        var query = search.value.trim().toLowerCase();
+        if (!query) return true;
+        var text = [event.title, event.desc, event.format, event.location].concat(event.tags).join(" ").toLowerCase();
+        return text.indexOf(query) >= 0;
+      }
+
+      function eventTemplate(event) {
+        var isJoined = joined.has(event.id);
+        var tags = event.tags.map(function (tag) { return '<span class="pill">' + tag + '</span>'; }).join("");
+        return '<article class="event-card" data-open-event="' + event.id + '">' +
+          '<div class="event-image"><img src="' + event.image + '" alt=""></div>' +
+          '<div class="event-date"><div><b>' + event.day + '</b><span>' + event.month + '</span></div></div>' +
+          '<div class="event-content"><h3>' + event.title + '</h3><p>' + event.desc + '</p><div class="meta"><span class="pill green">' + event.format + '</span><span class="pill">' + event.time + '</span><span class="pill">' + event.location + '</span>' + tags + '</div></div>' +
+          '<div class="event-side"><span class="seats">' + (event.seats - event.booked) + ' свободно</span><button class="btn secondary' + (isJoined ? " is-joined" : "") + '" type="button" data-join="' + event.id + '">' + (isJoined ? "Вы записаны" : "Записаться") + '</button><button class="btn ghost" type="button" data-details="' + event.id + '">Подробнее</button></div>' +
+        '</article>';
+      }
+
+      function speakerTemplate(id) {
+        var speaker = speakers[id];
+        return '<article class="speaker-card"><img src="' + speaker.photo + '" alt="' + speaker.name + '"><div><strong>' + speaker.name + '</strong><span>' + speaker.role + '</span></div></article>';
+      }
+
+      function openDetail(id) {
+        var item = events.find(function (event) { return event.id === id; });
+        if (!item) return;
+        var freeSeats = item.seats - item.booked;
+        var isJoined = joined.has(item.id);
+        var detail = document.querySelector("[data-event-detail]");
+        document.querySelector("[data-detail-page]").innerHTML =
+          '<div class="detail-hero">' +
+            '<div class="detail-copy">' +
+              '<div>' +
+                '<div class="detail-top"><div class="featured-meta"><span class="pill orange">' + item.day + ' ' + item.month + '</span><span class="pill green">' + item.format + '</span><span class="pill">' + item.time + '</span></div><button class="close-detail" type="button" data-close-detail aria-label="Закрыть">×</button></div>' +
+                '<h2>' + item.title + '</h2>' +
+                '<p>' + item.topic + '</p>' +
+              '</div>' +
+              '<div class="detail-stats">' +
+                '<div class="detail-stat"><strong>' + item.seats + '</strong><span>всего мест</span></div>' +
+                '<div class="detail-stat"><strong>' + freeSeats + '</strong><span>свободно</span></div>' +
+                '<div class="detail-stat"><strong>' + item.duration + '</strong><span>длительность</span></div>' +
+                '<div class="detail-stat"><strong>' + item.time + '</strong><span>начало</span></div>' +
+              '</div>' +
+              '<div class="hero-actions"><button class="btn' + (isJoined ? " is-joined" : "") + '" type="button" data-join="' + item.id + '">' + (isJoined ? "Вы записаны" : "Записаться") + '</button><button class="btn secondary" type="button" data-close-detail>К расписанию</button></div>' +
+            '</div>' +
+            '<div class="detail-image"><img src="' + item.image + '" alt=""></div>' +
+          '</div>' +
+          '<div class="detail-body">' +
+            '<section class="detail-section"><h3>Описание темы</h3><p>' + item.desc + '</p><ul class="detail-plan">' + item.agenda.map(function (point) { return '<li>' + point + '</li>'; }).join("") + '</ul></section>' +
+            '<aside class="detail-section"><h3>Место проведения</h3><p>' + item.location + '</p><div class="speaker-list" style="margin-top:16px">' + item.speakers.map(speakerTemplate).join("") + '</div></aside>' +
+          '</div>';
+        detail.classList.add("is-open");
+        detail.setAttribute("aria-hidden", "false");
+      }
+
+      function closeDetail() {
+        var detail = document.querySelector("[data-event-detail]");
+        detail.classList.remove("is-open");
+        detail.setAttribute("aria-hidden", "true");
+      }
+
+      function renderEvents() {
+        var filtered = events.filter(function (event) { return matchesFilter(event) && matchesSearch(event); });
+        var list = document.querySelector("[data-event-list]");
+        list.classList.toggle("is-grid", viewMode === "grid");
+        list.classList.toggle("is-list", viewMode === "list");
+        list.innerHTML = filtered.map(eventTemplate).join("");
+        document.querySelector("[data-count]").textContent = filtered.length + " событий";
+        document.querySelector("[data-empty]").classList.toggle("is-visible", filtered.length === 0);
+        renderFeatured();
+        renderCalendar();
+      }
+
+      function renderFeatured() {
+        var button = document.querySelector("[data-featured-event] [data-join='brand-day']");
+        var isJoined = joined.has("brand-day");
+        button.classList.toggle("is-joined", isJoined);
+        button.textContent = isJoined ? "Вы записаны" : "Записаться";
+      }
+
+      function renderCalendar() {
+        var selectedEvents = events.filter(function (event) { return joined.has(event.id); });
+        document.querySelector("[data-calendar-list]").innerHTML = selectedEvents.map(function (event) {
+          return '<article class="calendar-item"><div class="calendar-dot">' + event.day + '</div><div><strong>' + event.title + '</strong><span>' + event.month + ' · ' + event.time + ' · ' + event.format + '</span></div></article>';
+        }).join("");
+        document.querySelector("[data-calendar-empty]").classList.toggle("is-visible", selectedEvents.length === 0);
+      }
+
+      document.addEventListener("click", function (event) {
+        if (event.target.matches("[data-event-detail]")) {
+          closeDetail();
+          return;
+        }
+        var join = event.target.closest("[data-join]");
+        if (join) {
+          var id = join.getAttribute("data-join");
+          if (joined.has(id)) {
+            joined.delete(id);
+            toast("Запись отменена");
+          } else {
+            joined.add(id);
+            toast("Вы записаны на мероприятие");
+          }
+          saveJoined();
+          renderEvents();
+          if (document.querySelector("[data-event-detail]").classList.contains("is-open")) openDetail(id);
+          return;
+        }
+        var details = event.target.closest("[data-details]");
+        if (details) {
+          openDetail(details.getAttribute("data-details"));
+          return;
+        }
+        if (event.target.closest("[data-close-detail]")) {
+          closeDetail();
+          return;
+        }
+        var card = event.target.closest("[data-open-event]");
+        if (card && !event.target.closest("button")) {
+          openDetail(card.getAttribute("data-open-event"));
+        }
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeDetail();
+          closeEventCreateModal();
+        }
+      });
+
+      document.querySelectorAll("[data-filter]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          activeFilter = button.getAttribute("data-filter");
+          document.querySelectorAll("[data-filter]").forEach(function (item) { item.classList.toggle("is-active", item === button); });
+          renderEvents();
+        });
+      });
+
+      document.querySelectorAll("[data-view]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          viewMode = button.getAttribute("data-view");
+          document.querySelectorAll("[data-view]").forEach(function (item) { item.classList.toggle("is-active", item === button); });
+          renderEvents();
+        });
+      });
+
+      document.querySelector("[data-filter-shortcut]").addEventListener("click", function () {
+        var filter = "online";
+        var button = document.querySelector("[data-filter='" + filter + "']");
+        if (button) button.click();
+      });
+
+      search.addEventListener("input", renderEvents);
+      document.querySelector("[data-open-event-create]").addEventListener("click", openEventCreateModal);
+      document.querySelector("[data-close-event-create]").addEventListener("click", closeEventCreateModal);
+      supplierEventModal.addEventListener("click", function (event) {
+        if (event.target === supplierEventModal) closeEventCreateModal();
+      });
+
+      document.querySelector("[data-submit-event]").addEventListener("click", function () {
+        var formData = new FormData(supplierEventForm);
+        var bulkEvents = eventsFromBulk(formData.get("bulk"));
+        var singleEvent = eventFromFormData(formData);
+        if (!bulkEvents.length && (!singleEvent.title || !singleEvent.date || !singleEvent.time)) {
+          toast("Заполните название, дату и время или используйте массовую загрузку");
+          return;
+        }
+        var items = loadSupplierEvents();
+        (bulkEvents.length ? bulkEvents : [singleEvent]).reverse().forEach(function (item) {
+          items.unshift(item);
+        });
+        saveSupplierEvents(items);
+        supplierEventForm.reset();
+        renderSupplierEvents();
+        closeEventCreateModal();
+        toast((bulkEvents.length || 1) + " меропр. отправлено на модерацию");
+      });
+      setupSupplierEvents();
+      window.addEventListener("ts-academy-user-change", setupSupplierEvents);
+      renderEvents();
+    })();
+  </script>
+</body>
+</html>

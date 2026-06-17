@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Кабинет администратора | TouchSpace Академия</title>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+  <style>
+    :root { --blue:#0a84ff; --ink:#111827; --muted:#66758a; --line:#dfe6f2; --page:#eef4ff; --green:#23c483; --orange:#ff8a3d; --shadow:0 24px 80px rgba(24,45,90,.12); --shadow-soft:0 14px 38px rgba(24,45,90,.08); --max:1500px; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:linear-gradient(180deg,#f8fbff 0%,var(--page) 52%,#f6f9ff 100%); font-family:Inter,"SF Pro Display","Segoe UI",Arial,sans-serif; }
+    a { color:inherit; text-decoration:none; }
+    button, input, textarea, select { font:inherit; }
+    button { cursor:pointer; }
+    .page { max-width:var(--max); margin:0 auto; padding:24px; }
+    .shell { display:grid; grid-template-columns:76px minmax(0,1fr); gap:24px; }
+    .main { min-width:0; }
+    .admin-hero, .panel, .quick-link { border:1px solid rgba(255,255,255,.88); border-radius:30px; background:rgba(255,255,255,.84); box-shadow:var(--shadow-soft); }
+    .admin-hero { display:grid; grid-template-columns:minmax(0,1fr) 390px; gap:24px; align-items:end; margin-bottom:18px; padding:30px; }
+    .eyebrow { display:inline-flex; min-height:34px; align-items:center; width:fit-content; margin-bottom:14px; padding:0 13px; border-radius:999px; background:#eef5ff; color:#177be8; font-size:13px; font-weight:900; }
+    h1 { margin:0; font-size:clamp(38px,4.5vw,62px); line-height:.96; letter-spacing:-.055em; }
+    .admin-hero p { max-width:820px; margin:12px 0 0; color:var(--muted); font-size:16px; line-height:1.55; }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+    .stat { min-height:92px; padding:16px; border:1px solid var(--line); border-radius:20px; background:#fff; }
+    .stat strong { display:block; font-size:28px; line-height:1; letter-spacing:-.04em; }
+    .stat span { display:block; margin-top:7px; color:var(--muted); font-size:12px; font-weight:850; line-height:1.25; }
+    .quick-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:18px; }
+    .quick-link { min-height:96px; padding:16px; transition:transform .16s ease, box-shadow .16s ease; }
+    .quick-link:hover { transform:translateY(-1px); box-shadow:var(--shadow); }
+    .quick-link strong { display:block; font-size:16px; letter-spacing:-.02em; }
+    .quick-link span { display:block; margin-top:7px; color:var(--muted); font-size:13px; font-weight:750; line-height:1.35; }
+    .layout { display:grid; grid-template-columns:minmax(0,1fr) 430px; gap:18px; align-items:start; }
+    .panel { padding:20px; }
+    .panel h2 { margin:0; font-size:24px; line-height:1.05; letter-spacing:-.035em; }
+    .panel p { margin:7px 0 0; color:var(--muted); font-size:14px; line-height:1.45; }
+    .forms { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-top:16px; }
+    .account-form { display:grid; gap:11px; padding:16px; border:1px solid var(--line); border-radius:24px; background:#fff; }
+    .account-form h3 { margin:0; font-size:18px; letter-spacing:-.02em; }
+    .field { display:grid; gap:7px; }
+    .field label { color:#718095; font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:.07em; }
+    .input, .textarea { width:100%; border:1px solid var(--line); border-radius:16px; background:#f8fbff; color:var(--ink); padding:12px 13px; outline:none; }
+    .textarea { min-height:84px; resize:vertical; line-height:1.45; }
+    .input:focus, .textarea:focus { border-color:rgba(10,132,255,.5); box-shadow:0 0 0 4px rgba(10,132,255,.08); background:#fff; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; border:0; border-radius:15px; padding:0 15px; background:var(--blue); color:#fff; font-weight:950; box-shadow:0 12px 28px rgba(10,132,255,.22); }
+    .btn.secondary { border:1px solid var(--line); background:#fff; color:#177be8; box-shadow:none; }
+    .btn.danger { border:1px solid rgba(220,38,38,.18); background:#fff6f6; color:#b42323; box-shadow:none; }
+    .account-list { display:grid; gap:10px; margin-top:16px; }
+    .account-card { display:grid; grid-template-columns:44px minmax(0,1fr); gap:12px; padding:14px; border:1px solid var(--line); border-radius:22px; background:#fff; }
+    .avatar { display:grid; place-items:center; width:44px; height:44px; border-radius:16px; background:linear-gradient(135deg,#0a84ff,#23c483); color:#fff; font-weight:950; }
+    .account-card strong { display:block; font-size:15px; line-height:1.2; }
+    .account-card small { display:block; margin-top:4px; color:var(--muted); font-size:12px; font-weight:750; line-height:1.35; }
+    .account-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    .empty { padding:20px; border:1px dashed rgba(23,32,51,.18); border-radius:22px; background:rgba(255,255,255,.58); color:var(--muted); text-align:center; line-height:1.45; }
+    .toast { position:fixed; right:24px; bottom:24px; z-index:1000; padding:13px 15px; border-radius:18px; background:#172033; color:#fff; box-shadow:0 18px 44px rgba(23,32,51,.25); opacity:0; transform:translateY(10px); pointer-events:none; transition:.2s; }
+    .toast.show { opacity:1; transform:translateY(0); }
+    @media(max-width:1100px){.admin-hero,.layout{grid-template-columns:1fr}.quick-grid{grid-template-columns:repeat(2,1fr)}.forms{grid-template-columns:1fr}}
+    @media(max-width:760px){.page{padding:14px}.shell{grid-template-columns:1fr}.quick-grid,.stats{grid-template-columns:1fr}.admin-hero{padding:22px;border-radius:26px}h1{font-size:38px}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Поиск по админке"></header>
+
+        <section class="admin-hero">
+          <div>
+            <span class="eyebrow">Администратор платформы</span>
+            <h1>Кабинет администратора</h1>
+            <p>Единая точка управления аккаунтами: здесь создаются поставщики и реселлеры, а через левое меню доступны кабинеты всех ролей и служебные разделы платформы.</p>
+          </div>
+          <div class="stats">
+            <div class="stat"><strong data-total-accounts>0</strong><span>созданных аккаунтов</span></div>
+            <div class="stat"><strong data-total-suppliers>0</strong><span>поставщиков</span></div>
+            <div class="stat"><strong data-total-resellers>0</strong><span>реселлеров</span></div>
+            <div class="stat"><strong data-total-companies>0</strong><span>компаний реселлеров</span></div>
+          </div>
+        </section>
+
+        <nav class="quick-grid" aria-label="Быстрые переходы">
+          <a class="quick-link" href="admin-resellers.html"><strong>Администрирование реселлеров</strong><span>Аккаунты, компании, торговые точки и статус доступа.</span></a>
+          <a class="quick-link" href="admin-suppliers.html"><strong>Администрирование поставщиков</strong><span>Поставщики, бренды, заявки и материалы на модерации.</span></a>
+          <a class="quick-link" href="admin-companies.html"><strong>Администрирование компаний</strong><span>Компании, торговые точки и привязанные реселлеры.</span></a>
+          <a class="quick-link" href="#account-forms"><strong>Создать аккаунт</strong><span>Добавление поставщика или реселлера как полноценного пользователя.</span></a>
+        </nav>
+
+        <section class="layout" id="account-forms">
+          <div class="panel">
+            <h2>Создание аккаунтов</h2>
+            <p>Новые аккаунты сохраняются локально и сразу появляются в переключателе пользователя в шапке.</p>
+            <div class="forms">
+              <form class="account-form" data-company-form>
+                <h3>Новая компания реселлеров</h3>
+                <div class="field"><label>Название компании</label><input class="input" name="name" required placeholder="Например, ООО Рога и Копыта"></div>
+                <div class="field"><label>Торговые точки</label><textarea class="textarea" name="stores" placeholder="Флагманский салон&#10;ТТ Север&#10;ТТ Юг"></textarea></div>
+                <div class="field"><label>Комментарий</label><input class="input" name="note" placeholder="Сеть салонов, регион, менеджер"></div>
+                <button class="btn" type="submit">Добавить компанию</button>
+              </form>
+
+              <form class="account-form" data-account-form="supplier">
+                <h3>Новый поставщик</h3>
+                <div class="field"><label>Название / ФИО</label><input class="input" name="name" required placeholder="Например, Оксана Розова"></div>
+                <div class="field"><label>Email</label><input class="input" name="email" type="email" placeholder="supplier@example.ru"></div>
+                <div class="field"><label>Бренды</label><textarea class="textarea" name="brands" placeholder="Pergo, Calitex, Coswick"></textarea></div>
+                <button class="btn" type="submit">Добавить поставщика</button>
+              </form>
+
+              <form class="account-form" data-account-form="student">
+                <h3>Новый реселлер</h3>
+                <div class="field"><label>ФИО</label><input class="input" name="name" required placeholder="Например, Иван Петров"></div>
+                <div class="field"><label>Email</label><input class="input" name="email" type="email" placeholder="reseller@example.ru"></div>
+                <div class="field"><label>Компания / торговая точка</label><input class="input" name="company" placeholder="ООО Рога и Копыта · ТТ Север"></div>
+                <button class="btn" type="submit">Добавить реселлера</button>
+              </form>
+            </div>
+          </div>
+
+          <aside class="panel">
+            <h2>Созданные аккаунты</h2>
+            <p>Можно быстро войти под созданным аккаунтом или удалить тестовую запись.</p>
+            <div class="account-list" data-account-list></div>
+          </aside>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" data-toast></div>
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var list = document.querySelector('[data-account-list]');
+      var toastNode = document.querySelector('[data-toast]');
+      var total = document.querySelector('[data-total-accounts]');
+      var suppliers = document.querySelector('[data-total-suppliers]');
+      var resellers = document.querySelector('[data-total-resellers]');
+      var companiesTotal = document.querySelector('[data-total-companies]');
+
+      function toast(message) {
+        toastNode.textContent = message;
+        toastNode.classList.add('show');
+        setTimeout(function () { toastNode.classList.remove('show'); }, 1800);
+      }
+
+      function escapeHtml(value) {
+        return String(value || '').replace(/[&<>"]/g, function (char) {
+          return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[char];
+        });
+      }
+
+      function render() {
+        var api = window.TouchSpaceAcademy || {};
+        var accounts = api.getManagedUsers ? api.getManagedUsers() : [];
+        var companies = api.getAdminCompanies ? api.getAdminCompanies() : [];
+        var supplierCount = accounts.filter(function (account) { return account.type === 'supplier'; }).length;
+        var resellerCount = accounts.filter(function (account) { return account.type === 'student'; }).length;
+        total.textContent = accounts.length;
+        suppliers.textContent = supplierCount;
+        resellers.textContent = resellerCount;
+        companiesTotal.textContent = companies.length;
+
+        if (!accounts.length) {
+          list.innerHTML = '<div class="empty">Пока нет созданных аккаунтов. Добавьте поставщика или реселлера через формы слева.</div>';
+          return;
+        }
+
+        list.innerHTML = accounts.map(function (account) {
+          var meta = account.type === 'supplier'
+            ? 'Поставщик брендов' + (account.brands ? ' · ' + account.brands : '')
+            : 'Реселлер' + (account.company ? ' · ' + account.company : '');
+          return '<article class="account-card" data-account-id="' + escapeHtml(account.id) + '">' +
+            '<div class="avatar" style="background:' + escapeHtml(account.avatar) + '">' + escapeHtml(account.initials.slice(0, 1)) + '</div>' +
+            '<div><strong>' + escapeHtml(account.name) + '</strong><small>' + escapeHtml(meta) + (account.email ? '<br>' + escapeHtml(account.email) : '') + '</small>' +
+            '<div class="account-actions"><button class="btn secondary" type="button" data-login-account="' + escapeHtml(account.id) + '">Войти</button><a class="btn secondary" href="' + escapeHtml(account.cabinetHref) + '">Кабинет</a><button class="btn danger" type="button" data-remove-account="' + escapeHtml(account.id) + '">Удалить</button></div></div>' +
+          '</article>';
+        }).join('');
+      }
+
+      document.querySelectorAll('[data-account-form]').forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+          var type = form.getAttribute('data-account-form');
+          var data = new FormData(form);
+          var name = String(data.get('name') || '').trim();
+          if (!name) return;
+          window.TouchSpaceAcademy.addManagedUser({
+            type: type,
+            id: 'managed-' + type + '-' + Date.now().toString(36),
+            name: name,
+            email: String(data.get('email') || '').trim(),
+            company: String(data.get('company') || '').trim(),
+            brands: String(data.get('brands') || '').trim()
+          });
+          form.reset();
+          render();
+          toast(type === 'supplier' ? 'Поставщик добавлен' : 'Реселлер добавлен');
+        });
+      });
+
+      var companyForm = document.querySelector('[data-company-form]');
+      companyForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var data = new FormData(companyForm);
+        var name = String(data.get('name') || '').trim();
+        if (!name) return;
+        window.TouchSpaceAcademy.addAdminCompany({
+          id: 'managed-company-' + Date.now().toString(36),
+          name: name,
+          stores: String(data.get('stores') || '').trim(),
+          note: String(data.get('note') || '').trim()
+        });
+        companyForm.reset();
+        render();
+        toast('Компания добавлена');
+      });
+
+      list.addEventListener('click', function (event) {
+        var login = event.target.closest('[data-login-account]');
+        var remove = event.target.closest('[data-remove-account]');
+        if (login) {
+          window.TouchSpaceAcademy.setActiveUser(login.getAttribute('data-login-account'));
+          toast('Аккаунт выбран');
+          render();
+        }
+        if (remove) {
+          window.TouchSpaceAcademy.removeManagedUser(remove.getAttribute('data-remove-account'));
+          toast('Аккаунт удалён');
+          render();
+        }
+      });
+
+      window.addEventListener('ts-academy-admin-accounts-change', render);
+      window.addEventListener('ts-academy-admin-companies-change', render);
+      render();
+    })();
+  </script>
+</body>
+</html>

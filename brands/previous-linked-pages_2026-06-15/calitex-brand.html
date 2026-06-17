@@ -1,0 +1,925 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calitex | TouchSpace Академия</title>
+  <style>
+    :root {
+      --blue: #0a84ff;
+      --blue-2: #5f93ff;
+      --ink: #111827;
+      --muted: #6b7280;
+      --line: #dfe6f2;
+      --page: #eef4ff;
+      --card: #fff;
+      --green: #23c483;
+      --orange: #ff8a3d;
+      --shadow: 0 24px 80px rgba(24, 45, 90, 0.12);
+      --shadow-soft: 0 14px 38px rgba(24, 45, 90, 0.08);
+      --max: 1500px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f8fbff 0%, var(--page) 48%, #f6f9ff 100%);
+      font-family: Inter, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    .page { max-width: var(--max); margin: 0 auto; padding: 24px; }
+    .shell { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 24px; }
+    .sidebar {
+      position: sticky; top: 22px; z-index: 60; height: calc(100vh - 44px); min-height: 520px;
+      padding: 18px 10px; border: 1px solid rgba(255,255,255,.8); border-radius: 26px;
+      background: rgba(255,255,255,.78); box-shadow: var(--shadow-soft); backdrop-filter: blur(18px); overflow: visible;
+    }
+    .nav { position: relative; z-index: 2; display: grid; gap: 10px; overflow: visible; }
+    .nav__item {
+      position: relative; display: grid; place-items: center; width: 56px; height: 56px; border: 0; border-radius: 18px;
+      background: transparent; cursor: pointer; transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+    .nav__item:hover { background: rgba(10,132,255,.08); transform: translateY(-1px); }
+    .nav__item.is-active { background: var(--blue); box-shadow: 0 12px 28px rgba(10,132,255,.26); }
+    .nav__item img { width: 25px; height: 25px; object-fit: contain; transition: filter 180ms ease; }
+    .nav__item.is-active img { filter: brightness(0) invert(1); }
+    .nav__item::after {
+      content: attr(data-tooltip); position: absolute; left: calc(100% + 12px); top: 50%; z-index: 100;
+      padding: 10px 13px; border-radius: 14px; background: rgba(255,255,255,.94); box-shadow: 0 16px 38px rgba(24,45,90,.14);
+      color: var(--ink); font-size: 13px; font-weight: 800; line-height: 1; white-space: nowrap; opacity: 0; pointer-events: none;
+      transform: translate(-6px,-50%); transition: opacity 160ms ease, transform 160ms ease; backdrop-filter: blur(14px);
+    }
+    .nav__item::before {
+      content: ""; position: absolute; left: calc(100% + 7px); top: 50%; z-index: 101; width: 10px; height: 10px;
+      border-radius: 3px; background: rgba(255,255,255,.94); opacity: 0; pointer-events: none;
+      transform: translate(-6px,-50%) rotate(45deg); transition: opacity 160ms ease, transform 160ms ease;
+    }
+    .nav__item:hover::after, .nav__item:hover::before, .nav__item:focus-visible::after, .nav__item:focus-visible::before { opacity: 1; transform: translate(0,-50%); }
+    .main { min-width: 0; }
+    .header { display: grid; grid-template-columns: 260px minmax(260px,1fr) auto; gap: 18px; align-items: center; margin-bottom: 22px; }
+    .wordmark { font-size: 28px; font-weight: 950; line-height: .82; letter-spacing: -.065em; }
+    .wordmark span { display: block; }
+    .wordmark span:last-child { padding-left: 74px; }
+    .search {
+      display: flex; align-items: center; gap: 12px; height: 62px; padding: 0 22px; border: 1px solid rgba(255,255,255,.9);
+      border-radius: 22px; background: rgba(255,255,255,.86); box-shadow: var(--shadow-soft); color: #9aa4b2;
+    }
+    .search input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 16px; }
+    .header-actions { position: relative; display: flex; align-items: center; gap: 12px; }
+    .notification-wrap { position: relative; }
+    .notification {
+      position: relative; display: grid; place-items: center; width: 62px; height: 62px; border: 0; border-radius: 22px;
+      background: rgba(255,255,255,.86); box-shadow: var(--shadow-soft); color: #9aa4b2; cursor: pointer;
+      transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+    .notification:hover, .notification.is-open { background: #fff; box-shadow: 0 18px 42px rgba(95,147,255,.16); transform: translateY(-1px); }
+    .notification::after {
+      content: ""; position: absolute; right: 17px; top: 16px; width: 9px; height: 9px; border: 2px solid #fff; border-radius: 50%; background: var(--orange);
+    }
+    .notification img { width: 25px; height: 25px; object-fit: contain; }
+    .notification-panel {
+      position: absolute; right: 0; top: calc(100% + 14px); z-index: 80; width: min(380px, calc(100vw - 48px)); padding: 16px;
+      border: 1px solid rgba(255,255,255,.88); border-radius: 26px;
+      background: radial-gradient(circle at 88% 10%, rgba(95,147,255,.18), transparent 32%), rgba(255,255,255,.94);
+      box-shadow: 0 26px 70px rgba(24,45,90,.18); opacity: 0; pointer-events: none; transform: translateY(-8px) scale(.98);
+      transform-origin: top right; transition: opacity 180ms ease, transform 180ms ease; backdrop-filter: blur(18px);
+    }
+    .notification-panel.is-open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+    .notification-panel::before {
+      content: ""; position: absolute; right: 23px; top: -6px; width: 14px; height: 14px; border-radius: 4px; background: rgba(255,255,255,.94); transform: rotate(45deg);
+    }
+    .notification-panel__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+    .notification-panel__head strong { font-size: 18px; letter-spacing: -.03em; }
+    .notification-panel__count {
+      display: inline-flex; align-items: center; justify-content: center; min-width: 28px; height: 28px; padding: 0 9px;
+      border-radius: 999px; background: #e4edff; color: var(--blue); font-size: 12px; font-weight: 900;
+    }
+    .notification-list { display: grid; gap: 10px; }
+    .notification-item {
+      display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 12px; padding: 12px; border: 0; border-radius: 18px;
+      background: rgba(244,248,255,.82); color: inherit; text-align: left; cursor: pointer; transition: background 180ms ease, transform 180ms ease;
+    }
+    .notification-item:hover { background: #fff; transform: translateY(-1px); }
+    .notification-item__icon {
+      display: grid; place-items: center; width: 42px; height: 42px; border-radius: 15px;
+      background: linear-gradient(135deg, #e4edff, #f7fbff); color: var(--blue); font-weight: 950;
+    }
+    .notification-item__copy strong { display: block; margin-bottom: 3px; font-size: 14px; line-height: 1.16; }
+    .notification-item__copy span { display: block; color: var(--muted); font-size: 12px; line-height: 1.35; }
+    .notification-panel__foot {
+      width: 100%; min-height: 40px; margin-top: 10px; border: 0; border-radius: 16px; background: #fff; color: var(--blue); font-weight: 900; cursor: pointer;
+    }
+    .user {
+      display: flex; align-items: center; gap: 14px; min-width: 222px; height: 62px; padding: 8px 10px 8px 18px;
+      border-radius: 24px; background: #fff; box-shadow: var(--shadow-soft);
+    }
+    .user__meta { min-width: 0; }
+    .user__name { display: block; font-weight: 800; }
+    .user__role { display: block; margin-top: 2px; color: var(--muted); font-size: 13px; }
+    .avatar {
+      display: grid; place-items: center; width: 46px; height: 46px; margin-left: auto; border-radius: 16px;
+      background: linear-gradient(135deg, var(--blue), #8ee2ff); color: #fff; font-weight: 900;
+    }
+    .lesson-top {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+      margin-bottom: 18px; padding: 16px 18px; border: 1px solid rgba(255,255,255,.9); border-radius: 28px;
+      background: rgba(255,255,255,.88); box-shadow: var(--shadow-soft); backdrop-filter: blur(14px);
+    }
+    .breadcrumb { display: flex; flex-wrap: wrap; gap: 8px; color: #65758b; font-size: 13px; font-weight: 850; }
+    .breadcrumb a { color: var(--blue); }
+    .back-link { min-height: 38px; padding: 10px 13px; border-radius: 999px; background: #edf4ff; color: #36506f; font-size: 13px; font-weight: 900; }
+
+    .ts-kb-detail { display: grid; gap: 18px; }
+    .ts-kb-detail > div[id] { scroll-margin-top: 22px; }
+    .ts-kb-detail section,
+    .ts-calitex-structure {
+      margin: 0 !important; border: 1px solid rgba(255,255,255,.9); border-radius: 34px;
+      background: rgba(255,255,255,.9); box-shadow: var(--shadow-soft); overflow: hidden; backdrop-filter: blur(14px);
+      color: var(--ink); font-family: inherit;
+    }
+    .ts-kb-detail section *,
+    .ts-calitex-structure * { box-sizing: border-box; font-family: inherit; }
+    .ts-calitex-hero__wrap, .ts-calitex-history3__wrap, .ts-calitex-phX__wrap, .ts-calitex-techX__wrap, .ts-calitex-saleX__wrap {
+      border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; overflow: hidden;
+    }
+    .ts-calitex-hero__grid, .ts-calitex-history3__hero, .ts-calitex-phX__heroGrid, .ts-calitex-techX__grid, .ts-calitex-saleX__grid {
+      display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(300px, .92fr); gap: 18px;
+    }
+    .ts-calitex-hero__left, .ts-calitex-history3__heroLeft, .ts-calitex-phX__hero, .ts-calitex-techX__inner, .ts-calitex-saleX__inner {
+      padding: 28px;
+    }
+    .ts-calitex-hero__right, .ts-calitex-history3__heroRight, .ts-calitex-phX__heroMedia, .ts-calitex-phX__media, .ts-calitex-techX__heroMedia, .ts-calitex-step3__media {
+      min-height: 260px; position: relative; border-radius: 28px; background: linear-gradient(135deg,#edf5ff,#ffffff); border: 1px solid var(--line); margin: 28px; overflow: hidden;
+    }
+    .ts-calitex-hero__right { display: grid; place-items: center; }
+    .ts-calitex-hero__photo, .ts-calitex-history3__photo, .ts-calitex-phX__heroMediaBg, .ts-calitex-phX__mediaBg, .ts-calitex-techX__heroMediaBg, .ts-calitex-step3__mediaBg {
+      position: absolute; inset: 0; display: block; background-position: center; background-size: cover;
+    }
+    .ts-calitex-hero__overlay, .ts-calitex-history3__overlay, .ts-calitex-phX__heroMediaOv, .ts-calitex-phX__mediaOv, .ts-calitex-step3__mediaOverlay {
+      position: absolute; inset: 0; display: block; background: linear-gradient(180deg, rgba(17,24,39,.06), rgba(17,24,39,.42));
+    }
+    .ts-calitex-hero__logo { position: static !important; display: grid; place-items: center; width: min(100%, 320px); padding: 22px; border-radius: 26px; background: #fff; border: 1px solid var(--line); box-shadow: none; overflow: hidden; }
+    .ts-calitex-hero__logo img { width: min(260px, 72%); height: auto; }
+    .ts-calitex-hero__logoText {
+      display: block;
+      width: 100%;
+      max-width: 248px;
+      min-height: 78px;
+      padding: 18px 16px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #0a84ff 0%, #23c483 100%);
+      color: #fff;
+      font-size: clamp(30px, 4.3vw, 48px);
+      font-weight: 950;
+      letter-spacing: 0;
+      line-height: 1;
+      overflow-wrap: anywhere;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .ts-calitex-hero__note, .ts-calitex-history3__note, .ts-calitex-step3__callout, .ts-calitex-phX__callout, .ts-calitex-techX__callout, .ts-calitex-saleX__big, .ts-calitex-saleX__trust, .ts-calitex-saleX__final {
+      margin: 14px 0 0; padding: 18px; border-radius: 22px; background: #f7faff; border: 1px solid var(--line); color: var(--ink); box-shadow: none;
+    }
+    .ts-calitex-hero__logo, .ts-calitex-hero__note, .ts-calitex-history3__note, .ts-calitex-phX__heroMediaLabel, .ts-calitex-phX__mediaLabel {
+      position: relative; z-index: 2;
+    }
+    .ts-calitex-hero__note, .ts-calitex-history3__note {
+      margin: auto 18px 18px; align-self: end; background: rgba(255,255,255,.88); backdrop-filter: blur(14px);
+    }
+    .ts-calitex-hero__note span, .ts-calitex-history3__note span { display: block; margin-top: 5px; color: var(--muted); font-size: 13px; font-weight: 700; line-height: 1.35; }
+    .ts-calitex-phX__heroMediaLabel, .ts-calitex-phX__mediaLabel {
+      position: absolute; left: 16px; right: 16px; bottom: 16px; display: inline-flex; width: fit-content; max-width: calc(100% - 32px);
+      padding: 10px 12px; border-radius: 999px; background: rgba(255,255,255,.88); color: #243246; box-shadow: 0 14px 32px rgba(24,45,90,.12); backdrop-filter: blur(14px);
+    }
+    .ts-calitex-hero__badge, .ts-calitex-history3__kicker, .ts-calitex-phX__kicker, .ts-calitex-techX__kicker, .ts-calitex-saleX__kicker,
+    .ts-calitex-card__num, .ts-calitex-step3__badge, .ts-calitex-step3__tag, .ts-calitex-techX__badge, .ts-calitex-saleX__st, .ts-calitex-phX__chip, .ts-calitex-saleX__chip {
+      display: inline-flex; align-items: center; min-height: 32px; padding: 8px 11px; border-radius: 999px; background: #edf4ff; color: var(--blue); border: 1px solid rgba(10,132,255,.16); font-size: 12px; font-weight: 900; line-height: 1.2;
+    }
+    .brand-hero-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .brand-hero-favorite {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(223, 230, 242, 0.95);
+      border-radius: 15px;
+      background: #fff;
+      color: #9aa4b2;
+      font-size: 0;
+      box-shadow: 0 10px 24px rgba(24, 45, 90, 0.08);
+      cursor: pointer;
+      transition: color 160ms ease, background 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+    .brand-hero-favorite::before {
+      content: "♡";
+      font-size: 22px;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+    .brand-hero-favorite:hover {
+      transform: translateY(-1px);
+      color: var(--blue);
+      border-color: rgba(10, 132, 255, 0.32);
+      background: rgba(10, 132, 255, 0.08);
+    }
+    body .brand-hero-favorite.is-favorite[data-favorite-toggle] {
+      background: linear-gradient(135deg, rgba(10, 132, 255, 0.14), rgba(83, 108, 255, 0.1)) !important;
+      border-color: rgba(10, 132, 255, 0.36) !important;
+      color: var(--blue) !important;
+      box-shadow: 0 12px 28px rgba(10, 132, 255, 0.16) !important;
+    }
+    .brand-hero-favorite.is-favorite::before {
+      content: "♥";
+    }
+    .ts-calitex-hero__title, .ts-calitex-history3__title, .ts-calitex-phX__title, .ts-calitex-techX__title, .ts-calitex-saleX__title {
+      margin: 18px 0 12px; color: var(--ink); font-size: clamp(32px, 5vw, 62px); line-height: .96; letter-spacing: -.055em; font-weight: 950;
+    }
+    .ts-calitex-structure__title { margin: 0 0 8px; padding: 28px 28px 0; font-size: clamp(30px,4vw,46px); line-height: 1; letter-spacing: -.05em; font-weight: 950; }
+    .ts-calitex-structure__subtitle { padding: 0 28px; color: var(--muted); font-size: 15px; font-weight: 650; line-height: 1.55; }
+    .ts-calitex-hero__subtitle, .ts-calitex-history3__lead, .ts-calitex-phX__lead, .ts-calitex-techX__subtitle, .ts-calitex-saleX__subtitle,
+    .ts-calitex-step3__p, .ts-calitex-phX__p, .ts-calitex-techX__p, .ts-calitex-saleX__p, .ts-calitex-card__text, .ts-calitex-mini3 p, .ts-calitex-saleX__type p {
+      color: var(--muted); font-size: 15px; font-weight: 650; line-height: 1.55;
+    }
+    .ts-calitex-hero__meta, .ts-calitex-phX__chips, .ts-calitex-saleX__stickers, .ts-calitex-saleX__chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; list-style: none; }
+    .ts-calitex-hero__pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 40px;
+      padding: 10px 14px 10px 11px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.74);
+      color: #243246;
+      border: 1px solid rgba(10,132,255,.18);
+      box-shadow: 0 10px 24px rgba(24,45,90,.06);
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .ts-calitex-hero__dot {
+      width: 4px;
+      align-self: stretch;
+      min-height: 18px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--blue), var(--green));
+      display: inline-block;
+      flex: 0 0 auto;
+    }
+    .ts-calitex-hero__cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .ts-calitex-btn {
+      display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 12px 16px; border-radius: 16px; border: 1px solid transparent; background: var(--blue); color: #fff; font-size: 13px; font-weight: 900; box-shadow: 0 12px 28px rgba(10,132,255,.22); cursor: pointer;
+    }
+    .ts-calitex-btn--ghost--ghost { background: rgba(255,255,255,.72); color: var(--blue); border-color: rgba(10,132,255,.18); box-shadow: none; }
+    .ts-calitex-structure__grid, .ts-calitex-phX__sales, .ts-calitex-saleX__types, .ts-calitex-saleX__rules { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; padding: 20px 28px 28px; }
+    .ts-calitex-card, .ts-calitex-step3, .ts-calitex-phX__panel, .ts-calitex-phX__salesCard, .ts-calitex-techX__card, .ts-calitex-saleX__card, .ts-calitex-saleX__type, .ts-calitex-saleX__ruleCard,
+    .ts-calitex-mini3, .ts-calitex-saleX__mini, .ts-calitex-saleX__step, .ts-calitex-saleX__bubble {
+      display: block; padding: 20px; border-radius: 24px; background: #f7faff; border: 1px solid var(--line); color: var(--ink); box-shadow: none;
+    }
+    .ts-calitex-card__title, .ts-calitex-step3__title, .ts-calitex-phX__h, .ts-calitex-techX__h, .ts-calitex-saleX__h, .ts-calitex-saleX__title2 {
+      margin: 10px 0; color: var(--ink); font-size: 22px; line-height: 1.08; letter-spacing: -.04em; font-weight: 950;
+    }
+    .ts-calitex-tl3, .ts-calitex-phX__body, .ts-calitex-techX__body, .ts-calitex-saleX__card { padding: 0 28px 28px; }
+    .ts-calitex-tl3__list, .ts-calitex-phX__body, .ts-calitex-techX__body { display: grid; gap: 16px; }
+    .ts-calitex-step3__top { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+    .ts-calitex-step3__cols, .ts-calitex-phX__scene, .ts-calitex-phX__scene--rev, .ts-calitex-techX__twocol, .ts-calitex-saleX__twocol { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+    .ts-calitex-step3__list, .ts-calitex-phX__list, .ts-calitex-techX__list, .ts-calitex-saleX__list, .ts-calitex-saleX__ruleList { color: var(--muted); font-size: 14px; font-weight: 650; line-height: 1.5; padding-left: 20px; }
+    .ts-calitex-step3__mediaLabel, .ts-calitex-phX__heroMediaLabel, .ts-calitex-phX__mediaLabel, .ts-calitex-techX__heroMediaLabel, .ts-calitex-step3__mediaLabel { color: var(--muted); font-size: 13px; font-weight: 900; }
+    .ts-calitex-phX__ladder, .ts-calitex-saleX__steps { display: grid; gap: 10px; }
+    .ts-calitex-phX__ladderRow { display: flex; gap: 10px; align-items: center; padding: 14px; border-radius: 18px; background: #f7faff; border: 1px solid var(--line); }
+    .ts-calitex-phX__ladderMark, .ts-calitex-saleX__num {
+      display: grid;
+      place-items: center;
+      min-width: 36px;
+      height: 36px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(10,132,255,.2);
+      background: linear-gradient(180deg, #ffffff 0%, #edf4ff 100%);
+      color: var(--blue);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.72), 0 8px 18px rgba(24,45,90,.07);
+      font-weight: 950;
+      flex: 0 0 auto;
+    }
+    .ts-calitex-saleX__step {
+      position: relative;
+      padding-left: 18px;
+      border-left: 3px solid rgba(10,132,255,.16);
+    }
+    .ts-calitex-saleX__num {
+      display: inline-flex;
+      min-width: 0;
+      width: fit-content;
+      height: 32px;
+      min-height: 32px;
+      margin-bottom: 10px;
+      padding: 0 11px;
+      color: var(--blue);
+      font-size: 12px;
+      line-height: 1;
+    }
+    .ts-calitex-saleX__num::before {
+      content: "Шаг ";
+    }
+    .ts-calitex-techX__mini, .ts-calitex-techX__tag { display: inline-flex; margin: 4px 6px 4px 0; padding: 7px 10px; border-radius: 999px; background: #edf4ff; color: #36506f; font-size: 12px; font-weight: 900; }
+    .ts-calitex-techX__hero { padding: 28px; }
+    .ts-calitex-techX__lead { color: var(--muted); font-size: 15px; font-weight: 650; line-height: 1.55; max-width: 820px; }
+    .ts-calitex-techX__map { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; margin-top: 20px; }
+    .ts-calitex-techX__mapCard { min-height: 154px; padding: 18px; border-radius: 22px; background: #f7faff; border: 1px solid var(--line); }
+    .ts-calitex-techX__mapCard b { display: block; margin-bottom: 8px; color: var(--ink); font-size: 18px; letter-spacing: -.03em; }
+    .ts-calitex-techX__mapCard span { color: var(--muted); font-size: 13px; font-weight: 750; line-height: 1.4; }
+    .ts-calitex-techX__divider { display: grid; grid-template-columns: auto minmax(0,1fr); gap: 14px; align-items: center; margin: 4px 0; }
+    .ts-calitex-techX__divider span { display: inline-flex; align-items: center; min-height: 34px; padding: 8px 12px; border-radius: 999px; background: var(--blue); color: #fff; font-size: 12px; font-weight: 950; }
+    .ts-calitex-techX__divider::after { content: ""; height: 1px; background: var(--line); }
+    .ts-calitex-techX__matrix { display: grid; gap: 12px; }
+    .ts-calitex-techX__matrixRow { display: grid; grid-template-columns: 1fr 1fr 1.35fr; gap: 12px; padding: 14px; border-radius: 22px; background: #f7faff; border: 1px solid var(--line); }
+    .ts-calitex-techX__cell { padding: 14px; border-radius: 18px; background: #fff; border: 1px solid var(--line); }
+    .ts-calitex-techX__cell small { display: block; margin-bottom: 7px; color: var(--muted); font-size: 11px; font-weight: 950; text-transform: uppercase; letter-spacing: .04em; }
+    .ts-calitex-techX__cell b { display: block; color: var(--ink); font-size: 16px; line-height: 1.25; }
+    .ts-calitex-techX__cell p { margin: 0; color: var(--muted); font-size: 13px; font-weight: 700; line-height: 1.45; }
+    .ts-calitex-techX__playbook { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+    .ts-calitex-techX__scenario { padding: 20px; border-radius: 24px; background: #f7faff; border: 1px solid var(--line); }
+    .ts-calitex-techX__scenario h3 { margin: 0 0 10px; color: var(--ink); font-size: 22px; line-height: 1.08; letter-spacing: -.04em; }
+    .ts-calitex-techX__scenario p { margin: 0; color: var(--muted); font-size: 14px; font-weight: 650; line-height: 1.5; }
+    .ts-calitex-techX__script { margin-top: 14px; padding: 16px; border-radius: 18px; background: #fff; border: 1px solid var(--line); color: var(--ink); font-size: 14px; font-weight: 800; line-height: 1.45; }
+    .ts-calitex-techX__summary { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .ts-calitex-techX__summaryCard { padding: 20px; border-radius: 24px; background: #f7faff; border: 1px solid var(--line); }
+    .ts-calitex-techX__summaryCard h3 { margin: 0 0 10px; font-size: 22px; letter-spacing: -.04em; }
+    .ts-calitex-techX__summaryCard p { margin: 0; color: var(--muted); font-size: 14px; font-weight: 650; line-height: 1.5; }    @media (max-width: 1100px) {
+      .ts-calitex-hero__grid, .ts-calitex-history3__hero, .ts-calitex-phX__heroGrid, .ts-calitex-techX__grid, .ts-calitex-saleX__grid,
+      .ts-calitex-structure__grid, .ts-calitex-phX__sales, .ts-calitex-saleX__types, .ts-calitex-saleX__rules, .ts-calitex-techX__map { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width: 760px) {
+      .page { padding: 14px 12px 40px; }
+      .shell, .header, .ts-calitex-hero__grid, .ts-calitex-history3__hero, .ts-calitex-phX__heroGrid, .ts-calitex-techX__grid, .ts-calitex-saleX__grid,
+      .ts-calitex-structure__grid, .ts-calitex-phX__sales, .ts-calitex-saleX__types, .ts-calitex-saleX__rules, .ts-calitex-step3__cols, .ts-calitex-phX__scene, .ts-calitex-phX__scene--rev, .ts-calitex-techX__twocol, .ts-calitex-saleX__twocol, .ts-calitex-techX__map, .ts-calitex-techX__matrixRow, .ts-calitex-techX__playbook, .ts-calitex-techX__summary { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; min-height: 0; padding: 10px; }
+      .nav { grid-template-columns: repeat(6,1fr); }
+      .nav__item { width: 100%; }
+      .nav__item::before, .nav__item::after { display: none; }
+      .header-actions { justify-content: space-between; }
+      .user { min-width: 0; }
+      .ts-calitex-hero__left, .ts-calitex-history3__heroLeft, .ts-calitex-phX__hero, .ts-calitex-techX__inner, .ts-calitex-saleX__inner,
+      .ts-calitex-tl3, .ts-calitex-phX__body, .ts-calitex-techX__body, .ts-calitex-saleX__card { padding: 20px; }
+    }
+</style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Поиск по материалам бренда"></header>
+        <div class="lesson-top">
+          <nav class="breadcrumb" aria-label="Хлебные крошки"><a href="courses.html">Курсы</a><span>/</span><a href="course-calitex.html">Calitex: качество и аргументы</a><span>/</span><span>Урок</span></nav>
+          <a class="back-link" href="brands.html">Назад к брендам</a>
+        </div>
+<div class="ts-kb-detail">
+
+<section class="ts-calitex-hero" aria-label="Академия Calitex">
+  <div class="ts-calitex-hero__wrap">
+    <div class="ts-calitex-hero__grid">
+
+      <div class="ts-calitex-hero__left">
+        <div class="brand-hero-badge-row">
+          <div class="ts-calitex-hero__badge">Академия бренда Calitex</div>
+          <button class="brand-hero-favorite" type="button" aria-label="Добавить Calitex в избранное" aria-pressed="false" data-favorite-toggle data-favorite-id="brand-calitex" data-favorite-title="Calitex" data-favorite-type="Бренд" data-favorite-url="calitex-brand.html" data-favorite-description="Философия качества, X-Guard, HydroSeal и аргументы продажи Calitex.">В избранное</button>
+        </div>
+
+        <h1 class="ts-calitex-hero__title">Calitex — бренд, задающий стандарты качества в напольных покрытиях</h1>
+
+        <p class="ts-calitex-hero__subtitle">
+          Это вводный модуль для менеджеров и партнёров TouchSpace. Разбор того, почему Calitex — это синоним надёжности, как донести его ценность клиенту и в чём заключается превосходство бренда.
+        </p>
+
+        <ul class="ts-calitex-hero__meta">
+          <li class="ts-calitex-hero__pill"><i class="ts-calitex-hero__dot"></i> История и ценности</li>
+          <li class="ts-calitex-hero__pill"><i class="ts-calitex-hero__dot"></i> Технологии и уникальность</li>
+          <li class="ts-calitex-hero__pill"><i class="ts-calitex-hero__dot"></i> Позиционирование на рынке</li>
+        </ul>
+
+        <div class="ts-calitex-hero__cta">
+          <a class="ts-calitex-btn ts-calitex-btn--primary" href="#calitex-start">Начать обучение</a>
+          <a class="ts-calitex-btn ts-calitex-btn--ghost" href="#calitex-structure">Содержание</a>
+          <a class="ts-calitex-btn ts-calitex-btn--ghost" href="calitex-test.html">Тестовая версия</a>
+        </div>
+      </div>
+
+      <div class="ts-calitex-hero__right" aria-hidden="true">
+       <div class="ts-calitex-hero__photo" style="background-image:url('images/calitex_realistic/calitex-showroom-collection.jpg');"></div>
+        <div class="ts-calitex-hero__overlay"></div>
+
+        <div class="ts-calitex-hero__logo">
+          <img alt="Calitex" src="images/brand-logos/Calitex.png">
+        </div>
+
+        <div class="ts-calitex-hero__note">
+          <b>Цель модуля</b>
+          <span>Научиться уверенно предлагать Calitex: не про «выбор из многих», а про «инвестицию в долговечность и комфорт».</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div id="calitex-start"></div>
+
+<section class="ts-calitex-structure" id="calitex-structure">
+  <div class="ts-calitex-structure__title">Структура обучения</div>
+  <div class="ts-calitex-structure__subtitle">
+    4 ключевых блока, которые позволят уверенно предлагать Calitex и объяснять его ценность клиенту.
+  </div>
+
+  <div class="ts-calitex-structure__grid">
+
+    <a href="#calitex-history" class="ts-calitex-card">
+      <div class="ts-calitex-card__num">Модуль 01</div>
+      <div class="ts-calitex-card__title">История бренда</div>
+      <div class="ts-calitex-card__text">
+        От идеи до признания. История стремления к совершенству.
+      </div>
+    </a>
+
+    <a href="#calitex-philosophy" class="ts-calitex-card">
+      <div class="ts-calitex-card__num">Модуль 02</div>
+      <div class="ts-calitex-card__title">Философия и ДНК бренда</div>
+      <div class="ts-calitex-card__text">
+        Основы качества и дизайна: пол, который заботится о вашем комфорте.
+      </div>
+    </a>
+
+    <a href="#calitex-tech" class="ts-calitex-card">
+      <div class="ts-calitex-card__num">Модуль 03</div>
+      <div class="ts-calitex-card__title">Технологии и преимущества</div>
+      <div class="ts-calitex-card__text">
+        Инновации, прочность, эстетика. Как работают решения X-Guard и HydroSeal.
+      </div>
+    </a>
+
+    <a href="#calitex-market" class="ts-calitex-card">
+      <div class="ts-calitex-card__num">Модуль 04</div>
+      <div class="ts-calitex-card__title">Calitex vs рынок</div>
+      <div class="ts-calitex-card__text">
+        Позиционирование, конкурентные преимущества и работа с возражениями.
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<section class="ts-calitex-history3" id="calitex-history" aria-label="История бренда Calitex">
+  <div class="ts-calitex-history3__wrap">
+
+    <div class="ts-calitex-history3__hero">
+      <div class="ts-calitex-history3__heroLeft">
+        <div class="ts-calitex-history3__kicker">Модуль 01 — История бренда</div>
+        <h2 class="ts-calitex-history3__title">Вводное - CALITEX: Бренд, задающий стандарты</h2>
+        <p class="ts-calitex-history3__lead">
+          Ниже — история Calitex как подтверждение надёжности: ключевые вехи, которые формируют доверие и подчёркивают экспертность в разговоре с клиентом.
+        </p>
+      </div>
+
+      <div class="ts-calitex-history3__heroRight" aria-hidden="true">
+        <div class="ts-calitex-history3__photo" style="background-image:url('images/calitex_realistic/calitex-archive-team.jpg');"></div>
+        <div class="ts-calitex-history3__overlay"></div>
+        <div class="ts-calitex-history3__note">
+          <b>Подсказка для менеджера</b>
+          <span>История усиливает доверие: эмоциональная подача (не просто сухой факт, а история стремления к совершенству) помогает клиенту в выборе.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ts-calitex-tl3">
+      <div class="ts-calitex-tl3__list">
+
+        <article class="ts-calitex-step3">
+          <div class="ts-calitex-step3__top">
+            <div class="ts-calitex-step3__badge">Корни</div>
+            <div class="ts-calitex-step3__tag">немецкое качество</div>
+          </div>
+          <h3 class="ts-calitex-step3__title">Корни бренда — производство высокопрочных материалов</h3>
+          <p class="ts-calitex-step3__p">
+            Зарождение философии Calitex берёт своё начало в Германии в 1960-х годах. 
+            Компания изначально специализировалась на производстве высокопрочных материалов для индустриальных нужд, где бескомпромиссное качество было вопросом выживания продукта.
+          </p>
+        </article>
+
+        <article class="ts-calitex-step3">
+          <div class="ts-calitex-step3__top">
+            <div class="ts-calitex-step3__badge">19XX</div>
+            <div class="ts-calitex-step3__tag">важное событие</div>
+          </div>
+          <h3 class="ts-calitex-step3__title">Разработка уникального состава покрытия</h3>
+          <p class="ts-calitex-step3__p">
+            Используя накопленный инженерный опыт, инженеры компании представили разработку уникального состава, который позволил совместить высочайшую износостойкость и эстетику в одном решении. Это стало предвестником современных коллекций напольных покрытий бренда.
+          </p>
+        </article>
+
+        <article class="ts-calitex-step3">
+          <div class="ts-calitex-step3__top">
+            <div class="ts-calitex-step3__badge">19YY</div>
+            <div class="ts-calitex-step3__tag">запуск бренда</div>
+          </div>
+          <h3 class="ts-calitex-step3__title">Выход на рынок с первой коллекцией</h3>
+          <p class="ts-calitex-step3__p">
+            Официальный выход на рынок с первой коллекцией напольных покрытий под брендом Calitex.
+            Покрытия сразу зарекомендовали себя как надёжные решения для повседневной жизни, не требующие постоянного ухода.
+          </p>
+        </article>
+
+        <article class="ts-calitex-step3">
+          <div class="ts-calitex-step3__top">
+            <div class="ts-calitex-step3__badge">19ZZ</div>
+            <div class="ts-calitex-step3__tag">происхождение названия</div>
+          </div>
+          <h3 class="ts-calitex-step3__title">Имя, говорящее за себя</h3>
+          <p class="ts-calitex-step3__p">
+            Название Calitex стало символом непревзойдённого качества. Это бренд, который доказал свою состоятельность временем и вниманием к мельчайшим деталям в производстве.
+          </p>
+        </article>
+
+        <article class="ts-calitex-step3">
+          <div class="ts-calitex-step3__top">
+            <div class="ts-calitex-step3__badge">20XX</div>
+            <div class="ts-calitex-step3__tag">развитие и глобализация</div>
+          </div>
+          <h3 class="ts-calitex-step3__title">Выход на международные рынки</h3>
+          <p class="ts-calitex-step3__p">
+            Благодаря стабильному росту спроса произошло расширение производства. Calitex начал выход на международные рынки, попутно получая важнейшие европейские сертификаты экологичности и безопасности.
+          </p>
+        </article>
+
+        <article class="ts-calitex-step3">
+          <div class="ts-calitex-step3__top">
+            <div class="ts-calitex-step3__badge">20YY</div>
+            <div class="ts-calitex-step3__tag">инновации</div>
+          </div>
+          <h3 class="ts-calitex-step3__title">Новый уровень технологий</h3>
+          <p class="ts-calitex-step3__p">
+            Вхождение в состав крупного холдинга позволило внедрить прорывные технологии. Это дало бренду доступ к глобальным инновациям, усилив его конкурентные преимущества на долгие годы.
+          </p>
+        </article>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="ts-calitex-phX" id="calitex-philosophy" aria-label="Философия бренда Calitex">
+  <div class="ts-calitex-phX__wrap">
+
+    <div class="ts-calitex-phX__hero">
+      <div class="ts-calitex-phX__kicker">Модуль 02 — Философия и ДНК бренда</div>
+      <h2 class="ts-calitex-phX__title">«Пол, который заботится о вашем комфорте»</h2>
+      <p class="ts-calitex-phX__lead">
+        Это не просто слоган, а позиция. Люди покупают не характеристики, а уверенность в завтрашнем дне.
+      </p>
+
+      <div class="ts-calitex-phX__heroGrid">
+        <div class="ts-calitex-phX__heroNote">
+          <b>Главная мысль модуля</b>
+          <p>
+            Пол выдерживает испытания временем и повседневностью, сохраняя свой вид. Минимум беспокойства для клиента.
+          </p>
+        </div>
+
+        <div class="ts-calitex-phX__heroMedia" aria-hidden="true">
+          <div class="ts-calitex-phX__heroMediaBg" style="background-image:url('images/calitex_realistic/calitex-living-room-floor.jpg');"></div>
+          <div class="ts-calitex-phX__heroMediaOv"></div>
+          <div class="ts-calitex-phX__heroMediaLabel">Интерьер Calitex</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ts-calitex-phX__body">
+
+      <div class="ts-calitex-phX__scene">
+        <div class="ts-calitex-phX__panel">
+          <h3 class="ts-calitex-phX__h">ДНК бренда</h3>
+          <p class="ts-calitex-phX__p">Calitex — это сплав лучших европейских традиций.</p>
+          <ul class="ts-calitex-phX__list">
+            <li>Немецкая точность в инженерии</li>
+            <li>Скандинавская функциональность</li>
+            <li>Итальянский дизайн</li>
+          </ul>
+          <p class="ts-calitex-phX__p">Это долговечность, эстетика и бескомпромиссная экологичность.</p>
+        </div>
+
+        <div class="ts-calitex-phX__media" aria-hidden="true">
+          <div class="ts-calitex-phX__mediaBg" style="background-image:url('images/calitex_realistic/calitex-comfort-home.jpg');"></div>
+          <div class="ts-calitex-phX__mediaOv"></div>
+          <div class="ts-calitex-phX__mediaLabel">Дизайн коллекций</div>
+        </div>
+      </div>
+
+      <div class="ts-calitex-phX__scene ts-calitex-phX__scene--rev">
+        <div class="ts-calitex-phX__media" aria-hidden="true">
+          <div class="ts-calitex-phX__mediaBg" style="background-image:url('images/calitex_realistic/calitex-active-home-water.jpg');"></div>
+          <div class="ts-calitex-phX__mediaOv"></div>
+          <div class="ts-calitex-phX__mediaLabel">Активный дом</div>
+        </div>
+
+        <div class="ts-calitex-phX__panel">
+          <h3 class="ts-calitex-phX__h">Идея бренда</h3>
+          <p class="ts-calitex-phX__p">Calitex — не самый дешёвый, но самый надёжный и продуманный пол. Это гармоничное сочетание прочности и красоты.</p>
+          <ul class="ts-calitex-phX__chips">
+            <li class="ts-calitex-phX__chip">инновации</li>
+            <li class="ts-calitex-phX__chip">безупречное качество</li>
+            <li class="ts-calitex-phX__chip">ответственный подход</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ts-calitex-phX__scene">
+        <div class="ts-calitex-phX__panel">
+          <h3 class="ts-calitex-phX__h">Ответственность и глубина</h3>
+          <p class="ts-calitex-phX__p">
+            Долгосрочное мышление — создание продукта, который служит годами, а не сезонами.
+          </p>
+          <ul class="ts-calitex-phX__list">
+            <li>переработка материалов</li>
+            <li>снижение выбросов в производстве</li>
+            <li>долгосрочные гарантии</li>
+          </ul>
+        </div>
+
+        <div class="ts-calitex-phX__media" aria-hidden="true">
+          <div class="ts-calitex-phX__mediaBg" style="background-image:url('images/calitex_realistic/calitex-factory-quality.jpg');"></div>
+          <div class="ts-calitex-phX__mediaOv"></div>
+          <div class="ts-calitex-phX__mediaLabel">Производство и контроль качества</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="ts-calitex-techX" id="calitex-tech" aria-label="Технологии Calitex">
+  <div class="ts-calitex-techX__wrap">
+    <div class="ts-calitex-techX__hero">
+      <div class="ts-calitex-techX__kicker">Модуль 03 — Технологии (система надёжности)</div>
+      <h2 class="ts-calitex-techX__title">Инновации для максимального комфорта</h2>
+      <p class="ts-calitex-techX__lead">
+        Технологии выступают как решения для обеспечения долговечности. Быстрая формула объяснения: Запрос клиента → Проблема → Технология → Решение.
+      </p>
+
+      <div class="ts-calitex-techX__map">
+        <div class="ts-calitex-techX__mapCard">
+          <span class="ts-calitex-techX__tag">01 / защита</span>
+          <b>X-Guard</b>
+          <span>Защита поверхности от истирания, царапин и пятен. Пол сохраняет идеальный вид на долгие годы.</span>
+        </div>
+        <div class="ts-calitex-techX__mapCard">
+          <span class="ts-calitex-techX__tag">02 / вода</span>
+          <b>HydroSeal</b>
+          <span>Надёжная герметизация и защита от влаги. Уверенность в использовании на кухне или в прихожей.</span>
+        </div>
+        <div class="ts-calitex-techX__mapCard">
+          <span class="ts-calitex-techX__tag">03 / монтаж</span>
+          <b>SmartClick</b>
+          <span>Простой и надёжный замок. Быстрый и качественный монтаж без проблем, отсутствие щелей.</span>
+        </div>
+        <div class="ts-calitex-techX__mapCard">
+          <span class="ts-calitex-techX__tag">04 / визуал</span>
+          <b>TrueSense</b>
+          <span>Глубокое тиснение в регистр. Пол выглядит и ощущается как натуральный материал.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ts-calitex-techX__body">
+      <div class="ts-calitex-techX__divider"><span>Раздел 1. Диагностика запроса</span></div>
+
+      <div class="ts-calitex-techX__matrix">
+        <div class="ts-calitex-techX__matrixRow">
+          <div class="ts-calitex-techX__cell">
+            <small>Что слышим от клиента</small>
+            <b>«Не потеряет вид?»</b>
+          </div>
+          <div class="ts-calitex-techX__cell">
+            <small>Что подключаем</small>
+            <b>X-Guard</b>
+          </div>
+          <div class="ts-calitex-techX__cell">
+            <small>Как объясняем</small>
+            <p>Это защита поверхности от истирания, царапин и пятен. Calitex помогает полу выглядеть аккуратно не только в день укладки, но и после активной повседневной жизни.</p>
+          </div>
+        </div>
+
+        <div class="ts-calitex-techX__matrixRow">
+          <div class="ts-calitex-techX__cell">
+            <small>Что слышим от клиента</small>
+            <b>«А если вода?»</b>
+          </div>
+          <div class="ts-calitex-techX__cell">
+            <small>Что подключаем</small>
+            <b>HydroSeal</b>
+          </div>
+          <div class="ts-calitex-techX__cell">
+            <small>Как объясняем</small>
+            <p>Система герметизации снижает тревогу вокруг кухни, прихожей и влажной уборки. Клиент покупает не сухую характеристику, а спокойствие в бытовых сценариях.</p>
+          </div>
+        </div>
+
+        <div class="ts-calitex-techX__matrixRow">
+          <div class="ts-calitex-techX__cell">
+            <small>Что слышим от клиента</small>
+            <b>«Монтаж будет надёжным?»</b>
+          </div>
+          <div class="ts-calitex-techX__cell">
+            <small>Что подключаем</small>
+            <b>SmartClick</b>
+          </div>
+          <div class="ts-calitex-techX__cell">
+            <small>Как объясняем</small>
+            <p>SmartClick помогает получить плотное соединение и предсказуемый результат укладки. Это аргумент не только про удобство монтажника, но и про внешний вид пола после установки.</p>
+          </div>
+        </div>
+
+        <div class="ts-calitex-techX__matrixRow">
+          <div class="ts-calitex-techX__cell">
+            <small>Что слышим от клиента</small>
+            <b>«Будет выглядеть натурально?»</b>
+          </div>
+          <div class="ts-calitex-techX__cell">
+            <small>Что подключаем</small>
+            <b>TrueSense</b>
+          </div>
+          <div class="ts-calitex-techX__cell">
+            <small>Как объясняем</small>
+            <p>Глубокое тиснение в регистр связывает рисунок и рельеф. Пол воспринимается спокойнее, дороже и ближе к натуральному материалу.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ts-calitex-techX__divider"><span>Раздел 2. Как говорить в продаже</span></div>
+
+      <div class="ts-calitex-techX__playbook">
+        <article class="ts-calitex-techX__scenario">
+          <span class="ts-calitex-techX__tag">X-Guard</span>
+          <h3>Не «защитный слой», а сохранённый вид</h3>
+          <p>Клиенту важнее не название покрытия, а уверенность, что пол не начнёт быстро выглядеть уставшим.</p>
+          <div class="ts-calitex-techX__script">Говорим так: «X-Guard помогает сохранить аккуратный внешний вид пола при обычной активной жизни дома».</div>
+        </article>
+
+        <article class="ts-calitex-techX__scenario">
+          <span class="ts-calitex-techX__tag">HydroSeal</span>
+          <h3>Не «влагостойкость», а меньше тревоги</h3>
+          <p>Сильнее всего работает привязка к понятным местам: кухня, прихожая, влажная уборка, случайные проливы.</p>
+          <div class="ts-calitex-techX__script">Говорим так: «HydroSeal нужен, чтобы пол спокойно переживал бытовые ситуации с влагой».</div>
+        </article>
+
+        <article class="ts-calitex-techX__scenario">
+          <span class="ts-calitex-techX__tag">SmartClick</span>
+          <h3>Не «замок», а предсказуемый результат</h3>
+          <p>Замок стоит объяснять через итог: плотное соединение, аккуратная линия пола, меньше риска щелей.</p>
+          <div class="ts-calitex-techX__script">Говорим так: «SmartClick помогает собрать покрытие ровно и надёжно, без лишних сюрпризов после монтажа».</div>
+        </article>
+
+        <article class="ts-calitex-techX__scenario">
+          <span class="ts-calitex-techX__tag">TrueSense</span>
+          <h3>Не «декор», а ощущение материала</h3>
+          <p>TrueSense стоит включать, когда клиент выбирает глазами и руками: важны глубина, фактура и спокойная натуральность.</p>
+          <div class="ts-calitex-techX__script">Говорим так: «TrueSense делает поверхность визуально и тактильно убедительнее».</div>
+        </article>
+      </div>
+
+      <div class="ts-calitex-techX__divider"><span>Раздел 3. Быстрая формула для менеджера</span></div>
+
+      <div class="ts-calitex-techX__summary">
+        <div class="ts-calitex-techX__summaryCard">
+          <h3>Формула объяснения</h3>
+          <p>Сначала уточняем потребность, затем называем риск, подключаем технологию и переводим её в понятную выгоду. Не «характеристика → цена», а «сценарий → тревога → решение → выгода».</p>
+          <div class="ts-calitex-techX__formula">
+            <span class="ts-calitex-techX__mini">сценарий</span>
+            <span class="ts-calitex-techX__mini">тревога</span>
+            <span class="ts-calitex-techX__mini">технология</span>
+            <span class="ts-calitex-techX__mini">выгода</span>
+          </div>
+        </div>
+
+        <div class="ts-calitex-techX__summaryCard">
+          <h3>Главный вывод блока</h3>
+          <p>Calitex нужно объяснять как систему надёжности: поверхность, влага, монтаж и визуальная натуральность работают вместе, чтобы клиенту было спокойно пользоваться полом каждый день.</p>
+          <div class="ts-calitex-techX__formula">
+            <span class="ts-calitex-techX__mini">X-Guard = внешний вид</span>
+            <span class="ts-calitex-techX__mini">HydroSeal = влага</span>
+            <span class="ts-calitex-techX__mini">SmartClick = монтаж</span>
+            <span class="ts-calitex-techX__mini">TrueSense = реализм</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="ts-calitex-saleX" id="calitex-market" aria-label="Психология продажи Calitex">
+  <div class="ts-calitex-saleX__wrap">
+    <div class="ts-calitex-saleX__inner">
+
+      <div class="ts-calitex-saleX__kicker">Модуль 04 — Психология продажи</div>
+      <h2 class="ts-calitex-saleX__title">Продавать Calitex как стандарт</h2>
+      <p class="ts-calitex-saleX__subtitle">
+        Главный принцип: продавать не как альтернативу, а делая акцент на долгосрочную выгоду.
+      </p>
+
+      <div class="ts-calitex-saleX__stickers">
+        <div class="ts-calitex-saleX__st ts-calitex-saleX__st--blue">Доверие и стабильность</div>
+        <div class="ts-calitex-saleX__st">Эстетическое удовольствие</div>
+        <div class="ts-calitex-saleX__st ts-calitex-saleX__st--green">Уверенность</div>
+      </div>
+
+      <div class="ts-calitex-saleX__card" style="margin-top:14px;">
+        <h3 class="ts-calitex-saleX__h">4 типа клиентов</h3>
+        <div class="ts-calitex-saleX__types">
+          <div class="ts-calitex-saleX__type">
+            <h4>«Прагматик»</h4>
+            <p>Продавать как "разумную инвестицию" (окупается долговечностью).</p>
+          </div>
+          <div class="ts-calitex-saleX__type">
+            <h4>«Эстет»</h4>
+            <p>Решение, подчёркивающее изысканность интерьера, без компромиссов в качестве.</p>
+          </div>
+          <div class="ts-calitex-saleX__type">
+            <h4>«Семьянин»</h4>
+            <p>Надёжный пол, выдерживающий активный образ жизни.</p>
+          </div>
+          <div class="ts-calitex-saleX__type">
+            <h4>«Ищущий спокойствия»</h4>
+            <p>Пол, не требующий постоянного ухода и беспокойства.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ts-calitex-saleX__card" style="margin-top:14px;">
+        <h3 class="ts-calitex-saleX__h">Формула продажи</h3>
+        <div class="ts-calitex-saleX__steps">
+          <div class="ts-calitex-saleX__step">
+            <div class="ts-calitex-saleX__num">1</div>
+            <div><b>Выяснить потребности</b></div>
+          </div>
+          <div class="ts-calitex-saleX__step">
+            <div class="ts-calitex-saleX__num">2</div>
+            <div><b>Определить ключевые страхи/ожидания</b></div>
+          </div>
+          <div class="ts-calitex-saleX__step">
+            <div class="ts-calitex-saleX__num">3</div>
+            <div><b>Предложить Calitex как оптимальное решение</b></div>
+          </div>
+          <div class="ts-calitex-saleX__step">
+            <div class="ts-calitex-saleX__num">4</div>
+            <div><b>Подчеркнуть долгосрочную выгоду</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ts-calitex-saleX__big">
+        <div class="ts-calitex-saleX__title2">Самая сильная фраза</div>
+        <p>«Calitex выбирают те, кто ценит качество, не ищет компромиссов и планирует на десятилетия вперёд».</p>
+      </div>
+
+      <div class="ts-calitex-saleX__trust">
+        <h3 class="ts-calitex-saleX__h">Честные продажи: когда не надо давить</h3>
+        <p class="ts-calitex-saleX__p">Краткосрочные проекты, минимальный бюджет, временные решения. Это укрепляет авторитет менеджера и бренда.</p>
+      </div>
+
+      <div class="ts-calitex-saleX__final">
+        <h3 class="ts-calitex-saleX__h">Итоговая проверка по Calitex</h3>
+        <p class="ts-calitex-saleX__p">Пройдите тест по философии бренда, технологиям X-Guard и HydroSeal, а также правильной формуле продажи. Результат сохранится в кабинете реселлера.</p>
+        <div class="ts-calitex-hero__cta">
+          <a class="ts-calitex-btn ts-calitex-btn--primary" href="calitex-quiz.html">Пройти тест Calitex</a>
+          <a class="ts-calitex-btn ts-calitex-btn--ghost" href="student-dashboard.html">Открыть кабинет</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script>
+    (function () {
+      Array.prototype.slice.call(document.querySelectorAll('.nav__item')).forEach(function (item) {
+        item.addEventListener('click', function () {
+          var href = item.getAttribute('data-href');
+          if (href && window.location.pathname.split('/').pop() !== href) { window.location.href = href; }
+        });
+      });
+    })();
+  </script>
+  <script src="shared-header.js"></script>
+</body>
+</html>

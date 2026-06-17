@@ -1,0 +1,823 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Моя компания | TouchSpace Академия</title>
+  <style>
+    :root {
+      --blue: #0a84ff;
+      --blue-dark: #1769d8;
+      --ink: #111827;
+      --muted: #64748b;
+      --line: #dfe7f3;
+      --page: #f3f6fb;
+      --card: #ffffff;
+      --soft: #eef5ff;
+      --purple: #7257c6;
+      --green: #22b48a;
+      --orange: #ff8a3d;
+      --pink: #df6fa8;
+      --shadow-soft: 0 14px 38px rgba(24, 45, 90, 0.08);
+      --max: 1500px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f8fbff 0%, var(--page) 52%, #f6f9ff 100%);
+      font-family: Inter, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .page { max-width: var(--max); margin: 0 auto; padding: 24px; }
+    .shell { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 24px; }
+    .sidebar { position: sticky; top: 22px; z-index: 60; height: calc(100vh - 44px); min-height: 520px; padding: 18px 10px; border: 1px solid rgba(255,255,255,.8); border-radius: 26px; background: rgba(255,255,255,.78); box-shadow: var(--shadow-soft); backdrop-filter: blur(18px); }
+    .nav { display: grid; gap: 10px; }
+    .main { min-width: 0; }
+    .header { display: grid; grid-template-columns: 260px minmax(260px, 1fr) auto; gap: 18px; align-items: center; margin-bottom: 22px; }
+    .wordmark { font-size: 28px; font-weight: 950; line-height: .82; letter-spacing: -.065em; }
+    .wordmark span { display: block; }
+    .wordmark span:last-child { padding-left: 74px; }
+    .search { display: flex; align-items: center; gap: 12px; height: 62px; padding: 0 22px; border: 1px solid rgba(255,255,255,.9); border-radius: 22px; background: rgba(255,255,255,.86); box-shadow: var(--shadow-soft); color: #9aa4b2; }
+    .search input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 16px; }
+
+    .company-shell {
+      display: grid;
+      gap: 18px;
+    }
+
+    .company-top {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: end;
+      padding: 26px 28px;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 30px;
+      background: rgba(255,255,255,.84);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .path {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .path a { color: var(--blue-dark); }
+
+    .company-top h1 {
+      margin: 0;
+      font-size: clamp(34px, 4vw, 54px);
+      line-height: .96;
+      letter-spacing: -.055em;
+    }
+
+    .company-top p {
+      max-width: 760px;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .company-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 112px);
+      gap: 10px;
+    }
+
+    .stat {
+      min-height: 88px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 10px 28px rgba(24,45,90,.06);
+    }
+
+    .stat strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 25px;
+      line-height: 1;
+      letter-spacing: -.035em;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+      line-height: 1.2;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 24px;
+      background: rgba(255,255,255,.84);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .employee-search {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 15px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: #f7faff;
+      color: #8a97aa;
+    }
+
+    .employee-search svg,
+    .icon-btn svg,
+    .message-btn svg {
+      width: 19px;
+      height: 19px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex: 0 0 auto;
+    }
+
+    .employee-search input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dept-select {
+      min-height: 48px;
+      padding: 0 38px 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: #fff;
+      color: #344256;
+      font-weight: 850;
+    }
+
+    .view-toggle {
+      display: flex;
+      gap: 6px;
+      padding: 5px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: #f7faff;
+    }
+
+    .icon-btn {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 13px;
+      background: transparent;
+      color: #8190a5;
+    }
+
+    .icon-btn.is-active {
+      background: #e7e0f7;
+      color: var(--purple);
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .dept-panel,
+    .view-panel {
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 26px;
+      background: rgba(255,255,255,.86);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .dept-panel {
+      position: sticky;
+      top: 22px;
+      padding: 16px;
+    }
+
+    .dept-panel h2,
+    .view-panel h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.1;
+      letter-spacing: -.025em;
+    }
+
+    .dept-panel__head,
+    .view-panel__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .dept-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .dept-filter {
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      width: 100%;
+      min-height: 54px;
+      padding: 8px;
+      border: 1px solid transparent;
+      border-radius: 17px;
+      background: transparent;
+      color: var(--ink);
+      text-align: left;
+    }
+
+    .dept-filter:hover,
+    .dept-filter.is-active {
+      border-color: #d9e5f5;
+      background: #f7faff;
+    }
+
+    .dept-dot,
+    .avatar {
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      font-weight: 950;
+      flex: 0 0 auto;
+    }
+
+    .dept-dot { width: 36px; height: 36px; font-size: 12px; }
+    .dept-filter strong { display: block; font-size: 13px; line-height: 1.15; }
+    .dept-filter span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; font-weight: 750; }
+    .dept-count { color: #77859a; font-size: 12px; font-weight: 900; }
+
+    .view-panel {
+      min-height: 520px;
+      padding: 18px;
+      overflow: hidden;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .list-view {
+      display: grid;
+      gap: 10px;
+    }
+
+    .employee-card {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      min-height: 114px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 10px 26px rgba(24,45,90,.05);
+    }
+
+    .avatar {
+      width: 54px;
+      height: 54px;
+      font-size: 16px;
+      overflow: hidden;
+      background: var(--avatar-bg, linear-gradient(135deg, #2f8cff, #0a84ff));
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .employee-name {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 7px;
+      margin: 0 0 5px;
+      font-size: 17px;
+      line-height: 1.2;
+      font-weight: 950;
+    }
+
+    .me-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: #fff3d6;
+      color: #9a6500;
+      font-size: 11px;
+      font-weight: 950;
+    }
+
+    .employee-meta {
+      color: #5f50b5;
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 800;
+    }
+
+    .employee-about {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .message-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid rgba(114,87,198,.28);
+      border-radius: 13px;
+      background: #fff;
+      color: #5f50b5;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .chart-view {
+      display: grid;
+      gap: 18px;
+      padding: 6px;
+      overflow-x: auto;
+    }
+
+    .chart-level {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      min-width: 900px;
+    }
+
+    .chart-level--children {
+      position: relative;
+      padding-top: 26px;
+    }
+
+    .chart-level--children::before {
+      content: "";
+      position: absolute;
+      left: 16%;
+      right: 16%;
+      top: 7px;
+      height: 1px;
+      background: #c5d5ea;
+    }
+
+    .org-card {
+      position: relative;
+      width: 255px;
+      min-height: 196px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 10px 28px rgba(24,45,90,.06);
+    }
+
+    .org-card::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -27px;
+      width: 1px;
+      height: 27px;
+      background: #c5d5ea;
+    }
+
+    .chart-level:first-child .org-card::before { display: none; }
+
+    .org-card__title {
+      min-height: 44px;
+      margin: 0 0 12px;
+      padding: 12px;
+      border-radius: 8px;
+      background: #ded8ef;
+      color: #20283a;
+      font-size: 15px;
+      font-weight: 950;
+      line-height: 1.15;
+    }
+
+    .org-card__lead {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      min-height: 48px;
+      margin-bottom: 18px;
+    }
+
+    .org-card__lead .avatar {
+      width: 34px;
+      height: 34px;
+      font-size: 12px;
+    }
+
+    .org-card__lead strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.15;
+    }
+
+    .org-card__lead span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 750;
+    }
+
+    .org-card__foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .mini-avatars {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .mini-avatars .avatar {
+      width: 28px;
+      height: 28px;
+      margin-left: -7px;
+      border: 2px solid #fff;
+      font-size: 10px;
+    }
+
+    .mini-avatars .avatar:first-child { margin-left: 0; }
+
+    .org-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 46px;
+      min-height: 34px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fff;
+      color: var(--ink);
+      font-weight: 950;
+    }
+
+    .empty-state {
+      display: none;
+      padding: 44px 18px;
+      border: 1px dashed #cbd8ea;
+      border-radius: 22px;
+      background: #f8fbff;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .is-hidden { display: none !important; }
+
+    @media (max-width: 1060px) {
+      .company-top,
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .company-stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .dept-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page { padding: 14px; }
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; min-height: 0; padding: 10px; }
+      .nav { grid-template-columns: repeat(6, minmax(48px, 1fr)); }
+      .nav__item { width: 100%; }
+      .header,
+      .toolbar,
+      .company-stats {
+        grid-template-columns: 1fr;
+      }
+      .toolbar-actions {
+        flex-wrap: wrap;
+      }
+      .dept-select,
+      .view-toggle {
+        flex: 1 1 auto;
+      }
+      .employee-card {
+        grid-template-columns: 48px minmax(0, 1fr);
+      }
+      .employee-card .avatar {
+        width: 48px;
+        height: 48px;
+      }
+      .message-btn {
+        grid-column: 2;
+        width: fit-content;
+      }
+      .chart-level {
+        min-width: 780px;
+      }
+      .org-card {
+        width: 220px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Найти сотрудника или отдел"></header>
+
+        <div class="company-shell">
+          <section class="company-top" aria-labelledby="company-title">
+            <div>
+              <nav class="path" aria-label="Хлебные крошки">
+                <a href="index.html">Разделы</a>
+                <span>/</span>
+                <span>Моя компания</span>
+              </nav>
+              <h1 id="company-title">Моя компания</h1>
+              <p>Сотрудники, которые учатся вместе с вами в Академии: роли, отделы, контакты и короткие заметки о каждом участнике.</p>
+            </div>
+            <div class="company-stats" aria-label="Сводка">
+              <div class="stat"><strong data-stat="employees">0</strong><span>сотрудников</span></div>
+              <div class="stat"><strong data-stat="departments">0</strong><span>отделов</span></div>
+              <div class="stat"><strong data-stat="course">0</strong><span>на курсе</span></div>
+            </div>
+          </section>
+
+          <section class="toolbar" aria-label="Инструменты справочника">
+            <label class="employee-search">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input id="employee-search" type="search" placeholder="Поиск по имени, роли, отделу или описанию">
+            </label>
+            <div class="toolbar-actions">
+              <select class="dept-select" id="dept-select" aria-label="Фильтр по отделу"></select>
+              <div class="view-toggle" aria-label="Вид отображения">
+                <button class="icon-btn is-active" type="button" data-view="chart" title="Структура" aria-label="Структура">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v5"/><path d="M6 14v6"/><path d="M18 14v6"/><path d="M6 14h12"/><path d="M12 9h6v5"/><path d="M12 9H6v5"/></svg>
+                </button>
+                <button class="icon-btn" type="button" data-view="list" title="Список" aria-label="Список">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <div class="workspace">
+            <aside class="dept-panel" aria-label="Отделы">
+              <div class="dept-panel__head">
+                <h2>Отделы</h2>
+                <span class="muted" data-visible-count>0</span>
+              </div>
+              <div class="dept-list" id="dept-list"></div>
+            </aside>
+
+            <section class="view-panel" aria-live="polite">
+              <div class="view-panel__head">
+                <h2 id="view-title">Структура обучения</h2>
+                <span class="muted" id="result-summary"></span>
+              </div>
+              <div id="chart-view" class="chart-view"></div>
+              <div id="list-view" class="list-view is-hidden"></div>
+              <div id="empty-state" class="empty-state">Ничего не найдено</div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var departments = [
+        { id: "all", title: "Все сотрудники", subtitle: "Вся команда курса", short: "ВС", color: "linear-gradient(135deg,#0a84ff,#22b48a)" },
+        { id: "main", title: "Главный отдел", subtitle: "Руководство", short: "ГО", color: "linear-gradient(135deg,#7257c6,#9b8dd4)" },
+        { id: "it", title: "IT отдел", subtitle: "Разработка и поддержка", short: "IT", color: "linear-gradient(135deg,#2f8cff,#0a84ff)" },
+        { id: "commercial", title: "Коммерческий отдел", subtitle: "Продажи и клиенты", short: "КО", color: "linear-gradient(135deg,#ff8a3d,#ff6b1a)" },
+        { id: "content", title: "Отдел контента", subtitle: "Материалы Академии", short: "ОК", color: "linear-gradient(135deg,#22b48a,#5ed6b6)" },
+        { id: "people", title: "Отдел персонала", subtitle: "Команда и адаптация", short: "ОП", color: "linear-gradient(135deg,#df6fa8,#c04a8b)" }
+      ];
+
+      var employees = [
+        { name: "Иван Петров", initials: "ИП", dept: "main", role: "Генеральный директор", email: "example@start2play.ru", about: "Курирует обучение руководителей и помогает связать материалы курса с реальными задачами компании.", lead: true, color: "linear-gradient(135deg,#5f7acc,#4a6ab8)" },
+        { name: "Пётр Иванов", initials: "ПИ", dept: "it", role: "Руководитель IT отдела", email: "example2@start2play.ru", about: "Проходит курс вместе с командой, собирает технические вопросы и помогает внедрять новые инструменты.", lead: true, color: "linear-gradient(135deg,#2f8cff,#0a84ff)" },
+        { name: "Дисней Виктор", initials: "ДВ", dept: "it", role: "Разработчик онлайн-курсов", email: "example44@start2play.ru", about: "Отвечает за учебные модули, тесты и техническую упаковку материалов Академии.", manager: "Пётр Иванов", color: "linear-gradient(135deg,#ff6b9d,#ff1493)" },
+        { name: "Мичурина Алина", initials: "АМ", dept: "it", role: "QA инженер", email: "amichyurina@binov.ru", about: "Проверяет сценарии уроков и помогает находить ошибки в учебных заданиях до запуска.", color: "linear-gradient(135deg,#4db8a8,#32c48d)" },
+        { name: "Новикова Варвара Николаевна", initials: "НВ", dept: "it", role: "Проектный менеджер", email: "example15@start2play.ru", about: "Ведёт учебные проекты, синхронизирует сроки и любит изучать что-то новое и путешествовать.", manager: "Пётр Иванов", color: "linear-gradient(135deg,#5f7acc,#3d5abb)" },
+        { name: "Розов Сергей", initials: "СР", dept: "it", role: "Продавец-консультант", email: "SRozov@binov.ru", about: "Учится применять знания Академии в ежедневных консультациях и работе с клиентами.", me: true, color: "linear-gradient(135deg,#df6fa8,#ff7db8)" },
+        { name: "Анна Владимирова", initials: "АВ", dept: "commercial", role: "Коммерческий директор", email: "anna.vladimirova@start2play.ru", about: "Собирает практические кейсы продаж и помогает команде переносить их в курс.", lead: true, color: "linear-gradient(135deg,#8b5a8f,#6b3a7f)" },
+        { name: "Андрей Зайцев", initials: "АЗ", dept: "commercial", role: "Менеджер по продажам", email: "andrey.zaitsev@start2play.ru", about: "Тренирует аргументацию, работу с возражениями и делится примерами из клиентских встреч.", color: "linear-gradient(135deg,#ff8a3d,#ff6b1a)" },
+        { name: "Ирина Сергеева", initials: "ИС", dept: "content", role: "Методист", email: "irina.sergeeva@start2play.ru", about: "Редактирует уроки, собирает обратную связь и следит, чтобы курс оставался понятным.", lead: true, color: "linear-gradient(135deg,#22b48a,#5ed6b6)" },
+        { name: "Валерия Соколова", initials: "ВС", dept: "people", role: "Ассистент руководителя", email: "valeriya.sokolova@start2play.ru", about: "Помогает новичкам освоиться в Академии и напоминает команде о важных этапах обучения.", lead: true, color: "linear-gradient(135deg,#df6fa8,#c04a8b)" }
+      ];
+
+      var activeDept = "all";
+      var activeView = "chart";
+      var searchInput = document.getElementById("employee-search");
+      var deptSelect = document.getElementById("dept-select");
+      var deptList = document.getElementById("dept-list");
+      var chartView = document.getElementById("chart-view");
+      var listView = document.getElementById("list-view");
+      var emptyState = document.getElementById("empty-state");
+      var resultSummary = document.getElementById("result-summary");
+      var viewTitle = document.getElementById("view-title");
+
+      function departmentById(id) {
+        return departments.find(function (dept) { return dept.id === id; }) || departments[0];
+      }
+
+      function employeesInDept(id, source) {
+        if (id === "all") return source || employees;
+        return (source || employees).filter(function (employee) { return employee.dept === id; });
+      }
+
+      function getFilteredEmployees() {
+        var query = searchInput.value.trim().toLowerCase();
+        return employeesInDept(activeDept).filter(function (employee) {
+          if (!query) return true;
+          var dept = departmentById(employee.dept);
+          return [employee.name, employee.role, employee.email, employee.about, dept.title, employee.manager || ""].join(" ").toLowerCase().indexOf(query) >= 0;
+        });
+      }
+
+      function avatar(employee, small) {
+        return '<span class="avatar" style="--avatar-bg:' + employee.color + '">' + employee.initials + '</span>';
+      }
+
+      function messageButton(employee) {
+        return '<a class="message-btn" href="mailto:' + employee.email + '">' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>' +
+          '<span>Написать</span></a>';
+      }
+
+      function employeeCard(employee) {
+        var dept = departmentById(employee.dept);
+        var manager = employee.manager ? " • " + employee.manager : "";
+        var badge = employee.me ? '<span class="me-badge">это вы</span>' : "";
+        return '<article class="employee-card" data-dept="' + employee.dept + '">' +
+          avatar(employee) +
+          '<div>' +
+            '<h3 class="employee-name">' + employee.name + badge + '</h3>' +
+            '<div class="employee-meta">' + dept.title + ' • ' + employee.email + ' • ' + employee.role + manager + '</div>' +
+            '<div class="employee-about">' + employee.about + '</div>' +
+          '</div>' +
+          messageButton(employee) +
+        '</article>';
+      }
+
+      function orgCard(dept, source) {
+        var team = employeesInDept(dept.id, source);
+        if (!team.length) return "";
+        var lead = team.find(function (employee) { return employee.lead; }) || team[0];
+        var mini = team.slice(0, 5).map(function (employee) { return avatar(employee, true); }).join("");
+        var extra = team.length > 5 ? '<span class="avatar" style="--avatar-bg:linear-gradient(135deg,#67758a,#48566a)">+' + (team.length - 5) + '</span>' : "";
+        return '<article class="org-card">' +
+          '<h3 class="org-card__title">' + dept.title + '</h3>' +
+          '<div class="org-card__lead">' + avatar(lead, true) +
+            '<div><strong>' + lead.name + '</strong><span>' + lead.role + '</span></div>' +
+          '</div>' +
+          '<div class="org-card__foot"><div class="mini-avatars">' + mini + extra + '</div><span class="org-count">' + team.length + '</span></div>' +
+        '</article>';
+      }
+
+      function renderDepartments() {
+        deptSelect.innerHTML = departments.map(function (dept) {
+          return '<option value="' + dept.id + '">' + dept.title + '</option>';
+        }).join("");
+
+        deptList.innerHTML = departments.map(function (dept) {
+          var count = employeesInDept(dept.id).length;
+          return '<button class="dept-filter' + (dept.id === activeDept ? ' is-active' : '') + '" type="button" data-dept="' + dept.id + '">' +
+            '<span class="dept-dot" style="background:' + dept.color + '">' + dept.short + '</span>' +
+            '<span><strong>' + dept.title + '</strong><span>' + dept.subtitle + '</span></span>' +
+            '<span class="dept-count">' + count + '</span>' +
+          '</button>';
+        }).join("");
+
+        deptSelect.value = activeDept;
+        document.querySelectorAll("[data-stat='employees']").forEach(function (node) { node.textContent = employees.length; });
+        document.querySelectorAll("[data-stat='departments']").forEach(function (node) { node.textContent = departments.length - 1; });
+        document.querySelectorAll("[data-stat='course']").forEach(function (node) { node.textContent = employees.length; });
+      }
+
+      function renderList(filtered) {
+        listView.innerHTML = filtered.map(employeeCard).join("");
+      }
+
+      function renderChart(filtered) {
+        var top = departments.filter(function (dept) { return dept.id === "main"; }).map(function (dept) { return orgCard(dept, filtered); }).join("");
+        var children = departments.filter(function (dept) {
+          return dept.id !== "all" && dept.id !== "main";
+        }).map(function (dept) { return orgCard(dept, filtered); }).join("");
+
+        chartView.innerHTML =
+          '<div class="chart-level">' + top + '</div>' +
+          '<div class="chart-level chart-level--children">' + children + '</div>';
+      }
+
+      function render() {
+        var filtered = getFilteredEmployees();
+        var hasResults = filtered.length > 0;
+        renderDepartments();
+        renderList(filtered);
+        renderChart(filtered);
+        listView.classList.toggle("is-hidden", activeView !== "list");
+        chartView.classList.toggle("is-hidden", activeView !== "chart");
+        emptyState.style.display = hasResults ? "none" : "block";
+        resultSummary.textContent = filtered.length + " из " + employees.length;
+        document.querySelector("[data-visible-count]").textContent = filtered.length;
+        viewTitle.textContent = activeView === "chart" ? "Структура обучения" : "Список сотрудников";
+      }
+
+      deptList.addEventListener("click", function (event) {
+        var button = event.target.closest("[data-dept]");
+        if (!button) return;
+        activeDept = button.getAttribute("data-dept");
+        render();
+      });
+
+      deptSelect.addEventListener("change", function () {
+        activeDept = deptSelect.value;
+        render();
+      });
+
+      searchInput.addEventListener("input", render);
+
+      document.querySelectorAll("[data-view]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          activeView = button.getAttribute("data-view");
+          document.querySelectorAll("[data-view]").forEach(function (item) {
+            item.classList.toggle("is-active", item === button);
+          });
+          render();
+        });
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

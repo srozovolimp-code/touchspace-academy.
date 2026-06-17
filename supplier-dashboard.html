@@ -1,0 +1,1345 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Кабинет поставщика | TouchSpace Академия</title>
+  <style>
+    :root {
+      --blue: #0a84ff;
+      --blue-2: #5f93ff;
+      --ink: #111827;
+      --muted: #64748b;
+      --line: #dfe7f3;
+      --page: #eef4ff;
+      --card: #fff;
+      --soft: #eef5ff;
+      --green: #23c483;
+      --orange: #ff8a3d;
+      --purple: #7257c6;
+      --red: #d95656;
+      --shadow-soft: 0 14px 38px rgba(24, 45, 90, .08);
+      --max: 1500px;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(180deg, #f8fbff 0%, var(--page) 50%, #f6f9ff 100%); color: var(--ink); font-family: Inter, "SF Pro Display", "Segoe UI", Arial, sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+
+    .page { max-width: var(--max); margin: 0 auto; padding: 24px; }
+    .shell { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 24px; }
+    .sidebar { position: sticky; top: 22px; z-index: 60; height: calc(100vh - 44px); min-height: 520px; padding: 18px 10px; border: 1px solid rgba(255,255,255,.8); border-radius: 26px; background: rgba(255,255,255,.78); box-shadow: var(--shadow-soft); backdrop-filter: blur(18px); }
+    .nav { display: grid; gap: 10px; }
+    .main { min-width: 0; }
+    .header { display: grid; grid-template-columns: 260px minmax(260px, 1fr) auto; gap: 18px; align-items: center; margin-bottom: 22px; }
+    .wordmark { font-size: 28px; font-weight: 950; line-height: .82; letter-spacing: -.065em; }
+    .wordmark span { display: block; }
+    .wordmark span:last-child { padding-left: 74px; }
+    .search { display: flex; align-items: center; gap: 12px; height: 62px; padding: 0 22px; border: 1px solid rgba(255,255,255,.9); border-radius: 22px; background: rgba(255,255,255,.86); box-shadow: var(--shadow-soft); color: #9aa4b2; }
+    .search input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 16px; }
+
+    .supplier-hero,
+    .panel,
+    .toolbar {
+      border: 1px solid rgba(255,255,255,.88);
+      border-radius: 30px;
+      background: rgba(255,255,255,.84);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .supplier-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 22px;
+      align-items: end;
+      margin-bottom: 22px;
+      padding: 28px;
+    }
+
+    .path { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; color: #6b7280; font-size: 13px; font-weight: 850; }
+    .path a { color: #177be8; }
+    .eyebrow { display: inline-flex; align-items: center; width: fit-content; min-height: 34px; margin-bottom: 14px; padding: 0 13px; border-radius: 999px; background: var(--soft); color: #177be8; font-size: 13px; font-weight: 900; }
+    .supplier-hero h1 { margin: 0; font-size: clamp(38px, 4.5vw, 60px); line-height: .96; letter-spacing: -.055em; }
+    .supplier-hero p { max-width: 820px; margin: 12px 0 0; color: var(--muted); font-size: 16px; line-height: 1.55; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 15px;
+      border: 0;
+      border-radius: 15px;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 950;
+      box-shadow: 0 12px 28px rgba(10,132,255,.22);
+    }
+
+    .btn.secondary {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #177be8;
+      box-shadow: none;
+    }
+
+    .btn.ghost {
+      border: 1px solid var(--line);
+      background: #f7faff;
+      color: #344256;
+      box-shadow: none;
+    }
+
+    .btn.danger {
+      border: 1px solid rgba(217,86,86,.24);
+      background: #fff5f5;
+      color: #a43d3d;
+      box-shadow: none;
+    }
+
+    .btn svg,
+    .icon-btn svg,
+    .search-field svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex: 0 0 auto;
+    }
+
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .stat { min-height: 92px; padding: 16px; border: 1px solid var(--line); border-radius: 20px; background: #fff; }
+    .stat strong { display: block; font-size: 28px; line-height: 1; letter-spacing: -.04em; }
+    .stat span { display: block; margin-top: 7px; color: var(--muted); font-size: 12px; font-weight: 850; line-height: 1.25; }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 14px;
+      border-radius: 24px;
+    }
+
+    .search-field { display: flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 15px; border: 1px solid var(--line); border-radius: 17px; background: #f7faff; color: #8a97aa; }
+    .search-field input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); }
+    .workspace { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 18px; align-items: start; }
+    .panel { padding: 18px; }
+    .panel.sticky { position: sticky; top: 22px; }
+    .panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+    .panel-head h2 { margin: 0; font-size: 18px; line-height: 1.1; letter-spacing: -.025em; }
+    .panel-head p { margin: 5px 0 0; color: var(--muted); font-size: 13px; line-height: 1.35; }
+
+    .brand-form { display: grid; gap: 12px; }
+    .field { display: grid; gap: 7px; }
+    .field label { color: #718095; font-size: 12px; font-weight: 950; letter-spacing: .07em; text-transform: uppercase; }
+    .input, .textarea, .select { width: 100%; border: 1px solid var(--line); border-radius: 16px; background: #fff; color: var(--ink); outline: 0; padding: 12px 13px; }
+    .textarea { min-height: 96px; resize: vertical; line-height: 1.45; }
+    .input:focus, .textarea:focus, .select:focus { border-color: rgba(10,132,255,.5); box-shadow: 0 0 0 4px rgba(10,132,255,.08); }
+    .category-picker { position: relative; }
+    .category-picker summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 50px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      color: #344256;
+      font-weight: 400;
+      list-style: none;
+      cursor: pointer;
+    }
+    .category-picker summary::-webkit-details-marker { display: none; }
+    .category-picker summary::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-right: 2px solid #8a97aa;
+      border-bottom: 2px solid #8a97aa;
+      transform: rotate(45deg) translateY(-2px);
+      transition: transform .16s ease;
+    }
+    .category-picker[open] summary {
+      border-color: rgba(10,132,255,.5);
+      box-shadow: 0 0 0 4px rgba(10,132,255,.08);
+    }
+    .category-picker[open] summary::after { transform: rotate(225deg) translate(-2px,-2px); }
+    .category-tree {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 8px);
+      z-index: 40;
+      max-height: 310px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,.98);
+      box-shadow: 0 20px 48px rgba(24,45,90,.16);
+      overflow: auto;
+    }
+    .category-tree,
+    .category-tree ul { margin: 0; list-style: none; }
+    .category-tree ul { padding: 0 0 0 22px; }
+    .category-tree li { margin: 2px 0; }
+    .category-picker summary span,
+    .category-picker .tree-row,
+    .category-picker .check-option,
+    .category-picker .check-option span {
+      font-weight: 400 !important;
+    }
+    .tree-row {
+      display: grid;
+      grid-template-columns: 18px 18px minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+      min-height: 32px;
+      color: #344256;
+      font-size: 13px;
+      font-weight: 400;
+    }
+    .tree-toggle {
+      display: grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: #344256;
+      font-size: 15px;
+      font-weight: 950;
+      line-height: 1;
+      box-shadow: none;
+      padding: 0;
+    }
+    .tree-toggle::before { content: "+"; }
+    .tree-node.is-open > .tree-row .tree-toggle::before { content: "-"; }
+    .tree-leaf .tree-toggle { visibility: hidden; pointer-events: none; }
+    .tree-node > ul { display: none; }
+    .tree-node.is-open > ul { display: block; }
+    .check-option {
+      display: contents;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+    .check-option span {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+    .tree-row:hover {
+      border-radius: 10px;
+      background: #f5f9ff;
+    }
+    .check-option input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: #5f6368;
+    }
+    .tree-row:has(input:checked) { color: var(--ink); }
+    .tree-row:has(input:checked) .check-option span { font-weight: 400; }
+    .field-hint { color: var(--muted); font-size: 12px; font-weight: 750; line-height: 1.35; }
+    .checkbox-grid {
+      display: grid;
+      gap: 8px;
+    }
+    .checkbox-grid > .check-option {
+      display: grid;
+      grid-template-columns: 18px minmax(0,1fr);
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #fff;
+      color: #344256;
+      font-size: 13px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+    .checkbox-grid > .check-option:has(input:checked) { border-color: rgba(10,132,255,.42); background: #f0f7ff; box-shadow: 0 0 0 4px rgba(10,132,255,.06); }
+
+    .brand-list { display: grid; gap: 12px; }
+    .brand-card {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      min-height: 142px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: #fff;
+      box-shadow: 0 10px 26px rgba(24,45,90,.05);
+    }
+
+    .brand-logo {
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: var(--brand-color);
+      color: #fff;
+      font-weight: 950;
+    }
+
+    .brand-card h3 { margin: 0 0 6px; font-size: 19px; line-height: 1.15; letter-spacing: -.02em; }
+    .brand-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.4; }
+    .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .pill { display: inline-flex; align-items: center; min-height: 24px; padding: 0 9px; border-radius: 999px; background: #f1f6ff; color: #36506f; font-size: 11px; font-weight: 900; }
+    .brand-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    .icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 14px; background: #fff; color: #526174; }
+    .empty { display: none; padding: 38px 18px; border: 1px dashed #c7d6ea; border-radius: 22px; background: #f8fbff; color: var(--muted); text-align: center; font-weight: 850; }
+
+    .brand-builder {
+      display: none;
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,.88);
+      border-radius: 30px;
+      background: rgba(255,255,255,.84);
+      box-shadow: var(--shadow-soft);
+    }
+    .brand-builder.is-open { display: grid; gap: 16px; }
+    .builder-shell { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 18px; align-items: start; }
+    .builder-controls { display: grid; gap: 12px; position: sticky; top: 22px; max-height: calc(100vh - 44px); overflow: auto; padding-right: 4px; }
+    .builder-group { border: 1px solid var(--line); border-radius: 20px; background: #fff; overflow: hidden; }
+    .builder-group summary { min-height: 48px; padding: 14px; color: var(--ink); font-size: 14px; font-weight: 950; list-style: none; cursor: pointer; }
+    .builder-group summary::-webkit-details-marker { display: none; }
+    .builder-group summary::after { content: "+"; float: right; color: var(--blue); font-weight: 950; }
+    .builder-group[open] summary::after { content: "-"; }
+    .builder-group__body { display: grid; gap: 12px; padding: 0 14px 14px; }
+    .builder-actions { display: grid; grid-template-columns: 1fr; gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 20px; background: #fff; }
+    .btn.review { background: linear-gradient(135deg, var(--blue), #23c483); }
+    .builder-block-list { display: grid; gap: 12px; }
+    .builder-block-editor {
+      display: grid;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #f7faff;
+    }
+    .builder-block-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .builder-block-head strong { font-size: 13px; letter-spacing: -.01em; }
+    .builder-block-remove {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0 10px;
+      border: 1px solid rgba(217,86,86,.24);
+      border-radius: 12px;
+      background: #fff5f5;
+      color: #a43d3d;
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .builder-preview {
+      display: grid;
+      gap: 16px;
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: #f7faff;
+    }
+    .builder-preview [data-inline-edit],
+    .builder-preview [data-preview-block-field] {
+      border-radius: 10px;
+      outline: 0;
+      transition: background .16s ease, box-shadow .16s ease;
+    }
+    .builder-preview [data-inline-edit]:hover,
+    .builder-preview [data-preview-block-field]:hover {
+      background: rgba(10,132,255,.06);
+      box-shadow: 0 0 0 4px rgba(10,132,255,.06);
+    }
+    .builder-preview [data-inline-edit]:focus,
+    .builder-preview [data-preview-block-field]:focus {
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(10,132,255,.14);
+    }
+    .brand-page-hero,
+    .brand-page-section,
+    .brand-page-structure {
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 30px;
+      background: #fff;
+      box-shadow: 0 10px 26px rgba(24,45,90,.05);
+    }
+    .brand-page-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(280px, .92fr);
+      gap: 18px;
+      padding: 28px;
+    }
+    .brand-page-kicker {
+      display: inline-flex;
+      width: fit-content;
+      min-height: 32px;
+      align-items: center;
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: #edf4ff;
+      color: var(--blue);
+      border: 1px solid rgba(10,132,255,.16);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .brand-page-hero h1 {
+      margin: 18px 0 12px;
+      color: var(--ink);
+      font-size: clamp(34px, 5vw, 60px);
+      line-height: .96;
+      letter-spacing: -.055em;
+      font-weight: 950;
+    }
+    .brand-page-hero h3 {
+      margin: 0;
+      color: #344256;
+      font-size: 20px;
+      line-height: 1.25;
+      letter-spacing: -.025em;
+    }
+    .brand-page-hero p,
+    .brand-page-card p,
+    .brand-page-section p {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.55;
+    }
+    .brand-page-media {
+      display: grid;
+      align-content: end;
+      min-height: 260px;
+      padding: 18px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(17,24,39,.04), rgba(17,24,39,.40)),
+        url("images/calitex_realistic/calitex-showroom-collection.jpg") center / cover;
+    }
+    .brand-page-logo {
+      width: fit-content;
+      max-width: 100%;
+      padding: 18px 20px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.9);
+      color: var(--blue);
+      font-size: 34px;
+      font-weight: 950;
+      line-height: 1;
+      box-shadow: 0 14px 34px rgba(24,45,90,.14);
+    }
+    .brand-page-structure { padding: 26px; }
+    .brand-page-structure h2,
+    .brand-page-section h2 { margin: 0 0 10px; font-size: 34px; line-height: 1; letter-spacing: -.045em; }
+    .brand-page-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; margin-top: 18px; }
+    .brand-page-card {
+      min-height: 150px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: #f7faff;
+    }
+    .brand-page-card b { display: block; margin-bottom: 10px; color: var(--blue); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+    .brand-page-card h3 { margin: 0 0 8px; font-size: 18px; line-height: 1.12; letter-spacing: -.03em; }
+    .brand-page-section { padding: 26px; }
+    .brand-page-two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+    .brand-page-image {
+      min-height: 190px;
+      margin-top: 14px;
+      border-radius: 22px;
+      background-position: center;
+      background-size: cover;
+    }
+
+    .test-panel { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+    .test-step { padding: 16px; border: 1px solid var(--line); border-radius: 20px; background: #fff; }
+    .test-step b { display: block; margin-bottom: 6px; font-size: 15px; }
+    .test-step span { display: block; color: var(--muted); font-size: 13px; line-height: 1.35; }
+
+    .toast { position: fixed; right: 24px; bottom: 24px; z-index: 100; max-width: 320px; padding: 13px 15px; border-radius: 18px; background: #172033; color: #fff; box-shadow: 0 18px 44px rgba(23,32,51,.25); opacity: 0; transform: translateY(10px); pointer-events: none; transition: .2s; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1120px) {
+      .supplier-hero,
+      .workspace,
+      .toolbar,
+      .builder-shell,
+      .brand-page-hero,
+      .brand-page-two {
+        grid-template-columns: 1fr;
+      }
+
+      .panel.sticky,
+      .builder-controls { position: static; }
+      .brand-page-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .page { padding: 14px; }
+      .shell,
+      .header,
+      .stats,
+      .test-panel,
+      .brand-page-grid {
+        grid-template-columns: 1fr;
+      }
+      .sidebar { position: static; height: auto; min-height: 0; padding: 10px; }
+      .nav { grid-template-columns: repeat(6, minmax(48px, 1fr)); }
+      .nav__item { width: 100%; }
+      .brand-card { grid-template-columns: 48px minmax(0, 1fr); }
+      .brand-logo { width: 48px; height: 48px; }
+      .brand-actions { grid-column: 2; justify-content: flex-start; }
+    }
+  </style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Найти бренд, тест или категорию"></header>
+
+        <section class="supplier-hero">
+          <div>
+            <nav class="path" aria-label="Хлебные крошки">
+              <a href="index.html">Разделы</a><span>/</span><span>Кабинет поставщика</span>
+            </nav>
+            <span class="eyebrow">Brand Admin</span>
+            <h1>Кабинет поставщика</h1>
+            <p>Мини-админка для поставщика: добавляйте бренды на платформу, собирайте страницу бренда по учебному шаблону и создавайте тесты по своим брендам.</p>
+            <div class="hero-actions">
+              <a class="btn" href="admin-test-builder.html">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                <span>Создать тест</span>
+              </a>
+              <a class="btn secondary" href="brands.html">Открыть бренды</a>
+            </div>
+          </div>
+          <aside class="stats" aria-label="Сводка">
+            <div class="stat"><strong data-stat="brands">0</strong><span>брендов</span></div>
+            <div class="stat"><strong data-stat="tests">0</strong><span>тестов</span></div>
+            <div class="stat"><strong data-stat="pages">0</strong><span>страниц бренда</span></div>
+          </aside>
+        </section>
+
+        <section class="toolbar" aria-label="Поиск">
+          <label class="search-field">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="brand-search" type="search" placeholder="Поиск по бренду, категории или описанию">
+          </label>
+        </section>
+
+        <section class="test-panel" aria-label="Процесс работы с тестами">
+          <div class="test-step"><b>1. Добавьте бренд</b><span>Заполните название, категории и краткое позиционирование бренда.</span></div>
+          <div class="test-step"><b>2. Соберите страницу</b><span>После добавления откроется конструктор страницы бренда по шаблону Calitex.</span></div>
+          <div class="test-step"><b>3. Создайте тест</b><span>Перейдите в конструктор тестов и соберите проверку знаний по бренду.</span></div>
+        </section>
+
+        <div class="workspace">
+          <aside class="panel sticky">
+            <div class="panel-head">
+              <div>
+                <h2>Добавить бренд</h2>
+                <p>После добавления откроется конструктор страницы бренда.</p>
+              </div>
+            </div>
+            <form class="brand-form" id="brand-form">
+              <div class="field">
+                <label for="brand-name">Название бренда</label>
+                <input class="input" id="brand-name" name="name" required placeholder="Например, Coswick">
+              </div>
+              <div class="field">
+                <label>Категории</label>
+                <details class="category-picker" id="brand-category">
+                  <summary><span data-category-summary>Выберите категории</span></summary>
+                  <ul class="category-tree" data-category-tree>
+                    <li class="tree-node is-open">
+                      <div class="tree-row"><button class="tree-toggle" type="button" aria-label="Свернуть раздел"></button><label class="check-option"><input type="checkbox" name="category" value="Напольные покрытия"> <span>Напольные покрытия</span></label></div>
+                      <ul>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Ламинат"> <span>Ламинат</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="SPC / LVT"> <span>SPC / LVT</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Паркетная доска"> <span>Паркетная доска</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Инженерная доска"> <span>Инженерная доска</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Ковровые покрытия"> <span>Ковровые покрытия</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Плитка и керамогранит"> <span>Плитка и керамогранит</span></label></div></li>
+                      </ul>
+                    </li>
+                    <li class="tree-node is-open">
+                      <div class="tree-row"><button class="tree-toggle" type="button" aria-label="Свернуть раздел"></button><label class="check-option"><input type="checkbox" name="category" value="Мебель"> <span>Мебель</span></label></div>
+                      <ul>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Корпусная мебель"> <span>Корпусная мебель</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Мягкая мебель"> <span>Мягкая мебель</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Кухни"> <span>Кухни</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Офисная мебель"> <span>Офисная мебель</span></label></div></li>
+                      </ul>
+                    </li>
+                    <li class="tree-node is-open">
+                      <div class="tree-row"><button class="tree-toggle" type="button" aria-label="Свернуть раздел"></button><label class="check-option"><input type="checkbox" name="category" value="Свет"> <span>Свет</span></label></div>
+                      <ul>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Люстры и подвесы"> <span>Люстры и подвесы</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Трековые системы"> <span>Трековые системы</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Настенные светильники"> <span>Настенные светильники</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Уличное освещение"> <span>Уличное освещение</span></label></div></li>
+                      </ul>
+                    </li>
+                    <li class="tree-node">
+                      <div class="tree-row"><button class="tree-toggle" type="button" aria-label="Раскрыть раздел"></button><label class="check-option"><input type="checkbox" name="category" value="Интерьерные материалы"> <span>Интерьерные материалы</span></label></div>
+                      <ul>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Двери"> <span>Двери</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Сантехника"> <span>Сантехника</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Текстиль"> <span>Текстиль</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Декор"> <span>Декор</span></label></div></li>
+                        <li class="tree-leaf"><div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Аксессуары"> <span>Аксессуары</span></label></div></li>
+                      </ul>
+                    </li>
+                    <li class="tree-leaf">
+                      <div class="tree-row"><button class="tree-toggle" type="button" aria-hidden="true"></button><label class="check-option"><input type="checkbox" name="category" value="Другое"> <span>Другое</span></label></div>
+                    </li>
+                  </ul>
+                </details>
+                <div class="field-hint">Можно выбрать несколько категорий для одного бренда.</div>
+              </div>
+              <div class="field">
+                <label for="brand-description">Краткое описание</label>
+                <textarea class="textarea" id="brand-description" name="description" required placeholder="Чем бренд полезен клиенту, какие аргументы важно знать продавцу"></textarea>
+              </div>
+              <button class="btn" type="submit">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                <span>Добавить бренд</span>
+              </button>
+            </form>
+          </aside>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Мои бренды</h2>
+                <p>Управление брендами поставщика и быстрый переход к тестам.</p>
+              </div>
+              <span class="pill" id="result-count">0 брендов</span>
+            </div>
+            <div class="brand-list" id="brand-list"></div>
+            <div class="empty" id="empty-state">Ничего не найдено</div>
+          </section>
+        </div>
+
+        <section class="brand-builder" id="brand-builder" aria-label="Конструктор страницы бренда">
+          <div class="panel-head">
+            <div>
+              <h2>Конструктор страницы бренда</h2>
+              <p>Шаблон собран по логике страницы Calitex: вводный hero, структура обучения и ключевые учебные блоки.</p>
+            </div>
+            <button class="btn secondary" type="button" data-close-builder>Закрыть</button>
+          </div>
+          <div class="builder-shell">
+            <aside class="builder-controls">
+              <details class="builder-group" open>
+                <summary>Hero страницы</summary>
+                <div class="builder-group__body">
+                  <div class="field">
+                    <label for="builder-title">Заголовок H1</label>
+                    <input class="input" id="builder-title" data-builder-field="title">
+                  </div>
+                  <div class="field">
+                    <label for="builder-description">Описание H3 и description</label>
+                    <textarea class="textarea" id="builder-description" data-builder-field="description"></textarea>
+                  </div>
+                  <div class="field">
+                    <label for="builder-positioning">Позиционирование</label>
+                    <textarea class="textarea" id="builder-positioning" data-builder-field="positioning" placeholder="Например: надёжность, дизайн, комфорт, аргументы продажи"></textarea>
+                  </div>
+                  <div class="field">
+                    <label for="builder-hero-image">Изображение hero</label>
+                    <select class="select" id="builder-hero-image" data-builder-field="heroImage">
+                      <option value="images/calitex_realistic/calitex-showroom-collection.jpg">Шоурум / коллекция</option>
+                      <option value="images/calitex_realistic/calitex-living-room-floor.jpg">Интерьер с покрытием</option>
+                      <option value="images/calitex_realistic/calitex-comfort-home.jpg">Комфортный дом</option>
+                      <option value="images/calitex_realistic/calitex-active-home-water.jpg">Активный дом / вода</option>
+                      <option value="images/calitex_realistic/calitex-factory-quality.jpg">Производство и качество</option>
+                      <option value="images/calitex_realistic/calitex-certificates-global.jpg">Сертификаты</option>
+                      <option value="images/calitex_realistic/calitex-material-lab.jpg">Материалы / лаборатория</option>
+                    </select>
+                  </div>
+                </div>
+              </details>
+
+              <details class="builder-group">
+                <summary>Структура обучения</summary>
+                <div class="builder-group__body">
+                  <div class="field"><label>Описание структуры</label><textarea class="textarea" data-builder-field="structureIntro"></textarea></div>
+                  <div class="field"><label>Модуль 01</label><input class="input" data-builder-field="module1Title"><textarea class="textarea" data-builder-field="module1Text"></textarea></div>
+                  <div class="field"><label>Модуль 02</label><input class="input" data-builder-field="module2Title"><textarea class="textarea" data-builder-field="module2Text"></textarea></div>
+                  <div class="field"><label>Модуль 03</label><input class="input" data-builder-field="module3Title"><textarea class="textarea" data-builder-field="module3Text"></textarea></div>
+                  <div class="field"><label>Модуль 04</label><input class="input" data-builder-field="module4Title"><textarea class="textarea" data-builder-field="module4Text"></textarea></div>
+                </div>
+              </details>
+
+              <details class="builder-group">
+                <summary>История бренда</summary>
+                <div class="builder-group__body">
+                  <div class="field"><label>Заголовок модуля</label><input class="input" data-builder-field="historyTitle"></div>
+                  <div class="field"><label>Контекст</label><textarea class="textarea" data-builder-field="historyContext"></textarea></div>
+                  <div class="field"><label>Подсказка менеджеру</label><textarea class="textarea" data-builder-field="historyTip"></textarea></div>
+                  <div class="field"><label>Изображение</label><select class="select" data-builder-field="historyImage" data-image-options></select></div>
+                </div>
+              </details>
+
+              <details class="builder-group">
+                <summary>Философия и ДНК</summary>
+                <div class="builder-group__body">
+                  <div class="field"><label>Заголовок</label><input class="input" data-builder-field="philosophyTitle"></div>
+                  <div class="field"><label>Описание блока</label><textarea class="textarea" data-builder-field="philosophyText"></textarea></div>
+                  <div class="field"><label>Изображение</label><select class="select" data-builder-field="philosophyImage" data-image-options></select></div>
+                </div>
+              </details>
+
+              <details class="builder-group">
+                <summary>Технологии</summary>
+                <div class="builder-group__body">
+                  <div class="field"><label>Заголовок</label><input class="input" data-builder-field="techTitle"></div>
+                  <div class="field"><label>Описание блока</label><textarea class="textarea" data-builder-field="techText"></textarea></div>
+                  <div class="field"><label>Изображение</label><select class="select" data-builder-field="techImage" data-image-options></select></div>
+                </div>
+              </details>
+
+              <details class="builder-group">
+                <summary>Продажа</summary>
+                <div class="builder-group__body">
+                  <div class="field"><label>Заголовок</label><input class="input" data-builder-field="salesTitle"></div>
+                  <div class="field"><label>Описание блока</label><textarea class="textarea" data-builder-field="salesText"></textarea></div>
+                  <div class="field"><label>Финальный призыв</label><textarea class="textarea" data-builder-field="finalText"></textarea></div>
+                  <div class="field"><label>Изображение</label><select class="select" data-builder-field="salesImage" data-image-options></select></div>
+                </div>
+              </details>
+
+              <details class="builder-group" open>
+                <summary>Дополнительные блоки</summary>
+                <div class="builder-group__body">
+                  <div class="builder-block-list" data-builder-block-list></div>
+                  <button class="btn secondary" type="button" data-add-builder-block>Добавить блок</button>
+                </div>
+              </details>
+
+              <div class="builder-actions">
+                <button class="btn secondary" type="button" data-save-draft>Сохранить в черновик</button>
+                <button class="btn review" type="button" data-send-review>Отправить на модерацию</button>
+              </div>
+            </aside>
+            <div class="builder-preview">
+              <section class="brand-page-hero">
+                <div>
+                  <span class="brand-page-kicker">Академия бренда</span>
+                  <h1 data-preview-title data-inline-edit="title" contenteditable="true">Название бренда</h1>
+                  <h3 data-preview-description data-inline-edit="description" contenteditable="true">Описание бренда появится здесь.</h3>
+                  <p data-preview-positioning data-inline-edit="positioning" contenteditable="true">Ключевое позиционирование бренда и польза для продавца.</p>
+                </div>
+                <div class="brand-page-media" data-preview-media>
+                  <div class="brand-page-logo" data-preview-logo>Бренд</div>
+                </div>
+              </section>
+
+              <section class="brand-page-structure">
+                <h2>Структура обучения</h2>
+                <p data-preview="structureIntro" data-inline-edit="structureIntro" contenteditable="true">4 ключевых блока, которые помогут продавцу уверенно объяснять ценность бренда клиенту.</p>
+                <div class="brand-page-grid">
+                  <article class="brand-page-card"><b>Модуль 01</b><h3 data-preview="module1Title" data-inline-edit="module1Title" contenteditable="true">История бренда</h3><p data-preview="module1Text" data-inline-edit="module1Text" contenteditable="true">Происхождение, доверие и факты, которые усиливают аргументацию.</p></article>
+                  <article class="brand-page-card"><b>Модуль 02</b><h3 data-preview="module2Title" data-inline-edit="module2Title" contenteditable="true">Философия и ДНК</h3><p data-preview="module2Text" data-inline-edit="module2Text" contenteditable="true">Ценности, стиль, аудитория и причины выбрать бренд.</p></article>
+                  <article class="brand-page-card"><b>Модуль 03</b><h3 data-preview="module3Title" data-inline-edit="module3Title" contenteditable="true">Технологии</h3><p data-preview="module3Text" data-inline-edit="module3Text" contenteditable="true">Материалы, конструкция, преимущества и доказательства качества.</p></article>
+                  <article class="brand-page-card"><b>Модуль 04</b><h3 data-preview="module4Title" data-inline-edit="module4Title" contenteditable="true">Продажа</h3><p data-preview="module4Text" data-inline-edit="module4Text" contenteditable="true">Сценарии консультации, возражения и формула рекомендации.</p></article>
+                </div>
+              </section>
+
+              <section class="brand-page-section">
+                <span class="brand-page-kicker">Модуль 01 — История бренда</span>
+                <h2 data-preview="historyTitle" data-inline-edit="historyTitle" contenteditable="true">Вводное: бренд, задающий стандарт</h2>
+                <div class="brand-page-two">
+                  <article class="brand-page-card"><h3>Контекст</h3><p data-preview="historyContext" data-inline-edit="historyContext" contenteditable="true">Короткая история бренда и факты, которые помогают создать доверие.</p></article>
+                  <article class="brand-page-card"><h3>Подсказка менеджеру</h3><p data-preview="historyTip" data-inline-edit="historyTip" contenteditable="true">История должна звучать как аргумент выбора, а не как сухая справка.</p></article>
+                </div>
+                <div class="brand-page-image" data-preview-image="historyImage"></div>
+              </section>
+
+              <section class="brand-page-section">
+                <span class="brand-page-kicker">Модуль 02 — Философия</span>
+                <h2 data-preview="philosophyTitle" data-inline-edit="philosophyTitle" contenteditable="true">Философия и ДНК бренда</h2>
+                <p data-preview="philosophyText" data-inline-edit="philosophyText" contenteditable="true">Описание бренда появится здесь как основной description страницы.</p>
+                <div class="brand-page-image" data-preview-image="philosophyImage"></div>
+              </section>
+
+              <section class="brand-page-section">
+                <span class="brand-page-kicker">Модуль 03 — Технологии</span>
+                <h2 data-preview="techTitle" data-inline-edit="techTitle" contenteditable="true">Технологии и преимущества</h2>
+                <p data-preview="techText" data-inline-edit="techText" contenteditable="true">Материалы, конструкция, преимущества и доказательства качества.</p>
+                <div class="brand-page-image" data-preview-image="techImage"></div>
+              </section>
+
+              <section class="brand-page-section">
+                <span class="brand-page-kicker">Модуль 04 — Продажа</span>
+                <h2 data-preview="salesTitle" data-inline-edit="salesTitle" contenteditable="true">Как продавать бренд</h2>
+                <p data-preview="salesText" data-inline-edit="salesText" contenteditable="true">Сценарии консультации, работа с возражениями и формула рекомендации.</p>
+                <div class="brand-page-card" style="margin-top:14px;"><h3>Итоговый блок</h3><p data-preview="finalText" data-inline-edit="finalText" contenteditable="true">Добавьте тест по бренду и отправьте страницу на модерацию.</p></div>
+                <div class="brand-page-image" data-preview-image="salesImage"></div>
+              </section>
+
+              <div data-preview-custom-blocks></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var STORAGE_KEY = "tsSupplierBrands";
+      var palette = [
+        "linear-gradient(135deg,#0a84ff,#5f93ff)",
+        "linear-gradient(135deg,#23c483,#63d8b0)",
+        "linear-gradient(135deg,#7257c6,#9b8dd4)",
+        "linear-gradient(135deg,#ff8a3d,#ffb26f)",
+        "linear-gradient(135deg,#d95a9b,#f28abf)"
+      ];
+
+      var defaultBrands = [
+        {
+          id: "pergo",
+          name: "Pergo",
+          categories: ["Ламинат", "Аксессуары"],
+          tests: 2,
+          description: "Бренд с акцентом на долговечность, AquaSafe, TitanX и спокойную аргументацию для активного дома.",
+          pageReady: true,
+          moderationStatus: "draft"
+        },
+        {
+          id: "calitex",
+          name: "Calitex",
+          categories: ["SPC / LVT", "Аксессуары"],
+          tests: 1,
+          description: "Материалы по качеству, влагостойкости и подбору покрытия для практичных сценариев клиента.",
+          pageReady: true,
+          moderationStatus: "draft"
+        },
+        {
+          id: "coswick",
+          name: "Coswick",
+          categories: ["Паркетная доска", "Инженерная доска"],
+          tests: 0,
+          description: "Черновик бренда для будущего курса: история, преимущества дерева и проверка знаний продавцов.",
+          pageReady: false,
+          moderationStatus: "draft"
+        }
+      ];
+
+      var brands = loadBrands();
+      var searchInput = document.getElementById("brand-search");
+      var categoryPicker = document.getElementById("brand-category");
+      var categorySummary = document.querySelector("[data-category-summary]");
+      var brandList = document.getElementById("brand-list");
+      var emptyState = document.getElementById("empty-state");
+      var resultCount = document.getElementById("result-count");
+      var toast = document.getElementById("toast");
+      var brandBuilder = document.getElementById("brand-builder");
+      var builderPreview = document.querySelector(".builder-preview");
+      var builderBlockList = document.querySelector("[data-builder-block-list]");
+      var previewCustomBlocks = document.querySelector("[data-preview-custom-blocks]");
+      var currentBuilderBrandId = null;
+
+      var imageOptions = [
+        ["images/calitex_realistic/calitex-showroom-collection.jpg", "Шоурум / коллекция"],
+        ["images/calitex_realistic/calitex-living-room-floor.jpg", "Интерьер с покрытием"],
+        ["images/calitex_realistic/calitex-comfort-home.jpg", "Комфортный дом"],
+        ["images/calitex_realistic/calitex-active-home-water.jpg", "Активный дом / вода"],
+        ["images/calitex_realistic/calitex-factory-quality.jpg", "Производство и качество"],
+        ["images/calitex_realistic/calitex-certificates-global.jpg", "Сертификаты"],
+        ["images/calitex_realistic/calitex-material-lab.jpg", "Материалы / лаборатория"]
+      ];
+
+      var builderDefaults = {
+        title: "Название бренда",
+        description: "Описание бренда появится здесь.",
+        positioning: "Ключевое позиционирование бренда и польза для продавца.",
+        heroImage: "images/calitex_realistic/calitex-showroom-collection.jpg",
+        structureIntro: "4 ключевых блока, которые помогут продавцу уверенно объяснять ценность бренда клиенту.",
+        module1Title: "История бренда",
+        module1Text: "Происхождение, доверие и факты, которые усиливают аргументацию.",
+        module2Title: "Философия и ДНК",
+        module2Text: "Ценности, стиль, аудитория и причины выбрать бренд.",
+        module3Title: "Технологии",
+        module3Text: "Материалы, конструкция, преимущества и доказательства качества.",
+        module4Title: "Продажа",
+        module4Text: "Сценарии консультации, возражения и формула рекомендации.",
+        historyTitle: "Вводное: бренд, задающий стандарт",
+        historyContext: "Короткая история бренда и факты, которые помогают создать доверие.",
+        historyTip: "История должна звучать как аргумент выбора, а не как сухая справка.",
+        historyImage: "images/calitex_realistic/calitex-archive-team.jpg",
+        philosophyTitle: "Философия и ДНК бренда",
+        philosophyText: "Описание бренда появится здесь как основной description страницы.",
+        philosophyImage: "images/calitex_realistic/calitex-living-room-floor.jpg",
+        techTitle: "Технологии и преимущества",
+        techText: "Материалы, конструкция, преимущества и доказательства качества.",
+        techImage: "images/calitex_realistic/calitex-material-lab.jpg",
+        salesTitle: "Как продавать бренд",
+        salesText: "Сценарии консультации, работа с возражениями и формула рекомендации.",
+        finalText: "Добавьте тест по бренду и отправьте страницу на модерацию.",
+        salesImage: "images/calitex_realistic/calitex-comfort-home.jpg"
+      };
+
+      function loadBrands() {
+        try {
+          var saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+          return Array.isArray(saved) && saved.length ? saved : defaultBrands.slice();
+        } catch (error) {
+          return defaultBrands.slice();
+        }
+      }
+
+      function saveBrands() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(brands));
+      }
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("show");
+        window.clearTimeout(showToast.timer);
+        showToast.timer = window.setTimeout(function () {
+          toast.classList.remove("show");
+        }, 2200);
+      }
+
+      function brandCategories(brand) {
+        if (Array.isArray(brand.categories)) return brand.categories.filter(Boolean);
+        if (Array.isArray(brand.category)) return brand.category.filter(Boolean);
+        return String(brand.category || "").split(",").map(function (item) {
+          return item.trim();
+        }).filter(Boolean);
+      }
+
+      function selectedFormCategories() {
+        return Array.prototype.slice.call(document.querySelectorAll('input[name="category"]:checked')).map(function (input) {
+          return input.value;
+        });
+      }
+
+      function updateCategorySummary() {
+        var selected = selectedFormCategories();
+        if (!categorySummary) return;
+        if (!selected.length) {
+          categorySummary.textContent = "Выберите категории";
+        } else if (selected.length <= 2) {
+          categorySummary.textContent = selected.join(", ");
+        } else {
+          categorySummary.textContent = selected.slice(0, 2).join(", ") + " +" + (selected.length - 2);
+        }
+      }
+
+      function directNodeCheckbox(node) {
+        return node ? node.querySelector(":scope > .tree-row input[type='checkbox']") : null;
+      }
+
+      function childNodeCheckboxes(node) {
+        return node ? Array.prototype.slice.call(node.querySelectorAll(":scope > ul input[type='checkbox']")) : [];
+      }
+
+      function syncCategoryParents() {
+        if (!categoryPicker) return;
+        Array.prototype.slice.call(categoryPicker.querySelectorAll(".tree-node")).reverse().forEach(function (node) {
+          var checkbox = directNodeCheckbox(node);
+          var children = childNodeCheckboxes(node);
+          if (!checkbox || !children.length) return;
+          var checkedCount = children.filter(function (child) { return child.checked; }).length;
+          checkbox.checked = checkedCount === children.length;
+          checkbox.indeterminate = checkedCount > 0 && checkedCount < children.length;
+        });
+        updateCategorySummary();
+      }
+
+      function setCategoryBranch(node, checked) {
+        childNodeCheckboxes(node).forEach(function (child) {
+          child.checked = checked;
+          child.indeterminate = false;
+        });
+      }
+
+      function escapeHtml(value) {
+        return String(value || "").replace(/[&<>"']/g, function (char) {
+          return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+          }[char];
+        });
+      }
+
+      function initials(name) {
+        return name.split(/\s+/).filter(Boolean).slice(0, 2).map(function (part) {
+          return part.charAt(0).toUpperCase();
+        }).join("") || "Б";
+      }
+
+      function filteredBrands() {
+        var query = searchInput.value.trim().toLowerCase();
+        return brands.filter(function (brand) {
+          var categories = brandCategories(brand).join(" ");
+          return !query || [brand.name, categories, brand.description].join(" ").toLowerCase().indexOf(query) >= 0;
+        });
+      }
+
+      function brandCard(brand, index) {
+        var testLabel = brand.tests === 1 ? "1 тест" : brand.tests + " тестов";
+        var pageLabel = brand.moderationStatus === "review" ? "на модерации" : brand.pageReady ? "страница собрана" : "черновик страницы";
+        var categoryPills = brandCategories(brand).map(function (category) {
+          return '<span class="pill">' + escapeHtml(category) + '</span>';
+        }).join("");
+        return '<article class="brand-card">' +
+          '<div class="brand-logo" style="--brand-color:' + palette[index % palette.length] + '">' + escapeHtml(initials(brand.name)) + '</div>' +
+          '<div>' +
+            '<h3>' + escapeHtml(brand.name) + '</h3>' +
+            '<p>' + escapeHtml(brand.description) + '</p>' +
+            '<div class="meta">' +
+              categoryPills +
+              '<span class="pill">' + pageLabel + '</span>' +
+              '<span class="pill">' + testLabel + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="brand-actions">' +
+            '<button class="btn secondary" type="button" data-edit-builder="' + brand.id + '">Страница бренда</button>' +
+            '<a class="btn secondary" href="admin-test-builder.html?brand=' + encodeURIComponent(brand.name) + '">Создать тест</a>' +
+            '<button class="icon-btn" type="button" data-remove="' + brand.id + '" title="Удалить бренд">' +
+              '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M6 6l1 15h10l1-15"/></svg>' +
+            '</button>' +
+          '</div>' +
+        '</article>';
+      }
+
+      function renderStats() {
+        document.querySelector("[data-stat='brands']").textContent = brands.length;
+        document.querySelector("[data-stat='tests']").textContent = brands.reduce(function (sum, brand) { return sum + Number(brand.tests || 0); }, 0);
+        document.querySelector("[data-stat='pages']").textContent = brands.filter(function (brand) { return brand.moderationStatus === "review"; }).length;
+      }
+
+      function render() {
+        var visible = filteredBrands();
+        brandList.innerHTML = visible.map(brandCard).join("");
+        emptyState.style.display = visible.length ? "none" : "block";
+        resultCount.textContent = visible.length + " из " + brands.length;
+        renderStats();
+      }
+
+      function setText(selector, value) {
+        var node = document.querySelector(selector);
+        if (node) node.textContent = value;
+      }
+
+      function builderInputs() {
+        return Array.prototype.slice.call(document.querySelectorAll("[data-builder-field]"));
+      }
+
+      function builderInputByKey(key) {
+        return builderInputs().find(function (input) {
+          return input.getAttribute("data-builder-field") === key;
+        });
+      }
+
+      function imageSelectOptions(selected) {
+        return imageOptions.map(function (option) {
+          return '<option value="' + escapeHtml(option[0]) + '"' + (option[0] === selected ? " selected" : "") + '>' + escapeHtml(option[1]) + '</option>';
+        }).join("");
+      }
+
+      function hydrateImageSelects() {
+        document.querySelectorAll("[data-image-options]").forEach(function (select) {
+          var key = select.getAttribute("data-builder-field");
+          select.innerHTML = imageSelectOptions(select.value || builderDefaults[key] || imageOptions[0][0]);
+        });
+      }
+
+      function collectBuilderBlocks() {
+        return Array.prototype.slice.call(document.querySelectorAll("[data-builder-block]")).map(function (block) {
+          return {
+            title: (block.querySelector('[data-block-field="title"]') || {}).value || "",
+            text: (block.querySelector('[data-block-field="text"]') || {}).value || "",
+            image: (block.querySelector('[data-block-field="image"]') || {}).value || imageOptions[0][0]
+          };
+        }).filter(function (block) {
+          return block.title.trim() || block.text.trim();
+        });
+      }
+
+      function blockEditorTemplate(block, index) {
+        var item = block || {};
+        return '<article class="builder-block-editor" data-builder-block>' +
+          '<div class="builder-block-head"><strong>Блок ' + (index + 1) + '</strong><button class="builder-block-remove" type="button" data-remove-builder-block>Удалить</button></div>' +
+          '<div class="field"><label>Заголовок блока</label><input class="input" data-block-field="title" value="' + escapeHtml(item.title || "") + '"></div>' +
+          '<div class="field"><label>Текст блока</label><textarea class="textarea" data-block-field="text">' + escapeHtml(item.text || "") + '</textarea></div>' +
+          '<div class="field"><label>Изображение блока</label><select class="select" data-block-field="image">' + imageSelectOptions(item.image || imageOptions[0][0]) + '</select></div>' +
+        '</article>';
+      }
+
+      function renderBuilderBlockEditors(blocks) {
+        if (!builderBlockList) return;
+        builderBlockList.innerHTML = (blocks || []).map(blockEditorTemplate).join("");
+      }
+
+      function renderCustomBlockPreview(blocks) {
+        if (!previewCustomBlocks) return;
+        previewCustomBlocks.innerHTML = (blocks || []).map(function (block, index) {
+          return '<section class="brand-page-section">' +
+            '<span class="brand-page-kicker">Дополнительный блок</span>' +
+            '<h2 data-preview-block-index="' + index + '" data-preview-block-field="title" contenteditable="true">' + escapeHtml(block.title || "Новый блок") + '</h2>' +
+            '<p data-preview-block-index="' + index + '" data-preview-block-field="text" contenteditable="true">' + escapeHtml(block.text || "Описание блока появится здесь.") + '</p>' +
+            '<div class="brand-page-image" style="background-image:url(' + "'" + escapeHtml(block.image || imageOptions[0][0]) + "'" + ');"></div>' +
+          '</section>';
+        }).join("");
+      }
+
+      function editableText(node) {
+        return node.innerText.replace(/\u00a0/g, " ").trim();
+      }
+
+      function syncInlinePreviewEdit(node) {
+        var key = node.getAttribute("data-inline-edit");
+        var text = editableText(node);
+        if (key) {
+          var input = builderInputByKey(key);
+          if (input) input.value = text;
+          if (key === "title") setText("[data-preview-logo]", text || builderDefaults.title);
+          return;
+        }
+        var blockField = node.getAttribute("data-preview-block-field");
+        if (!blockField) return;
+        var index = Number(node.getAttribute("data-preview-block-index"));
+        var block = document.querySelectorAll("[data-builder-block]")[index];
+        if (!block) return;
+        var field = block.querySelector('[data-block-field="' + blockField + '"]');
+        if (field) field.value = text;
+      }
+
+      function collectBuilderPage() {
+        var page = {};
+        builderInputs().forEach(function (input) {
+          var key = input.getAttribute("data-builder-field");
+          page[key] = input.value.trim();
+        });
+        page.blocks = collectBuilderBlocks();
+        return page;
+      }
+
+      function pageValue(page, key) {
+        return (page && page[key]) || builderDefaults[key] || "";
+      }
+
+      function fillBuilderFields(brand) {
+        var page = Object.assign({}, builderDefaults, brand.page || {});
+        page.title = brand.name || page.title;
+        page.description = brand.description || page.description;
+        if (brand.positioning) page.positioning = brand.positioning;
+        hydrateImageSelects();
+        builderInputs().forEach(function (input) {
+          var key = input.getAttribute("data-builder-field");
+          input.value = pageValue(page, key);
+        });
+        renderBuilderBlockEditors(page.blocks || []);
+      }
+
+      function updateBuilderPreview() {
+        var page = Object.assign({}, builderDefaults, collectBuilderPage());
+        setText("[data-preview-title]", pageValue(page, "title"));
+        setText("[data-preview-description]", pageValue(page, "description"));
+        setText("[data-preview-positioning]", pageValue(page, "positioning"));
+        setText("[data-preview-logo]", pageValue(page, "title"));
+        var media = document.querySelector("[data-preview-media]");
+        if (media) {
+          media.style.backgroundImage = "linear-gradient(180deg, rgba(17,24,39,.04), rgba(17,24,39,.40)), url('" + pageValue(page, "heroImage") + "')";
+        }
+        Object.keys(builderDefaults).forEach(function (key) {
+          setText('[data-preview="' + key + '"]', pageValue(page, key));
+        });
+        document.querySelectorAll("[data-preview-image]").forEach(function (node) {
+          var key = node.getAttribute("data-preview-image");
+          node.style.backgroundImage = "url('" + pageValue(page, key) + "')";
+        });
+        renderCustomBlockPreview(page.blocks || []);
+      }
+
+      function openBrandBuilder(brand) {
+        currentBuilderBrandId = brand.id;
+        fillBuilderFields(brand);
+        if (brandBuilder) {
+          brandBuilder.classList.add("is-open");
+          brandBuilder.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+        updateBuilderPreview();
+      }
+
+      function saveBuilderPage(moderationStatus) {
+        var brand = brands.find(function (item) { return item.id === currentBuilderBrandId; });
+        if (!brand) return;
+        var page = collectBuilderPage();
+        brand.name = page.title || brand.name;
+        brand.description = page.description || brand.description;
+        brand.positioning = page.positioning || "";
+        brand.page = page;
+        brand.pageReady = moderationStatus === "review";
+        brand.moderationStatus = moderationStatus;
+        saveBrands();
+        render();
+        updateBuilderPreview();
+        showToast(moderationStatus === "review" ? "Страница отправлена на модерацию" : "Черновик страницы сохранён");
+      }
+
+      document.getElementById("brand-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var form = event.currentTarget;
+        var formData = new FormData(form);
+        var name = String(formData.get("name") || "").trim();
+        var description = String(formData.get("description") || "").trim();
+        var categories = formData.getAll("category").map(function (category) {
+          return String(category).trim();
+        }).filter(Boolean);
+        if (!name || !description || !categories.length) {
+          showToast("Заполните название, описание и выберите хотя бы одну категорию");
+          return;
+        }
+        brands.unshift({
+          id: "brand-" + Date.now(),
+          name: name,
+          categories: categories,
+          tests: 0,
+          description: description,
+          positioning: "",
+          page: { title: name, description: description },
+          pageReady: false,
+          moderationStatus: "draft"
+        });
+        var createdBrand = brands[0];
+        saveBrands();
+        form.reset();
+        if (categoryPicker) categoryPicker.open = false;
+        syncCategoryParents();
+        showToast("Бренд добавлен, открыт конструктор страницы");
+        render();
+        openBrandBuilder(createdBrand);
+      });
+
+      brandList.addEventListener("click", function (event) {
+        var remove = event.target.closest("[data-remove]");
+        var editBuilder = event.target.closest("[data-edit-builder]");
+        if (remove) {
+          brands = brands.filter(function (brand) { return brand.id !== remove.getAttribute("data-remove"); });
+          saveBrands();
+          showToast("Бренд удалён");
+          render();
+        }
+        if (editBuilder) {
+          var brand = brands.find(function (item) { return item.id === editBuilder.getAttribute("data-edit-builder"); });
+          if (!brand) return;
+          openBrandBuilder(brand);
+        }
+      });
+
+      searchInput.addEventListener("input", render);
+      builderInputs().forEach(function (input) {
+        input.addEventListener("input", updateBuilderPreview);
+        input.addEventListener("change", updateBuilderPreview);
+      });
+      document.querySelector("[data-add-builder-block]").addEventListener("click", function () {
+        var blocks = collectBuilderBlocks();
+        blocks.push({
+          title: "Новый учебный блок",
+          text: "Опишите, что должен узнать продавец в этом блоке.",
+          image: imageOptions[0][0]
+        });
+        renderBuilderBlockEditors(blocks);
+        updateBuilderPreview();
+      });
+      if (builderBlockList) {
+        builderBlockList.addEventListener("click", function (event) {
+          var remove = event.target.closest("[data-remove-builder-block]");
+          if (!remove) return;
+          remove.closest("[data-builder-block]").remove();
+          updateBuilderPreview();
+        });
+        builderBlockList.addEventListener("input", updateBuilderPreview);
+        builderBlockList.addEventListener("change", updateBuilderPreview);
+      }
+      if (builderPreview) {
+        builderPreview.addEventListener("input", function (event) {
+          var editable = event.target.closest("[data-inline-edit], [data-preview-block-field]");
+          if (!editable) return;
+          syncInlinePreviewEdit(editable);
+        });
+        builderPreview.addEventListener("paste", function (event) {
+          var editable = event.target.closest("[data-inline-edit], [data-preview-block-field]");
+          if (!editable) return;
+          event.preventDefault();
+          var text = (event.clipboardData || window.clipboardData).getData("text/plain");
+          document.execCommand("insertText", false, text);
+        });
+      }
+      document.querySelector("[data-save-draft]").addEventListener("click", function () {
+        saveBuilderPage("draft");
+      });
+      document.querySelector("[data-send-review]").addEventListener("click", function () {
+        saveBuilderPage("review");
+      });
+      document.querySelector("[data-close-builder]").addEventListener("click", function () {
+        if (brandBuilder) brandBuilder.classList.remove("is-open");
+      });
+      if (categoryPicker) {
+        categoryPicker.addEventListener("click", function (event) {
+          var toggle = event.target.closest(".tree-toggle");
+          if (!toggle || toggle.getAttribute("aria-hidden") === "true") return;
+          event.preventDefault();
+          var node = toggle.closest(".tree-node");
+          if (!node) return;
+          node.classList.toggle("is-open");
+          toggle.setAttribute("aria-label", node.classList.contains("is-open") ? "Свернуть раздел" : "Раскрыть раздел");
+        });
+        categoryPicker.addEventListener("change", updateCategorySummary);
+        categoryPicker.addEventListener("change", function (event) {
+          var checkbox = event.target.closest('input[name="category"]');
+          if (!checkbox) return;
+          var node = checkbox.closest(".tree-node");
+          if (node && checkbox === directNodeCheckbox(node)) {
+            checkbox.indeterminate = false;
+            setCategoryBranch(node, checkbox.checked);
+          }
+          syncCategoryParents();
+        });
+        document.addEventListener("click", function (event) {
+          if (categoryPicker.open && !categoryPicker.contains(event.target)) {
+            categoryPicker.open = false;
+          }
+        });
+      }
+      syncCategoryParents();
+      render();
+    })();
+  </script>
+</body>
+</html>

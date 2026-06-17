@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Администрирование компаний | TouchSpace Академия</title>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+  <style>
+    :root { --blue:#0a84ff; --ink:#111827; --muted:#66758a; --line:#dfe6f2; --page:#eef4ff; --green:#23c483; --shadow:0 14px 38px rgba(24,45,90,.08); --max:1500px; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:linear-gradient(180deg,#f8fbff 0%,var(--page) 56%,#f6f9ff 100%); font-family:Inter,"SF Pro Display","Segoe UI",Arial,sans-serif; }
+    a { color:inherit; text-decoration:none; }
+    input { font:inherit; }
+    .page { max-width:var(--max); margin:0 auto; padding:24px; }
+    .shell { display:grid; grid-template-columns:76px minmax(0,1fr); gap:24px; }
+    .main { min-width:0; }
+    .hero,.panel,.company { border:1px solid rgba(255,255,255,.88); border-radius:28px; background:rgba(255,255,255,.86); box-shadow:var(--shadow); }
+    .hero { display:flex; justify-content:space-between; gap:20px; align-items:flex-end; margin-bottom:16px; padding:28px; }
+    .eyebrow { display:inline-flex; min-height:32px; align-items:center; width:fit-content; margin-bottom:12px; padding:0 12px; border-radius:999px; background:#eef5ff; color:#177be8; font-size:12px; font-weight:900; }
+    h1 { margin:0; font-size:clamp(34px,4vw,56px); line-height:.98; letter-spacing:-.05em; }
+    h2 { margin:0; font-size:24px; letter-spacing:-.035em; }
+    .hero p,.panel p { margin:9px 0 0; color:var(--muted); font-size:14px; line-height:1.5; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; min-height:42px; border-radius:15px; padding:0 15px; background:var(--blue); color:#fff; font-weight:950; box-shadow:0 12px 28px rgba(10,132,255,.2); }
+    .layout { display:grid; grid-template-columns:330px minmax(0,1fr); gap:16px; align-items:start; }
+    .panel { padding:20px; }
+    .search { width:100%; min-height:44px; margin-top:14px; border:1px solid var(--line); border-radius:15px; background:#fff; padding:0 13px; color:var(--ink); outline:none; }
+    .stats { display:grid; gap:10px; margin-top:14px; }
+    .stat { padding:14px; border:1px solid var(--line); border-radius:18px; background:#fff; }
+    .stat strong { display:block; font-size:24px; letter-spacing:-.04em; }
+    .stat span { display:block; margin-top:5px; color:var(--muted); font-size:12px; font-weight:850; }
+    .companies { display:grid; gap:12px; margin-top:14px; }
+    .company { padding:16px; border-color:var(--line); background:#fff; }
+    .company-head { display:flex; align-items:center; justify-content:space-between; gap:12px; padding-bottom:12px; border-bottom:1px solid var(--line); }
+    .company-title { display:flex; gap:12px; align-items:center; min-width:0; }
+    .icon { display:grid; place-items:center; flex:0 0 44px; width:44px; height:44px; border-radius:16px; background:#edf7ff; color:#177be8; font-weight:950; }
+    .company-title strong { display:block; font-size:16px; }
+    .company-title small { display:block; margin-top:4px; color:var(--muted); font-size:12px; font-weight:750; }
+    .badge { display:inline-flex; align-items:center; min-height:28px; padding:0 10px; border-radius:999px; background:#eafaf3; color:#139861; font-size:12px; font-weight:900; white-space:nowrap; }
+    .stores { display:grid; gap:9px; margin-top:12px; }
+    .store { display:grid; grid-template-columns:minmax(0,1fr) 110px 120px; gap:10px; align-items:center; padding:11px; border-radius:16px; background:#f7faff; }
+    .store strong { display:block; font-size:14px; }
+    .store span { color:var(--muted); font-size:12px; font-weight:800; }
+    .empty { padding:22px; border:1px dashed rgba(23,32,51,.18); border-radius:20px; color:var(--muted); text-align:center; }
+    @media(max-width:1050px){.hero{display:grid}.layout{grid-template-columns:1fr}.store{grid-template-columns:1fr}}
+    @media(max-width:760px){.page{padding:14px}.shell{grid-template-columns:1fr}.hero{padding:22px;border-radius:24px}h1{font-size:36px}.company-head{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Поиск компаний"></header>
+        <section class="hero">
+          <div>
+            <span class="eyebrow">Администратор платформы</span>
+            <h1>Администрирование компаний</h1>
+            <p>Отдельная страница для компаний и торговых точек. Она не открывает кабинет конкретной компании и нужна для общего контроля структуры.</p>
+          </div>
+          <a class="btn" href="admin-dashboard.html">Добавить реселлера</a>
+        </section>
+        <section class="layout">
+          <aside class="panel">
+            <h2>Фильтр</h2>
+            <p>Быстрый поиск по компании, торговой точке или реселлеру.</p>
+            <input class="search" data-search placeholder="Введите запрос">
+            <div class="stats">
+              <div class="stat"><strong data-companies>0</strong><span>компаний</span></div>
+              <div class="stat"><strong data-stores>0</strong><span>торговых точек</span></div>
+              <div class="stat"><strong data-resellers>0</strong><span>реселлеров</span></div>
+            </div>
+          </aside>
+          <section class="panel">
+            <h2>Компании и торговые точки</h2>
+            <p>Сводная структура для администратора: компания, ее точки и количество привязанных реселлеров.</p>
+            <div class="companies" data-list></div>
+          </section>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var base = [
+        { company:"Рога и Копыта", stores:[{ name:"Флагманский салон", city:"Москва", resellers:["Анна Владимирова","Иван Петров"] },{ name:"ТТ Север", city:"Москва", resellers:["Сергей Розов"] }] },
+        { company:"Дом паркета", stores:[{ name:"Центральный шоурум", city:"Санкт-Петербург", resellers:["Мария Орлова","Денис Волков"] }] },
+        { company:"Интерьер Маркет", stores:[{ name:"ТТ Юг", city:"Казань", resellers:["Иван Петров"] }] }
+      ];
+      var list = document.querySelector("[data-list]");
+      var search = document.querySelector("[data-search]");
+      function esc(value){return String(value || "").replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+      function data(){
+        var api = window.TouchSpaceAcademy || {};
+        var savedCompanies = api.getAdminCompanies ? api.getAdminCompanies() : [];
+        var managed = api.getManagedUsers ? api.getManagedUsers().filter(function(user){return user.type === "student";}) : [];
+        if (!savedCompanies.length && !managed.length) return base;
+        var map = {};
+        savedCompanies.forEach(function(company) {
+          map[company.name] = map[company.name] || {};
+          company.stores.forEach(function(store) {
+            map[company.name][store.name] = map[company.name][store.name] || [];
+          });
+        });
+        managed.forEach(function(user){
+          var parts = String(user.company || "Без компании · Без торговой точки").split("·").map(function(part){return part.trim();});
+          var company = parts[0] || "Без компании";
+          var store = parts[1] || "Основная торговая точка";
+          map[company] = map[company] || {};
+          map[company][store] = map[company][store] || [];
+          map[company][store].push(user.name);
+        });
+        return Object.keys(map).map(function(company){
+          return { company:company, stores:Object.keys(map[company]).map(function(store){return { name:store, city:"", resellers:map[company][store] };}) };
+        });
+      }
+      function render(){
+        var q = search.value.trim().toLowerCase();
+        var rows = data().map(function(company){
+          return Object.assign({}, company, { stores:company.stores.filter(function(store){
+            var haystack = [company.company, store.name, store.city].concat(store.resellers).join(" ").toLowerCase();
+            return !q || haystack.indexOf(q) >= 0;
+          }) });
+        }).filter(function(company){return company.stores.length;});
+        document.querySelector("[data-companies]").textContent = rows.length;
+        document.querySelector("[data-stores]").textContent = rows.reduce(function(sum,item){return sum + item.stores.length;},0);
+        document.querySelector("[data-resellers]").textContent = rows.reduce(function(sum,item){return sum + item.stores.reduce(function(total,store){return total + store.resellers.length;},0);},0);
+        if (!rows.length) {
+          list.innerHTML = '<div class="empty">По запросу ничего не найдено.</div>';
+          return;
+        }
+        list.innerHTML = rows.map(function(company){
+          var count = company.stores.reduce(function(sum,store){return sum + store.resellers.length;},0);
+          return '<article class="company"><div class="company-head"><div class="company-title"><div class="icon">К</div><div><strong>' + esc(company.company) + '</strong><small>' + company.stores.length + ' торговых точек</small></div></div><span class="badge">' + count + ' реселлеров</span></div><div class="stores">' + company.stores.map(function(store){return '<div class="store"><div><strong>' + esc(store.name) + '</strong><span>' + esc(store.city || "город не указан") + '</span></div><span>' + store.resellers.length + ' реселлеров</span><span>' + esc(store.resellers.join(", ")) + '</span></div>';}).join("") + '</div></article>';
+        }).join("");
+      }
+      search.addEventListener("input", render);
+      window.addEventListener("ts-academy-admin-accounts-change", render);
+      render();
+    })();
+  </script>
+</body>
+</html>

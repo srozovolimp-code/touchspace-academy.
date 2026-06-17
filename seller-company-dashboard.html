@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Кабинет компании | TouchSpace Академия</title>
+  <style>
+    :root{--blue:#0a84ff;--ink:#111827;--muted:#64748b;--line:#dfe7f3;--page:#eef4ff;--soft:#eef5ff;--green:#23a66f;--red:#d95656;--orange:#ff8a3d;--purple:#7257c6;--shadow-soft:0 14px 38px rgba(24,45,90,.08);--max:1500px}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f8fbff 0%,var(--page) 50%,#f6f9ff 100%);color:var(--ink);font-family:Inter,"SF Pro Display","Segoe UI",Arial,sans-serif}a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{cursor:pointer}.page{max-width:var(--max);margin:0 auto;padding:24px}.path{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;color:#6b7280;font-size:13px;font-weight:850}.path a{color:#177be8}.eyebrow{display:inline-flex;align-items:center;min-height:34px;margin-bottom:14px;padding:0 13px;border-radius:999px;background:var(--soft);color:#177be8;font-size:13px;font-weight:900}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 15px;border:0;border-radius:15px;background:var(--blue);color:#fff;font-weight:950;box-shadow:0 12px 28px rgba(10,132,255,.22)}.btn.secondary{border:1px solid var(--line);background:#fff;color:#177be8;box-shadow:none}.btn.ghost{border:1px solid var(--line);background:#f7faff;color:#344256;box-shadow:none}.btn.danger{border:1px solid rgba(217,86,86,.24);background:#fff5f5;color:#a43d3d;box-shadow:none}.btn.small{min-height:36px;padding:0 12px;border-radius:13px;font-size:13px}.company-hero,.panel,.invite-strip{border:1px solid rgba(255,255,255,.88);border-radius:30px;background:rgba(255,255,255,.84);box-shadow:var(--shadow-soft)}.company-hero{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:22px;align-items:end;margin-bottom:22px;padding:28px}.company-hero h1{max-width:900px;margin:0;font-size:clamp(40px,5vw,68px);line-height:.95;letter-spacing:-.055em}.company-hero p{max-width:820px;margin:12px 0 0;color:var(--muted);font-size:16px;line-height:1.55}.hero-actions,.chips,.student-meta,.student-kpis,.certificate-list,.test-list,.activity-list{display:flex;flex-wrap:wrap;gap:10px}.chip{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border-radius:999px;background:#f1f6ff;color:#36506f;font-size:12px;font-weight:900}.chip.green{background:#ecfbf5;color:#16865a}.chip.red{background:#fff1f1;color:#b54343}.chip.orange{background:#fff5e8;color:#9a5a00}.chip.purple{background:#f0ecff;color:#5b47b1}.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.stat{padding:16px;border:1px solid var(--line);border-radius:20px;background:#fff}.stat strong{display:block;font-size:30px;line-height:1;letter-spacing:-.045em}.stat span{display:block;margin-top:7px;color:var(--muted);font-size:12px;font-weight:850}.invite-strip{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;margin-bottom:18px;padding:16px}.invite-link{display:flex;align-items:center;min-height:48px;min-width:0;padding:0 14px;border:1px dashed #b8c9e2;border-radius:16px;background:#f8fbff;color:#3b526c;font-weight:850;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.layout{display:grid;grid-template-columns:360px minmax(0,1fr);gap:18px;align-items:start}.panel{padding:18px}.panel.sticky{position:sticky;top:22px}.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}.panel-head h2{margin:0;font-size:20px;line-height:1.1;letter-spacing:-.025em}.panel-head p{margin:5px 0 0;color:var(--muted);font-size:13px;line-height:1.35}.student-form{display:grid;gap:12px}.field{display:grid;gap:7px}.field label{color:#718095;font-size:12px;font-weight:950;letter-spacing:.07em;text-transform:uppercase}.input,.select{width:100%;border:1px solid var(--line);border-radius:16px;background:#fff;color:var(--ink);outline:0;padding:12px 13px}.input:focus,.select:focus{border-color:rgba(10,132,255,.5);box-shadow:0 0 0 4px rgba(10,132,255,.08)}.toolbar{display:grid;grid-template-columns:minmax(260px,1fr) auto;gap:12px;margin-bottom:14px}.student-list{display:grid;gap:12px}.student-card{display:grid;grid-template-columns:56px minmax(0,1fr) 160px;gap:14px;align-items:center;padding:16px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:0 10px 26px rgba(24,45,90,.05)}.avatar-local{display:grid;place-items:center;width:56px;height:56px;border-radius:19px;background:linear-gradient(135deg,#0a84ff,#32c48d);color:#fff;font-weight:950}.student-card h3{margin:0 0 6px;font-size:18px;line-height:1.15}.student-meta{color:var(--muted);font-size:13px;font-weight:800}.student-kpis{margin-top:10px}.progress{height:10px;margin-top:10px;border-radius:999px;background:#e8f0fb;overflow:hidden}.progress i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#0a84ff,#32c48d)}.student-score{text-align:right}.student-score strong{display:block;font-size:28px;line-height:1;letter-spacing:-.04em}.student-score span{display:block;margin-top:6px;color:var(--muted);font-size:12px;font-weight:850}.details{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.mini-card{padding:14px;border:1px solid var(--line);border-radius:20px;background:#fff}.mini-card h3{margin:0 0 12px;font-size:16px}.certificate,.test-row,.activity-row{display:grid;grid-template-columns:36px minmax(0,1fr);gap:10px;align-items:center;width:100%;padding:10px;border:1px solid #e7effb;border-radius:16px;background:#f8fbff}.certificate b,.test-row b,.activity-row b{display:block;font-size:13px}.certificate span,.test-row span,.activity-row span{display:block;margin-top:3px;color:var(--muted);font-size:12px;line-height:1.3}.mini-icon{display:grid;place-items:center;width:36px;height:36px;border-radius:13px;background:#eef5ff;color:#177be8;font-weight:950}.empty{display:none;padding:22px;border:1px dashed #cad8eb;border-radius:22px;background:#f8fbff;color:var(--muted);font-weight:850}.empty.is-visible{display:block}.toast{position:fixed;right:24px;bottom:24px;z-index:100;max-width:320px;padding:13px 15px;border-radius:18px;background:#172033;color:#fff;box-shadow:0 18px 44px rgba(23,32,51,.25);opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translateY(0)}@media(max-width:1120px){.company-hero,.layout,.details,.invite-strip,.toolbar{grid-template-columns:1fr}.panel.sticky{position:static}.student-card{grid-template-columns:56px minmax(0,1fr)}}@media(max-width:720px){.page{padding:14px}.stats{grid-template-columns:1fr}.student-card{grid-template-columns:1fr}.student-score{text-align:left}}
+  </style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Найти ученика, тест или сертификат"></header>
+
+        <section class="company-hero">
+          <div>
+            <nav class="path" aria-label="Хлебные крошки"><a href="index.html">Разделы</a><span>/</span><span>Кабинет компании</span></nav>
+            <span class="eyebrow">Seller Company Admin</span>
+            <h1>Кабинет компании-продавца</h1>
+            <p>ООО “Рога и Копыта” добавляет сотрудников на обучение, отправляет приглашения по ссылке и отслеживает прогресс каждого ученика: регулярность, пройденные и заваленные тесты, сертификаты и готовность к работе с брендами.</p>
+            <div class="hero-actions">
+              <button class="btn" type="button" data-copy-invite>Скопировать ссылку приглашения</button>
+              <a class="btn secondary" href="rating.html">Открыть рейтинг компании</a>
+            </div>
+          </div>
+          <aside class="stats" aria-label="Сводка компании">
+            <div class="stat"><strong data-stat="students">4</strong><span>ученика</span></div>
+            <div class="stat"><strong data-stat="avg">84%</strong><span>средний прогресс</span></div>
+            <div class="stat"><strong data-stat="certs">3</strong><span>сертификата</span></div>
+            <div class="stat"><strong data-stat="failed">2</strong><span>заваленных теста</span></div>
+          </aside>
+        </section>
+
+        <section class="invite-strip" aria-label="Приглашение">
+          <div>
+            <strong>Ссылка для приглашения сотрудников</strong>
+            <div class="invite-link" data-invite-link>https://academy.touchspace.ru/join/roga-kopyta-2026</div>
+          </div>
+          <button class="btn ghost" type="button" data-copy-invite>Скопировать</button>
+        </section>
+
+        <section class="layout">
+          <aside class="panel sticky">
+            <div class="panel-head">
+              <div>
+                <h2>Добавить ученика</h2>
+                <p>После добавления сотрудник получает приглашение и появляется в статистике компании.</p>
+              </div>
+            </div>
+            <form class="student-form" data-student-form>
+              <div class="field"><label for="student-name">ФИО</label><input class="input" id="student-name" name="name" required placeholder="Например, Павел Смирнов"></div>
+              <div class="field"><label for="student-role">Роль</label><select class="select" id="student-role" name="role"><option>Менеджер по продажам</option><option>Менеджер-стажёр</option><option>Супервайзер торгового зала</option><option>Руководитель отдела</option></select></div>
+              <div class="field"><label for="student-email">Email</label><input class="input" id="student-email" name="email" type="email" required placeholder="name@roga-kopyta.ru"></div>
+              <button class="btn" type="submit">Добавить и пригласить</button>
+            </form>
+          </aside>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Ученики компании</h2>
+                <p>Карточки показывают учебный статус каждого сотрудника.</p>
+              </div>
+              <span class="chip" data-count-label>4 ученика</span>
+            </div>
+            <div class="toolbar">
+              <input class="input" type="search" placeholder="Поиск по сотруднику или роли" data-search>
+              <select class="select" data-filter>
+                <option value="all">Все статусы</option>
+                <option value="active">Активно учится</option>
+                <option value="attention">Нужна пересдача</option>
+                <option value="certified">Есть сертификаты</option>
+              </select>
+            </div>
+            <div class="student-list" data-student-list></div>
+            <div class="empty" data-empty>По этому фильтру сотрудников не найдено.</div>
+
+            <div class="details">
+              <section class="mini-card">
+                <h3>Сертификаты</h3>
+                <div class="certificate-list" data-certs></div>
+              </section>
+              <section class="mini-card">
+                <h3>Тесты и регулярность</h3>
+                <div class="test-list" data-tests></div>
+              </section>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+  </div>
+  <div class="toast" data-toast></div>
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var STORAGE_KEY = "tsSellerCompanyStudents";
+      var filter = "all";
+      var query = "";
+      var defaultStudents = [
+        { id: "anna", name: "Анна Владимирова", role: "Менеджер по продажам", email: "anna@roga-kopyta.ru", progress: 96, points: 1840, regularity: "12 дней подряд", status: "active", passed: 6, failed: 0, certs: ["Pergo: философия и продажа", "Каталог TouchSpace"], tests: ["Pergo: 92% · пройден", "Calitex: 88% · пройден"] },
+        { id: "sergey", name: "Сергей Розов", role: "Менеджер по напольным покрытиям", email: "sergey@roga-kopyta.ru", progress: 88, points: 1710, regularity: "7 дней подряд", status: "active", passed: 5, failed: 1, certs: ["Каталог TouchSpace"], tests: ["Pergo: 76% · пройден", "Calitex: 58% · пересдача"] },
+        { id: "maria", name: "Мария Орлова", role: "Супервайзер торгового зала", email: "maria@roga-kopyta.ru", progress: 82, points: 1565, regularity: "5 дней подряд", status: "active", passed: 4, failed: 0, certs: [], tests: ["Каталог: 100% · пройден", "Продажи: 84% · пройден"] },
+        { id: "igor", name: "Игорь Семёнов", role: "Менеджер-стажёр", email: "igor@roga-kopyta.ru", progress: 68, points: 1190, regularity: "2 дня подряд", status: "attention", passed: 2, failed: 1, certs: [], tests: ["Pergo: 54% · завален", "Каталог: 81% · пройден"] }
+      ];
+      var students = load();
+      var list = document.querySelector("[data-student-list]");
+      var empty = document.querySelector("[data-empty]");
+      var toastEl = document.querySelector("[data-toast]");
+
+      function load(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"null")||defaultStudents}catch(e){return defaultStudents}}
+      function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(students))}
+      function initials(name){return name.split(/\s+/).filter(Boolean).slice(0,2).map(function(p){return p[0]}).join("").toUpperCase()}
+      function escapeHtml(value){return String(value||"").replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]})}
+      function toast(text){toastEl.textContent=text;toastEl.classList.add("show");setTimeout(function(){toastEl.classList.remove("show")},1600)}
+      function visible(s){var byFilter=filter==="all"||(filter==="attention"&&s.status==="attention")||(filter==="certified"&&s.certs.length)||(filter==="active"&&s.status==="active");var hay=(s.name+" "+s.role+" "+s.email).toLowerCase();return byFilter&&hay.indexOf(query.toLowerCase().trim())!==-1}
+      function plural(count){var last=count%10,lastTwo=count%100;if(last===1&&lastTwo!==11)return count+" ученик";if(last>=2&&last<=4&&(lastTwo<12||lastTwo>14))return count+" ученика";return count+" учеников"}
+      function renderStats(){
+        var avg=students.length?Math.round(students.reduce(function(sum,s){return sum+s.progress},0)/students.length):0;
+        document.querySelector('[data-stat="students"]').textContent=students.length;
+        document.querySelector('[data-stat="avg"]').textContent=avg+"%";
+        document.querySelector('[data-stat="certs"]').textContent=students.reduce(function(sum,s){return sum+s.certs.length},0);
+        document.querySelector('[data-stat="failed"]').textContent=students.reduce(function(sum,s){return sum+s.failed},0);
+        document.querySelector("[data-count-label]").textContent=plural(students.length);
+      }
+      function renderDetails(){
+        var certBox=document.querySelector("[data-certs]");
+        var testBox=document.querySelector("[data-tests]");
+        var certs=[], tests=[];
+        students.forEach(function(s){
+          s.certs.forEach(function(c){certs.push({name:s.name,text:c})});
+          tests.push({name:s.name,text:"Пройдено: "+s.passed+" · Завалено: "+s.failed+" · "+s.regularity});
+        });
+        certBox.innerHTML=(certs.length?certs:[{name:"Пока нет",text:"Сертификаты появятся после завершения курсов"}]).map(function(item){return '<div class="certificate"><div class="mini-icon">✓</div><div><b>'+escapeHtml(item.name)+'</b><span>'+escapeHtml(item.text)+'</span></div></div>'}).join("");
+        testBox.innerHTML=tests.map(function(item){return '<div class="test-row"><div class="mini-icon">T</div><div><b>'+escapeHtml(item.name)+'</b><span>'+escapeHtml(item.text)+'</span></div></div>'}).join("");
+      }
+      function render(){
+        var visibleStudents=students.filter(visible);
+        empty.classList.toggle("is-visible",visibleStudents.length===0);
+        list.innerHTML=visibleStudents.map(function(s){
+          return '<article class="student-card"><div class="avatar-local">'+initials(s.name)+'</div><div><h3>'+escapeHtml(s.name)+'</h3><div class="student-meta"><span>'+escapeHtml(s.role)+'</span><span>'+escapeHtml(s.email)+'</span></div><div class="student-kpis"><span class="chip '+(s.status==="attention"?"red":"green")+'">'+(s.status==="attention"?"нужна пересдача":"активно учится")+'</span><span class="chip">тесты: '+s.passed+'/'+(s.passed+s.failed)+'</span><span class="chip purple">'+escapeHtml(s.regularity)+'</span><span class="chip orange">сертификаты: '+s.certs.length+'</span></div><div class="progress"><i style="width:'+s.progress+'%"></i></div></div><div class="student-score"><strong>'+s.points+'</strong><span>'+s.progress+'% курса</span></div></article>';
+        }).join("");
+        renderStats();renderDetails();
+      }
+      document.querySelector("[data-student-form]").addEventListener("submit",function(event){
+        event.preventDefault();
+        var form=event.currentTarget;
+        students.push({id:"s"+Date.now(),name:form.name.value.trim(),role:form.role.value,email:form.email.value.trim(),progress:0,points:0,regularity:"приглашение отправлено",status:"active",passed:0,failed:0,certs:[],tests:["Ожидает первого входа"]});
+        save();form.reset();render();toast("Ученик добавлен, приглашение отправлено");
+      });
+      document.querySelector("[data-search]").addEventListener("input",function(e){query=e.target.value;render()});
+      document.querySelector("[data-filter]").addEventListener("change",function(e){filter=e.target.value;render()});
+      document.querySelectorAll("[data-copy-invite]").forEach(function(button){button.addEventListener("click",function(){var link=document.querySelector("[data-invite-link]").textContent;navigator.clipboard&&navigator.clipboard.writeText(link);toast("Ссылка приглашения скопирована")})});
+      render();
+    })();
+  </script>
+</body>
+</html>

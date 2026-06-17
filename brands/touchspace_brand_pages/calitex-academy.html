@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Академия Calitex | TouchSpace Академия</title>
+  <link rel="stylesheet" href="../../shared-header.css">
+  <link rel="stylesheet" href="../../mobile-responsive.css">
+  <link rel="stylesheet" href="calitex-academy.css">
+</head>
+<body data-calitex-academy>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Поиск по Академии Calitex"></header>
+        <div class="topline">
+          <nav class="breadcrumb" aria-label="Хлебные крошки"><a href="../../brands.html">Бренды</a><span>/</span><span>Академия Calitex</span></nav>
+          <a class="back-link" href="../../brands.html">Назад к каталогу брендов</a>
+        </div>
+
+        <section class="academy-hero">
+          <div>
+            <span class="eyebrow">Академия бренда</span>
+            <h1>Академия Calitex</h1>
+            <p>Выберите курс бренда. Каждый курс открывается отдельной страницей, содержит уроки, прогресс, среднее время прохождения и короткий тест. Итоговое тестирование откроется после прохождения трёх курсов.</p>
+            <div class="academy-actions">
+              <button class="brand-hero-favorite academy-favorite" type="button" aria-label="Добавить Академию Calitex в избранное" aria-pressed="false" data-favorite-toggle data-favorite-id="academy-calitex" data-favorite-title="Академия Calitex" data-favorite-type="Академия бренда" data-favorite-url="brands/touchspace_brand_pages/calitex-academy.html" data-favorite-description="Курсы и итоговое тестирование по бренду Calitex."><img class="favorite-icon" src="../../icons/favorites.svg" alt="" aria-hidden="true"></button>
+              <button class="academy-plan-btn" type="button" data-plan-academy="calitex" data-plan-id="academy-calitex" data-plan-title="Академия Calitex" aria-label="Запланировать Академию Calitex" aria-pressed="false"><img class="calendar-icon" src="../../icons/calendar.svg" alt="" aria-hidden="true"></button>
+            </div>
+          </div>
+          <aside class="brand-box">
+            <div class="brand-logo"><img src="images/brand-logos/calitex.svg" alt="Calitex"></div>
+            <strong>Calitex</strong>
+            <span>Кварц-виниловый ламинат, коллекции Diamonds, Elementals, Originals и Stones.</span>
+          </aside>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><h2>Курсы бренда</h2><p>Карточки используют логику каталога курсов: статус, прогресс, сложность и среднее время.</p></div>
+            <span class="course-count" data-academy-progress>0 из 3 завершено</span>
+          </div>
+          <div class="course-grid" data-academy-grid></div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><h2>Тестирование</h2><p>Финальный раздел Академии Calitex доступен только после трёх курсов.</p></div>
+          </div>
+          <div class="course-grid course-grid--single" data-final-grid></div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="../../shared-header.js"></script>
+  <script src="../../lesson-scheduler.js"></script>
+  <script src="calitex-academy.js"></script>
+</body>
+</html>

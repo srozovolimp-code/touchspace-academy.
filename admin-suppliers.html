@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Администрирование поставщиков | TouchSpace Академия</title>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+  <style>
+    :root { --blue:#0a84ff; --ink:#111827; --muted:#66758a; --line:#dfe6f2; --page:#eef4ff; --green:#23c483; --orange:#ff8a3d; --shadow:0 14px 38px rgba(24,45,90,.08); --max:1500px; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:linear-gradient(180deg,#f8fbff 0%,var(--page) 56%,#f6f9ff 100%); font-family:Inter,"SF Pro Display","Segoe UI",Arial,sans-serif; }
+    a { color:inherit; text-decoration:none; }
+    button,input,select { font:inherit; }
+    .page { max-width:var(--max); margin:0 auto; padding:24px; }
+    .shell { display:grid; grid-template-columns:76px minmax(0,1fr); gap:24px; }
+    .main { min-width:0; }
+    .hero,.panel,.toolbar,.card { border:1px solid rgba(255,255,255,.88); border-radius:28px; background:rgba(255,255,255,.86); box-shadow:var(--shadow); }
+    .hero { display:flex; justify-content:space-between; gap:20px; align-items:flex-end; margin-bottom:16px; padding:28px; }
+    .eyebrow { display:inline-flex; min-height:32px; align-items:center; width:fit-content; margin-bottom:12px; padding:0 12px; border-radius:999px; background:#eef5ff; color:#177be8; font-size:12px; font-weight:900; }
+    h1 { margin:0; font-size:clamp(34px,4vw,56px); line-height:.98; letter-spacing:-.05em; }
+    h2 { margin:0; font-size:24px; letter-spacing:-.035em; }
+    .hero p,.panel p { margin:9px 0 0; color:var(--muted); font-size:14px; line-height:1.5; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; min-height:42px; border-radius:15px; padding:0 15px; background:var(--blue); color:#fff; font-weight:950; box-shadow:0 12px 28px rgba(10,132,255,.2); }
+    .btn.secondary { border:1px solid var(--line); background:#fff; color:#177be8; box-shadow:none; }
+    .toolbar { display:grid; grid-template-columns:minmax(220px,1fr) 210px; gap:12px; margin-bottom:16px; padding:14px; }
+    .input,.select { width:100%; min-height:44px; border:1px solid var(--line); border-radius:15px; background:#fff; padding:0 13px; color:var(--ink); outline:none; }
+    .summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-bottom:16px; }
+    .metric { padding:16px; border:1px solid var(--line); border-radius:22px; background:#fff; }
+    .metric strong { display:block; font-size:28px; letter-spacing:-.04em; }
+    .metric span { display:block; margin-top:6px; color:var(--muted); font-size:12px; font-weight:850; }
+    .panel { padding:20px; }
+    .cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:14px; }
+    .card { display:grid; gap:14px; padding:16px; border-color:var(--line); background:#fff; }
+    .top { display:flex; gap:12px; align-items:center; }
+    .avatar { display:grid; place-items:center; flex:0 0 46px; width:46px; height:46px; border-radius:16px; background:linear-gradient(135deg,#7257c6,#d95a9b); color:#fff; font-weight:950; }
+    .top strong { display:block; font-size:16px; }
+    .top small { display:block; margin-top:4px; color:var(--muted); font-size:12px; font-weight:750; }
+    .brands { display:flex; flex-wrap:wrap; gap:7px; }
+    .pill { display:inline-flex; align-items:center; min-height:28px; padding:0 10px; border-radius:999px; background:#edf7ff; color:#177be8; font-size:12px; font-weight:900; }
+    .moderation { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .mini { padding:10px; border-radius:15px; background:#f7faff; color:var(--muted); font-size:12px; font-weight:850; }
+    .mini b { display:block; color:var(--ink); font-size:18px; }
+    .empty { padding:22px; border:1px dashed rgba(23,32,51,.18); border-radius:20px; color:var(--muted); text-align:center; }
+    @media(max-width:1050px){.hero{display:grid}.toolbar,.summary,.cards{grid-template-columns:1fr}}
+    @media(max-width:760px){.page{padding:14px}.shell{grid-template-columns:1fr}.hero{padding:22px;border-radius:24px}h1{font-size:36px}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Поиск поставщиков"></header>
+        <section class="hero">
+          <div>
+            <span class="eyebrow">Администратор платформы</span>
+            <h1>Администрирование поставщиков</h1>
+            <p>Служебный список поставщиков, их брендов и объектов на модерации. Это отдельная админ-страница, а не кабинет конкретного поставщика.</p>
+          </div>
+          <a class="btn" href="admin-dashboard.html">Добавить поставщика</a>
+        </section>
+        <section class="summary">
+          <div class="metric"><strong data-total>0</strong><span>поставщиков</span></div>
+          <div class="metric"><strong data-brands>0</strong><span>брендов в управлении</span></div>
+          <div class="metric"><strong data-moderation>0</strong><span>заявок на модерации</span></div>
+        </section>
+        <section class="toolbar">
+          <input class="input" data-search placeholder="Найти поставщика или бренд">
+          <select class="select" data-status><option value="">Все статусы</option><option value="active">Активен</option><option value="review">На модерации</option></select>
+        </section>
+        <section class="panel">
+          <h2>Реестр поставщиков</h2>
+          <p>Отсюда администратор контролирует доступ, состав брендов и поток материалов на проверку.</p>
+          <div class="cards" data-list></div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var fallback = [
+        { name:"Оксана Розова", email:"supplier@example.ru", brands:"Pergo, Calitex, Coswick", status:"active", review:5 },
+        { name:"Lab Arte Academy", email:"labarte@example.ru", brands:"Lab Arte", status:"review", review:2 }
+      ];
+      var list = document.querySelector("[data-list]");
+      var search = document.querySelector("[data-search]");
+      var status = document.querySelector("[data-status]");
+      function esc(value){return String(value || "").replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+      function rows(){
+        var api = window.TouchSpaceAcademy || {};
+        var managed = api.getManagedUsers ? api.getManagedUsers().filter(function(user){return user.type === "supplier";}) : [];
+        return (managed.length ? managed : fallback).map(function(user,index){
+          return { name:user.name, email:user.email || "email не указан", brands:user.brands || fallback[index % fallback.length].brands, status:user.status || (index === 1 ? "review" : "active"), review:user.review || (index + 1) };
+        });
+      }
+      function render(){
+        var all = rows();
+        var q = search.value.trim().toLowerCase();
+        var st = status.value;
+        var filtered = all.filter(function(row){
+          return (!q || [row.name,row.email,row.brands].join(" ").toLowerCase().indexOf(q) >= 0) && (!st || row.status === st);
+        });
+        document.querySelector("[data-total]").textContent = all.length;
+        document.querySelector("[data-brands]").textContent = all.reduce(function(sum,row){return sum + row.brands.split(",").filter(Boolean).length;},0);
+        document.querySelector("[data-moderation]").textContent = all.reduce(function(sum,row){return sum + Number(row.review || 0);},0);
+        if (!filtered.length) {
+          list.innerHTML = '<div class="empty">Поставщики не найдены.</div>';
+          return;
+        }
+        list.innerHTML = filtered.map(function(row){
+          var initials = row.name.split(/\s+/).map(function(part){return part.charAt(0);}).join("").slice(0,2).toUpperCase();
+          var brands = row.brands.split(",").map(function(item){return item.trim();}).filter(Boolean);
+          return '<article class="card"><div class="top"><div class="avatar">' + esc(initials) + '</div><div><strong>' + esc(row.name) + '</strong><small>' + esc(row.email) + '</small></div></div><div class="brands">' + brands.map(function(brand){return '<span class="pill">' + esc(brand) + '</span>';}).join("") + '</div><div class="moderation"><div class="mini"><b>' + brands.length + '</b>брендов</div><div class="mini"><b>' + esc(row.review) + '</b>на проверке</div><div class="mini"><b>' + (row.status === "active" ? "да" : "нет") + '</b>доступ</div></div></article>';
+        }).join("");
+      }
+      [search,status].forEach(function(node){node.addEventListener("input",render);node.addEventListener("change",render);});
+      window.addEventListener("ts-academy-admin-accounts-change", render);
+      render();
+    })();
+  </script>
+</body>
+</html>

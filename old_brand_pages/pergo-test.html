@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Тест Pergo | TouchSpace Академия</title>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+  <style>
+    :root {
+      --bg: #eef4ff;
+      --bg2: #f7f9ff;
+      --card: rgba(255, 255, 255, 0.84);
+      --text: #172033;
+      --muted: #69758c;
+      --blue: #0a84ff;
+      --blue2: #5f93ff;
+      --green: #35a777;
+      --red: #d95656;
+      --amber: #f0a735;
+      --line: rgba(23, 32, 51, 0.09);
+      --shadow: 0 24px 70px rgba(36, 72, 130, 0.12);
+      --shadow2: 0 16px 42px rgba(36, 72, 130, 0.10);
+      --side: 76px;
+      --max: 1500px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: radial-gradient(circle at 22% 3%, #dbeaff 0, transparent 30%), linear-gradient(135deg, var(--bg), var(--bg2));
+      color: var(--text);
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .page { max-width: var(--max); margin: 0 auto; padding: 24px; }
+    .shell { display: grid; grid-template-columns: var(--side) minmax(0, 1fr); gap: 24px; }
+    .sidebar { position: sticky; top: 24px; height: calc(100vh - 48px); border: 1px solid var(--line); background: rgba(255,255,255,.72); backdrop-filter: blur(18px); border-radius: 32px; box-shadow: var(--shadow2); padding: 18px 10px; }
+    .main { min-width: 0; }
+    .header { display: grid; grid-template-columns: 260px minmax(260px, 1fr) auto; gap: 18px; align-items: center; margin-bottom: 22px; }
+
+    .lesson-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding: 16px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow2);
+    }
+
+    .breadcrumb { display: flex; flex-wrap: wrap; gap: 8px; color: #65758b; font-size: 13px; font-weight: 850; }
+    .breadcrumb a { color: var(--blue); }
+    .back-link { min-height: 38px; padding: 10px 13px; border-radius: 999px; background: #edf4ff; color: #36506f; font-size: 13px; font-weight: 900; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .test-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 22px;
+      align-items: stretch;
+      padding: 30px;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: .96;
+      letter-spacing: -.055em;
+    }
+
+    h2, h3 { margin: 0; }
+    p { margin: 0; color: var(--muted); line-height: 1.55; }
+
+    .hero-panel {
+      display: grid;
+      gap: 13px;
+      align-content: end;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: #fff;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .stat {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: var(--shadow2);
+    }
+
+    .stat b { display: block; font-size: 30px; line-height: 1; letter-spacing: -.05em; }
+    .stat span { display: block; margin-top: 8px; color: var(--muted); font-size: 12px; font-weight: 850; }
+
+    .test-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      padding: 18px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.70);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow2);
+      backdrop-filter: blur(16px);
+    }
+
+    .panel.sticky { position: sticky; top: 24px; }
+    .panel-head { margin-bottom: 14px; }
+    .panel-head h2 { font-size: 18px; letter-spacing: -.03em; }
+    .panel-head p { margin-top: 5px; font-size: 13px; line-height: 1.35; }
+
+    .test-form { display: grid; gap: 12px; }
+
+    .question-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: #fff;
+      box-shadow: 0 10px 26px rgba(36, 72, 130, 0.06);
+    }
+
+    .question-card.is-correct { border-color: rgba(53, 167, 119, .42); background: #f2fbf7; }
+    .question-card.is-wrong { border-color: rgba(217, 86, 86, .32); background: #fff5f5; }
+
+    .question-top {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+    }
+
+    .question-num {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background: #edf5ff;
+      color: var(--blue);
+      font-weight: 950;
+    }
+
+    .question-card h3 {
+      font-size: 20px;
+      line-height: 1.18;
+      letter-spacing: -.03em;
+    }
+
+    .answers {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .answer-option {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      color: #4f5d72;
+      font-size: 14px;
+      font-weight: 750;
+      line-height: 1.35;
+    }
+
+    .answer-option input { margin-top: 2px; }
+    .answer-option.correct { border-color: rgba(53, 167, 119, .42); background: #f2fbf7; color: #20865b; }
+    .answer-option.wrong { border-color: rgba(217, 86, 86, .32); background: #fff5f5; color: #b84848; }
+
+    .hint {
+      display: none;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 16px;
+      background: #fff;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1.4;
+    }
+
+    .question-card.is-correct .hint,
+    .question-card.is-wrong .hint { display: block; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 44px;
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 17px;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 850;
+      box-shadow: 0 14px 28px rgba(10, 132, 255, .22);
+    }
+
+    .btn.secondary { background: #fff; color: var(--text); border: 1px solid var(--line); box-shadow: var(--shadow2); }
+    .btn.ghost { background: rgba(255, 255, 255, .56); color: #4f5d72; border: 1px solid var(--line); box-shadow: none; }
+
+    .result {
+      display: none;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 24px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .result.show { display: grid; }
+    .result-score { color: var(--blue); font-size: 34px; font-weight: 950; line-height: 1; letter-spacing: -.05em; }
+    .mini-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+    .mini-list li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 10px; align-items: center; min-height: 44px; padding: 9px; border-radius: 18px; background: #fff; color: #4f5d72; font-size: 13px; font-weight: 850; }
+    .mini-list b { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 13px; background: #edf5ff; color: var(--blue); }
+
+    @media (max-width: 1120px) {
+      .header,
+      .test-hero,
+      .test-layout { grid-template-columns: 1fr; }
+      .panel.sticky { position: static; }
+    }
+
+    @media (max-width: 760px) {
+      .page { padding: 14px; }
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; min-height: 0; border-radius: 24px; }
+      .stat-grid { grid-template-columns: 1fr; }
+      .test-hero { padding: 22px; }
+      h1 { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Поиск по тесту Pergo"></header>
+
+        <div class="lesson-top">
+          <nav class="breadcrumb"><a href="courses.html">Курсы</a><span>/</span><a href="course-pergo.html">Pergo: философия и продажа</a><span>/</span><span>Тест</span></nav>
+          <a class="back-link" href="pergo-brand.html">Вернуться к уроку</a>
+        </div>
+
+        <section class="test-hero card">
+          <div>
+            <p class="eyebrow">question_single / Pergo</p>
+            <h1>Проверка знаний по бренду Pergo</h1>
+            <p>7 вопросов по философии, технологиям TitanX и AquaSafe, позиционированию и продажной логике бренда. Проходной результат - 70%.</p>
+          </div>
+          <aside class="hero-panel">
+            <h2>Результат попадёт в кабинет реселлера</h2>
+            <p>После проверки обновится прогресс курса, история тестов, достижение Pergo и доступность сертификата.</p>
+          </aside>
+        </section>
+
+        <section class="stat-grid" aria-label="Параметры теста">
+          <article class="stat"><b>7</b><span>вопросов</span></article>
+          <article class="stat"><b>70%</b><span>проходной результат</span></article>
+          <article class="stat"><b data-test-current-score>0</b><span>правильных сейчас</span></article>
+        </section>
+
+        <section class="test-layout">
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Вопросы теста</h2>
+              <p>Выберите один вариант в каждом блоке. После проверки карточки получат состояния correct/wrong из библиотеки.</p>
+            </div>
+            <form class="test-form" id="testForm"></form>
+            <div class="actions">
+              <button class="btn" type="button" id="checkBtn">Проверить тест</button>
+              <button class="btn ghost" type="button" id="resetBtn">Сбросить</button>
+              <a class="btn secondary" href="student-dashboard.html">Кабинет реселлера</a>
+            </div>
+            <section class="result" id="resultCard">
+              <div class="result-score" id="resultScore">0 из 7</div>
+              <p id="resultText"></p>
+            </section>
+          </div>
+
+          <aside class="panel sticky">
+            <div class="panel-head">
+              <h2>Что проверяем</h2>
+              <p>Тест собран из стандартных учебных блоков: single choice, итоговая карточка результата и запись в кабинет.</p>
+            </div>
+            <ul class="mini-list">
+              <li><b>1</b><span>Философия бренда и реальная жизнь клиента</span></li>
+              <li><b>2</b><span>TitanX, AquaSafe и польза технологий</span></li>
+              <li><b>3</b><span>Продажа через сценарий и спокойствие</span></li>
+              <li><b>4</b><span>Честное позиционирование Pergo</span></li>
+            </ul>
+          </aside>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var questions = [
+        { q: "Что означает философия Pergo «полы для реальной жизни»?", a: "c", hint: "Смысл - в спокойствии и нормальной жизни, а не в бережном режиме.", options: { a: "Пол нужен только для красивой фотографии.", b: "Главное - максимально гламурный эффект.", c: "Пол должен выдерживать повседневную жизнь и не требовать особого отношения.", d: "Покрытие нужно постоянно беречь." } },
+        { q: "Какая технология Pergo отвечает за снижение риска царапин и бытового износа?", a: "b", hint: "TitanX отвечает за сохранённую эстетику и меньше микроцарапин.", options: { a: "Uniclic", b: "TitanX", c: "AquaSafe", d: "Sensation" } },
+        { q: "Почему AquaSafe - это инженерия, а не просто маркетинг?", a: "a", hint: "Ключевое - стык, замок, герметичность и защита кромок.", options: { a: "Это системное решение: обработка, геометрия замка, герметичность соединения и защита кромок.", b: "Потому что на коробке написано «водостойкий».", c: "Потому что это более яркий дизайн декора.", d: "Потому что Pergo всегда дороже." } },
+        { q: "Какой посыл наиболее сильный в продаже AquaSafe?", a: "d", hint: "Продаём состояние и спокойствие, а не цифры.", options: { a: "Он выдерживает 24/72 часа воды.", b: "У него хорошие лабораторные показатели.", c: "Его чаще берут, потому что бренд известный.", d: "Вы не бежите за тряпкой в панике: есть время спокойно убрать, а пол остаётся в порядке." } },
+        { q: "Какая главная ошибка менеджера при продаже Pergo?", a: "b", hint: "Как только пошли оправдания, позиционирование ослабло.", options: { a: "Сначала выяснить сценарий жизни клиента.", b: "Оправдывать цену и сравнивать Pergo с бюджетом.", c: "Говорить про спокойствие на годы.", d: "Показывать, как Pergo закрывает страхи клиента." } },
+        { q: "Какая формула продажи Pergo правильная?", a: "a", hint: "Это путь от сценария к ценности.", options: { a: "Выяснить сценарий жизни - усилить страх - показать, как Pergo его закрывает - зафиксировать ценность.", b: "Сначала назвать цену - потом перечислить характеристики.", c: "Сказать «бренд хороший» - показать скидку.", d: "Сразу сравнить конкурентов и доказать, что они хуже." } },
+        { q: "Когда честно стоит сказать «возможно, вам не нужен Pergo»?", a: "c", hint: "Pergo раскрывается, когда делают для себя и надолго.", options: { a: "Когда клиент выбирает дизайн и хочет спокойно и надолго.", b: "Когда клиент боится воды и хочет безопасную кухню.", c: "Когда ремонт временный, квартира сдаётся на 1-2 года или нужен минимальный бюджет.", d: "Когда клиент спрашивает про технологии и сценарий укладки." } }
+      ];
+
+      var form = document.getElementById("testForm");
+      var currentScore = document.querySelector("[data-test-current-score]");
+
+      function render() {
+        form.innerHTML = questions.map(function (item, index) {
+          return '<article class="question-card" data-index="' + index + '">' +
+            '<div class="question-top"><div class="question-num">' + (index + 1) + '</div><h3>' + item.q + '</h3></div>' +
+            '<div class="answers">' + Object.keys(item.options).map(function (key) {
+              return '<label class="answer-option" data-option="' + key + '"><input type="radio" name="q' + index + '" value="' + key + '"><span>' + item.options[key] + '</span></label>';
+            }).join("") + '</div>' +
+            '<div class="hint">' + item.hint + '</div>' +
+          '</article>';
+        }).join("");
+      }
+
+      function clearStates() {
+        form.querySelectorAll(".question-card").forEach(function (card) {
+          card.classList.remove("is-correct", "is-wrong");
+          card.querySelectorAll(".answer-option").forEach(function (option) {
+            option.classList.remove("correct", "wrong");
+          });
+        });
+      }
+
+      document.getElementById("checkBtn").onclick = function () {
+        var correct = 0;
+        clearStates();
+        questions.forEach(function (item, index) {
+          var card = form.querySelector('[data-index="' + index + '"]');
+          var selected = form.querySelector('input[name="q' + index + '"]:checked');
+          var correctOption = card.querySelector('[data-option="' + item.a + '"]');
+          if (correctOption) correctOption.classList.add("correct");
+
+          if (selected && selected.value === item.a) {
+            correct += 1;
+            card.classList.add("is-correct");
+          } else {
+            card.classList.add("is-wrong");
+            if (selected) selected.closest(".answer-option").classList.add("wrong");
+          }
+        });
+
+        var percent = Math.round(correct / questions.length * 100);
+        var xpResult = null;
+        if (window.TouchSpaceAcademy && window.TouchSpaceAcademy.completeTest) {
+          xpResult = window.TouchSpaceAcademy.completeTest({ id: "pergo-brand-test", brand: "pergo", courseId: "pergo", course: "Pergo", title: "Тест по бренду Pergo", score: correct, total: questions.length, passPercent: 70, isFinal: true });
+        }
+        currentScore.textContent = correct;
+        document.getElementById("resultScore").textContent = correct + " из " + questions.length + " - " + percent + "%";
+        document.getElementById("resultText").textContent = (percent >= 70 ? "Тест пройден. " : "Тест не пройден. ") + "Начислено " + (xpResult ? xpResult.xpAwarded : 0) + " XP · попытка " + (xpResult ? xpResult.attempt : 1) + " · множитель " + (xpResult ? xpResult.multiplier : 1) + ". Результат сохранён в кабинете реселлера.";
+        document.getElementById("resultCard").classList.add("show");
+        document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "center" });
+      };
+
+      document.getElementById("resetBtn").onclick = function () {
+        form.reset();
+        clearStates();
+        currentScore.textContent = "0";
+        document.getElementById("resultCard").classList.remove("show");
+      };
+
+      render();
+    })();
+  </script>
+</body>
+</html>

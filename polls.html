@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Опросы | TouchSpace Академия</title>
+  <style>
+    :root {
+      --blue: #0a84ff;
+      --ink: #111827;
+      --muted: #64748b;
+      --line: #dfe7f3;
+      --page: #eef4ff;
+      --card: #fff;
+      --soft: #eef5ff;
+      --green: #23c483;
+      --orange: #ff8a3d;
+      --pink: #d95a9b;
+      --purple: #7257c6;
+      --shadow-soft: 0 14px 38px rgba(24, 45, 90, .08);
+      --max: 1500px;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(180deg, #f8fbff 0%, var(--page) 50%, #f6f9ff 100%); color: var(--ink); font-family: Inter, "SF Pro Display", "Segoe UI", Arial, sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+
+    .page { max-width: var(--max); margin: 0 auto; padding: 24px; }
+    .shell { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 24px; }
+    .sidebar { position: sticky; top: 22px; z-index: 60; height: calc(100vh - 44px); min-height: 520px; padding: 18px 10px; border: 1px solid rgba(255,255,255,.8); border-radius: 26px; background: rgba(255,255,255,.78); box-shadow: var(--shadow-soft); backdrop-filter: blur(18px); }
+    .nav { display: grid; gap: 10px; }
+    .main { min-width: 0; }
+    .header { display: grid; grid-template-columns: 260px minmax(260px, 1fr) auto; gap: 18px; align-items: center; margin-bottom: 22px; }
+    .wordmark { font-size: 28px; font-weight: 950; line-height: .82; letter-spacing: -.065em; }
+    .wordmark span { display: block; }
+    .wordmark span:last-child { padding-left: 74px; }
+    .search { display: flex; align-items: center; gap: 12px; height: 62px; padding: 0 22px; border: 1px solid rgba(255,255,255,.9); border-radius: 22px; background: rgba(255,255,255,.86); box-shadow: var(--shadow-soft); color: #9aa4b2; }
+    .search input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 16px; }
+
+    .poll-hero,
+    .toolbar,
+    .poll-panel,
+    .category-panel {
+      border: 1px solid rgba(255,255,255,.88);
+      border-radius: 30px;
+      background: rgba(255,255,255,.84);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .poll-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 22px;
+      align-items: end;
+      margin-bottom: 22px;
+      padding: 28px;
+    }
+
+    .path { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; color: #6b7280; font-size: 13px; font-weight: 850; }
+    .path a { color: #177be8; }
+    .eyebrow { display: inline-flex; align-items: center; width: fit-content; min-height: 34px; margin-bottom: 14px; padding: 0 13px; border-radius: 999px; background: var(--soft); color: #177be8; font-size: 13px; font-weight: 900; }
+    .poll-hero h1 { margin: 0; font-size: clamp(38px, 4.5vw, 60px); line-height: .96; letter-spacing: -.055em; }
+    .poll-hero p { max-width: 790px; margin: 12px 0 0; color: var(--muted); font-size: 16px; line-height: 1.55; }
+
+    .poll-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .stat { min-height: 92px; padding: 16px; border: 1px solid var(--line); border-radius: 20px; background: #fff; }
+    .stat strong { display: block; font-size: 28px; line-height: 1; letter-spacing: -.04em; }
+    .stat span { display: block; margin-top: 7px; color: var(--muted); font-size: 12px; font-weight: 850; line-height: 1.25; }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 14px;
+      border-radius: 24px;
+    }
+
+    .poll-search {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 50px;
+      padding: 0 15px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: #f7faff;
+      color: #8a97aa;
+    }
+
+    .poll-search svg,
+    .start-btn svg,
+    .submit-btn svg {
+      width: 19px;
+      height: 19px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex: 0 0 auto;
+    }
+
+    .poll-search input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .status-select {
+      min-height: 50px;
+      padding: 0 40px 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: #fff;
+      color: #344256;
+      font-weight: 850;
+    }
+
+    .poll-layout {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .category-panel {
+      position: sticky;
+      top: 22px;
+      padding: 16px;
+    }
+
+    .category-panel h2,
+    .poll-panel h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.1;
+      letter-spacing: -.025em;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .muted { color: var(--muted); font-size: 13px; font-weight: 800; }
+    .category-list { display: grid; gap: 8px; }
+
+    .category-btn {
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      width: 100%;
+      min-height: 58px;
+      padding: 8px;
+      border: 1px solid transparent;
+      border-radius: 18px;
+      background: transparent;
+      color: var(--ink);
+      text-align: left;
+    }
+
+    .category-btn:hover,
+    .category-btn.is-active {
+      border-color: #d9e5f5;
+      background: #f7faff;
+    }
+
+    .category-icon {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background: var(--category-color);
+      color: #fff;
+      font-weight: 950;
+    }
+
+    .category-btn strong { display: block; font-size: 13px; line-height: 1.15; }
+    .category-btn span span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; font-weight: 750; }
+    .category-count { color: #77859a; font-size: 12px; font-weight: 950; }
+
+    .poll-panel {
+      min-height: 560px;
+      padding: 18px;
+    }
+
+    .poll-list { display: grid; gap: 12px; }
+
+    .poll-card {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      min-height: 138px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: #fff;
+      box-shadow: 0 10px 26px rgba(24,45,90,.05);
+    }
+
+    .poll-icon {
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: var(--poll-color);
+      color: #fff;
+      font-weight: 950;
+    }
+
+    .poll-title {
+      margin: 0 0 6px;
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 950;
+    }
+
+    .poll-description {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 9px 0 0;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: #f1f6ff;
+      color: #36506f;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .pill--open { background: #eefaf5; color: #127452; }
+    .pill--done { background: #f0ecff; color: #5b47b1; }
+    .pill--soon { background: #fff4e8; color: #9a5a00; }
+
+    .start-btn,
+    .submit-btn,
+    .secondary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid rgba(10,132,255,.24);
+      border-radius: 14px;
+      background: #fff;
+      color: #177be8;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .start-btn:hover,
+    .submit-btn:hover,
+    .secondary-btn:hover {
+      background: #eef5ff;
+    }
+
+    .submit-btn {
+      border: 0;
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .submit-btn:hover { background: #177be8; }
+
+    .empty {
+      display: none;
+      padding: 38px 18px;
+      border: 1px dashed #c7d6ea;
+      border-radius: 22px;
+      background: #f8fbff;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 850;
+    }
+
+    .survey-form {
+      display: none;
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: #f8fbff;
+    }
+
+    .survey-form.is-open { display: block; }
+    .survey-form h3 { margin: 0 0 6px; font-size: 22px; line-height: 1.15; letter-spacing: -.025em; }
+    .survey-form p { margin: 0; color: var(--muted); line-height: 1.45; }
+    .question-list { display: grid; gap: 12px; margin: 16px 0; }
+    .question { padding: 14px; border: 1px solid var(--line); border-radius: 18px; background: #fff; }
+    .question strong { display: block; margin-bottom: 10px; font-size: 14px; line-height: 1.3; }
+    .options { display: grid; gap: 8px; }
+    .option { display: flex; gap: 9px; align-items: flex-start; color: #344256; font-size: 14px; line-height: 1.35; }
+    .option input { margin-top: 2px; }
+    .question textarea { width: 100%; min-height: 92px; resize: vertical; border: 1px solid var(--line); border-radius: 14px; padding: 12px; outline: none; }
+    .form-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .thanks { display: none; margin-top: 14px; padding: 14px; border-radius: 18px; background: #eefaf5; color: #127452; font-weight: 850; }
+    .thanks.is-visible { display: block; }
+
+    @media (max-width: 1080px) {
+      .poll-hero,
+      .poll-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .category-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page { padding: 14px; }
+      .shell,
+      .header,
+      .toolbar,
+      .poll-stats {
+        grid-template-columns: 1fr;
+      }
+      .sidebar { position: static; height: auto; min-height: 0; padding: 10px; }
+      .nav { grid-template-columns: repeat(6, minmax(48px, 1fr)); }
+      .nav__item { width: 100%; }
+      .poll-card {
+        grid-template-columns: 48px minmax(0, 1fr);
+      }
+      .poll-icon {
+        width: 48px;
+        height: 48px;
+      }
+      .start-btn {
+        grid-column: 2;
+        width: fit-content;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Найти опрос или тему"></header>
+
+        <section class="poll-hero">
+          <div>
+            <nav class="path" aria-label="Хлебные крошки">
+              <a href="index.html">Разделы</a><span>/</span><span>Опросы</span>
+            </nav>
+            <span class="eyebrow">Обратная связь и исследования</span>
+            <h1>Опросы</h1>
+            <p>Здесь собраны короткие анкеты по платформе, обучению, продажам и рынку напольных покрытий. Ответы помогают улучшать Академию и принимать бизнес-решения.</p>
+          </div>
+          <aside class="poll-stats" aria-label="Сводка опросов">
+            <div class="stat"><strong data-poll-total>0</strong><span>опросов</span></div>
+            <div class="stat"><strong data-open-total>0</strong><span>доступно сейчас</span></div>
+            <div class="stat"><strong data-complete-total>0</strong><span>пройдено</span></div>
+          </aside>
+        </section>
+
+        <section class="toolbar" aria-label="Поиск и фильтры">
+          <label class="poll-search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="poll-search" type="search" placeholder="Поиск по названию, теме или описанию">
+          </label>
+          <select class="status-select" id="status-select" aria-label="Статус опроса">
+            <option value="all">Все статусы</option>
+            <option value="open">Доступные</option>
+            <option value="done">Пройденные</option>
+            <option value="soon">Скоро</option>
+          </select>
+        </section>
+
+        <div class="poll-layout">
+          <aside class="category-panel" aria-label="Темы опросов">
+            <div class="panel-head">
+              <h2>Темы</h2>
+              <span class="muted" id="visible-count">0</span>
+            </div>
+            <div class="category-list" id="category-list"></div>
+          </aside>
+
+          <section class="poll-panel" aria-live="polite">
+            <div class="panel-head">
+              <h2 id="panel-title">Все опросы</h2>
+              <span class="muted" id="result-summary"></span>
+            </div>
+            <div class="poll-list" id="poll-list"></div>
+            <div class="empty" id="empty-state">Ничего не найдено</div>
+            <form class="survey-form" id="survey-form">
+              <h3 id="survey-title"></h3>
+              <p id="survey-description"></p>
+              <div class="question-list" id="question-list"></div>
+              <div class="form-actions">
+                <button class="submit-btn" type="submit">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                  <span>Отправить ответы</span>
+                </button>
+                <button class="secondary-btn" type="button" id="close-survey">Закрыть</button>
+              </div>
+              <div class="thanks" id="thanks">Спасибо, ответы сохранены в этой сессии.</div>
+            </form>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var categories = [
+        { id: "all", title: "Все опросы", subtitle: "Полный список", short: "ВС", color: "linear-gradient(135deg,#0a84ff,#23c483)" },
+        { id: "platform", title: "Платформа", subtitle: "Удобство Академии", short: "ПЛ", color: "linear-gradient(135deg,#0a84ff,#5f93ff)" },
+        { id: "learning", title: "Обучение", subtitle: "Курсы и уроки", short: "ОБ", color: "linear-gradient(135deg,#7257c6,#9b8dd4)" },
+        { id: "business", title: "Бизнес", subtitle: "Продажи и процессы", short: "БИ", color: "linear-gradient(135deg,#ff8a3d,#ff6b1a)" },
+        { id: "flooring", title: "Напольные покрытия", subtitle: "Ассортимент и спрос", short: "НП", color: "linear-gradient(135deg,#23c483,#63d8b0)" }
+      ];
+
+      var polls = [
+        {
+          id: "platform-satisfaction",
+          title: "Насколько вам нравится платформа Академии?",
+          category: "platform",
+          status: "open",
+          minutes: 3,
+          audience: "Все сотрудники",
+          description: "Короткая анкета про удобство навигации, меню, поиск, уроки и общий комфорт работы.",
+          questions: [
+            { text: "Насколько удобно находить нужные разделы?", options: ["Очень удобно", "Скорее удобно", "Сложно найти", "Пока не понимаю структуру"] },
+            { text: "Что стоит улучшить в первую очередь?", options: ["Поиск", "Меню", "Карточки курсов", "Личный кабинет"] },
+            { text: "Комментарий или идея", type: "text" }
+          ]
+        },
+        {
+          id: "course-quality",
+          title: "Оценка качества уроков и тестов",
+          category: "learning",
+          status: "open",
+          minutes: 4,
+          audience: "Участники курсов",
+          description: "Помогает понять, достаточно ли понятны уроки, практические задания и проверочные тесты.",
+          questions: [
+            { text: "Материалы уроков достаточно понятны?", options: ["Да", "Скорее да", "Не всегда", "Нет"] },
+            { text: "Тесты соответствуют содержанию уроков?", options: ["Да", "Частично", "Есть лишние вопросы", "Слишком простые"] },
+            { text: "Какой курс нужно доработать первым?", type: "text" }
+          ]
+        },
+        {
+          id: "flooring-demand",
+          title: "Какие напольные покрытия чаще спрашивают клиенты?",
+          category: "flooring",
+          status: "open",
+          minutes: 5,
+          audience: "Продажи и консультанты",
+          description: "Бизнес-опрос о спросе, типовых запросах клиентов и частых критериях выбора.",
+          questions: [
+            { text: "Какая категория чаще всего появляется в запросах?", options: ["Ламинат", "SPC/LVT", "Паркетная доска", "Плинтусы и аксессуары"] },
+            { text: "Главный критерий выбора клиента", options: ["Цена", "Влагостойкость", "Дизайн", "Износостойкость", "Бренд"] },
+            { text: "Каких материалов или аргументов не хватает?", type: "text" }
+          ]
+        },
+        {
+          id: "objections-sales",
+          title: "Самые частые возражения по цене и качеству",
+          category: "business",
+          status: "open",
+          minutes: 4,
+          audience: "Коммерческий отдел",
+          description: "Собираем реальные возражения, чтобы обновить скрипты и шпаргалки для консультаций.",
+          questions: [
+            { text: "Какое возражение встречается чаще?", options: ["Дорого", "Не верю в влагостойкость", "Не вижу разницы между брендами", "Нужно подумать"] },
+            { text: "Какие аргументы лучше всего срабатывают?", type: "text" },
+            { text: "Нужна ли отдельная шпаргалка по возражениям?", options: ["Да", "Нет", "Уже хватает текущих материалов"] }
+          ]
+        },
+        {
+          id: "pergo-brand-feedback",
+          title: "Обратная связь по материалам Pergo",
+          category: "flooring",
+          status: "done",
+          minutes: 3,
+          audience: "Прошедшие курс Pergo",
+          description: "Опрос уже пройден: помог оценить понятность аргументов AquaSafe, TitanX и истории бренда.",
+          questions: []
+        },
+        {
+          id: "quarter-business",
+          title: "Приоритеты обучения на следующий квартал",
+          category: "business",
+          status: "soon",
+          minutes: 6,
+          audience: "Руководители отделов",
+          description: "Скоро появится опрос о том, какие бизнес-навыки и продуктовые темы важнее развивать дальше.",
+          questions: []
+        }
+      ];
+
+      var completed = new Set(polls.filter(function (poll) { return poll.status === "done"; }).map(function (poll) { return poll.id; }));
+      var activeCategory = "all";
+      var activeStatus = "all";
+      var activePoll = null;
+      var searchInput = document.getElementById("poll-search");
+      var statusSelect = document.getElementById("status-select");
+      var categoryList = document.getElementById("category-list");
+      var pollList = document.getElementById("poll-list");
+      var emptyState = document.getElementById("empty-state");
+      var resultSummary = document.getElementById("result-summary");
+      var panelTitle = document.getElementById("panel-title");
+      var surveyForm = document.getElementById("survey-form");
+      var questionList = document.getElementById("question-list");
+      var thanks = document.getElementById("thanks");
+
+      function categoryById(id) {
+        return categories.find(function (category) { return category.id === id; }) || categories[0];
+      }
+
+      function pollStatus(poll) {
+        return completed.has(poll.id) ? "done" : poll.status;
+      }
+
+      function pollsInCategory(id) {
+        if (id === "all") return polls;
+        return polls.filter(function (poll) { return poll.category === id; });
+      }
+
+      function getFilteredPolls() {
+        var query = searchInput.value.trim().toLowerCase();
+        return pollsInCategory(activeCategory).filter(function (poll) {
+          var category = categoryById(poll.category);
+          var status = pollStatus(poll);
+          var statusMatches = activeStatus === "all" || status === activeStatus;
+          var queryMatches = !query || [poll.title, poll.description, poll.audience, category.title].join(" ").toLowerCase().indexOf(query) >= 0;
+          return statusMatches && queryMatches;
+        });
+      }
+
+      function renderCategories() {
+        categoryList.innerHTML = categories.map(function (category) {
+          var count = pollsInCategory(category.id).length;
+          return '<button class="category-btn' + (category.id === activeCategory ? ' is-active' : '') + '" type="button" data-category="' + category.id + '">' +
+            '<span class="category-icon" style="--category-color:' + category.color + '">' + category.short + '</span>' +
+            '<span><strong>' + category.title + '</strong><span>' + category.subtitle + '</span></span>' +
+            '<span class="category-count">' + count + '</span>' +
+          '</button>';
+        }).join("");
+      }
+
+      function statusLabel(status) {
+        if (status === "done") return "пройден";
+        if (status === "soon") return "скоро";
+        return "доступен";
+      }
+
+      function pollCard(poll) {
+        var category = categoryById(poll.category);
+        var status = pollStatus(poll);
+        var buttonText = status === "done" ? "Посмотреть" : status === "soon" ? "Скоро" : "Пройти";
+        var disabled = status === "soon" ? " disabled" : "";
+        return '<article class="poll-card">' +
+          '<div class="poll-icon" style="--poll-color:' + category.color + '">' + category.short + '</div>' +
+          '<div>' +
+            '<h3 class="poll-title">' + poll.title + '</h3>' +
+            '<p class="poll-description">' + poll.description + '</p>' +
+            '<div class="meta">' +
+              '<span class="pill">' + category.title + '</span>' +
+              '<span class="pill pill--' + status + '">' + statusLabel(status) + '</span>' +
+              '<span class="pill">' + poll.minutes + " мин" + '</span>' +
+              '<span class="pill">' + poll.audience + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<button class="start-btn" type="button" data-poll="' + poll.id + '"' + disabled + '>' +
+            '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>' +
+            '<span>' + buttonText + '</span>' +
+          '</button>' +
+        '</article>';
+      }
+
+      function render() {
+        var filtered = getFilteredPolls();
+        renderCategories();
+        pollList.innerHTML = filtered.map(pollCard).join("");
+        emptyState.style.display = filtered.length ? "none" : "block";
+        panelTitle.textContent = categoryById(activeCategory).title;
+        resultSummary.textContent = filtered.length + " из " + polls.length;
+        document.getElementById("visible-count").textContent = filtered.length;
+        document.querySelector("[data-complete-total]").textContent = completed.size;
+      }
+
+      function renderSurvey(poll) {
+        activePoll = poll;
+        thanks.classList.remove("is-visible");
+        document.getElementById("survey-title").textContent = poll.title;
+        document.getElementById("survey-description").textContent = poll.description;
+
+        if (pollStatus(poll) === "done" && !poll.questions.length) {
+          questionList.innerHTML = '<div class="question"><strong>Опрос уже пройден</strong><div class="muted">Спасибо, ответы учтены в общей аналитике.</div></div>';
+        } else {
+          questionList.innerHTML = poll.questions.map(function (question, index) {
+            if (question.type === "text") {
+              return '<label class="question"><strong>' + (index + 1) + ". " + question.text + '</strong><textarea name="q' + index + '" placeholder="Введите ответ"></textarea></label>';
+            }
+            return '<div class="question"><strong>' + (index + 1) + ". " + question.text + '</strong><div class="options">' +
+              question.options.map(function (option, optionIndex) {
+                return '<label class="option"><input type="radio" name="q' + index + '" value="' + optionIndex + '"><span>' + option + '</span></label>';
+              }).join("") +
+            '</div></div>';
+          }).join("");
+        }
+
+        surveyForm.classList.add("is-open");
+        surveyForm.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      categoryList.addEventListener("click", function (event) {
+        var button = event.target.closest("[data-category]");
+        if (!button) return;
+        activeCategory = button.getAttribute("data-category");
+        render();
+      });
+
+      pollList.addEventListener("click", function (event) {
+        var button = event.target.closest("[data-poll]");
+        if (!button || button.disabled) return;
+        var poll = polls.find(function (item) { return item.id === button.getAttribute("data-poll"); });
+        if (poll) renderSurvey(poll);
+      });
+
+      statusSelect.addEventListener("change", function () {
+        activeStatus = statusSelect.value;
+        render();
+      });
+
+      searchInput.addEventListener("input", render);
+
+      document.getElementById("close-survey").addEventListener("click", function () {
+        surveyForm.classList.remove("is-open");
+      });
+
+      surveyForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        if (activePoll) completed.add(activePoll.id);
+        thanks.classList.add("is-visible");
+        render();
+      });
+
+      document.querySelector("[data-poll-total]").textContent = polls.length;
+      document.querySelector("[data-open-total]").textContent = polls.filter(function (poll) { return poll.status === "open"; }).length;
+      render();
+    })();
+  </script>
+</body>
+</html>

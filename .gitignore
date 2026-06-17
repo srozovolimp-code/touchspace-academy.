@@ -1,0 +1,21 @@
+.DS_Store
+Thumbs.db
+
+# Local backups and generated archives
+backups/
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+
+# Runtime / editor noise
+.idea/
+.vscode/
+*.log
+
+# OS and temporary files
+*.tmp
+*.temp
+~$*
+

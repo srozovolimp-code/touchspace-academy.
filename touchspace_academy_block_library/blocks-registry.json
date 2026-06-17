@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "project": "TouchSpace Академия",
+  "layout": ["page", "shell", "sidebar", "main", "topbar"],
+  "blocks": [
+    {"id":"layout_shell","category":"layout","classes":[".page",".shell",".sidebar",".main"],"purpose":"Базовый каркас страницы"},
+    {"id":"topbar","category":"layout","classes":[".topbar",".search",".top-actions"],"purpose":"Верхняя панель"},
+    {"id":"page_hero","category":"base","classes":[".hero",".hero-card"],"purpose":"Главный экран страницы"},
+    {"id":"stat_cards","category":"base","classes":[".metric-grid",".metric"],"purpose":"Метрики и показатели"},
+    {"id":"info_cards","category":"base","classes":[".mini-card"],"purpose":"FAQ, справка, преимущества"},
+    {"id":"accent_thought","category":"learning","classes":[".accent-thought"],"purpose":"Главная мысль модуля"},
+    {"id":"timeline","category":"learning","classes":[".timeline",".timeline-item"],"purpose":"История или этапы"},
+    {"id":"lesson_grid","category":"learning","classes":[".grid-3",".mini-card"],"purpose":"Сетка уроков"},
+    {"id":"brand_facts","category":"brand","classes":[".grid-4",".mini-card"],"purpose":"Факты о бренде"},
+    {"id":"product_cards","category":"brand","classes":[".grid-3",".mini-card"],"purpose":"Категории/продукты"},
+    {"id":"sales_translation","category":"sales","classes":[".sales-table",".sales-row",".sales-cell"],"purpose":"Характеристика → фраза продавца"},
+    {"id":"mistakes_block","category":"sales","classes":[".mistake-row",".mistake-cell"],"purpose":"Ошибка → почему плохо → как лучше"},
+    {"id":"question_single","category":"tests","classes":[".question-card",".answer-option"],"purpose":"Один правильный ответ"},
+    {"id":"question_multiple","category":"tests","classes":[".question-card",".answer-option"],"purpose":"Несколько правильных ответов"},
+    {"id":"matching_true_swap","category":"tests","classes":[".matching",".match-card"],"purpose":"Соответствие true swap без сдвига списка"},
+    {"id":"question_boolean","category":"tests","classes":[".question-card",".answer-option"],"purpose":"Верно/неверно"},
+    {"id":"admin_test_builder","category":"admin","classes":[".admin-layout",".admin-panel"],"purpose":"Конструктор тестов"},
+    {"id":"student_course_card","category":"student","classes":[".student-card",".progress"],"purpose":"Активный курс студента"},
+    {"id":"achievements","category":"student","classes":[".achievement-grid",".achievement"],"purpose":"Ачивменты"},
+    {"id":"certificate_card","category":"student","classes":[".certificate"],"purpose":"Сертификат"}
+  ],
+  "fixed_rules": [
+    "matching_true_swap: взял A, отпустил на B, меняются только A/B, остальные карточки остаются на своих местах",
+    "unanswered test questions: если ничего не выбрано, после проверки не подсвечивать правильные и неправильные ответы",
+    "Pergo: не подавать материал как натуральное дерево, массив, паркет или производство деревянных полов"
+  ]
+}

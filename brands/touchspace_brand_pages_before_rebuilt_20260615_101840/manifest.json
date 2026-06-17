@@ -1,0 +1,121 @@
+{
+  "template": "calitex-test.html",
+  "brand_count": 19,
+  "brands": [
+    {
+      "brand": "Alpine Floor",
+      "page": "alpine-floor-test.html",
+      "module": "scorm/alpine-floor/index.html",
+      "products": 219
+    },
+    {
+      "brand": "Alta Step",
+      "page": "alta-step-test.html",
+      "module": "scorm/alta-step/index.html",
+      "products": 5
+    },
+    {
+      "brand": "Calitex",
+      "page": "calitex-test.html",
+      "module": "scorm/calitex/index.html",
+      "products": 40
+    },
+    {
+      "brand": "Coswick",
+      "page": "coswick-test.html",
+      "module": "scorm/coswick/index.html",
+      "products": 525
+    },
+    {
+      "brand": "Ensten",
+      "page": "ensten-test.html",
+      "module": "scorm/ensten/index.html",
+      "products": 33
+    },
+    {
+      "brand": "Kahrs",
+      "page": "kahrs-test.html",
+      "module": "scorm/kahrs/index.html",
+      "products": 1
+    },
+    {
+      "brand": "Karelia",
+      "page": "karelia-test.html",
+      "module": "scorm/karelia/index.html",
+      "products": 81
+    },
+    {
+      "brand": "Lab Arte",
+      "page": "lab-arte-test.html",
+      "module": "scorm/lab-arte/index.html",
+      "products": 1013
+    },
+    {
+      "brand": "Millennium",
+      "page": "millennium-test.html",
+      "module": "scorm/millennium/index.html",
+      "products": 14
+    },
+    {
+      "brand": "NatisSton",
+      "page": "natisston-test.html",
+      "module": "scorm/natisston/index.html",
+      "products": 8
+    },
+    {
+      "brand": "Norland",
+      "page": "norland-test.html",
+      "module": "scorm/norland/index.html",
+      "products": 70
+    },
+    {
+      "brand": "Orac Decor",
+      "page": "orac-decor-test.html",
+      "module": "scorm/orac-decor/index.html",
+      "products": 5
+    },
+    {
+      "brand": "Pergo",
+      "page": "pergo-test.html",
+      "module": "scorm/pergo/index.html",
+      "products": 91
+    },
+    {
+      "brand": "Polarwood",
+      "page": "polarwood-test.html",
+      "module": "scorm/polarwood/index.html",
+      "products": 18
+    },
+    {
+      "brand": "Royal Parket",
+      "page": "royal-parket-test.html",
+      "module": "scorm/royal-parket/index.html",
+      "products": 53
+    },
+    {
+      "brand": "Tulesna",
+      "page": "tulesna-test.html",
+      "module": "scorm/tulesna/index.html",
+      "products": 32
+    },
+    {
+      "brand": "Unilin",
+      "page": "unilin-test.html",
+      "module": "scorm/unilin/index.html",
+      "products": 12
+    },
+    {
+      "brand": "WoodRock",
+      "page": "woodrock-test.html",
+      "module": "scorm/woodrock/index.html",
+      "products": 17
+    },
+    {
+      "brand": "Техномассив",
+      "page": "tehnomassiv-test.html",
+      "module": "scorm/tehnomassiv/index.html",
+      "products": 300
+    }
+  ],
+  "excluded_service_entry": "Calitex Test"
+}

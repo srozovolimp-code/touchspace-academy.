@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Рейтинг | TouchSpace Академия</title>
+  <style>
+    :root{--blue:#0a84ff;--blue-2:#5f93ff;--soft:#e4edff;--ink:#111827;--muted:#64748b;--page:#eef4ff;--card:#fff;--shadow:0 24px 80px rgba(24,45,90,.12);--shadow-soft:0 14px 38px rgba(24,45,90,.08);--max:1500px}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f8fbff 0%,var(--page) 50%,#f6f9ff 100%);color:var(--ink);font-family:Inter,"SF Pro Display","Segoe UI",Arial,sans-serif}a{color:inherit;text-decoration:none}.page{max-width:var(--max);margin:0 auto;padding:24px}.shell{display:grid;grid-template-columns:76px minmax(0,1fr);gap:24px}.sidebar{position:sticky;top:22px;z-index:60;height:calc(100vh - 44px);min-height:520px;padding:18px 10px;border:1px solid rgba(255,255,255,.8);border-radius:26px;background:rgba(255,255,255,.78);box-shadow:var(--shadow-soft);backdrop-filter:blur(18px)}.nav{display:grid;gap:10px}.main{min-width:0}.header{display:grid;grid-template-columns:260px minmax(260px,1fr) auto;gap:18px;align-items:center;margin-bottom:22px}.wordmark{font-size:28px;font-weight:950;line-height:.82;letter-spacing:-.065em}.wordmark span{display:block}.wordmark span:last-child{padding-left:74px}.search{display:flex;align-items:center;gap:12px;height:62px;padding:0 22px;border:1px solid rgba(255,255,255,.9);border-radius:22px;background:rgba(255,255,255,.86);box-shadow:var(--shadow-soft);color:#9aa4b2}.search input{width:100%;border:0;outline:0;background:transparent;color:var(--ink);font-size:16px}.hero,.section{background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.86);border-radius:34px;box-shadow:var(--shadow-soft);padding:28px;margin-bottom:22px}.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:22px;align-items:stretch}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:999px;background:#eef5ff;color:#177be8;font-weight:900;font-size:13px;margin-bottom:14px}.hero h1{font-size:44px;line-height:1.02;letter-spacing:-.045em;margin:0 0 12px}.hero p,.section p{color:var(--muted);font-size:16px;line-height:1.55;margin:0}.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:18px}.section-head h2{font-size:28px;line-height:1.1;margin:0;letter-spacing:-.035em}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.card{display:grid;gap:10px;padding:20px;border-radius:26px;background:#fff;border:1px solid #e9f1ff;box-shadow:0 14px 34px rgba(24,45,90,.06);transition:transform .18s ease,box-shadow .18s ease}.card:hover{transform:translateY(-2px);box-shadow:0 18px 48px rgba(24,45,90,.12)}.card__icon{width:46px;height:46px;border-radius:17px;background:linear-gradient(135deg,#0a84ff,#32c48d);color:#fff;display:grid;place-items:center;font-weight:950}.card h3{font-size:20px;line-height:1.15;margin:0}.card p{font-size:14px}.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}.pill{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border-radius:999px;background:#f1f6ff;color:#32608f;font-size:12px;font-weight:900}.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:15px;background:var(--blue);color:#fff;font-weight:900;box-shadow:0 12px 28px rgba(10,132,255,.22)}.btn.secondary{background:#eef5ff;color:#177be8;box-shadow:none}.path{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:#6b7280;font-weight:800;font-size:13px;margin-bottom:14px}.path a{color:#177be8}.timeline{display:grid;gap:12px}.step{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;padding:16px;border-radius:24px;background:#fff;border:1px solid #e9f1ff}.step__num{width:44px;height:44px;border-radius:16px;display:grid;place-items:center;background:#eef5ff;color:#177be8;font-weight:950}.progress{height:10px;border-radius:999px;background:#e8f0fb;overflow:hidden}.progress span{display:block;height:100%;width:var(--progress,0%);background:linear-gradient(90deg,#0a84ff,#32c48d)}.aside-box{border-radius:28px;background:linear-gradient(135deg,#eef5ff,#fff);padding:22px;border:1px solid #e3edfb}.list{display:grid;gap:10px;margin-top:12px}.list a,.list div{padding:12px 14px;border-radius:16px;background:#fff;border:1px solid #e9f1ff;color:#2b3a4d;font-weight:800}.lesson-content{display:grid;gap:16px}.lesson-content h2{margin:0;font-size:26px}.callout{padding:18px;border-radius:22px;background:#f6fbff;border:1px solid #dceafe;color:#344256}.table{display:grid;gap:10px}.row{display:grid;grid-template-columns:1fr 1.6fr;gap:12px;padding:14px;border-radius:18px;background:#fff;border:1px solid #e9f1ff}.row strong{color:#0f172a}@media(max-width:980px){.shell{grid-template-columns:1fr}.sidebar{position:static;height:auto;min-height:0}.nav{grid-template-columns:repeat(4,1fr)}.header,.hero{grid-template-columns:1fr}.grid,.grid.two{grid-template-columns:1fr}.step{grid-template-columns:44px 1fr}.step .btn{grid-column:2}.page{padding:16px}}
+    .company-rating-hero{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr);gap:22px;align-items:stretch;margin-bottom:22px}.company-rating-hero__main,.company-rating-hero__side,.rating-panel{border:1px solid rgba(255,255,255,.88);border-radius:34px;background:rgba(255,255,255,.82);box-shadow:var(--shadow-soft);padding:28px}.company-rating-hero h1{max-width:860px;margin:0;font-size:clamp(42px,5vw,72px);line-height:.94;letter-spacing:-.055em}.company-rating-hero p{max-width:760px;margin:16px 0 0;color:var(--muted);font-size:17px;line-height:1.5}.company-chip-row,.rating-toolbar,.rating-person__meta,.rating-person__stats,.rating-mini-list{display:flex;flex-wrap:wrap;gap:10px}.company-chip{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border-radius:999px;background:#eef5ff;color:#177be8;font-size:13px;font-weight:900}.company-rating-hero__side{display:grid;align-content:space-between;gap:18px;background:linear-gradient(135deg,#fff,#edf6ff)}.company-rating-hero__side h2{margin:0;font-size:24px;line-height:1.08;letter-spacing:-.035em}.rating-stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.rating-stat{padding:16px;border:1px solid #e2ecfb;border-radius:22px;background:#fff}.rating-stat strong{display:block;font-size:30px;line-height:1;letter-spacing:-.045em}.rating-stat span{display:block;margin-top:7px;color:var(--muted);font-size:12px;font-weight:850}.rating-layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}.rating-panel{padding:20px;border-radius:30px}.rating-panel__head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px}.rating-panel__head h2{margin:0;font-size:30px;line-height:1.05;letter-spacing:-.04em}.rating-panel__head p{margin:5px 0 0;color:var(--muted);line-height:1.4}.rating-toolbar{align-items:center;justify-content:space-between;margin-bottom:14px}.rating-tabs{display:flex;flex-wrap:wrap;gap:8px;padding:7px;border-radius:22px;background:#f3f7ff}.rating-tab{min-height:40px;border:0;border-radius:15px;background:transparent;color:#64748b;padding:0 13px;font-weight:900;cursor:pointer}.rating-tab.is-active{background:#0a84ff;color:#fff;box-shadow:0 12px 28px rgba(10,132,255,.18)}.rating-search{min-width:240px;min-height:46px;border:1px solid #dfe9f8;border-radius:16px;background:#fff;padding:0 14px;color:var(--ink);outline:none}.rating-search:focus{border-color:rgba(10,132,255,.45);box-shadow:0 0 0 4px rgba(10,132,255,.08)}.rating-list{display:grid;gap:12px}.rating-person{display:grid;grid-template-columns:54px minmax(0,1fr) 132px;gap:14px;align-items:center;padding:16px;border:1px solid #e7effb;border-radius:26px;background:#fff;box-shadow:0 12px 30px rgba(24,45,90,.06)}.rating-place{width:54px;height:54px;border-radius:19px;display:grid;place-items:center;background:#eef5ff;color:#177be8;font-size:20px;font-weight:950}.rating-place.gold{background:linear-gradient(135deg,#fff6d7,#ffd66c);color:#8a5a00}.rating-person h3{margin:0 0 6px;font-size:18px;line-height:1.15}.rating-person__meta{color:#64748b;font-size:13px;font-weight:800}.rating-person__stats{margin-top:10px}.rating-pill{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border-radius:999px;background:#f3f7ff;color:#49627f;font-size:12px;font-weight:900}.rating-pill.green{background:#ecfbf5;color:#16865a}.rating-score{text-align:right}.rating-score strong{display:block;font-size:28px;line-height:1;letter-spacing:-.04em}.rating-score span{display:block;margin-top:6px;color:var(--muted);font-size:12px;font-weight:850}.rating-progress{height:10px;margin-top:10px;border-radius:999px;background:#e8f0fb;overflow:hidden}.rating-progress i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#0a84ff,#32c48d)}.rating-side{position:sticky;top:22px;display:grid;gap:18px}.rating-mini-list{display:grid}.rating-mini{display:grid;grid-template-columns:40px minmax(0,1fr);gap:10px;align-items:center;padding:12px;border-radius:18px;background:#fff;border:1px solid #e7effb}.rating-mini b{font-size:14px}.rating-mini span{display:block;margin-top:3px;color:var(--muted);font-size:12px;line-height:1.3}.rating-mini__icon{width:40px;height:40px;border-radius:15px;display:grid;place-items:center;background:#eef5ff;color:#177be8;font-weight:950}.rating-note{padding:16px;border-radius:22px;background:#f6fbff;border:1px solid #dceafe;color:#3b526c;line-height:1.45}.rating-note strong{display:block;margin-bottom:6px;color:var(--ink)}.rating-empty{display:none;padding:22px;border:1px dashed #cad8eb;border-radius:24px;background:#f8fbff;color:var(--muted);font-weight:850}.rating-empty.is-visible{display:block}@media(max-width:1080px){.company-rating-hero,.rating-layout{grid-template-columns:1fr}.rating-side{position:static}.rating-person{grid-template-columns:54px minmax(0,1fr)}}@media(max-width:720px){.rating-person{grid-template-columns:1fr}.rating-place{width:48px;height:48px}.rating-score{text-align:left}.rating-toolbar{align-items:stretch;flex-direction:column}.rating-search{width:100%}.rating-stat-grid{grid-template-columns:1fr}}
+</style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page"><div class="shell">
+    <aside class="sidebar" aria-label="Навигация"></aside>
+    <main class="main">
+      <header class="header" data-search-placeholder="Найти сотрудника, курс или тест"></header>
+      <section class="company-rating-hero">
+        <div class="company-rating-hero__main">
+          <nav class="path"><a href="index.html">Разделы</a><span>/</span><span>Рейтинг</span></nav>
+          <span class="eyebrow">Рейтинг моей компании</span>
+          <h1>Успехи учебной группы ООО “Рога и Копыта”</h1>
+          <p>Здесь показываются только сотрудники вашей компании, которые проходят обучение вместе с вами. Участники видят прогресс друг друга, результаты тестов и активность внутри своей корпоративной группы, а не общий рейтинг всей платформы.</p>
+          <div class="company-chip-row" style="margin-top:18px">
+            <span class="company-chip">4 участника</span>
+            <span class="company-chip">3 менеджера</span>
+            <span class="company-chip">1 супервайзер</span>
+            <span class="company-chip">Доступ: только компания</span>
+          </div>
+        </div>
+        <aside class="company-rating-hero__side">
+          <div>
+            <h2>Сводка группы</h2>
+            <p>Данные помогают руководителю понять, кто уже готов к работе с ассортиментом, а кому нужна пересдача или поддержка наставника.</p>
+          </div>
+          <div class="rating-stat-grid">
+            <div class="rating-stat"><strong>84%</strong><span>средний прогресс</span></div>
+            <div class="rating-stat"><strong>17</strong><span>пройденных тестов</span></div>
+            <div class="rating-stat"><strong>3</strong><span>сертификата готовы</span></div>
+            <div class="rating-stat"><strong>2</strong><span>нужны пересдачи</span></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="rating-layout">
+        <div class="rating-panel">
+          <div class="rating-panel__head">
+            <div>
+              <h2>Внутренний рейтинг</h2>
+              <p>Места считаются по баллам за курсы, тесты, регулярность обучения и полученные сертификаты.</p>
+            </div>
+          </div>
+          <div class="rating-toolbar">
+            <div class="rating-tabs" aria-label="Фильтр рейтинга">
+              <button class="rating-tab is-active" type="button" data-rating-filter="all">Все</button>
+              <button class="rating-tab" type="button" data-rating-filter="manager">Менеджеры</button>
+              <button class="rating-tab" type="button" data-rating-filter="supervisor">Супервайзер</button>
+              <button class="rating-tab" type="button" data-rating-filter="attention">Нужна пересдача</button>
+              <button class="rating-tab is-active" type="button" data-rating-mode="month">Месяц</button>
+              <button class="rating-tab" type="button" data-rating-mode="all-time">Всё время</button>
+            </div>
+            <input class="rating-search" type="search" placeholder="Поиск по участникам" data-rating-search>
+          </div>
+          <div class="rating-list" data-rating-list></div>
+          <div class="rating-empty" data-rating-empty>По этому фильтру участников не найдено.</div>
+        </div>
+
+        <aside class="rating-side">
+          <section class="rating-panel">
+            <div class="rating-panel__head">
+              <div>
+                <h2>Активность</h2>
+                <p>Последние события внутри группы.</p>
+              </div>
+            </div>
+            <div class="rating-mini-list">
+              <div class="rating-mini"><div class="rating-mini__icon">✓</div><div><b>Анна закрыла тест Pergo</b><span>92%, сертификат доступен</span></div></div>
+              <div class="rating-mini"><div class="rating-mini__icon">↻</div><div><b>Игорю назначена пересдача</b><span>Тема: аргументы по бренду</span></div></div>
+              <div class="rating-mini"><div class="rating-mini__icon">★</div><div><b>Мария получила бейдж</b><span>5 учебных дней подряд</span></div></div>
+            </div>
+          </section>
+          <section class="rating-note">
+            <strong>Принцип доступа</strong>
+            Рейтинг ограничен корпоративной группой: сотрудник видит только коллег, которых его компания отправила на обучение.
+          </section>
+        </aside>
+      </section>
+    </main>
+  </div></div>
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var api = window.TouchSpaceAcademy;
+      var filter = "all";
+      var mode = "month";
+      var search = "";
+      var list = document.querySelector("[data-rating-list]");
+      var empty = document.querySelector("[data-rating-empty]");
+      var searchInput = document.querySelector("[data-rating-search]");
+
+      function people() {
+        return api && api.getRatingPeople ? api.getRatingPeople(mode) : [];
+      }
+
+      function escapeHtml(value) {
+        return String(value || "").replace(/[&<>"']/g, function (char) {
+          return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[char];
+        });
+      }
+
+      function visiblePerson(person) {
+        var byFilter = filter === "all" || person.type === filter || (filter === "attention" && person.attention);
+        var haystack = (person.name + " " + person.role + " " + person.status).toLowerCase();
+        return byFilter && haystack.indexOf(search.toLowerCase().trim()) !== -1;
+      }
+
+      function render() {
+        var visible = people().filter(visiblePerson);
+        if (!list || !empty) return;
+        empty.classList.toggle("is-visible", visible.length === 0);
+        list.innerHTML = visible.map(function (person) {
+          var scoreLabel = mode === "all-time" ? "XP всего" : "XP за месяц";
+          return '<article class="rating-person">' +
+            '<div class="rating-place ' + (person.place === 1 ? 'gold' : '') + '">' + person.place + '</div>' +
+            '<div>' +
+              '<h3>' + escapeHtml(person.name) + '</h3>' +
+              '<div class="rating-person__meta"><span>' + escapeHtml(person.role) + '</span><span>ООО “Рога и Копыта”</span></div>' +
+              '<div class="rating-person__stats">' +
+                '<span class="rating-pill ' + (person.attention ? '' : 'green') + '">' + escapeHtml(person.status) + '</span>' +
+                '<span class="rating-pill">тесты: ' + person.tests + '</span>' +
+                '<span class="rating-pill">сертификаты: ' + person.certs + '</span>' +
+                '<span class="rating-pill">серия: ' + person.streak + ' дн.</span>' +
+                '<span class="rating-pill">качество: ' + person.qualityIndex + '%</span>' +
+              '</div>' +
+              '<div class="rating-progress"><i style="width:' + person.progress + '%"></i></div>' +
+            '</div>' +
+            '<div class="rating-score"><strong>' + person.points + '</strong><span>' + scoreLabel + '</span></div>' +
+          '</article>';
+        }).join("");
+      }
+
+      document.querySelectorAll("[data-rating-filter]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          filter = button.getAttribute("data-rating-filter");
+          document.querySelectorAll("[data-rating-filter]").forEach(function (item) {
+            item.classList.toggle("is-active", item === button);
+          });
+          render();
+        });
+      });
+
+      document.querySelectorAll("[data-rating-mode]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          mode = button.getAttribute("data-rating-mode");
+          document.querySelectorAll("[data-rating-mode]").forEach(function (item) {
+            item.classList.toggle("is-active", item === button);
+          });
+          render();
+        });
+      });
+
+      window.addEventListener("ts-academy-state-change", render);
+
+      if (searchInput) {
+        searchInput.addEventListener("input", function () {
+          search = searchInput.value;
+          render();
+        });
+      }
+
+      render();
+    })();
+  </script>
+</body>
+</html>

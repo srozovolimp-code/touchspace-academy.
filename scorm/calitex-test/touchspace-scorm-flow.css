@@ -1,0 +1,7 @@
+.blocks-lesson-slide__inner--entering-up {
+  animation-name: one-page-slide-down-enter !important;
+}
+
+.blocks-lesson-slide__inner--exiting-up {
+  animation-name: one-page-slide-down-exit !important;
+}

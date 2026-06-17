@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pergo | TouchSpace Академия</title>
+  <style>
+:root{
+  --blue:#0a84ff;--blue-2:#5f93ff;--ink:#111827;--muted:#6b7280;--line:#dfe6f2;--page:#eef4ff;--card:#fff;--green:#23c483;--orange:#ff8a3d;--shadow:0 24px 80px rgba(24,45,90,.12);--shadow-soft:0 14px 38px rgba(24,45,90,.08);--max: 1500px;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:linear-gradient(180deg,#f8fbff 0%,var(--page) 48%,#f6f9ff 100%);font-family:Inter,"SF Pro Display","Segoe UI",Arial,sans-serif}a{color:inherit;text-decoration:none}button,input{font:inherit}.page{max-width:var(--max);margin:0 auto;padding:24px}.shell{display:grid;grid-template-columns:76px minmax(0,1fr);gap:24px}.sidebar{position:sticky;top:22px;z-index:60;height:calc(100vh - 44px);min-height:520px;padding:18px 10px;border:1px solid rgba(255,255,255,.8);border-radius:26px;background:rgba(255,255,255,.78);box-shadow:var(--shadow-soft);backdrop-filter:blur(18px);overflow:visible}.nav{position:relative;z-index:2;display:grid;gap:10px;overflow:visible}.nav__item{position:relative;display:grid;place-items:center;width:56px;height:56px;border:0;border-radius:18px;background:transparent;cursor:pointer;transition:background 180ms ease,box-shadow 180ms ease,transform 180ms ease}.nav__item:hover{background:rgba(10,132,255,.08);transform:translateY(-1px)}.nav__item.is-active{background:var(--blue);box-shadow:0 12px 28px rgba(10,132,255,.26)}.nav__item img{width:25px;height:25px;object-fit:contain;transition:filter 180ms ease}.nav__item.is-active img{filter:brightness(0) invert(1)}.nav__item::after{content:attr(data-tooltip);position:absolute;left:calc(100% + 12px);top:50%;z-index:100;padding:10px 13px;border-radius:14px;background:rgba(255,255,255,.94);box-shadow:0 16px 38px rgba(24,45,90,.14);color:var(--ink);font-size:13px;font-weight:800;line-height:1;white-space:nowrap;opacity:0;pointer-events:none;transform:translate(-6px,-50%);transition:opacity 160ms ease,transform 160ms ease;backdrop-filter:blur(14px)}.nav__item::before{content:"";position:absolute;left:calc(100% + 7px);top:50%;z-index:101;width:10px;height:10px;border-radius:3px;background:rgba(255,255,255,.94);opacity:0;pointer-events:none;transform:translate(-6px,-50%) rotate(45deg);transition:opacity 160ms ease,transform 160ms ease}.nav__item:hover::after,.nav__item:hover::before,.nav__item:focus-visible::after,.nav__item:focus-visible::before{opacity:1;transform:translate(0,-50%)}.main{min-width:0}.header{display:grid;grid-template-columns:260px minmax(260px,1fr) auto;gap:18px;align-items:center;margin-bottom:22px}.wordmark{font-size:28px;font-weight:950;line-height:.82;letter-spacing:-.065em}.wordmark span{display:block}.wordmark span:last-child{padding-left:74px}.search{display:flex;align-items:center;gap:12px;height:62px;padding:0 22px;border:1px solid rgba(255,255,255,.9);border-radius:22px;background:rgba(255,255,255,.86);box-shadow:var(--shadow-soft);color:#9aa4b2}.search input{width:100%;border:0;outline:0;background:transparent;color:var(--ink);font-size:16px}.lesson-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;padding:16px 18px;border:1px solid rgba(255,255,255,.9);border-radius:28px;background:rgba(255,255,255,.88);box-shadow:var(--shadow-soft);backdrop-filter:blur(14px)}.breadcrumb{display:flex;flex-wrap:wrap;gap:8px;color:#65758b;font-size:13px;font-weight:850}.breadcrumb a{color:var(--blue)}.back-link{min-height:38px;padding:10px 13px;border-radius:999px;background:#edf4ff;color:#36506f;font-size:13px;font-weight:900}
+
+/* Redesigned UX layer */
+.brand-overview{display:grid;grid-template-columns:minmax(0,1.1fr) 360px;gap:18px;margin-bottom:18px}.brand-overview__hero{position:relative;min-height:318px;padding:34px;border:1px solid rgba(255,255,255,.9);border-radius:38px;background:radial-gradient(circle at 85% 0%,rgba(35,196,131,.22),transparent 30%),linear-gradient(135deg,#fff 0%,#edf5ff 100%);box-shadow:var(--shadow);overflow:hidden}.brand-overview__hero:after{content:"";position:absolute;right:-90px;bottom:-120px;width:320px;height:320px;border-radius:50%;background:rgba(10,132,255,.1)}.brand-overview__label{display:inline-flex;min-height:34px;align-items:center;padding:8px 12px;border-radius:999px;background:rgba(10,132,255,.1);color:var(--blue);font-size:13px;font-weight:950}.brand-overview h1{position:relative;z-index:1;max-width:770px;margin:18px 0 14px;font-size:clamp(42px,6vw,78px);line-height:.92;letter-spacing:-.07em}.brand-overview p{position:relative;z-index:1;max-width:700px;margin:0;color:#526174;font-size:18px;font-weight:650;line-height:1.5}.brand-overview__chips{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.brand-chip{display:inline-flex;align-items:center;min-height:38px;padding:9px 12px;border-radius:999px;background:#fff;color:#36506f;border:1px solid rgba(10,132,255,.16);font-size:13px;font-weight:900}.brand-actions{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.brand-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:12px 16px;border-radius:16px;border:1px solid transparent;background:var(--blue);color:#fff;font-size:13px;font-weight:900;box-shadow:0 12px 28px rgba(10,132,255,.22);cursor:pointer}.brand-btn--ghost{background:rgba(255,255,255,.78);color:var(--blue);border-color:rgba(10,132,255,.18);box-shadow:none}.brand-overview__aside{display:grid;gap:14px}.info-card{min-height:0;padding:20px;border:1px solid rgba(255,255,255,.9);border-radius:28px;background:rgba(255,255,255,.9);box-shadow:var(--shadow-soft);backdrop-filter:blur(14px)}.info-card h2{margin:0 0 12px;font-size:24px;line-height:1;letter-spacing:-.045em}.info-card p{margin:0;color:var(--muted);font-size:14px;font-weight:700;line-height:1.45}.info-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}.info-list li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:10px;align-items:center;min-height:46px;padding:9px 10px;border-radius:18px;background:#f7faff;color:#36506f;font-size:13px;font-weight:900}.info-list b{display:grid;place-items:center;width:36px;height:36px;border-radius:14px;background:#edf4ff;color:var(--blue)}
+.brand-path{position:sticky;top:22px;z-index:40;display:flex;gap:8px;align-items:center;margin-bottom:18px;padding:10px;border:1px solid rgba(255,255,255,.9);border-radius:26px;background:rgba(255,255,255,.84);box-shadow:var(--shadow-soft);backdrop-filter:blur(16px);overflow:auto}.brand-path a{flex:0 0 auto;display:inline-flex;align-items:center;min-height:42px;padding:10px 14px;border-radius:17px;background:#f7faff;color:#526174;border:1px solid var(--line);font-size:13px;font-weight:950}.brand-path a:hover{background:var(--blue);color:#fff;border-color:var(--blue)}.brand-layout{display:grid;grid-template-columns:286px minmax(0,1fr);gap:18px;align-items:start}.module-nav{position:sticky;top:92px;display:grid;gap:14px}.module-nav__card{padding:18px;border:1px solid rgba(255,255,255,.9);border-radius:28px;background:rgba(255,255,255,.86);box-shadow:var(--shadow-soft);backdrop-filter:blur(14px)}.module-nav h2{margin:0 0 12px;font-size:18px;letter-spacing:-.035em}.module-nav a{display:grid;gap:2px;padding:12px;border-radius:17px;color:#526174;font-size:13px;font-weight:850}.module-nav a:hover{background:#edf4ff;color:var(--blue)}.module-nav span{color:var(--muted);font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.05em}.module-nav__note{padding:18px;border-radius:28px;background:linear-gradient(135deg,#fff,#eaf3ff);box-shadow:var(--shadow-soft);color:var(--muted);font-size:13px;font-weight:750;line-height:1.45}.module-nav__note b{display:block;margin-bottom:6px;color:var(--ink);font-size:18px;letter-spacing:-.035em}.brand-content{min-width:0;display:grid;gap:18px}.ts-kb-detail{display:grid;gap:18px}.ts-kb-detail>div[id]{scroll-margin-top:110px}.ts-kb-detail section{scroll-margin-top:110px;border:1px solid rgba(255,255,255,.9);border-radius:34px;background:rgba(255,255,255,.9);box-shadow:var(--shadow-soft);overflow:hidden;backdrop-filter:blur(14px);color:var(--ink);font-family:inherit}.ts-kb-detail section *{box-sizing:border-box;font-family:inherit}.ts-pergo-hero{display:none}.ts-pergo-structure__title,.ts-pergo-history3__heroLeft,.ts-pergo-phX__hero,.ts-pergo-techX__hero,.ts-pergo-saleX__inner,.ts-pergo-quizX__head{padding:28px}.ts-pergo-structure__title,.ts-pergo-history3__title,.ts-pergo-phX__title,.ts-pergo-techX__title,.ts-pergo-saleX__title,.ts-pergo-quizX__title{margin:0;color:var(--ink);font-size:clamp(30px,4.2vw,54px);line-height:.98;letter-spacing:-.055em;font-weight:950}.ts-pergo-structure__subtitle,.ts-pergo-history3__lead,.ts-pergo-phX__lead,.ts-pergo-techX__lead,.ts-pergo-saleX__subtitle,.ts-pergo-quizX__sub{max-width:820px;margin:12px 0 0;color:var(--muted);font-size:16px;font-weight:650;line-height:1.55}.ts-pergo-history3__kicker,.ts-pergo-phX__kicker,.ts-pergo-techX__kicker,.ts-pergo-saleX__kicker,.ts-pergo-quizX__kicker,.ts-pergo-card__num,.ts-pergo-step3__badge,.ts-pergo-step3__tag,.ts-pergo-techX__tag,.ts-pergo-saleX__st,.ts-pergo-phX__chip,.ts-pergo-saleX__chip{display:inline-flex;align-items:center;width:fit-content;min-height:32px;padding:8px 11px;border-radius:999px;background:#edf4ff;color:var(--blue);border:1px solid rgba(10,132,255,.16);font-size:12px;font-weight:900;line-height:1.2}.ts-pergo-history3__hero,.ts-pergo-phX__heroGrid{display:grid;grid-template-columns:minmax(0,1.05fr) 310px;gap:18px;align-items:stretch}.ts-pergo-history3__heroRight,.ts-pergo-phX__heroMedia{position:relative;min-height:250px;margin:28px;border-radius:28px;background:#edf4ff;border:1px solid var(--line);overflow:hidden}.ts-pergo-history3__photo,.ts-pergo-phX__heroMediaBg,.ts-pergo-phX__mediaBg,.ts-pergo-step3__mediaBg{position:absolute;inset:0;border-radius:inherit;background-size:cover;background-position:center}.ts-pergo-history3__overlay,.ts-pergo-phX__heroMediaOv,.ts-pergo-phX__mediaOv,.ts-pergo-step3__mediaOverlay{position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(17,24,39,.02),rgba(17,24,39,.34))}.ts-pergo-history3__note{position:absolute;left:16px;right:16px;bottom:16px;z-index:2;padding:14px;border-radius:18px;background:rgba(255,255,255,.92);box-shadow:0 12px 28px rgba(24,45,90,.12);font-size:13px;line-height:1.35}.ts-pergo-history3__note b{display:block;margin-bottom:4px}.ts-pergo-tl3,.ts-pergo-phX__body,.ts-pergo-techX__body,.ts-pergo-saleX__card,.ts-pergo-quizX__body{padding:0 28px 28px}.ts-pergo-tl3__list,.ts-pergo-phX__body,.ts-pergo-techX__body{display:grid;gap:16px}.ts-pergo-structure__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:20px 28px 28px}.ts-pergo-card,.ts-pergo-step3,.ts-pergo-phX__panel,.ts-pergo-phX__salesCard,.ts-pergo-techX__mapCard,.ts-pergo-techX__scenario,.ts-pergo-techX__summaryCard,.ts-pergo-saleX__type,.ts-pergo-saleX__ruleCard,.ts-pergo-saleX__step,.ts-pergo-saleX__bubble,.ts-pergo-quizX__q,.ts-pergo-mini3,.ts-pergo-saleX__mini,.ts-pergo-saleX__big,.ts-pergo-saleX__trust,.ts-pergo-saleX__final{display:block;padding:20px;border-radius:24px;background:#f7faff;border:1px solid var(--line);box-shadow:none;color:var(--ink)}.ts-pergo-card{min-height:190px;transition:transform 180ms ease,box-shadow 180ms ease}.ts-pergo-card:hover{transform:translateY(-2px);box-shadow:0 16px 38px rgba(10,132,255,.12)}.ts-pergo-card__title,.ts-pergo-step3__title,.ts-pergo-phX__h,.ts-pergo-techX__h,.ts-pergo-saleX__h,.ts-pergo-saleX__title2{margin:10px 0;color:var(--ink);font-size:22px;line-height:1.08;letter-spacing:-.04em;font-weight:950}.ts-pergo-card__text,.ts-pergo-step3__p,.ts-pergo-phX__p,.ts-pergo-techX__p,.ts-pergo-saleX__p,.ts-pergo-mini3 p,.ts-pergo-saleX__type p{color:var(--muted);font-size:15px;font-weight:650;line-height:1.55}.ts-pergo-step3{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}.ts-pergo-step3__top,.ts-pergo-step3__title,.ts-pergo-step3__p,.ts-pergo-step3__list,.ts-pergo-step3__callout,.ts-pergo-step3__cols{grid-column:1}.ts-pergo-step3__media{grid-column:2;grid-row:1 / span 6;position:relative;min-height:220px;border-radius:22px;background:#edf4ff;border:1px solid var(--line);overflow:hidden}.ts-pergo-step3__mediaLabel,.ts-pergo-phX__heroMediaLabel,.ts-pergo-phX__mediaLabel{position:absolute;left:14px;bottom:14px;z-index:2;max-width:calc(100% - 28px);padding:9px 11px;border-radius:999px;background:rgba(255,255,255,.92);color:#36506f;box-shadow:0 12px 28px rgba(24,45,90,.12);font-size:12px;font-weight:900}.ts-pergo-step3__list,.ts-pergo-phX__list,.ts-pergo-techX__list,.ts-pergo-saleX__list,.ts-pergo-saleX__ruleList{color:var(--muted);font-size:14px;font-weight:650;line-height:1.5;padding-left:20px}.ts-pergo-step3__callout,.ts-pergo-phX__callout{padding:16px;border-radius:18px;background:#fff;border:1px solid var(--line)}.ts-pergo-step3__cols,.ts-pergo-phX__scene,.ts-pergo-phX__scene--rev,.ts-pergo-saleX__twocol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.ts-pergo-phX__media{position:relative;min-height:260px;border-radius:24px;background:#edf4ff;border:1px solid var(--line);overflow:hidden}.ts-pergo-phX__heroNote{padding:20px;border-radius:24px;background:#f7faff;border:1px solid var(--line)}.ts-pergo-phX__heroNote p{margin:8px 0 0;color:var(--muted);font-weight:650;line-height:1.45}.ts-pergo-phX__chips,.ts-pergo-saleX__stickers,.ts-pergo-saleX__chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0;padding:0;list-style:none}.ts-pergo-phX__ladder,.ts-pergo-saleX__steps{display:grid;gap:10px}.ts-pergo-phX__ladderRow{display:flex;gap:10px;align-items:center;padding:14px;border-radius:18px;background:#fff;border:1px solid var(--line)}.ts-pergo-phX__ladderMark,.ts-pergo-saleX__num,.ts-pergo-quizX__num{display:grid;place-items:center;min-width:36px;height:36px;padding:0 10px;border-radius:999px;border:1px solid rgba(10,132,255,.2);background:linear-gradient(180deg,#fff,#edf4ff);color:var(--blue);font-weight:950;flex:0 0 auto}.ts-pergo-phX__sales,.ts-pergo-saleX__types,.ts-pergo-saleX__rules,.ts-pergo-techX__map{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.ts-pergo-phX__final{padding:22px;border-radius:28px;background:linear-gradient(135deg,#fff,#eaf3ff);border:1px solid rgba(255,255,255,.9)}.ts-pergo-phX__words{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.ts-pergo-phX__word{padding:10px 12px;border-radius:999px;background:#fff;color:#36506f;border:1px solid var(--line);font-size:13px;font-weight:900}.ts-pergo-techX__map{margin-top:20px}.ts-pergo-techX__mapCard{min-height:170px}.ts-pergo-techX__mapCard b{display:block;margin:8px 0;color:var(--ink);font-size:20px;letter-spacing:-.035em}.ts-pergo-techX__mapCard span:last-child{color:var(--muted);font-size:13px;font-weight:750;line-height:1.4}.ts-pergo-techX__divider{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;margin:4px 0}.ts-pergo-techX__divider span{display:inline-flex;align-items:center;min-height:34px;padding:8px 12px;border-radius:999px;background:var(--blue);color:#fff;font-size:12px;font-weight:950}.ts-pergo-techX__divider:after{content:"";height:1px;background:var(--line)}.ts-pergo-techX__matrix{display:grid;gap:12px}.ts-pergo-techX__matrixRow{display:grid;grid-template-columns:1fr 1fr 1.35fr;gap:12px;padding:14px;border-radius:22px;background:#f7faff;border:1px solid var(--line)}.ts-pergo-techX__cell{padding:14px;border-radius:18px;background:#fff;border:1px solid var(--line)}.ts-pergo-techX__cell small{display:block;margin-bottom:7px;color:var(--muted);font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.04em}.ts-pergo-techX__cell b{display:block;color:var(--ink);font-size:16px;line-height:1.25}.ts-pergo-techX__cell p{margin:0;color:var(--muted);font-size:13px;font-weight:700;line-height:1.45}.ts-pergo-techX__playbook,.ts-pergo-techX__summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.ts-pergo-techX__script{margin-top:14px;padding:16px;border-radius:18px;background:#fff;border:1px solid var(--line);color:var(--ink);font-size:14px;font-weight:800;line-height:1.45}.ts-pergo-techX__mini{display:inline-flex;margin:4px 6px 4px 0;padding:7px 10px;border-radius:999px;background:#edf4ff;color:#36506f;font-size:12px;font-weight:900}.ts-pergo-saleX__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.ts-pergo-saleX__type h4{margin:0 0 12px;font-size:19px;letter-spacing:-.035em}.ts-pergo-saleX__step{position:relative;padding-left:18px;border-left:3px solid rgba(10,132,255,.16)}.ts-pergo-saleX__num{display:inline-flex;min-width:0;width:fit-content;height:32px;min-height:32px;margin-bottom:10px;padding:0 11px;color:var(--blue);font-size:12px;line-height:1}.ts-pergo-saleX__num:before{content:"Шаг "}.ts-pergo-saleX__dialog{margin-top:16px;display:grid;gap:10px}.ts-pergo-quizX__form{display:grid;gap:14px}.ts-pergo-quizX__qTop{display:flex;gap:12px;align-items:flex-start}.ts-pergo-quizX__qt{margin:0 0 14px;color:var(--ink);font-size:17px;font-weight:950;line-height:1.3}.ts-pergo-quizX__opts{display:grid;gap:8px}.ts-pergo-quizX__opt{display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:16px;background:#fff;border:1px solid var(--line);color:var(--muted);font-size:14px;font-weight:700;cursor:pointer}.ts-pergo-quizX__hint{display:none;margin-top:10px;padding:12px;border-radius:16px;background:#fff;color:var(--muted);font-size:13px;font-weight:750}.ts-pergo-quizX__q.is-correct{border-color:rgba(35,196,131,.55);background:#f0fff8}.ts-pergo-quizX__q.is-wrong{border-color:rgba(255,138,61,.55);background:#fff7f1}.ts-pergo-quizX__q.is-correct .ts-pergo-quizX__hint,.ts-pergo-quizX__q.is-wrong .ts-pergo-quizX__hint{display:block}.brand-test-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.brand-test-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:12px 16px;border-radius:16px;border:1px solid transparent;background:var(--blue);color:#fff;font-size:13px;font-weight:900;box-shadow:0 12px 28px rgba(10,132,255,.22);cursor:pointer}.brand-test-btn--ghost{background:rgba(255,255,255,.72);color:var(--blue);border-color:rgba(10,132,255,.18);box-shadow:none}.ts-pergo-quizX__score{display:inline-flex;align-items:center;min-height:44px;padding:12px 14px;border-radius:16px;background:#edf4ff;color:#36506f;font-size:13px;font-weight:900}.brand-hero-badge-row{position:relative;z-index:1;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.brand-hero-favorite{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border:1px solid rgba(223,230,242,.95);border-radius:15px;background:#fff;color:#9aa4b2;font-size:0;box-shadow:0 10px 24px rgba(24,45,90,.08);cursor:pointer;transition:color 160ms ease,background 160ms ease,border-color 160ms ease,transform 160ms ease}.brand-hero-favorite:before{content:"♡";font-size:22px;line-height:1;transform:translateY(-1px)}.brand-hero-favorite:hover{transform:translateY(-1px);color:var(--blue);border-color:rgba(10,132,255,.32);background:rgba(10,132,255,.08)}body .brand-hero-favorite.is-favorite[data-favorite-toggle]{background:linear-gradient(135deg,rgba(10,132,255,.14),rgba(83,108,255,.1))!important;border-color:rgba(10,132,255,.36)!important;color:var(--blue)!important;box-shadow:0 12px 28px rgba(10,132,255,.16)!important}.brand-hero-favorite.is-favorite:before{content:"♥"}
+@media(max-width:1180px){.brand-overview,.brand-layout,.ts-pergo-history3__hero,.ts-pergo-phX__heroGrid{grid-template-columns:1fr}.module-nav{position:static;grid-template-columns:1fr}.ts-pergo-structure__grid,.ts-pergo-phX__sales,.ts-pergo-saleX__types,.ts-pergo-saleX__rules,.ts-pergo-techX__map{grid-template-columns:repeat(2,minmax(0,1fr))}.ts-pergo-step3{grid-template-columns:1fr}.ts-pergo-step3__media{grid-column:1;grid-row:auto}.brand-path{top:10px}.ts-kb-detail>div[id],.ts-kb-detail section{scroll-margin-top:100px}}
+@media(max-width:760px){.page{padding:14px 12px 40px}.shell,.header,.brand-overview,.brand-layout,.ts-pergo-structure__grid,.ts-pergo-step3__cols,.ts-pergo-phX__scene,.ts-pergo-phX__scene--rev,.ts-pergo-saleX__twocol,.ts-pergo-phX__sales,.ts-pergo-saleX__types,.ts-pergo-saleX__rules,.ts-pergo-techX__map,.ts-pergo-techX__matrixRow,.ts-pergo-techX__playbook,.ts-pergo-techX__summary,.ts-pergo-saleX__grid{grid-template-columns:1fr}.sidebar{position:static;height:auto;min-height:0;padding:10px}.nav{grid-template-columns:repeat(6,1fr)}.nav__item{width:100%}.nav__item:before,.nav__item:after{display:none}.brand-overview__hero{padding:24px;border-radius:30px}.brand-overview h1{font-size:46px}.brand-path{position:static}.ts-pergo-structure__title,.ts-pergo-history3__heroLeft,.ts-pergo-phX__hero,.ts-pergo-techX__hero,.ts-pergo-saleX__inner,.ts-pergo-quizX__head,.ts-pergo-tl3,.ts-pergo-phX__body,.ts-pergo-techX__body,.ts-pergo-saleX__card,.ts-pergo-quizX__body{padding:20px}.ts-pergo-history3__heroRight,.ts-pergo-phX__heroMedia{margin:0 20px 20px}.ts-pergo-structure__grid{padding:16px 20px 20px}.brand-overview p{font-size:16px}}
+</style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Поиск по материалам бренда"></header>
+        <div class="lesson-top">
+          <nav class="breadcrumb" aria-label="Хлебные крошки"><a href="courses.html">Курсы</a><span>/</span><a href="course-pergo.html">Pergo: философия и продажа</a><span>/</span><span>Урок</span></nav>
+          <a class="back-link" href="brands.html">Назад к брендам</a>
+        </div>
+
+        <section class="brand-overview" aria-label="Обзор бренда Pergo">
+          <div class="brand-overview__hero">
+            <div class="brand-hero-badge-row">
+              <span class="brand-overview__label">Академия бренда / Pergo</span>
+              <button class="brand-hero-favorite" type="button" aria-label="Добавить Pergo в избранное" aria-pressed="false" data-favorite-toggle data-favorite-id="brand-pergo" data-favorite-title="Pergo" data-favorite-type="Бренд" data-favorite-url="pergo-brand.html" data-favorite-description="История бренда, AquaSafe, TitanX и логика продажи Pergo через спокойствие клиента.">В избранное</button>
+            </div>
+            <h1>Pergo: как объяснять ценность бренда клиенту</h1>
+            <p>Страница пересобрана как учебный сценарий: сначала быстрый смысл, затем карта модулей, после — подробные материалы, речевые формулы и итоговый тест.</p>
+            <div class="brand-overview__chips">
+              <span class="brand-chip">История бренда</span>
+              <span class="brand-chip">Философия</span>
+              <span class="brand-chip">Технологии</span>
+              <span class="brand-chip">Продажа без оправданий</span>
+            </div>
+            <div class="brand-actions">
+              <a class="brand-btn" href="pergo-test.html">Пройти тест Pergo</a>
+            </div>
+          </div>
+          <aside class="brand-overview__aside">
+            <div class="info-card">
+              <h2>Зачем менеджеру</h2>
+              <p>Быстро понять, чем Pergo отличается, как переводить технологии на язык клиента и как работать с возражением цены.</p>
+            </div>
+            <div class="info-card">
+              <h2>Маршрут</h2>
+              <ul class="info-list">
+                <li><b>1</b><span>Понять происхождение и доверие к бренду</span></li>
+                <li><b>2</b><span>Сформулировать ДНК и позиционирование</span></li>
+                <li><b>3</b><span>Связать технологии со страхами клиента</span></li>
+                <li><b>4</b><span>Отработать продажу и проверить знания</span></li>
+              </ul>
+            </div>
+          </aside>
+        </section>
+
+        <nav class="brand-path" aria-label="Быстрый переход по странице">
+          <a href="#pergo-structure">Содержание</a>
+          <a href="#pergo-history">История</a>
+          <a href="#pergo-philosophy">Философия</a>
+          <a href="#pergo-tech">Технологии</a>
+          <a href="#pergo-market">Продажи</a>
+        </nav>
+
+        <div class="brand-layout">
+          <aside class="module-nav" aria-label="Карта обучения">
+            <div class="module-nav__card">
+              <h2>Карта страницы</h2>
+              <a href="#pergo-structure"><span>Навигация</span>Структура обучения</a>
+              <a href="#pergo-history"><span>Модуль 01</span>История бренда</a>
+              <a href="#pergo-philosophy"><span>Модуль 02</span>Философия и ДНК</a>
+              <a href="#pergo-tech"><span>Модуль 03</span>Технологии и преимущества</a>
+              <a href="#pergo-market"><span>Модуль 04</span>Психология продажи</a>
+              <a href="pergo-test.html"><span>Финиш</span>Итоговый тест</a>
+            </div>
+            <div class="module-nav__note"><b>UX-логика</b>Контент не прячется и не сокращается: он разбит на читаемые блоки, а слева всегда виден маршрут обучения.</div>
+          </aside>
+          <div class="brand-content">
+            <div class="ts-kb-detail">
+<!-- PERGO ACADEMY — HERO BLOCK (safe: only HTML+CSS, no scripts) -->
+<section aria-label="Академия Pergo" class="ts-pergo-hero">
+<div class="ts-pergo-hero__wrap">
+<div class="ts-pergo-hero__grid">
+<div class="ts-pergo-hero__left">
+<div class="ts-pergo-hero__badge">Академия бренда Pergo</div>
+<h1 class="ts-pergo-hero__title">Pergo — бренд, который изменил индустрию пола</h1>
+<p class="ts-pergo-hero__subtitle">
+          Это вводный модуль для менеджеров и партнёров TouchSpace: кратко и красиво разберём,
+          почему Pergo — эталон в своём сегменте, как объяснять ценность клиенту и на чём строится превосходство бренда.
+        </p>
+<ul class="ts-pergo-hero__meta">
+<li class="ts-pergo-hero__pill"><i class="ts-pergo-hero__dot"></i> История и философия</li>
+<li class="ts-pergo-hero__pill"><i class="ts-pergo-hero__dot"></i> Технологии и отличия</li>
+<li class="ts-pergo-hero__pill"><i class="ts-pergo-hero__dot"></i> Позиционирование на рынке</li>
+</ul>
+<div class="ts-pergo-hero__cta">
+<a class="ts-pergo-btn ts-pergo-btn--primary" href="#pergo-start">Начать обучение</a>
+<a class="ts-pergo-btn ts-pergo-btn--ghost" href="#pergo-structure">Содержание</a>
+</div>
+</div>
+<div aria-hidden="true" class="ts-pergo-hero__right">
+<div class="ts-pergo-hero__photo" style="background-image:url('images/pergo_images_webp_wide_block_4_1/07_Заглушка_под_фото_Pergo_интерьер.webp');"></div>
+<div class="ts-pergo-hero__overlay"></div>
+<div class="ts-pergo-hero__logo">
+<img alt="Pergo" src="images/brand-logos/Pergo.png"/>
+</div>
+<div class="ts-pergo-hero__note">
+<b>Цель модуля</b>
+<span>Научиться продавать Pergo уверенно: не про «дорого», а про «почему это разумный выбор».</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Якоря для кнопок (потом под них добавим следующие блоки) -->
+<div id="pergo-start"></div>
+<!-- PERGO ACADEMY — STRUCTURE BLOCK -->
+<section class="ts-pergo-structure" id="pergo-structure">
+<div class="ts-pergo-structure__title">Структура обучения</div>
+<div class="ts-pergo-structure__subtitle">
+    4 ключевых блока, которые позволят уверенно продавать Pergo и объяснять его ценность клиенту.
+  </div>
+<div class="ts-pergo-structure__grid">
+<a class="ts-pergo-card" href="#pergo-history">
+<div class="ts-pergo-card__num">Модуль 01</div>
+<div class="ts-pergo-card__title">История бренда</div>
+<div class="ts-pergo-card__text">
+        Как Pergo из новатора превратился в эталон рынка и за счёт чего изменил индустрию.
+      </div>
+</a>
+<a class="ts-pergo-card" href="#pergo-philosophy">
+<div class="ts-pergo-card__num">Модуль 02</div>
+<div class="ts-pergo-card__title">Философия и ДНК бренда</div>
+<div class="ts-pergo-card__text">
+        В чём стратегическая идея Pergo и почему он не конкурирует только ценой.
+      </div>
+</a>
+<a class="ts-pergo-card" href="#pergo-tech">
+<div class="ts-pergo-card__num">Модуль 03</div>
+<div class="ts-pergo-card__title">Технологии и преимущества</div>
+<div class="ts-pergo-card__text">
+        Sensation, защита от влаги, износостойкость — что стоит за качеством.
+      </div>
+</a>
+<a class="ts-pergo-card" href="#pergo-market">
+<div class="ts-pergo-card__num">Модуль 04</div>
+<div class="ts-pergo-card__title">Pergo vs рынок</div>
+<div class="ts-pergo-card__text">
+        Чёткое позиционирование и аргументы для работы с возражениями.
+      </div>
+</a>
+</div>
+</section>
+<!-- ИСТОРИЯ БРЕНДА -->
+<!-- PERGO ACADEMY — HISTORY TIMELINE (NO EMOJI) -->
+<section aria-label="История бренда Pergo" class="ts-pergo-history3" id="pergo-history">
+<div class="ts-pergo-history3__wrap">
+<div class="ts-pergo-history3__hero">
+<div class="ts-pergo-history3__heroLeft">
+<div class="ts-pergo-history3__kicker">Модуль 01 — История бренда</div>
+<h2 class="ts-pergo-history3__title">Вводное - PERGO: Бренд, который изменил индустрию пола</h2>
+<p class="ts-pergo-history3__lead">
+          Ниже — история Pergo в формате дорожной карты: ключевые вехи, которые удобно читать и легко использовать в разговоре с клиентом.
+        </p>
+</div>
+<div aria-hidden="true" class="ts-pergo-history3__heroRight">
+<div class="ts-pergo-history3__photo" style="background-image:url('images/pergo_images_webp_wide_block_4_1/03_Заглушка_под_фото_Perstorp_или_архив.webp');"></div>
+<div class="ts-pergo-history3__overlay"></div>
+<div class="ts-pergo-history3__note">
+<b>Подсказка для менеджера</b>
+<span>История усиливает доверие и снижает давление торга: клиенту проще выбрать, когда он понимает происхождение бренда.</span>
+</div>
+</div>
+</div>
+<div class="ts-pergo-tl3">
+<div class="ts-pergo-tl3__list">
+<article class="ts-pergo-step3">
+<div class="ts-pergo-step3__top">
+<div class="ts-pergo-step3__badge">Корни</div>
+<div class="ts-pergo-step3__tag">философия шведской инновации</div>
+</div>
+<h3 class="ts-pergo-step3__title">Корни бренда — философия шведской инновации</h3>
+<p class="ts-pergo-step3__p">
+            Pergo родился не как очередной продукт, а как ответ на проблему, которая в 1970-х поставила под угрозу существование крупной компании.
+            Perstorp, шведский химический концерн с историей с начала XX века, производил различные слоистые материалы для мебели, столешниц и стеновых панелей.
+            Когда спрос на традиционные материалы резко упал, компания не стала сокращать производство — она решила переосмыслить то, что делает.
+          </p>
+<!-- Изображение для исторического блока -->
+<div class="ts-pergo-step3__media">
+<div class="ts-pergo-step3__mediaBg" style="background-image:url('images/pergo_images_webp_wide_block_4_1/03_Заглушка_под_фото_Perstorp_или_архив.webp');"></div>
+<div class="ts-pergo-step3__mediaOverlay"></div>
+<div class="ts-pergo-step3__mediaLabel">Фото Perstorp / архив</div>
+</div>
+</article>
+<article class="ts-pergo-step3">
+<div class="ts-pergo-step3__top">
+<div class="ts-pergo-step3__badge">1977</div>
+<div class="ts-pergo-step3__tag">Idé-77 и «Идея №23»</div>
+</div>
+<h3 class="ts-pergo-step3__title">Идея №23 — как случайность изменила отрасль навек</h3>
+<p class="ts-pergo-step3__p">
+            В 1977 году в Perstorp собрали специальную группу под названием Idé-77, чтобы придумать новые способы применения уже знакомых материалов.
+            В стенах этой команды обсуждали сотни идей: каких только предложений не было — от панелей для остановок до компонентов для пинг-понга.
+            Но среди всех их выделилась «Идея №23» — ламинированный пол.
+          </p>
+<p class="ts-pergo-step3__p">
+            Это не был просто «чёрновой материал» — это был продукт, который сочетал в себе эстетику дерева, практичность пластика и стойкость к активной повседневной жизни.
+            И этот продукт изменил представление о напольных покрытиях по всему миру.
+          </p>
+<div class="ts-pergo-step3__callout">
+<b>Важно</b>
+<p>
+              Pergo родился не случайно — он появился как результат творческого поиска новых решений.
+              Это история смелых экспериментов, который превратился в новую категорию покрытия для пола.
+            </p>
+</div>
+</article>
+<article class="ts-pergo-step3">
+<div class="ts-pergo-step3__top">
+<div class="ts-pergo-step3__badge">1980</div>
+<div class="ts-pergo-step3__tag">первый ламинированный пол</div>
+</div>
+<h3 class="ts-pergo-step3__title">1980 — первый ламинированный пол в истории</h3>
+<p class="ts-pergo-step3__p">
+            После идеи прошло несколько лет, тестов и доработок, и в 1980 году Perstorp вывела на рынок первый в мире ламинированный пол (Perstorp Golv GL80).
+          </p>
+<p class="ts-pergo-step3__p">Это было настоящее открытие — покрытие, которое:</p>
+<ul class="ts-pergo-step3__list">
+<li>выглядело как дерево</li>
+<li>стоило дешевле деревянного пола</li>
+<li>было более устойчивым к царапинам, нагрузкам и времени</li>
+</ul>
+<p class="ts-pergo-step3__p">
+            Люди могли впервые получить красоту натурального дерева без его уязвимости.
+          </p>
+<!-- Изображение для исторического блока -->
+<div class="ts-pergo-step3__media">
+<div class="ts-pergo-step3__mediaBg" style="background-image:url('images/pergo_images_webp_wide_block_4_1/04_Продукт_GL80_архив_новая_концепция.webp');"></div>
+<div class="ts-pergo-step3__mediaOverlay"></div>
+<div class="ts-pergo-step3__mediaLabel">Продукт GL80 / архив</div>
+</div>
+</article>
+<article class="ts-pergo-step3">
+<div class="ts-pergo-step3__top">
+<div class="ts-pergo-step3__badge">1989</div>
+<div class="ts-pergo-step3__tag">происхождение названия</div>
+</div>
+<h3 class="ts-pergo-step3__title">Название с историей — Pergo = Perstorp + Golv</h3>
+<p class="ts-pergo-step3__p">
+            Название бренда появилось в 1989 году и не было выбрано случайно — это акроним от Perstorp Golv, что по-шведски значит «пол Perstorp».
+          </p>
+<p class="ts-pergo-step3__p">
+            Это не просто слово — это философия бренда, связанная с его происхождением: бренд, который изначально создавался именно как решение для пола.
+          </p>
+</article>
+<article class="ts-pergo-step3">
+<div class="ts-pergo-step3__top">
+<div class="ts-pergo-step3__badge">1994–1995</div>
+<div class="ts-pergo-step3__tag">выход на США и Азию</div>
+</div>
+<h3 class="ts-pergo-step3__title">Международный взлёт — Европа, США, Азия</h3>
+<p class="ts-pergo-step3__p">
+            После того, как Pergo стал успешным в Европе, бренд шагнул дальше:
+          </p>
+<ul class="ts-pergo-step3__list">
+<li>1994 — выход на рынок США</li>
+<li>1995 — появление в Азии</li>
+</ul>
+<p class="ts-pergo-step3__p">
+            Pergo стал первым глобальным брендом ламинированных полов, а его название начало восприниматься как синоним качественного ламината во всем мире.
+          </p>
+<!-- Изображение для исторического блока -->
+<div class="ts-pergo-step3__media">
+<div class="ts-pergo-step3__mediaBg" style="background-image:url('images/pergo_images_webp_wide_block_4_1/05_Заглушка_под_карту_географию_интерьер.webp');"></div>
+<div class="ts-pergo-step3__mediaOverlay"></div>
+<div class="ts-pergo-step3__mediaLabel">Карта / география / интерьер</div>
+</div>
+</article>
+<article class="ts-pergo-step3">
+<div class="ts-pergo-step3__top">
+<div class="ts-pergo-step3__badge">1995–2009</div>
+<div class="ts-pergo-step3__tag">стандарты и патенты</div>
+</div>
+<h3 class="ts-pergo-step3__title">Технологии, которые стали отраслевыми стандартами</h3>
+<p class="ts-pergo-step3__p">
+            Pergo был не только первым, но и продолжил задавать инновационный вектор:
+          </p>
+<ul class="ts-pergo-step3__list">
+<li>1995-1999 — началась работа над защитными покрытиями и патентами на соединения панелей.</li>
+<li>2001 — патент на систему щёлкающих замков, которые упростили монтаж (предвестник современного Uniclic®).</li>
+<li>2009 — разработка монтажа без клея, который изменил правила укладки для DIY-пользователей.</li>
+</ul>
+<p class="ts-pergo-step3__p">
+            Каждое из этих нововведений — это ответ на реальные боли клиентов: быстрый монтаж, надёжность, долговечность и простота ухода.
+          </p>
+</article>
+<article class="ts-pergo-step3">
+<div class="ts-pergo-step3__top">
+<div class="ts-pergo-step3__badge">2013</div>
+<div class="ts-pergo-step3__tag">Mohawk Industries</div>
+</div>
+<h3 class="ts-pergo-step3__title">2013 — часть мировой истории Mohawk</h3>
+<p class="ts-pergo-step3__p">
+            Важный веховый момент: в 2013 году Pergo вошёл в состав Mohawk Industries, Inc., крупнейшего производителя напольных покрытий в мире.
+          </p>
+<p class="ts-pergo-step3__p">Это дало бренду:</p>
+<ul class="ts-pergo-step3__list">
+<li>доступ к глобальной сети поставок</li>
+<li>ускоренное развитие новых технологий</li>
+<li>усиленные позиции на коммерческих и жилых рынках по всему миру</li>
+</ul>
+<p class="ts-pergo-step3__p">
+            И при этом Pergo сохранил свою идентичность как независимая марка, вдохновлённая скандинавскими ценностями — функциональность и эстетика.
+          </p>
+<!-- Изображение для исторического блока -->
+<div class="ts-pergo-step3__media">
+<div class="ts-pergo-step3__mediaBg" style="background-image:url('images/pergo_images_webp_wide_block_4_1/06_Заглушка_под_завод_производство_бренд.webp');"></div>
+<div class="ts-pergo-step3__mediaOverlay"></div>
+<div class="ts-pergo-step3__mediaLabel">Завод / производство / бренд</div>
+</div>
+</article>
+<article class="ts-pergo-step3">
+<div class="ts-pergo-step3__top">
+<div class="ts-pergo-step3__badge">Продажи</div>
+<div class="ts-pergo-step3__tag">как рассказывать клиенту</div>
+</div>
+<h3 class="ts-pergo-step3__title">История как инструмент продаж</h3>
+<p class="ts-pergo-step3__p">Как рассказывать клиенту так, чтобы зацепить эмоцию:</p>
+<div class="ts-pergo-step3__cols">
+<div class="ts-pergo-mini3">
+<b>Не просто факт</b>
+<p>«Pergo придумал ламинат» — это круто, но ответить так можно сухо.</p>
+</div>
+<div class="ts-pergo-mini3">
+<b>Лучше так</b>
+<p>Представьте команду инженеров и дизайнеров 1970-х в Швеции, которой поручили придумать новое применение материалам… и они придумали продукт, который изменит весь мир напольных покрытий. Это не маркетинг — это инновация, которая стала стандартом всей отрасли.</p>
+</div>
+</div>
+<div class="ts-pergo-step3__callout">
+<b>И про доверие</b>
+<p>Pergo не просто бренд с историей — это бренд, который создал категорию. И его решения до сих пор определяют, каким будет функциональный и красивый пол в доме.</p>
+</div>
+</article>
+<article class="ts-pergo-step3">
+<div class="ts-pergo-step3__top">
+<div class="ts-pergo-step3__badge">Факты</div>
+<div class="ts-pergo-step3__tag">которые любят клиенты</div>
+</div>
+<h3 class="ts-pergo-step3__title">Эмоциональные факты, которые любят клиенты</h3>
+<ul class="ts-pergo-step3__list">
+<li>Pergo не был «копией дерева» — он был ответом на запрос людей, которые хотели красивый пол, но не готовы к компромиссам со стойкостью и практичностью».</li>
+<li>Название Pergo — это не бренд для красоты, а всё про пол, про жизнь, про дом, про комфорт.</li>
+<li>Pergo стал частью глобального игрока, но не потерял характер оригинального шведского бренда с акцентом на функциональный дизайн.</li>
+</ul>
+</article>
+</div>
+</div>
+</div>
+</section>
+<!-- БЛОК ФИЛОСОФИЯ БРЕНДА -->
+<!-- PERGO ACADEMY — PHILOSOPHY (PREMIUM LAYOUT, TEXT 1:1, NO EMOJI) -->
+<section aria-label="Философия бренда Pergo" class="ts-pergo-phX" id="pergo-philosophy">
+<div class="ts-pergo-phX__wrap">
+<div class="ts-pergo-phX__hero">
+<div class="ts-pergo-phX__kicker">Модуль 02 — Философия и ДНК бренда</div>
+<h2 class="ts-pergo-phX__title">«Полы для реальной жизни» — не слоган, а позиция</h2>
+<p class="ts-pergo-phX__lead">
+        Pergo — это философия спокойствия.
+      </p>
+<div class="ts-pergo-phX__heroGrid">
+<div class="ts-pergo-phX__heroNote">
+<b>Главная мысль модуля</b>
+<p>
+            В Скандинавии вещи делают не для фотографии. Их делают для жизни. И Pergo — ровно про это.
+          </p>
+</div>
+<div aria-hidden="true" class="ts-pergo-phX__heroMedia">
+<div class="ts-pergo-phX__heroMediaBg" style="background-image:url('images/pergo_images_webp_wide_block_4_1/07_Заглушка_под_фото_Pergo_интерьер.webp');"></div>
+<div class="ts-pergo-phX__heroMediaOv"></div>
+<div class="ts-pergo-phX__heroMediaLabel">Pergo / интерьер</div>
+</div>
+</div>
+</div>
+<div class="ts-pergo-phX__body">
+<!-- Scene 1 -->
+<div class="ts-pergo-phX__scene">
+<div class="ts-pergo-phX__panel">
+<h3 class="ts-pergo-phX__h">Скандинавский ДНК: красота без показухи</h3>
+<p class="ts-pergo-phX__p">Pergo родился в Швеции. А это не просто география — это культура.</p>
+<p class="ts-pergo-phX__p">Скандинавский подход к вещам очень простой:</p>
+<ul class="ts-pergo-phX__list">
+<li>красиво — но без вычурности</li>
+<li>практично — но без грубости</li>
+<li>надолго — без модных «на один сезон» решений</li>
+<li>честно — без маркетингового шума</li>
+</ul>
+<p class="ts-pergo-phX__p">В Скандинавии вещи делают не для фотографии. Их делают для жизни. И Pergo — ровно про это.</p>
+</div>
+<div aria-hidden="true" class="ts-pergo-phX__media">
+<div class="ts-pergo-phX__mediaBg" style="background-image:url('images/pergo_images_webp_wide_block_4_1/08_Заглушка_под_скандинавский_интерьер.webp');"></div>
+<div class="ts-pergo-phX__mediaOv"></div>
+<div class="ts-pergo-phX__mediaLabel">Скандинавский интерьер</div>
+</div>
+</div>
+<!-- Scene 2 (reverse) -->
+<div class="ts-pergo-phX__scene ts-pergo-phX__scene--rev">
+<div aria-hidden="true" class="ts-pergo-phX__media">
+<div class="ts-pergo-phX__mediaBg" style="background-image:url('images/pergo_images_webp_wide_block_4_1/09_Заглушка_под_активный_дом_кухня.webp');"></div>
+<div class="ts-pergo-phX__mediaOv"></div>
+<div class="ts-pergo-phX__mediaLabel">Активный дом / кухня</div>
+</div>
+<div class="ts-pergo-phX__panel">
+<h3 class="ts-pergo-phX__h">Главная идея бренда</h3>
+<p class="ts-pergo-phX__p">Pergo никогда не стремился быть «самым дешёвым» и никогда не стремился быть «самым гламурным».</p>
+<p class="ts-pergo-phX__p">Он стремился быть:</p>
+<ul class="ts-pergo-phX__chips">
+<li class="ts-pergo-phX__chip">устойчивым</li>
+<li class="ts-pergo-phX__chip">продуманным</li>
+<li class="ts-pergo-phX__chip">эстетичным</li>
+<li class="ts-pergo-phX__chip">долговечным</li>
+</ul>
+<p class="ts-pergo-phX__p">
+            Не для выставки. А для кухни, где варят суп. Для прихожей, куда заходят в мокрой обуви. Для гостиной, где дети катают машинки.
+          </p>
+</div>
+</div>
+<!-- Scene 3 -->
+<div class="ts-pergo-phX__scene">
+<div class="ts-pergo-phX__panel">
+<h3 class="ts-pergo-phX__h">«полы для реальной жизни»</h3>
+<p class="ts-pergo-phX__p">Это значит:</p>
+<ul class="ts-pergo-phX__list">
+<li>по полу можно жить, а не ходить «на носочках»</li>
+<li>можно мыть его, не боясь, что он «встанет домиком»</li>
+<li>можно поставить стул на колёсиках</li>
+<li>можно не впадать в панику от капли воды</li>
+</ul>
+<p class="ts-pergo-phX__p">Pergo — это философия спокойствия.</p>
+</div>
+<div aria-hidden="true" class="ts-pergo-phX__media">
+<div class="ts-pergo-phX__mediaBg" style="background-image:url('images/pergo_images_webp_wide_block_4_1/10_Заглушка_под_воду_коридор_повседневность.webp');"></div>
+<div class="ts-pergo-phX__mediaOv"></div>
+<div class="ts-pergo-phX__mediaLabel">Вода / коридор / повседневность</div>
+</div>
+</div>
+<!-- Depth -->
+<div class="ts-pergo-phX__scene ts-pergo-phX__scene--rev">
+<div aria-hidden="true" class="ts-pergo-phX__media">
+<div class="ts-pergo-phX__mediaBg" style="background-image:url('images/pergo_images_webp_wide_block_4_1/11_Заглушка_под_долговечность_фактура.webp');"></div>
+<div class="ts-pergo-phX__mediaOv"></div>
+<div class="ts-pergo-phX__mediaLabel">Долговечность / фактура</div>
+</div>
+<div class="ts-pergo-phX__panel">
+<h3 class="ts-pergo-phX__h">В чём глубина этой философии</h3>
+<p class="ts-pergo-phX__p">
+            Pergo не строит философию вокруг «продать больше». Он строит её вокруг вопроса:
+            Как сделать так, чтобы человек не возвращался к ремонту через 3–5 лет?
+          </p>
+<p class="ts-pergo-phX__p">Это принцип долгосрочного мышления. А долгосрочное мышление — это:</p>
+<ul class="ts-pergo-phX__list">
+<li>экологично</li>
+<li>экономично</li>
+<li>уважительно к клиенту</li>
+</ul>
+</div>
+</div>
+<!-- Responsibility -->
+<div class="ts-pergo-phX__scene">
+<div class="ts-pergo-phX__panel">
+<h3 class="ts-pergo-phX__h">Философия ответственности</h3>
+<p class="ts-pergo-phX__p">
+            Pergo — один из первых производителей с экологическими сертификациями в Европе.
+            Что стоит за этим на самом деле?
+          </p>
+<ul class="ts-pergo-phX__list">
+<li>99% производственных отходов перерабатывается</li>
+<li>использование возобновляемых источников энергии</li>
+<li>контроль эмиссии</li>
+<li>сертифицированная древесина</li>
+</ul>
+<div class="ts-pergo-phX__callout">
+<b>Важно</b>
+<p>
+              Но менеджеру важно не это перечислять. Важно понимать:
+              Pergo не создаёт «одноразовый продукт». Он создаёт пол, который прослужит долго и не превратится в строительный мусор через пару лет.
+            </p>
+</div>
+</div>
+<div aria-hidden="true" class="ts-pergo-phX__media">
+<div class="ts-pergo-phX__mediaBg" style="background-image:url('images/pergo_images_webp_wide_block_4_1/12_Заглушка_под_производство_сертификаты.webp');"></div>
+<div class="ts-pergo-phX__mediaOv"></div>
+<div class="ts-pergo-phX__mediaLabel">Производство / сертификаты</div>
+</div>
+</div>
+<!-- Positioning -->
+<div class="ts-pergo-phX__panel" style="margin-top:14px;">
+<h3 class="ts-pergo-phX__h">Позиционирование бренда на рынке</h3>
+<p class="ts-pergo-phX__p">Если очень просто:</p>
+<div class="ts-pergo-phX__ladder">
+<div class="ts-pergo-phX__ladderRow">
+<div class="ts-pergo-phX__ladderMark"></div>
+<div class="ts-pergo-phX__ladderText">Есть бренды <b>«дешёвый сегмент»</b></div>
+</div>
+<div class="ts-pergo-phX__ladderRow">
+<div class="ts-pergo-phX__ladderMark"></div>
+<div class="ts-pergo-phX__ladderText">Есть бренды <b>«визуально красиво, но неизвестно как живёт»</b></div>
+</div>
+<div class="ts-pergo-phX__ladderRow">
+<div class="ts-pergo-phX__ladderMark"></div>
+<div class="ts-pergo-phX__ladderText">Есть бренды <b>«технически нормально, но без характера»</b></div>
+</div>
+<div class="ts-pergo-phX__ladderRow">
+<div class="ts-pergo-phX__ladderMark ts-pergo-phX__ladderMark--blue"></div>
+<div class="ts-pergo-phX__ladderText">
+              А есть <b>Pergo</b> — бренд, который: придумал категорию, задал стандарт, держит баланс эстетики и инженерии
+            </div>
+</div>
+</div>
+</div>
+<!-- Sales translation -->
+<div class="ts-pergo-phX__panel" style="margin-top:14px;">
+<h3 class="ts-pergo-phX__h">Перевод философии в продажи</h3>
+<div class="ts-pergo-phX__sales">
+<div class="ts-pergo-phX__salesCard">
+<h4>Если клиент «про семью»</h4>
+<p>Pergo — это пол, который выдержит активный дом и не будет требовать к себе особого отношения.</p>
+</div>
+<div class="ts-pergo-phX__salesCard">
+<h4>Если клиент «про стиль»</h4>
+<p>Это скандинавский подход — когда интерьер выглядит спокойно и дорого, но без лишнего пафоса.</p>
+</div>
+<div class="ts-pergo-phX__salesCard">
+<h4>Если клиент «про надолго»</h4>
+<p>Это не история «переживём 2–3 года». Это история «сделали — и живём».</p>
+</div>
+</div>
+</div>
+<!-- Final -->
+<div class="ts-pergo-phX__final">
+<h3 class="ts-pergo-phX__h">Почему философия важна</h3>
+<p class="ts-pergo-phX__p">Потому что люди покупают не характеристики. Они покупают:</p>
+<div class="ts-pergo-phX__words">
+<div class="ts-pergo-phX__word">спокойствие</div>
+<div class="ts-pergo-phX__word">уверенность</div>
+<div class="ts-pergo-phX__word">ощущение правильного выбора</div>
+<div class="ts-pergo-phX__word">отсутствие будущих проблем</div>
+</div>
+<p class="ts-pergo-phX__p" style="margin-top:10px;">И Pergo — это бренд про спокойствие.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 3 БЛОК ТЕХНОЛОГИИ -->
+<section aria-label="Технологии Pergo как отражение философии" class="ts-pergo-techX" id="pergo-tech">
+<div class="ts-pergo-techX__wrap">
+<div class="ts-pergo-techX__hero">
+<div class="ts-pergo-techX__kicker">Блок 3 — Технологии Pergo как отражение философии</div>
+<h2 class="ts-pergo-techX__title">Не набор характеристик, а система спокойствия</h2>
+<p class="ts-pergo-techX__lead">
+        В этом блоке технологии разобраны не как «названия из каталога», а как ответы на конкретные страхи клиента.
+        Задача менеджера — быстро связать бытовой сценарий с инженерным решением и перевести характеристику на человеческий язык.
+      </p>
+<div class="ts-pergo-techX__map">
+<div class="ts-pergo-techX__mapCard">
+<span class="ts-pergo-techX__tag">01 / поверхность</span>
+<b>TitanX</b>
+<span>Сохраняет внешний вид пола, когда в доме есть песок, обувь, игрушки, кресла и активная жизнь.</span>
+</div>
+<div class="ts-pergo-techX__mapCard">
+<span class="ts-pergo-techX__tag">02 / вода</span>
+<b>AquaSafe</b>
+<span>Снижает тревогу вокруг случайных проливов, кухни, прихожей и влажной уборки.</span>
+</div>
+<div class="ts-pergo-techX__mapCard">
+<span class="ts-pergo-techX__tag">03 / монтаж</span>
+<b>Uniclic</b>
+<span>Делает результат укладки более предсказуемым: плотное соединение, меньше щелей и сюрпризов.</span>
+</div>
+<div class="ts-pergo-techX__mapCard">
+<span class="ts-pergo-techX__tag">04 / визуал</span>
+<b>Sensation</b>
+<span>Помогает покрытию выглядеть не как плоский декор, а как убедительная фактура дерева.</span>
+</div>
+</div>
+</div>
+<div class="ts-pergo-techX__body">
+<div class="ts-pergo-techX__divider"><span>Раздел 1. Диагностика тревоги</span></div>
+<div class="ts-pergo-techX__matrix">
+<div class="ts-pergo-techX__matrixRow">
+<div class="ts-pergo-techX__cell">
+<small>Что слышим от клиента</small>
+<b>«Поцарапается?»</b>
+</div>
+<div class="ts-pergo-techX__cell">
+<small>Что подключаем</small>
+<b>TitanX</b>
+</div>
+<div class="ts-pergo-techX__cell">
+<small>Как объясняем</small>
+<p>Это защита не «для теста», а для реальной жизни: песок в прихожей, кресла, игрушки, когти животных, каблуки. Красивый пол не должен быть хрупким.</p>
+</div>
+</div>
+<div class="ts-pergo-techX__matrixRow">
+<div class="ts-pergo-techX__cell">
+<small>Что слышим от клиента</small>
+<b>«А если вода?»</b>
+</div>
+<div class="ts-pergo-techX__cell">
+<small>Что подключаем</small>
+<b>AquaSafe</b>
+</div>
+<div class="ts-pergo-techX__cell">
+<small>Как объясняем</small>
+<p>Самое уязвимое место ламината — стык. AquaSafe работает как система: обработка, геометрия замка, герметичность соединения и защита кромок.</p>
+</div>
+</div>
+<div class="ts-pergo-techX__matrixRow">
+<div class="ts-pergo-techX__cell">
+<small>Что слышим от клиента</small>
+<b>«Не разойдутся щели?»</b>
+</div>
+<div class="ts-pergo-techX__cell">
+<small>Что подключаем</small>
+<b>Uniclic</b>
+</div>
+<div class="ts-pergo-techX__cell">
+<small>Как объясняем</small>
+<p>Даже лучший материал можно испортить плохой укладкой. Uniclic снижает риск ошибки: соединение плотное, монтаж понятный, результат стабильнее.</p>
+</div>
+</div>
+<div class="ts-pergo-techX__matrixRow">
+<div class="ts-pergo-techX__cell">
+<small>Что слышим от клиента</small>
+<b>«Не будет выглядеть дёшево?»</b>
+</div>
+<div class="ts-pergo-techX__cell">
+<small>Что подключаем</small>
+<b>Sensation</b>
+</div>
+<div class="ts-pergo-techX__cell">
+<small>Как объясняем</small>
+<p>Тиснение в регистр — это когда рельеф совпадает с рисунком. Мозг не спорит с поверхностью: это выглядит и ощущается ближе к настоящему материалу.</p>
+</div>
+</div>
+</div>
+<div class="ts-pergo-techX__divider"><span>Раздел 2. Как говорить в продаже</span></div>
+<div class="ts-pergo-techX__playbook">
+<article class="ts-pergo-techX__scenario">
+<span class="ts-pergo-techX__tag">TitanX</span>
+<h3>Не «AC5», а сохранённая эстетика</h3>
+<p>Цифры важны, но клиент покупает не класс износостойкости. Он покупает ощущение, что пол не потеряет вид через год обычной жизни.</p>
+<div class="ts-pergo-techX__script">Говорим так: «TitanX — это когда вы живёте как обычно, а пол не стареет визуально через год».</div>
+</article>
+<article class="ts-pergo-techX__scenario">
+<span class="ts-pergo-techX__tag">AquaSafe</span>
+<h3>Не «24/72 часа воды», а меньше паники</h3>
+<p>Сильнее работает не лабораторная цифра, а понятный бытовой сценарий: пролили воду, спокойно убрали, пол остался в порядке.</p>
+<div class="ts-pergo-techX__script">Говорим так: «Вы не бежите за тряпкой в панике. У вас есть время спокойно убрать».</div>
+</article>
+<article class="ts-pergo-techX__scenario">
+<span class="ts-pergo-techX__tag">Uniclic</span>
+<h3>Не «хороший замок», а меньше сюрпризов</h3>
+<p>Замок нужно связывать с итогом после монтажа: плотное соединение, аккуратный внешний вид, меньше риска щелей и скрипов.</p>
+<div class="ts-pergo-techX__script">Говорим так: «Uniclic ценят монтажники. А довольный монтажник — меньше сюрпризов после укладки».</div>
+</article>
+<article class="ts-pergo-techX__scenario">
+<span class="ts-pergo-techX__tag">Sensation</span>
+<h3>Не «красивый декор», а убедительная фактура</h3>
+<p>Эта технология нужна, когда клиенту важен интерьер: глубина, натуральность, тактильность, спокойный дорогой вид.</p>
+<div class="ts-pergo-techX__script">Говорим так: «Когда проводишь рукой, поверхность не спорит с рисунком. Это ощущается как настоящий материал».</div>
+</article>
+</div>
+<div class="ts-pergo-techX__divider"><span>Раздел 3. Быстрая формула для менеджера</span></div>
+<div class="ts-pergo-techX__summary">
+<div class="ts-pergo-techX__summaryCard">
+<h3>Формула объяснения</h3>
+<p>Сначала называем сценарий клиента, затем тревогу, затем технологию, затем человеческий результат. Не «характеристика → цена», а «ситуация → риск → решение → спокойствие».</p>
+<div class="ts-pergo-techX__formula">
+<span class="ts-pergo-techX__mini">ситуация</span>
+<span class="ts-pergo-techX__mini">риск</span>
+<span class="ts-pergo-techX__mini">технология</span>
+<span class="ts-pergo-techX__mini">спокойствие</span>
+</div>
+</div>
+<div class="ts-pergo-techX__summaryCard">
+<h3>Главный вывод блока</h3>
+<p>Pergo не просто добавляет «фишки». Он системно закрывает четыре главные тревоги: поцарапается, вздуется от воды, появятся щели, будет выглядеть дёшево.</p>
+<div class="ts-pergo-techX__formula">
+<span class="ts-pergo-techX__mini">TitanX = защита</span>
+<span class="ts-pergo-techX__mini">AquaSafe = вода</span>
+<span class="ts-pergo-techX__mini">Uniclic = монтаж</span>
+<span class="ts-pergo-techX__mini">Sensation = реализм</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- PERGO ACADEMY — BLOCK 4: SALES PSYCHOLOGY (DARK THEME, PREMIUM, NO EMOJI, TEXT 1:1) -->
+<section aria-label="Психология продажи Pergo" class="ts-pergo-saleX" id="pergo-market">
+<div class="ts-pergo-saleX__wrap">
+<div class="ts-pergo-saleX__inner">
+<div class="ts-pergo-saleX__kicker">Блок 4 — Психология продажи Pergo</div>
+<h2 class="ts-pergo-saleX__title">Как продавать дороже, уверенно и без оправданий</h2>
+<p class="ts-pergo-saleX__subtitle">
+        Pergo нельзя продавать как «один из вариантов». Его нужно продавать как: осознанный выбор человека, который не хочет компромиссов.
+        Если менеджер начинает сравнивать Pergo с бюджетом — он уже проиграл позиционирование.
+      </p>
+<div class="ts-pergo-saleX__stickers">
+<div class="ts-pergo-saleX__st ts-pergo-saleX__st--blue">Не оправдывать цену</div>
+<div class="ts-pergo-saleX__st">Продавать сценарий на 10 лет</div>
+<div class="ts-pergo-saleX__st ts-pergo-saleX__st--green">Продавать состояние</div>
+</div>
+<div class="ts-pergo-saleX__grid">
+<div class="ts-pergo-saleX__card">
+<h3 class="ts-pergo-saleX__h">Важный принцип</h3>
+<p class="ts-pergo-saleX__p">
+            Pergo нельзя продавать как «один из вариантов». Его нужно продавать как: осознанный выбор человека, который не хочет компромиссов.
+            Если менеджер начинает сравнивать Pergo с бюджетом — он уже проиграл позиционирование.
+          </p>
+</div>
+<div class="ts-pergo-saleX__card">
+<h3 class="ts-pergo-saleX__h">Главная ошибка менеджеров</h3>
+<div class="ts-pergo-saleX__twocol">
+<div class="ts-pergo-saleX__mini ts-pergo-saleX__mini--bad">
+<b>Так нельзя</b>
+<p>«Да, он дороже, но потому что бренд…»</p>
+</div>
+<div class="ts-pergo-saleX__mini ts-pergo-saleX__mini--good">
+<b>Почему это слабая позиция</b>
+<p>Как только ты оправдываешь цену — ты ставишь себя в слабую позицию.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="ts-pergo-saleX__card" style="margin-top:14px;">
+<h3 class="ts-pergo-saleX__h">Правильная позиция</h3>
+<p class="ts-pergo-saleX__p">
+          Pergo — это не «дороже». Pergo — это другой уровень решения задачи.
+          Разница не в 500–1000 рублей за метр. Разница в сценарии жизни на 10 лет.
+        </p>
+<h3 class="ts-pergo-saleX__h" style="margin-top:14px;">Что нужно продавать вместо цены?</h3>
+<p class="ts-pergo-saleX__p">Не продукт. А состояние. Pergo покупают люди, которые хотят:</p>
+<ul class="ts-pergo-saleX__list">
+<li>не переживать</li>
+<li>не экономить на качестве</li>
+<li>не возвращаться к ремонту</li>
+<li>сделать «один раз и правильно»</li>
+</ul>
+</div>
+<div class="ts-pergo-saleX__card" style="margin-top:14px;">
+<h3 class="ts-pergo-saleX__h">4 типа клиентов и как продавать Pergo каждому</h3>
+<div class="ts-pergo-saleX__types">
+<div class="ts-pergo-saleX__type">
+<h4>Тип 1: «Семья»</h4>
+<b>Боятся:</b>
+<ul class="ts-pergo-saleX__list">
+<li>царапин</li>
+<li>воды</li>
+<li>детей</li>
+<li>животных</li>
+</ul>
+<b>Как продавать:</b>
+<p>Pergo — это как страховка для пола. Вы живёте активно, а он держит нагрузку.</p>
+</div>
+<div class="ts-pergo-saleX__type">
+<h4>Тип 2: «Надолго»</h4>
+<b>Боятся:</b>
+<ul class="ts-pergo-saleX__list">
+<li>что через 3–5 лет всё придётся менять</li>
+<li>что пол «устанет»</li>
+</ul>
+<b>Как продавать:</b>
+<p>Это не про ремонт на время. Это про решение на годы.</p>
+</div>
+<div class="ts-pergo-saleX__type">
+<h4>Тип 3: «Про дизайн»</h4>
+<b>Боятся:</b>
+<ul class="ts-pergo-saleX__list">
+<li>что будет выглядеть дёшево</li>
+<li>что интерьер потеряет статус</li>
+</ul>
+<b>Как продавать:</b>
+<p>У Pergo реалистичная текстура и глубина рельефа. Он смотрится спокойно и дорого.</p>
+</div>
+<div class="ts-pergo-saleX__type">
+<h4>Тип 4: «Рациональный»</h4>
+<b>Боится:</b>
+<ul class="ts-pergo-saleX__list">
+<li>переплатить</li>
+<li>переплатить за «бренд»</li>
+</ul>
+<b>Как продавать:</b>
+<p>Разница в цене — это разница в ресурсе. Дешёвый пол вы экономите при покупке, но переплачиваете через время.</p>
+</div>
+</div>
+</div>
+<div class="ts-pergo-saleX__card" style="margin-top:14px;">
+<h3 class="ts-pergo-saleX__h">Как правильно сравнивать с конкурентами</h3>
+<div class="ts-pergo-saleX__rules">
+<div class="ts-pergo-saleX__ruleCard">
+<b>Никогда не говорить:</b>
+<ul class="ts-pergo-saleX__ruleList">
+<li>«Этот хуже»</li>
+<li>«Этот дешёвый»</li>
+<li>«Этот Китай»</li>
+</ul>
+</div>
+<div class="ts-pergo-saleX__ruleCard ts-pergo-saleX__ruleCard--good">
+<b>Говорить нужно:</b>
+<ul class="ts-pergo-saleX__ruleList">
+<li>У каждого бренда свой сегмент.</li>
+<li>Pergo — это про баланс дизайна и инженерии.</li>
+<li>Если вам важно надолго и спокойно — он закрывает это лучше.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="ts-pergo-saleX__card" style="margin-top:14px;">
+<h3 class="ts-pergo-saleX__h">Формула продажи Pergo</h3>
+<p class="ts-pergo-saleX__p">Не «характеристика → цена». А:</p>
+<div class="ts-pergo-saleX__steps">
+<div class="ts-pergo-saleX__step">
+<div class="ts-pergo-saleX__num">1</div>
+<div>
+<b>Выяснить сценарий жизни</b>
+<p>Что за пространство, кто будет жить, какая нагрузка, какие страхи.</p>
+</div>
+</div>
+<div class="ts-pergo-saleX__step">
+<div class="ts-pergo-saleX__num">2</div>
+<div>
+<b>Усилить его страх</b>
+<p>Спокойно подсветить риск: где чаще ломается/портится обычное решение.</p>
+</div>
+</div>
+<div class="ts-pergo-saleX__step">
+<div class="ts-pergo-saleX__num">3</div>
+<div>
+<b>Показать, как Pergo его закрывает</b>
+<p>Через технологии и философию, но языком человека, а не характеристик.</p>
+</div>
+</div>
+<div class="ts-pergo-saleX__step">
+<div class="ts-pergo-saleX__num">4</div>
+<div>
+<b>Зафиксировать ценность</b>
+<p>Перевести в “на сколько лет спокойствия” и “сколько проблем не будет”.</p>
+</div>
+</div>
+</div>
+<div class="ts-pergo-saleX__dialog">
+<h3 class="ts-pergo-saleX__h">Пример правильного диалога</h3>
+<div class="ts-pergo-saleX__bubble">
+<b>Клиент:</b>
+<p>— А что будет, если вода попадёт?</p>
+</div>
+<div class="ts-pergo-saleX__bubble">
+<b>Менеджер:</b>
+<p>
+              — В обычном ламинате вода уходит в стык и разрушает плиту. У Pergo система AquaSafe защищает соединения,
+              поэтому случайные проливы не становятся проблемой. Вопрос — где у вас будет укладка?
+              (И дальше уже под сценарий)
+            </p>
+</div>
+</div>
+</div>
+<div class="ts-pergo-saleX__big">
+<div class="ts-pergo-saleX__title2">Самая сильная фраза в продаже Pergo</div>
+<p>Pergo покупают те, кто не хочет возвращаться к полу через несколько лет.</p>
+</div>
+<div class="ts-pergo-saleX__trust">
+<h3 class="ts-pergo-saleX__h">Когда НЕ надо давить на Pergo</h3>
+<p class="ts-pergo-saleX__p">Если клиент:</p>
+<ul class="ts-pergo-saleX__list">
+<li>делает временный ремонт</li>
+<li>сдаёт квартиру на 1–2 года</li>
+<li>ищет самый минимальный бюджет</li>
+</ul>
+<p class="ts-pergo-saleX__p" style="margin-top:10px;">
+          Тогда честно: Возможно, вам не нужен Pergo. Он раскрывается, когда вы делаете для себя и надолго.
+          Это парадоксально усиливает доверие.
+        </p>
+</div>
+<div class="ts-pergo-saleX__final">
+<b>Методологический вывод</b>
+<p class="ts-pergo-saleX__p" style="margin:0;">
+          Pergo — это бренд: не для всех, но для осознанных, для тех, кто выбирает надолго
+        </p>
+<div class="ts-pergo-saleX__chips">
+<div class="ts-pergo-saleX__chip">не для всех</div>
+<div class="ts-pergo-saleX__chip">но для осознанных</div>
+<div class="ts-pergo-saleX__chip">для тех, кто выбирает надолго</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="ts-pergo-saleX" aria-label="Итоговый тест Pergo"><div class="ts-pergo-saleX__inner"><div class="ts-pergo-saleX__kicker">Финиш модуля</div><h3 class="ts-pergo-saleX__title">Итоговый тест Pergo</h3><p class="ts-pergo-saleX__subtitle">Проверьте знания по философии бренда, технологиям TitanX и AquaSafe, а также логике продажи через спокойствие клиента. Результат сохранится в кабинете реселлера.</p><div class="brand-test-actions"><a class="brand-test-btn brand-test-btn--primary" href="pergo-test.html">Пройти тест Pergo</a><a class="brand-test-btn brand-test-btn--ghost" href="student-dashboard.html">Кабинет реселлера</a></div></div></section>
+</div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+<script src="shared-header.js"></script>
+</body>
+</html>

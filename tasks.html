@@ -1,0 +1,2713 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Задачи | TouchSpace Академия</title>
+  <style>
+    :root {
+      --blue: #0a84ff;
+      --blue-2: #5f93ff;
+      --soft: #e4edff;
+      --ink: #111827;
+      --muted: #6b7280;
+      --page: #eef4ff;
+      --card: #fff;
+      --shadow: 0 24px 80px rgba(24, 45, 90, 0.12);
+      --shadow-soft: 0 14px 38px rgba(24, 45, 90, 0.08);
+      --max: 1500px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f8fbff 0%, var(--page) 48%, #f6f9ff 100%);
+      color: var(--ink);
+      font-family: Inter, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .page {
+      max-width: var(--max); margin: 0 auto; padding: 24px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 76px minmax(0, 1fr); gap: 24px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 22px;
+      z-index: 60;
+      height: calc(100vh - 44px);
+      min-height: 520px;
+      padding: 18px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+      overflow: visible;
+    }
+
+    .nav {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 10px;
+      overflow: visible;
+    }
+
+    .nav__item {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 56px;
+      height: 56px;
+      border: 0;
+      border-radius: 18px;
+      background: transparent;
+      cursor: pointer;
+      transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .nav__item:hover {
+      background: rgba(10, 132, 255, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .nav__item.is-active {
+      background: var(--blue);
+      box-shadow: 0 12px 28px rgba(10, 132, 255, 0.26);
+    }
+
+    .nav__item img {
+      width: 25px;
+      height: 25px;
+      object-fit: contain;
+      transition: filter 180ms ease;
+    }
+
+    .nav__item.is-active img {
+      filter: brightness(0) invert(1);
+    }
+
+    .nav__item::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: calc(100% + 12px);
+      top: 50%;
+      z-index: 100;
+      padding: 10px 13px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 16px 38px rgba(24, 45, 90, 0.14);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-6px, -50%);
+      transition: opacity 160ms ease, transform 160ms ease;
+      backdrop-filter: blur(14px);
+    }
+
+    .nav__item::before {
+      content: "";
+      position: absolute;
+      left: calc(100% + 7px);
+      top: 50%;
+      z-index: 101;
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.94);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-6px, -50%) rotate(45deg);
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .nav__item:hover::after,
+    .nav__item:hover::before,
+    .nav__item:focus-visible::after,
+    .nav__item:focus-visible::before {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+
+    .main {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 260px minmax(260px, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .wordmark {
+      font-size: 28px;
+      font-weight: 950;
+      line-height: 0.82;
+      letter-spacing: -0.065em;
+    }
+
+    .wordmark span {
+      display: block;
+    }
+
+    .wordmark span:last-child {
+      padding-left: 74px;
+    }
+
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 62px;
+      padding: 0 22px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow-soft);
+      color: #9aa4b2;
+    }
+
+    .search input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 16px;
+    }
+
+    .header-actions {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .notification-wrap {
+      position: relative;
+    }
+
+    .notification {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 62px;
+      height: 62px;
+      border: 0;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow-soft);
+      cursor: pointer;
+      transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .notification:hover,
+    .notification.is-open {
+      background: #fff;
+      box-shadow: 0 18px 42px rgba(95, 147, 255, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .notification::after {
+      content: "";
+      position: absolute;
+      right: 17px;
+      top: 16px;
+      width: 9px;
+      height: 9px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      background: #ff7a59;
+    }
+
+    .notification img {
+      width: 25px;
+      height: 25px;
+      object-fit: contain;
+    }
+
+    .notification-panel {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 14px);
+      z-index: 80;
+      width: min(380px, calc(100vw - 48px));
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: 26px;
+      background: radial-gradient(circle at 88% 10%, rgba(95, 147, 255, 0.18), transparent 32%), rgba(255, 255, 255, 0.94);
+      box-shadow: 0 26px 70px rgba(24, 45, 90, 0.18);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px) scale(0.98);
+      transform-origin: top right;
+      transition: opacity 180ms ease, transform 180ms ease;
+      backdrop-filter: blur(18px);
+    }
+
+    .notification-panel.is-open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    .notification-panel::before {
+      content: "";
+      position: absolute;
+      right: 23px;
+      top: -6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.94);
+      transform: rotate(45deg);
+    }
+
+    .notification-panel__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .notification-panel__head strong {
+      font-size: 18px;
+      letter-spacing: -0.03em;
+    }
+
+    .notification-panel__count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .notification-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .notification-item {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 12px;
+      padding: 12px;
+      border: 0;
+      border-radius: 18px;
+      background: rgba(244, 248, 255, 0.82);
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .notification-item__icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #e4edff, #f7fbff);
+      color: var(--blue);
+      font-weight: 950;
+    }
+
+    .notification-item__copy strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 14px;
+      line-height: 1.16;
+    }
+
+    .notification-item__copy span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .notification-panel__foot {
+      width: 100%;
+      min-height: 40px;
+      margin-top: 10px;
+      border: 0;
+      border-radius: 16px;
+      background: #fff;
+      color: var(--blue);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 222px;
+      height: 62px;
+      padding: 8px 10px 8px 18px;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .user__name {
+      display: block;
+      font-weight: 800;
+    }
+
+    .user__role {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      margin-left: auto;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--blue), #8ee2ff);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .catalog-hero {
+      position: relative;
+      overflow: hidden;
+      padding: 42px;
+      border-radius: 34px;
+      background: linear-gradient(135deg, #5f93ff 0%, #e4edff 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .catalog-hero::before,
+    .catalog-hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .catalog-hero::before {
+      right: -70px;
+      top: -80px;
+      width: 260px;
+      height: 260px;
+    }
+
+    .catalog-hero::after {
+      right: 28%;
+      bottom: -100px;
+      width: 220px;
+      height: 220px;
+    }
+
+    .catalog-hero__content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 28px;
+      align-items: end;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      min-height: 34px;
+      align-items: center;
+      padding: 0 15px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.34);
+      color: #fff;
+      font-weight: 900;
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      max-width: 850px;
+      margin: 18px 0 0;
+      color: #fff;
+      font-size: clamp(42px, 6vw, 86px);
+      line-height: 0.92;
+      letter-spacing: -0.07em;
+    }
+
+    .catalog-summary {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .summary-card {
+      min-height: 112px;
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--ink);
+      backdrop-filter: blur(16px);
+    }
+
+    .summary-card strong {
+      display: block;
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .summary-card span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .page-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 0.7fr);
+      gap: 22px;
+      align-items: end;
+      margin-top: 4px;
+    }
+
+    .page-title h1 {
+      max-width: 960px;
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(44px, 6vw, 84px);
+      line-height: 0.92;
+      letter-spacing: -0.07em;
+    }
+
+    .page-title p {
+      max-width: 640px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat-tile {
+      min-height: 92px;
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow);
+    }
+
+    .stat-tile strong {
+      display: block;
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .stat-tile span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .hashtag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .hashtag {
+      min-height: 42px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: 0 12px 32px rgba(24, 45, 90, 0.08);
+      color: var(--muted);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .hashtag.is-active {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .section {
+      margin-top: 34px;
+    }
+
+    .section-head {
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(32px, 4.2vw, 58px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .category-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      min-height: 132px;
+      padding: 20px;
+      border: 0;
+      border-radius: 28px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .category-card::after {
+      content: "";
+      position: absolute;
+      right: -34px;
+      bottom: -42px;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: var(--category-glow, #e4edff);
+    }
+
+    .category-card__icon {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
+      background: var(--category-glow, #e4edff);
+      color: var(--blue);
+      font-size: 26px;
+      font-weight: 950;
+    }
+
+    .category-card__label {
+      display: inline-flex;
+      min-height: 32px;
+      align-items: center;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--blue);
+      font-weight: 900;
+    }
+
+    .category-card strong {
+      position: relative;
+      z-index: 1;
+      display: block;
+      max-width: 420px;
+      margin-top: 10px;
+      font-size: 26px;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .category-card small {
+      position: relative;
+      z-index: 1;
+      display: block;
+      margin-top: 12px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .category-card__meta {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      min-width: 88px;
+      min-height: 64px;
+      border-radius: 20px;
+      background: #f6f9ff;
+      color: var(--ink);
+      font-weight: 950;
+    }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+    }
+
+    .featured-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 310px;
+      padding: 28px;
+      border-radius: 32px;
+      background: linear-gradient(135deg, #ffffff 0%, #edf4ff 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .featured-card--primary {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 260px;
+      gap: 20px;
+      background: linear-gradient(135deg, #ffffff 0%, #e4edff 52%, #dff6ff 100%);
+    }
+
+    .badge {
+      display: inline-flex;
+      width: fit-content;
+      min-height: 32px;
+      align-items: center;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: #eef5ff;
+      color: var(--blue);
+      font-weight: 900;
+    }
+
+    .featured-card h3 {
+      margin: 20px 0 12px;
+      font-size: clamp(28px, 3.4vw, 44px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    .featured-card p {
+      max-width: 560px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.42;
+    }
+
+    .featured-card img {
+      align-self: end;
+      width: 100%;
+      max-height: 250px;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 30px rgba(95, 147, 255, 0.18));
+    }
+
+    .mini-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .mini-card {
+      min-height: 146px;
+      padding: 22px;
+      border-radius: 28px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .mini-card h3 {
+      margin: 12px 0 8px;
+      font-size: 26px;
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+    }
+
+    .mini-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding: 8px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.74);
+      box-shadow: var(--shadow);
+    }
+
+    .course-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .course-toolbar .filters {
+      margin: 0;
+    }
+
+    .course-count {
+      color: var(--muted);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .filter {
+      min-height: 44px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 17px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .filter.is-active {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .course-card {
+      min-height: 438px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 32px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .course-card[hidden] {
+      display: none;
+    }
+
+    .course-card__image {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 190px;
+      margin: 12px;
+      border-radius: 24px;
+      background: var(--art-bg, linear-gradient(135deg, #edf5ff, #dbe9ff));
+      overflow: hidden;
+    }
+
+    .course-card__image::after {
+      content: attr(data-badge);
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 92px;
+      min-height: 38px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 900;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .course-card__image img {
+      width: min(78%, 190px);
+      max-height: 174px;
+      object-fit: contain;
+      filter: drop-shadow(0 22px 30px rgba(24, 45, 90, 0.16));
+    }
+
+    .art-blue { --art-bg: linear-gradient(135deg, #eaf3ff 0%, #d8e7ff 52%, #eef6ff 100%); }
+    .art-violet { --art-bg: linear-gradient(135deg, #f3efff 0%, #e4eaff 52%, #eef8ff 100%); }
+    .art-mint { --art-bg: linear-gradient(135deg, #ecfbf6 0%, #e4edff 52%, #f8fbff 100%); }
+    .art-cream { --art-bg: linear-gradient(135deg, #fff7e8 0%, #eef4ff 54%, #f8fbff 100%); }
+    .art-rose { --art-bg: linear-gradient(135deg, #fff0f7 0%, #e8efff 54%, #f8fbff 100%); }
+    .art-sky { --art-bg: linear-gradient(135deg, #e8f8ff 0%, #dcecff 54%, #f8fbff 100%); }
+
+    .course-card__body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 8px 24px 24px;
+    }
+
+    .course-card__body .badge {
+      margin-top: 10px;
+    }
+
+    .course-card h3 {
+      margin: 12px 0 10px;
+      font-size: 25px;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+    }
+
+    .course-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .course-card__foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 24px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .level {
+      color: var(--blue);
+    }
+
+    .course-status {
+      width: fit-content;
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: #f3f7ff;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .course-status--done {
+      background: #e9fbf3;
+      color: #16a36b;
+    }
+
+    .course-status--progress {
+      background: #edf5ff;
+      color: var(--blue);
+    }
+
+    .course-status--new {
+      background: #fff3e8;
+      color: #e86f33;
+    }
+
+    .course-progress {
+      height: 8px;
+      margin-top: 18px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #eef3fb;
+    }
+
+    .course-progress span {
+      display: block;
+      width: var(--progress, 0%);
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #5f93ff, #8ee2ff);
+    }
+
+    .task-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 18px;
+      align-items: start;
+      margin-top: 28px;
+    }
+
+    .calendar-card,
+    .agenda-card,
+    .task-card,
+    .focus-card {
+      border-radius: 32px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: var(--shadow);
+    }
+
+    .calendar-card {
+      padding: 24px;
+    }
+
+    .calendar-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .calendar-head h2,
+    .agenda-card h2,
+    .tasks-board h2 {
+      margin: 0;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .month-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: #f3f7ff;
+      color: var(--blue);
+      font-weight: 900;
+    }
+
+    .calendar-week,
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .calendar-week {
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .day {
+      position: relative;
+      min-height: 104px;
+      padding: 12px;
+      border: 0;
+      border-radius: 22px;
+      background: #f8fbff;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    }
+
+    .day:hover,
+    .day.is-active {
+      background: #fff;
+      box-shadow: 0 16px 38px rgba(95, 147, 255, 0.14);
+      transform: translateY(-2px);
+    }
+
+    .day.is-today {
+      background: linear-gradient(135deg, #5f93ff, #e4edff);
+      color: #fff;
+    }
+
+    .day.is-important:not(.is-today) {
+      background: linear-gradient(180deg, #fff8ed 0%, #fff 100%);
+      box-shadow: inset 0 0 0 2px rgba(255, 138, 61, 0.34), 0 16px 38px rgba(255, 138, 61, 0.12);
+    }
+
+    .day.is-important:not(.is-today)::after {
+      content: "важно";
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      min-height: 22px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: #fff0dd;
+      color: #b85b13;
+      font-size: 10px;
+      font-weight: 950;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .day.is-muted {
+      opacity: 0.42;
+    }
+
+    .day strong {
+      display: block;
+      font-size: 18px;
+    }
+
+    .day span {
+      display: block;
+      margin-top: 10px;
+      color: currentColor;
+      font-size: 11px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .day span.event-marker {
+      display: -webkit-box;
+      max-height: 30px;
+      overflow: hidden;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      margin-top: 7px;
+      padding: 6px 7px;
+      border-radius: 11px;
+      background: rgba(255, 255, 255, 0.82);
+      color: #177be8;
+      font-size: 10px;
+      line-height: 1.15;
+    }
+
+    .day:not(.is-today) span.event-marker {
+      background: #eef5ff;
+    }
+
+    .day__dots {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      display: flex;
+      gap: 5px;
+    }
+
+    .day__dots i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .day.is-today .day__dots i {
+      background: #fff;
+    }
+
+    .day.is-important:not(.is-today) .day__dots i {
+      background: #ff8a3d;
+    }
+
+    .day .day__dots i.event-dot {
+      background: #23c483;
+    }
+
+    .agenda-card {
+      padding: 22px;
+    }
+
+    .agenda-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .agenda-item {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 12px;
+      padding: 14px;
+      border-radius: 22px;
+      background: #f8fbff;
+    }
+
+    .agenda-date {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      background: #e4edff;
+      color: var(--blue);
+      font-weight: 950;
+    }
+
+    .agenda-item strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 15px;
+      line-height: 1.18;
+    }
+
+    .agenda-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .agenda-item.event-agenda {
+      background: #f2fbf7;
+      box-shadow: inset 0 0 0 1px rgba(35, 196, 131, 0.16);
+    }
+
+    .agenda-item.event-agenda .agenda-date {
+      background: #ecfbf5;
+      color: #16865a;
+    }
+
+    .day-popup {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(15, 25, 42, 0.42);
+      backdrop-filter: blur(16px);
+    }
+
+    .day-popup.is-open {
+      display: flex;
+    }
+
+    .day-popup__card {
+      width: min(680px, 100%);
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 32px;
+      background: linear-gradient(180deg, #fff 0%, #f8fbff 100%);
+      box-shadow: 0 34px 90px rgba(15, 25, 42, 0.28);
+    }
+
+    .day-popup__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .day-popup__top h2 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    .day-popup__top p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .day-popup__close {
+      display: grid;
+      flex: 0 0 auto;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border: 1px solid #dfe7f3;
+      border-radius: 15px;
+      background: #fff;
+      color: #6a7890;
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .day-detail-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .day-detail-item {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid #e9f1ff;
+      border-radius: 20px;
+      background: #fff;
+    }
+
+    .day-detail-item__icon {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background: #eef5ff;
+      color: var(--blue);
+      font-weight: 950;
+    }
+
+    .day-detail-item.event .day-detail-item__icon {
+      background: #ecfbf5;
+      color: #16865a;
+    }
+
+    .day-detail-item strong {
+      display: block;
+      font-size: 15px;
+      line-height: 1.18;
+    }
+
+    .day-detail-item span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .day-detail-item__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .day-detail-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid #dfe7f3;
+      border-radius: 13px;
+      background: #fff;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 950;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .day-detail-button:disabled {
+      opacity: 0.58;
+      cursor: not-allowed;
+    }
+
+    .day-detail-button.danger {
+      border-color: rgba(220, 38, 38, 0.18);
+      background: #fff6f6;
+      color: #b42323;
+    }
+
+    .day-note-form {
+      display: none;
+      gap: 10px;
+      margin: 0 0 12px;
+      padding: 14px;
+      border: 1px solid #e9f1ff;
+      border-radius: 20px;
+      background: #f8fbff;
+    }
+
+    .day-note-form.is-open {
+      display: grid;
+    }
+
+    .day-note-form__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr) 150px;
+      gap: 10px;
+    }
+
+    .day-note-input,
+    .day-note-title,
+    .day-note-time {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid #dfe7f3;
+      border-radius: 14px;
+      background: #fff;
+      padding: 0 12px;
+      color: var(--ink);
+      outline: none;
+    }
+
+    .day-note-input:focus,
+    .day-note-title:focus,
+    .day-note-time:focus {
+      border-color: rgba(10, 132, 255, 0.48);
+      box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.08);
+    }
+
+    .day-note-form__actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .day-detail-button.note {
+      background: #edf4ff;
+      border-color: rgba(10, 132, 255, 0.16);
+    }
+
+    @media (max-width: 640px) {
+      .day-note-form__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .calendar-toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 160;
+      padding: 13px 15px;
+      border-radius: 18px;
+      background: #172033;
+      color: #fff;
+      box-shadow: 0 18px 44px rgba(23, 32, 51, 0.25);
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: 0.2s;
+    }
+
+    .calendar-toast.is-open {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .event-card-popup {
+      position: fixed;
+      inset: 0;
+      z-index: 140;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(15, 25, 42, 0.5);
+      backdrop-filter: blur(16px);
+    }
+
+    .event-card-popup.is-open {
+      display: flex;
+    }
+
+    .event-card-popup__page {
+      width: min(980px, 100%);
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 34px;
+      background: linear-gradient(180deg, #fff 0%, #f8fbff 100%);
+      box-shadow: 0 34px 90px rgba(15, 25, 42, 0.28);
+    }
+
+    .event-card-popup__hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 20px;
+      padding: 22px;
+    }
+
+    .event-card-popup__copy h2 {
+      margin: 12px 0 10px;
+      font-size: clamp(30px, 4vw, 52px);
+      line-height: 0.96;
+      letter-spacing: -0.055em;
+    }
+
+    .event-card-popup__copy p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.52;
+    }
+
+    .event-card-popup__image {
+      min-height: 320px;
+      border-radius: 26px;
+      overflow: hidden;
+      background: #eef5ff;
+    }
+
+    .event-card-popup__image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .event-card-popup__stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .event-card-popup__stat {
+      padding: 12px;
+      border: 1px solid #dfe7f3;
+      border-radius: 18px;
+      background: #fff;
+    }
+
+    .event-card-popup__stat strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .event-card-popup__stat span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .event-card-popup__body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 16px;
+      padding: 0 22px 22px;
+    }
+
+    .event-card-popup__section {
+      padding: 16px;
+      border: 1px solid #dfe7f3;
+      border-radius: 24px;
+      background: #fff;
+    }
+
+    .event-card-popup__section h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      letter-spacing: -0.025em;
+    }
+
+    .event-card-popup__section li {
+      margin: 8px 0 0 18px;
+      color: #334155;
+      line-height: 1.4;
+    }
+
+    .event-speaker {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #e9f1ff;
+      border-radius: 18px;
+      background: #f8fbff;
+    }
+
+    .event-speaker + .event-speaker {
+      margin-top: 10px;
+    }
+
+    .event-speaker img {
+      width: 58px;
+      height: 58px;
+      border-radius: 20px;
+      object-fit: cover;
+    }
+
+    .event-speaker strong,
+    .event-speaker span {
+      display: block;
+    }
+
+    .event-speaker span {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    .day-detail-empty {
+      padding: 22px;
+      border: 1px dashed #c7d6ea;
+      border-radius: 22px;
+      background: #f8fbff;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 850;
+    }
+
+    .tasks-board {
+      margin-top: 34px;
+    }
+
+    .task-columns {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .task-column {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+      min-width: 0;
+    }
+
+    .task-column__title {
+      color: var(--muted);
+      font-weight: 950;
+    }
+
+    .task-card {
+      padding: 18px;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .task-card__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .task-date {
+      display: inline-flex;
+      min-height: 32px;
+      align-items: center;
+      padding: 0 11px;
+      border-radius: 999px;
+      background: #edf5ff;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .task-source {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .task-card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      line-height: 1.06;
+      letter-spacing: -0.04em;
+      overflow-wrap: anywhere;
+    }
+
+    .task-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+
+    .event-task-list {
+      display: grid;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .event-task-list:empty {
+      display: none;
+    }
+
+    .task-card.event-task {
+      border: 1px solid rgba(35, 196, 131, 0.2);
+      background: linear-gradient(180deg, #fff 0%, #f4fcf8 100%);
+    }
+
+    .task-card__foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .priority {
+      display: inline-flex;
+      min-height: 30px;
+      align-items: center;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: #f3f7ff;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .priority--hot {
+      background: #fff0e8;
+      color: #e86f33;
+    }
+
+    .priority--manager {
+      background: #edf5ff;
+      color: var(--blue);
+    }
+
+    .focus-card {
+      margin-top: 18px;
+      padding: 22px;
+      background: linear-gradient(135deg, #ffffff 0%, #e4edff 100%);
+    }
+
+    .focus-card h3 {
+      margin: 0 0 10px;
+      font-size: 26px;
+      letter-spacing: -0.04em;
+    }
+
+    .focus-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 1120px) {
+      .header,
+      .page-intro,
+      .task-layout,
+      .catalog-hero__content,
+      .featured-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .category-grid,
+      .task-columns,
+      .course-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        padding: 14px;
+      }
+
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+        min-height: 0;
+        padding: 10px;
+      }
+
+      .nav {
+        display: flex;
+        overflow-x: auto;
+      }
+
+      .header,
+      .stats-row,
+      .task-columns,
+      .catalog-summary,
+      .category-grid,
+      .course-grid,
+      .featured-card--primary {
+        grid-template-columns: 1fr;
+      }
+
+      .event-card-popup__hero,
+      .event-card-popup__body {
+        grid-template-columns: 1fr;
+      }
+
+      .event-card-popup__stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .category-card {
+        grid-template-columns: 56px minmax(0, 1fr);
+      }
+
+      .category-card__icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 18px;
+        font-size: 20px;
+      }
+
+      .category-card__meta {
+        grid-column: 1 / -1;
+        min-height: 48px;
+      }
+
+      .course-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .catalog-hero {
+        padding: 28px;
+      }
+
+      .user {
+        min-width: 0;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+
+      <main class="main">
+        <header class="header" data-search-placeholder="Найти курс, урок, тест или бренд"></header>
+
+        <section class="page-intro">
+          <div class="page-title">
+            <h1>Задачи обучения</h1>
+            <p>Календарь учебных назначений, дедлайны от руководителя и личный план на месяц. Здесь видно, что пройти сегодня, что горит, а что можно спокойно запланировать.</p>
+          </div>
+          <div class="stats-row" aria-label="Статистика задач">
+            <div class="stat-tile"><strong>9</strong><span>задач в июне</span></div>
+            <div class="stat-tile"><strong>3</strong><span>назначено руководителем</span></div>
+            <div class="stat-tile"><strong>5</strong><span>дней до теста</span></div>
+            <div class="stat-tile"><strong>72%</strong><span>план недели</span></div>
+          </div>
+        </section>
+
+        <section class="task-layout">
+          <div class="calendar-card">
+            <div class="calendar-head">
+              <h2>Июнь 2026</h2>
+              <span class="month-switch">Учебный план</span>
+            </div>
+            <div class="calendar-week" aria-hidden="true">
+              <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+            </div>
+            <div class="calendar-grid" data-learning-calendar>
+              <button class="day is-active" type="button"><strong>1</strong><span>Пройти “Демо без воды”</span><span class="day__dots"><i></i></span></button>
+              <button class="day" type="button"><strong>2</strong></button>
+              <button class="day" type="button"><strong>3</strong><span>Повторить бренды</span><span class="day__dots"><i></i></span></button>
+              <button class="day" type="button"><strong>4</strong></button>
+              <button class="day" type="button"><strong>5</strong><span>Тест по продукту</span><span class="day__dots"><i></i><i></i></span></button>
+              <button class="day" type="button"><strong>6</strong></button>
+              <button class="day" type="button"><strong>7</strong><span>Назначено руководителем</span><span class="day__dots"><i></i></span></button>
+              <button class="day" type="button"><strong>8</strong></button>
+              <button class="day is-today" type="button"><strong>9</strong><span>Сегодня: AI-follow-up</span><span class="day__dots"><i></i><i></i></span></button>
+              <button class="day" type="button"><strong>10</strong></button>
+              <button class="day" type="button"><strong>11</strong><span>Практика звонка</span><span class="day__dots"><i></i></span></button>
+              <button class="day" type="button"><strong>12</strong></button>
+              <button class="day" type="button"><strong>13</strong></button>
+              <button class="day" type="button"><strong>14</strong><span>Проверка знаний</span><span class="day__dots"><i></i></span></button>
+              <button class="day" type="button"><strong>15</strong></button>
+              <button class="day" type="button"><strong>16</strong></button>
+              <button class="day" type="button"><strong>17</strong><span>Возражения: цена</span><span class="day__dots"><i></i></span></button>
+              <button class="day" type="button"><strong>18</strong></button>
+              <button class="day" type="button"><strong>19</strong><span>Разбор демо</span><span class="day__dots"><i></i></span></button>
+              <button class="day" type="button"><strong>20</strong></button>
+              <button class="day" type="button"><strong>21</strong></button>
+              <button class="day" type="button"><strong>22</strong><span>Сертификат</span><span class="day__dots"><i></i><i></i></span></button>
+              <button class="day" type="button"><strong>23</strong></button>
+              <button class="day" type="button"><strong>24</strong></button>
+              <button class="day" type="button"><strong>25</strong><span>Отчет руководителю</span><span class="day__dots"><i></i></span></button>
+              <button class="day" type="button"><strong>26</strong></button>
+              <button class="day" type="button"><strong>27</strong></button>
+              <button class="day" type="button"><strong>28</strong></button>
+              <button class="day" type="button"><strong>29</strong><span>Итоговый тест</span><span class="day__dots"><i></i></span></button>
+              <button class="day" type="button"><strong>30</strong></button>
+              <button class="day is-muted" type="button"><strong>1</strong></button>
+              <button class="day is-muted" type="button"><strong>2</strong></button>
+              <button class="day is-muted" type="button"><strong>3</strong></button>
+              <button class="day is-muted" type="button"><strong>4</strong></button>
+              <button class="day is-muted" type="button"><strong>5</strong></button>
+            </div>
+          </div>
+
+          <aside>
+            <div class="agenda-card">
+              <h2>Ближайшее</h2>
+              <div class="agenda-list" data-agenda-list>
+                <article class="agenda-item">
+                  <span class="agenda-date">1</span>
+                  <div><strong>Пройти урок “Демо без лишней воды”</strong><p>28 минут, личная задача</p></div>
+                </article>
+                <article class="agenda-item">
+                  <span class="agenda-date">5</span>
+                  <div><strong>Закрыть тест по продуктовой линейке</strong><p>15 вопросов, дедлайн до 18:00</p></div>
+                </article>
+                <article class="agenda-item">
+                  <span class="agenda-date">7</span>
+                  <div><strong>Разобрать сценарий консультационной продажи</strong><p>Назначено руководителем</p></div>
+                </article>
+                <article class="agenda-item">
+                  <span class="agenda-date">9</span>
+                  <div><strong>AI-follow-up после встречи</strong><p>Практика с шаблонами писем</p></div>
+                </article>
+              </div>
+            </div>
+            <div class="focus-card">
+              <h3>Фокус недели</h3>
+              <p>Закрыть продуктовый тест и пройти тренажер по возражениям. Это даст +180 очков опыта и откроет следующий уровень.</p>
+            </div>
+          </aside>
+        </section>
+
+        <section class="tasks-board">
+          <div class="section-head">
+            <h2>Учебная CRM</h2>
+          </div>
+          <div class="task-columns">
+            <div class="task-column">
+              <span class="task-column__title">Нужно сделать</span>
+              <div class="event-task-list" data-event-task-list></div>
+              <article class="task-card">
+                <div class="task-card__top"><span class="task-date">1 июня</span><span class="task-source">личная</span></div>
+                <h3>Пройти “Демо без лишней воды”</h3>
+                <p>Посмотреть урок и сохранить структуру вопросов для следующей встречи.</p>
+                <div class="task-card__foot"><span class="priority">28 мин</span><span class="priority priority--hot">сегодня</span></div>
+              </article>
+              <article class="task-card">
+                <div class="task-card__top"><span class="task-date">5 июня</span><span class="task-source">тест</span></div>
+                <h3>Тест по продуктовой линейке</h3>
+                <p>Проверить знание ключевых продуктов и сценариев применения.</p>
+                <div class="task-card__foot"><span class="priority">15 вопросов</span><span class="priority priority--hot">важно</span></div>
+              </article>
+            </div>
+            <div class="task-column">
+              <span class="task-column__title">Назначено руководителем</span>
+              <article class="task-card">
+                <div class="task-card__top"><span class="task-date">7 июня</span><span class="task-source">руководитель</span></div>
+                <h3>Консультационная продажа</h3>
+                <p>Пройти модуль и подготовить 3 вопроса для выявления потребности.</p>
+                <div class="task-card__foot"><span class="priority">2 ч 15 мин</span><span class="priority priority--manager">Павел</span></div>
+              </article>
+              <article class="task-card">
+                <div class="task-card__top"><span class="task-date">25 июня</span><span class="task-source">отчет</span></div>
+                <h3>Отправить прогресс по курсам</h3>
+                <p>Собрать результаты тестов и отметить темы, где нужна помощь.</p>
+                <div class="task-card__foot"><span class="priority">10 мин</span><span class="priority priority--manager">контроль</span></div>
+              </article>
+            </div>
+            <div class="task-column">
+              <span class="task-column__title">В процессе</span>
+              <article class="task-card">
+                <div class="task-card__top"><span class="task-date">9 июня</span><span class="task-source">AI</span></div>
+                <h3>AI-follow-up после встречи</h3>
+                <p>Собрать краткое резюме звонка и подготовить письмо клиенту.</p>
+                <div class="course-progress" style="--progress:45%"><span></span></div>
+                <div class="task-card__foot"><span class="priority">45%</span><span class="priority">46 мин</span></div>
+              </article>
+              <article class="task-card">
+                <div class="task-card__top"><span class="task-date">17 июня</span><span class="task-source">тренажер</span></div>
+                <h3>Возражения: цена и сроки</h3>
+                <p>Отработать 5 диалогов и сохранить удачные формулировки.</p>
+                <div class="course-progress" style="--progress:30%"><span></span></div>
+                <div class="task-card__foot"><span class="priority">30%</span><span class="priority">1 ч 20 мин</span></div>
+              </article>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <section class="day-popup" data-day-popup aria-hidden="true">
+    <div class="day-popup__card" role="dialog" aria-modal="true" aria-label="Задачи дня" data-day-popup-card></div>
+  </section>
+  <section class="event-card-popup" data-task-event-card aria-hidden="true">
+    <div class="event-card-popup__page" role="dialog" aria-modal="true" aria-label="Карточка мероприятия" data-task-event-card-page></div>
+  </section>
+  <script>
+    (function () {
+      var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav__item'));
+      if (!navItems.length) return;
+
+      navItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+          var href = item.getAttribute('data-href');
+
+          navItems.forEach(function (button) {
+            button.classList.remove('is-active');
+            button.removeAttribute('aria-current');
+          });
+
+          item.classList.add('is-active');
+          item.setAttribute('aria-current', 'page');
+
+          if (href && window.location.pathname.split('/').pop() !== href) {
+            window.location.href = href;
+          }
+        });
+      });
+    })();
+
+    (function () {
+      var controls = Array.prototype.slice.call(document.querySelectorAll('[data-filter]'));
+      var filterButtons = Array.prototype.slice.call(document.querySelectorAll('.filter[data-filter]'));
+      var hashtagButtons = Array.prototype.slice.call(document.querySelectorAll('.hashtag[data-filter]'));
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.course-card[data-category]'));
+      var catalog = document.querySelector('.filters');
+      var count = document.querySelector('.course-count');
+      if (!controls.length || !cards.length) return;
+
+      function applyFilter(value) {
+        filterButtons.forEach(function (button) {
+          button.classList.toggle('is-active', button.getAttribute('data-filter') === value);
+        });
+
+        hashtagButtons.forEach(function (button) {
+          button.classList.toggle('is-active', button.getAttribute('data-filter') === value);
+        });
+
+        var visibleCount = 0;
+
+        cards.forEach(function (card) {
+          var match = value === 'all' ||
+            card.getAttribute('data-category') === value ||
+            card.getAttribute('data-status') === value;
+
+          card.hidden = !match;
+
+          if (match) {
+            visibleCount += 1;
+          }
+        });
+
+        if (count) {
+          count.textContent = 'Показано ' + visibleCount + ' из 36';
+        }
+      }
+
+      controls.forEach(function (control) {
+        control.addEventListener('click', function () {
+          var value = control.getAttribute('data-filter');
+          applyFilter(value);
+
+          if (control.classList.contains('category-card') && catalog) {
+            catalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    })();
+
+    (function () {
+      var joinedKey = "touchspaceJoinedEvents";
+      var scheduledLessonsKey = "touchspaceScheduledLessons";
+      var calendarNotesKey = "touchspaceCalendarNotes";
+      var importantDaysKey = "touchspaceImportantDays";
+      var eventMap = {
+        "brand-day": { id: "brand-day", day: "25", month: "июня", shortMonth: "июн", title: "Большой бренд-день: напольные покрытия 2026", desc: "Коллекции Pergo, Calitex и Coswick, живые разборы аргументов и ответы поставщиков.", topic: "Как уверенно продавать напольные покрытия через сценарии клиента, технологии брендов и понятную аргументацию.", time: "11:00", format: "очно + онлайн", duration: "3 часа", seats: 42, booked: 27, location: "Москва / трансляция", image: "images/calitex_realistic/calitex-showroom-collection.jpg", speakers: ["brand", "sales", "showroom"], agenda: ["Ключевые отличия коллекций Pergo, Calitex и Coswick", "Практикум по аргументам для кухни, прихожей и активного дома", "Разбор вопросов участников и сценариев продажи"], important: true },
+        "webinar-objections": { id: "webinar-objections", day: "28", month: "июня", shortMonth: "июн", title: "Вебинар: работа с возражениями клиента", desc: "Как переводить вопросы о цене, воде и износе в спокойный сценарий продажи.", topic: "Методика ответа на возражения без давления: цена, долговечность, вода, монтаж и сравнение брендов.", time: "14:00", format: "онлайн", duration: "75 минут", seats: 120, booked: 66, location: "Zoom", image: "images/pergo_images_webp_wide_block_4_1/11_Заглушка_под_долговечность_фактура.webp", speakers: ["sales", "brand"], agenda: ["Карта типовых возражений", "Фразы для спокойного перевода в пользу продукта", "Мини-разборы ответов участников"] },
+        "seller-supervisor": { id: "seller-supervisor", day: "2", month: "июля", shortMonth: "июл", title: "Тренинг для супервайзеров компаний", desc: "Как читать прогресс учеников, назначать повторение и разбирать проваленные тесты.", topic: "Работа руководителя с учебной статистикой команды: регулярность, слабые места, сертификаты и повторное обучение.", time: "10:30", format: "онлайн", duration: "90 минут", seats: 60, booked: 31, location: "TouchSpace", image: "images/calitex_realistic/calitex-archive-team.jpg", speakers: ["sales"], agenda: ["Какие метрики смотреть каждую неделю", "Как обсуждать проваленные тесты без демотивации", "Как связать обучение с планом продаж"] },
+        "showroom-practice": { id: "showroom-practice", day: "8", month: "июля", shortMonth: "июл", title: "Практикум в шоуруме: подбор под интерьер", desc: "Очная встреча с разбором кейсов: кухня, прихожая, активный дом и коммерческие зоны.", topic: "Подбор покрытия под интерьер, эксплуатацию и ожидания клиента на реальных образцах.", time: "12:00", format: "очно", duration: "2 часа", seats: 18, booked: 12, location: "Санкт-Петербург", image: "images/calitex_realistic/calitex-living-room-floor.jpg", speakers: ["showroom", "brand"], agenda: ["Кейсы под разные помещения", "Работа с образцами и фактурами", "Как объяснять различия клиенту без перегруза"] },
+        "supplier-demo": { id: "supplier-demo", day: "15", month: "июля", shortMonth: "июл", title: "Демо для поставщиков: как запускать бренд на платформе", desc: "Страница бренда, тесты, модерация и отслеживание реселлеров по своим брендам.", topic: "Запуск бренда на платформе: от страницы и тестов до аналитики по компаниям и реселлерам.", time: "16:00", format: "онлайн", duration: "60 минут", seats: 80, booked: 34, location: "TouchSpace", image: "images/calitex_realistic/calitex-material-lab.jpg", speakers: ["brand", "sales"], agenda: ["Структура страницы бренда", "Конструктор тестов и модерация", "Как поставщик видит компании и реселлеров"] }
+      };
+      var speakers = {
+        brand: { name: "Оксана Розова", role: "Бренд-тренер TouchSpace", photo: "images/events/speaker-brand-trainer.png" },
+        sales: { name: "Алексей Миронов", role: "Методолог продаж и обучения", photo: "images/events/speaker-sales-methodology.png" },
+        showroom: { name: "Мария Ковалёва", role: "Эксперт по интерьерному подбору", photo: "images/events/speaker-showroom-expert.png" }
+      };
+      var dayTasks = {
+        "июн-1": [{ title: "Пройти урок “Демо без лишней воды”", meta: "28 минут · личная задача", type: "урок" }],
+        "июн-3": [{ title: "Повторить бренды", meta: "Подготовка к продуктовому тесту", type: "повторение" }],
+        "июн-5": [{ title: "Закрыть тест по продуктовой линейке", meta: "15 вопросов · дедлайн до 18:00", type: "тест" }],
+        "июн-7": [{ title: "Разобрать сценарий консультационной продажи", meta: "Назначено руководителем", type: "руководитель" }],
+        "июн-9": [{ title: "AI-follow-up после встречи", meta: "Практика с шаблонами писем · 45% готово", type: "AI", important: true }],
+        "июн-11": [{ title: "Практика звонка", meta: "Тренажёр консультационной продажи", type: "практика" }],
+        "июн-14": [{ title: "Проверка знаний", meta: "Самопроверка перед следующим модулем", type: "тест" }],
+        "июн-17": [{ title: "Возражения: цена и сроки", meta: "5 диалогов · 1 ч 20 мин", type: "тренажёр" }],
+        "июн-19": [{ title: "Разбор демо", meta: "Короткая рефлексия по уроку", type: "разбор" }],
+        "июн-22": [{ title: "Сертификат", meta: "Проверить доступность сертификата", type: "сертификат" }],
+        "июн-25": [{ title: "Отправить прогресс по курсам", meta: "10 минут · контроль руководителя", type: "отчёт" }],
+        "июн-29": [{ title: "Итоговый тест", meta: "Финальная проверка месяца", type: "тест" }]
+      };
+
+      function escapeHtml(value) {
+        return String(value || "").replace(/[&<>"]/g, function (char) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char];
+        });
+      }
+
+      function getJoinedEvents() {
+        try {
+          var ids = JSON.parse(localStorage.getItem(joinedKey) || "[]");
+          return Array.isArray(ids) ? ids.map(function (id) { return eventMap[id]; }).filter(Boolean) : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function getJoinedEventIds() {
+        try {
+          var ids = JSON.parse(localStorage.getItem(joinedKey) || "[]");
+          return Array.isArray(ids) ? ids : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function saveJoinedEventIds(ids) {
+        localStorage.setItem(joinedKey, JSON.stringify(ids));
+      }
+
+      function getScheduledLessons() {
+        try {
+          var lessons = JSON.parse(localStorage.getItem(scheduledLessonsKey) || "[]");
+          return Array.isArray(lessons) ? lessons : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function saveScheduledLessons(lessons) {
+        localStorage.setItem(scheduledLessonsKey, JSON.stringify(lessons));
+        window.dispatchEvent(new CustomEvent("touchspace-scheduled-lessons-change", { detail: lessons }));
+      }
+
+      function getCalendarNotes() {
+        try {
+          var notes = JSON.parse(localStorage.getItem(calendarNotesKey) || "[]");
+          return Array.isArray(notes) ? notes : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function saveCalendarNotes(notes) {
+        localStorage.setItem(calendarNotesKey, JSON.stringify(notes));
+      }
+
+      function getManualImportantDays() {
+        try {
+          var days = JSON.parse(localStorage.getItem(importantDaysKey) || "[]");
+          return Array.isArray(days) ? days : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function saveManualImportantDays(days) {
+        localStorage.setItem(importantDaysKey, JSON.stringify(Array.from(new Set(days))));
+      }
+
+      function dateParts(date) {
+        var parts = String(date || "").split("-");
+        if (parts.length !== 3) return null;
+        var shortMonth = parts[1] === "06" ? "июн" : parts[1] === "07" ? "июл" : "";
+        var month = parts[1] === "06" ? "июня" : parts[1] === "07" ? "июля" : "";
+        if (!shortMonth) return null;
+        return { day: String(Number(parts[2])), shortMonth: shortMonth, month: month, key: shortMonth + "-" + Number(parts[2]) };
+      }
+
+      function findDayCell(eventItem) {
+        var days = Array.prototype.slice.call(document.querySelectorAll("[data-learning-calendar] .day"));
+        return days.find(function (day) {
+          var number = day.querySelector("strong");
+          var isMutedJuly = day.classList.contains("is-muted");
+          if (!number || number.textContent.trim() !== eventItem.day) return false;
+          return eventItem.shortMonth === "июн" ? !isMutedJuly : isMutedJuly;
+        });
+      }
+
+      function addEventToCalendar(eventItem) {
+        var cell = findDayCell(eventItem);
+        if (!cell) return;
+        var marker = document.createElement("span");
+        marker.className = "event-marker";
+        marker.setAttribute("data-dynamic-calendar-item", "");
+        marker.textContent = eventItem.title;
+        cell.appendChild(marker);
+
+        var dots = cell.querySelector(".day__dots");
+        if (!dots) {
+          dots = document.createElement("span");
+          dots.className = "day__dots";
+          cell.appendChild(dots);
+        }
+        var dot = document.createElement("i");
+        dot.className = "event-dot";
+        dot.setAttribute("data-dynamic-calendar-item", "");
+        dots.appendChild(dot);
+      }
+
+      function lessonKindLabel(lesson) {
+        if (lesson.type === "academy") return "академия";
+        if (lesson.type === "course") return "курс";
+        if (lesson.type === "test") return "тест";
+        return "урок";
+      }
+
+      function lessonKindLabelTitle(lesson) {
+        var label = lessonKindLabel(lesson);
+        return label.charAt(0).toUpperCase() + label.slice(1);
+      }
+
+      function addLessonToCalendar(lesson) {
+        var parts = dateParts(lesson.date);
+        if (!parts) return;
+        var cell = findDayCell({ day: parts.day, shortMonth: parts.shortMonth });
+        if (!cell) return;
+        var marker = document.createElement("span");
+        marker.className = "event-marker";
+        marker.setAttribute("data-dynamic-calendar-item", "");
+        marker.textContent = lessonKindLabelTitle(lesson) + ": " + lesson.brand;
+        cell.appendChild(marker);
+
+        var dots = cell.querySelector(".day__dots");
+        if (!dots) {
+          dots = document.createElement("span");
+          dots.className = "day__dots";
+          cell.appendChild(dots);
+        }
+        var dot = document.createElement("i");
+        dot.className = "event-dot";
+        dot.setAttribute("data-dynamic-calendar-item", "");
+        dots.appendChild(dot);
+      }
+
+      function addNoteToCalendar(note) {
+        var parts = dateParts(note.date);
+        if (!parts) return;
+        var cell = findDayCell({ day: parts.day, shortMonth: parts.shortMonth });
+        if (!cell) return;
+        var title = normalizeNoteTitle(note.title || note.text || "Заметка");
+        var marker = document.createElement("span");
+        marker.className = "event-marker";
+        marker.setAttribute("data-dynamic-calendar-item", "");
+        marker.textContent = note.time ? note.time + " · " + title : title;
+        cell.appendChild(marker);
+
+        var dots = cell.querySelector(".day__dots");
+        if (!dots) {
+          dots = document.createElement("span");
+          dots.className = "day__dots";
+          cell.appendChild(dots);
+        }
+        var dot = document.createElement("i");
+        dot.className = "event-dot";
+        dot.setAttribute("data-dynamic-calendar-item", "");
+        dots.appendChild(dot);
+      }
+
+      function agendaTemplate(eventItem) {
+        return '<article class="agenda-item event-agenda">' +
+          '<span class="agenda-date">' + eventItem.day + '</span>' +
+          '<div><strong>' + eventItem.title + '</strong><p>' + eventItem.month + ' · ' + eventItem.time + ' · ' + eventItem.format + '</p></div>' +
+        '</article>';
+      }
+
+      function taskTemplate(eventItem) {
+        return '<article class="task-card event-task">' +
+          '<div class="task-card__top"><span class="task-date">' + eventItem.day + ' ' + eventItem.month + '</span><span class="task-source">мероприятие</span></div>' +
+          '<h3>' + eventItem.title + '</h3>' +
+          '<p>' + eventItem.location + '. Запись добавлена из раздела “Мероприятия”.</p>' +
+          '<div class="task-card__foot"><span class="priority">' + eventItem.duration + '</span><span class="priority priority--manager">' + eventItem.time + '</span></div>' +
+        '</article>';
+      }
+
+      function lessonAgendaTemplate(lesson) {
+        var parts = dateParts(lesson.date);
+        if (!parts) return "";
+        return '<article class="agenda-item event-agenda">' +
+          '<span class="agenda-date">' + parts.day + '</span>' +
+          '<div><strong>' + escapeHtml(lesson.brand) + ': ' + escapeHtml(lesson.title) + '</strong><p>' + parts.month + ' · ' + escapeHtml(lesson.time) + ' · запланированный ' + lessonKindLabel(lesson) + '</p></div>' +
+        '</article>';
+      }
+
+      function lessonTaskTemplate(lesson) {
+        var parts = dateParts(lesson.date);
+        var dateLabel = parts ? parts.day + ' ' + parts.month : escapeHtml(lesson.date);
+        return '<article class="task-card event-task">' +
+          '<div class="task-card__top"><span class="task-date">' + dateLabel + '</span><span class="task-source">' + lessonKindLabel(lesson) + '</span></div>' +
+          '<h3>' + escapeHtml(lesson.brand) + ': ' + escapeHtml(lesson.title) + '</h3>' +
+          '<p>Запланировано из Академии бренда. Начало изучения: ' + escapeHtml(lesson.time) + '.</p>' +
+          '<div class="task-card__foot"><span class="priority">' + escapeHtml(lesson.duration || 60) + ' мин</span><a class="priority priority--manager" href="' + escapeHtml(lesson.url || "brands.html") + '">открыть</a></div>' +
+        '</article>';
+      }
+
+      function dayKeyFromCell(cell) {
+        var number = cell.querySelector("strong");
+        if (!number) return "";
+        return (cell.classList.contains("is-muted") ? "июл" : "июн") + "-" + number.textContent.trim();
+      }
+
+      function monthNameFromKey(key) {
+        return key.indexOf("июл-") === 0 ? "июля" : "июня";
+      }
+
+      function getEventsForDay(key) {
+        var month = key.indexOf("июл-") === 0 ? "июл" : "июн";
+        var day = key.split("-")[1];
+        return getJoinedEvents().filter(function (eventItem) {
+          return eventItem.shortMonth === month && eventItem.day === day;
+        });
+      }
+
+      function isForcedImportantDay(key) {
+        var tasks = dayTasks[key] || [];
+        return tasks.some(function (task) { return task.important; }) ||
+          getEventsForDay(key).some(function (eventItem) { return eventItem.important; });
+      }
+
+      function isManualImportantDay(key) {
+        return getManualImportantDays().indexOf(key) >= 0;
+      }
+
+      function isImportantDay(key) {
+        return isForcedImportantDay(key) || isManualImportantDay(key);
+      }
+
+      function setManualImportantDay(key, value) {
+        var days = getManualImportantDays().filter(function (day) { return day !== key; });
+        if (value) days.push(key);
+        saveManualImportantDays(days);
+      }
+
+      function applyImportantDays() {
+        document.querySelectorAll("[data-learning-calendar] .day").forEach(function (cell) {
+          var key = dayKeyFromCell(cell);
+          var forced = isForcedImportantDay(key);
+          cell.classList.toggle("is-important", isImportantDay(key));
+          cell.toggleAttribute("data-important-forced", forced);
+        });
+      }
+
+      function getLessonsForDay(key) {
+        return getScheduledLessons().filter(function (lesson) {
+          var parts = dateParts(lesson.date);
+          return parts && parts.key === key;
+        });
+      }
+
+      function getNotesForDay(key) {
+        return getCalendarNotes().filter(function (note) {
+          var parts = dateParts(note.date);
+          return parts && parts.key === key;
+        }).sort(function (a, b) {
+          return String(a.time || "99:99").localeCompare(String(b.time || "99:99"));
+        });
+      }
+
+      function detailTaskTemplate(item) {
+        return '<article class="day-detail-item">' +
+          '<span class="day-detail-item__icon">T</span>' +
+          '<div><strong>' + item.title + '</strong><span>' + item.meta + ' · ' + item.type + '</span></div>' +
+        '</article>';
+      }
+
+      function detailEventTemplate(item) {
+        return '<article class="day-detail-item event">' +
+          '<span class="day-detail-item__icon">E</span>' +
+          '<div><strong>' + item.title + '</strong><span>' + item.time + ' · ' + item.format + ' · ' + item.location + '</span><div class="day-detail-item__actions"><button class="day-detail-button" type="button" data-open-task-event="' + item.id + '">Открыть карточку</button><button class="day-detail-button danger" type="button" data-delete-task-event="' + item.id + '">Удалить из календаря</button></div></div>' +
+        '</article>';
+      }
+
+      function detailLessonTemplate(item) {
+        return '<article class="day-detail-item event">' +
+          '<span class="day-detail-item__icon">L</span>' +
+          '<div><strong>' + escapeHtml(item.brand) + ': ' + escapeHtml(item.title) + '</strong><span>' + escapeHtml(item.time) + ' · ' + escapeHtml(item.duration || 60) + ' минут · запланированный ' + lessonKindLabel(item) + '</span><div class="day-detail-item__actions"><a class="day-detail-button" href="' + escapeHtml(item.url || "brands.html") + '">Открыть</a><button class="day-detail-button danger" type="button" data-delete-scheduled-lesson="' + escapeHtml(item.id) + '">Удалить из календаря</button></div></div>' +
+        '</article>';
+      }
+
+      function detailNoteTemplate(item) {
+        return '<article class="day-detail-item">' +
+          '<span class="day-detail-item__icon">N</span>' +
+          '<div><strong>' + escapeHtml(item.title || item.text) + '</strong><span>' + (item.time ? escapeHtml(item.time) : 'без отметки времени') + ' · ' + escapeHtml(item.text || '') + '</span><div class="day-detail-item__actions"><button class="day-detail-button note" type="button" data-edit-calendar-note="' + escapeHtml(item.id) + '">Изменить заметку</button><button class="day-detail-button danger" type="button" data-delete-calendar-note="' + escapeHtml(item.id) + '">Удалить заметку</button></div></div>' +
+        '</article>';
+      }
+
+      function eventSpeakerTemplate(id) {
+        var speaker = speakers[id];
+        if (!speaker) return "";
+        return '<article class="event-speaker"><img src="' + speaker.photo + '" alt="' + speaker.name + '"><div><strong>' + speaker.name + '</strong><span>' + speaker.role + '</span></div></article>';
+      }
+
+      function openTaskEventCard(id) {
+        var item = eventMap[id];
+        var popup = document.querySelector("[data-task-event-card]");
+        var page = document.querySelector("[data-task-event-card-page]");
+        if (!item || !popup || !page) return;
+        var freeSeats = item.seats - item.booked;
+        page.innerHTML =
+          '<div class="event-card-popup__hero">' +
+            '<div class="event-card-popup__copy">' +
+              '<div class="day-popup__top"><div><span class="task-date">' + item.day + ' ' + item.month + ' · ' + item.time + '</span><h2>' + item.title + '</h2><p>' + item.topic + '</p></div><button class="day-popup__close" type="button" data-close-task-event aria-label="Закрыть">×</button></div>' +
+              '<div class="event-card-popup__stats">' +
+                '<div class="event-card-popup__stat"><strong>' + item.seats + '</strong><span>всего мест</span></div>' +
+                '<div class="event-card-popup__stat"><strong>' + freeSeats + '</strong><span>свободно</span></div>' +
+                '<div class="event-card-popup__stat"><strong>' + item.duration + '</strong><span>длительность</span></div>' +
+                '<div class="event-card-popup__stat"><strong>' + item.format + '</strong><span>формат</span></div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="event-card-popup__image"><img src="' + item.image + '" alt=""></div>' +
+          '</div>' +
+          '<div class="event-card-popup__body">' +
+            '<section class="event-card-popup__section"><h3>Описание темы</h3><p>' + item.desc + '</p><ul>' + item.agenda.map(function (point) { return '<li>' + point + '</li>'; }).join("") + '</ul></section>' +
+            '<aside class="event-card-popup__section"><h3>Место проведения</h3><p>' + item.location + '</p><h3 style="margin-top:16px">Спикеры</h3>' + item.speakers.map(eventSpeakerTemplate).join("") + '</aside>' +
+          '</div>';
+        popup.classList.add("is-open");
+        popup.setAttribute("aria-hidden", "false");
+      }
+
+      function closeTaskEventCard() {
+        var popup = document.querySelector("[data-task-event-card]");
+        if (!popup) return;
+        popup.classList.remove("is-open");
+        popup.setAttribute("aria-hidden", "true");
+      }
+
+      function openDayPopup(cell) {
+        var key = dayKeyFromCell(cell);
+        var day = key.split("-")[1];
+        var tasks = dayTasks[key] || [];
+        var notes = getNotesForDay(key);
+        var lessons = getLessonsForDay(key);
+        var events = getEventsForDay(key);
+        var content = tasks.map(detailTaskTemplate).join("") + notes.map(detailNoteTemplate).join("") + lessons.map(detailLessonTemplate).join("") + events.map(detailEventTemplate).join("");
+        var popup = document.querySelector("[data-day-popup]");
+        var card = document.querySelector("[data-day-popup-card]");
+        if (!popup || !card) return;
+        popup.setAttribute("data-current-day-key", key);
+        popup.setAttribute("data-current-day-date", (key.indexOf("июл-") === 0 ? "2026-07-" : "2026-06-") + String(day).padStart(2, "0"));
+        card.innerHTML =
+          '<div class="day-popup__top">' +
+            '<div><h2>' + day + ' ' + monthNameFromKey(key) + '</h2><p>' + (tasks.length + notes.length + lessons.length + events.length) + ' задач, заметок и событий в учебном календаре</p></div>' +
+            '<button class="day-popup__close" type="button" data-close-day-popup aria-label="Закрыть">×</button>' +
+          '</div>' +
+          '<form class="day-note-form" data-day-note-form>' +
+            '<input type="hidden" name="id">' +
+            '<div class="day-note-form__grid"><input class="day-note-title" name="title" required maxlength="36" placeholder="Заголовок, до 36 символов"><input class="day-note-input" name="text" placeholder="Текст заметки"><input class="day-note-time" name="time" type="time" aria-label="Время заметки"></div>' +
+            '<div class="day-note-form__actions"><button class="day-detail-button" type="button" data-cancel-day-note>Отмена</button><button class="day-detail-button note" type="submit" data-note-submit>Сохранить заметку</button></div>' +
+          '</form>' +
+          '<div class="day-detail-item__actions" style="margin-bottom:12px"><button class="day-detail-button note" type="button" data-open-day-note>Добавить заметку</button><button class="day-detail-button note" type="button" data-toggle-important-day' + (isForcedImportantDay(key) ? ' disabled title="День отмечен важным принудительно"' : '') + '>' + (isForcedImportantDay(key) ? 'Важный день' : (isManualImportantDay(key) ? 'Снять важный день' : 'Сделать важным')) + '</button></div>' +
+          (content ? '<div class="day-detail-list">' + content + '</div>' : '<div class="day-detail-empty">На этот день задач нет. Можно спокойно запланировать повторение или отдых.</div>');
+        popup.classList.add("is-open");
+        popup.setAttribute("aria-hidden", "false");
+      }
+
+      function closeDayPopup() {
+        var popup = document.querySelector("[data-day-popup]");
+        if (!popup) return;
+        popup.classList.remove("is-open");
+        popup.setAttribute("aria-hidden", "true");
+      }
+
+      function toast(message) {
+        var node = document.querySelector("[data-calendar-toast]");
+        if (!node) {
+          node = document.createElement("div");
+          node.className = "calendar-toast";
+          node.setAttribute("data-calendar-toast", "");
+          document.body.appendChild(node);
+        }
+        node.textContent = message;
+        node.classList.add("is-open");
+        setTimeout(function () { node.classList.remove("is-open"); }, 1800);
+      }
+
+      function clearDynamicCalendarItems() {
+        document.querySelectorAll("[data-dynamic-calendar-item]").forEach(function (node) {
+          node.remove();
+        });
+        document.querySelectorAll("[data-learning-calendar] .day__dots").forEach(function (dots) {
+          if (!dots.querySelector("i")) dots.remove();
+        });
+      }
+
+      function refreshDynamicCalendar() {
+        clearDynamicCalendarItems();
+        renderJoinedEvents();
+        applyImportantDays();
+      }
+
+      function refreshOpenDayPopup() {
+        var popup = document.querySelector("[data-day-popup]");
+        if (!popup || !popup.classList.contains("is-open")) return;
+        var key = popup.getAttribute("data-current-day-key");
+        var cell = Array.prototype.slice.call(document.querySelectorAll("[data-learning-calendar] .day")).find(function (day) {
+          return dayKeyFromCell(day) === key;
+        });
+        if (cell) openDayPopup(cell);
+      }
+
+      function removeJoinedEvent(id) {
+        saveJoinedEventIds(getJoinedEventIds().filter(function (eventId) { return eventId !== id; }));
+        refreshDynamicCalendar();
+        closeTaskEventCard();
+        refreshOpenDayPopup();
+        toast("Мероприятие удалено из календаря");
+      }
+
+      function removeScheduledLesson(id) {
+        saveScheduledLessons(getScheduledLessons().filter(function (lesson) { return lesson.id !== id; }));
+        refreshDynamicCalendar();
+        refreshOpenDayPopup();
+        toast("Урок удалён из календаря");
+      }
+
+      function normalizeNoteTitle(value) {
+        return String(value || "").trim().slice(0, 36);
+      }
+
+      function openNoteForm(note) {
+        var popup = document.querySelector("[data-day-popup]");
+        var form = document.querySelector("[data-day-note-form]");
+        if (!popup || !form) return;
+        form.classList.add("is-open");
+        form.elements.id.value = note ? note.id : "";
+        form.elements.title.value = note ? normalizeNoteTitle(note.title || note.text) : "";
+        form.elements.text.value = note ? String(note.text || "") : "";
+        form.elements.time.value = note ? String(note.time || "") : "";
+        var submit = form.querySelector("[data-note-submit]");
+        if (submit) submit.textContent = note ? "Сохранить изменения" : "Сохранить заметку";
+        form.elements.title.focus();
+      }
+
+      function closeNoteForm() {
+        var form = document.querySelector("[data-day-note-form]");
+        if (!form) return;
+        form.reset();
+        form.classList.remove("is-open");
+        var submit = form.querySelector("[data-note-submit]");
+        if (submit) submit.textContent = "Сохранить заметку";
+      }
+
+      function saveCalendarNote(id, title, text, time) {
+        var popup = document.querySelector("[data-day-popup]");
+        if (!popup) return;
+        var date = popup.getAttribute("data-current-day-date");
+        var notes = getCalendarNotes();
+        var normalizedTitle = normalizeNoteTitle(title);
+        if (!normalizedTitle) return;
+        var existing = id ? notes.find(function (note) { return note.id === id; }) : null;
+        if (existing) {
+          existing.title = normalizedTitle;
+          existing.text = String(text || "").trim();
+          existing.time = String(time || "").trim();
+        } else {
+          notes.push({
+            id: "note-" + Date.now().toString(36),
+            date: date,
+            time: String(time || "").trim(),
+            title: normalizedTitle,
+            text: String(text || "").trim()
+          });
+        }
+        saveCalendarNotes(notes);
+        refreshDynamicCalendar();
+        refreshOpenDayPopup();
+        toast(existing ? "Заметка изменена" : "Заметка добавлена");
+      }
+
+      function removeCalendarNote(id) {
+        saveCalendarNotes(getCalendarNotes().filter(function (note) { return note.id !== id; }));
+        refreshDynamicCalendar();
+        refreshOpenDayPopup();
+        toast("Заметка удалена");
+      }
+
+      function toggleImportantDay() {
+        var popup = document.querySelector("[data-day-popup]");
+        if (!popup) return;
+        var key = popup.getAttribute("data-current-day-key");
+        if (isForcedImportantDay(key)) {
+          toast("Этот день отмечен важным принудительно");
+          return;
+        }
+        setManualImportantDay(key, !isManualImportantDay(key));
+        applyImportantDays();
+        refreshOpenDayPopup();
+        toast(isManualImportantDay(key) ? "День отмечен важным" : "Отметка важного дня снята");
+      }
+
+      function setupDayPopup() {
+        var calendar = document.querySelector("[data-learning-calendar]");
+        if (!calendar) return;
+        calendar.addEventListener("click", function (event) {
+          var cell = event.target.closest(".day");
+          if (cell) openDayPopup(cell);
+        });
+        document.addEventListener("click", function (event) {
+          var eventButton = event.target.closest("[data-open-task-event]");
+          if (eventButton) {
+            openTaskEventCard(eventButton.getAttribute("data-open-task-event"));
+            return;
+          }
+          var deleteEventButton = event.target.closest("[data-delete-task-event]");
+          if (deleteEventButton) {
+            removeJoinedEvent(deleteEventButton.getAttribute("data-delete-task-event"));
+            return;
+          }
+          var deleteLessonButton = event.target.closest("[data-delete-scheduled-lesson]");
+          if (deleteLessonButton) {
+            removeScheduledLesson(deleteLessonButton.getAttribute("data-delete-scheduled-lesson"));
+            return;
+          }
+          var openNoteButton = event.target.closest("[data-open-day-note]");
+          if (openNoteButton) {
+            openNoteForm(null);
+            return;
+          }
+          if (event.target.closest("[data-cancel-day-note]")) {
+            closeNoteForm();
+            return;
+          }
+          var editNoteButton = event.target.closest("[data-edit-calendar-note]");
+          if (editNoteButton) {
+            var noteId = editNoteButton.getAttribute("data-edit-calendar-note");
+            var note = getCalendarNotes().find(function (item) { return item.id === noteId; });
+            if (note) openNoteForm(note);
+            return;
+          }
+          var deleteNoteButton = event.target.closest("[data-delete-calendar-note]");
+          if (deleteNoteButton) {
+            removeCalendarNote(deleteNoteButton.getAttribute("data-delete-calendar-note"));
+            return;
+          }
+          if (event.target.closest("[data-toggle-important-day]")) {
+            toggleImportantDay();
+            return;
+          }
+          if (event.target.matches("[data-task-event-card]") || event.target.closest("[data-close-task-event]")) {
+            closeTaskEventCard();
+            return;
+          }
+          if (event.target.matches("[data-day-popup]") || event.target.closest("[data-close-day-popup]")) closeDayPopup();
+        });
+        document.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") {
+            closeTaskEventCard();
+            closeDayPopup();
+          }
+        });
+        document.addEventListener("submit", function (event) {
+          var form = event.target.closest("[data-day-note-form]");
+          if (!form) return;
+          event.preventDefault();
+          var title = normalizeNoteTitle(form.elements.title.value);
+          if (!title) return;
+          saveCalendarNote(form.elements.id.value, title, form.elements.text.value, form.elements.time.value);
+        });
+      }
+
+      function renderJoinedEvents() {
+        var events = getJoinedEvents();
+        var lessons = getScheduledLessons();
+        var notes = getCalendarNotes();
+        var agendaList = document.querySelector("[data-agenda-list]");
+        var taskList = document.querySelector("[data-event-task-list]");
+
+        events.forEach(addEventToCalendar);
+        lessons.forEach(addLessonToCalendar);
+        notes.forEach(addNoteToCalendar);
+        applyImportantDays();
+        if (agendaList) {
+          agendaList.querySelectorAll("[data-dynamic-agenda-item]").forEach(function (node) { node.remove(); });
+          var agendaHtml = lessons.map(lessonAgendaTemplate).join("") + events.map(agendaTemplate).join("");
+          if (agendaHtml) agendaList.insertAdjacentHTML("afterbegin", agendaHtml.replace(/<article /g, '<article data-dynamic-agenda-item '));
+        }
+        if (taskList) taskList.innerHTML = lessons.map(lessonTaskTemplate).join("") + events.map(taskTemplate).join("");
+      }
+
+      renderJoinedEvents();
+      setupDayPopup();
+    })();
+  </script>
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var api = window.TouchSpaceAcademy;
+      if (!api || !api.awardXp) return;
+      var cards = Array.prototype.slice.call(document.querySelectorAll(".tasks-board .task-card:not(.event-task)"));
+
+      function slug(value) {
+        return String(value || "").toLowerCase().replace(/[^a-zа-я0-9]+/gi, "-").replace(/^-|-$/g, "");
+      }
+
+      function difficultyFor(card) {
+        var text = card.textContent.toLowerCase();
+        if (text.indexOf("руководитель") >= 0 || text.indexOf("отчет") >= 0) return { key: "hard", xp: 100, label: "сложная" };
+        if (text.indexOf("тест") >= 0 || text.indexOf("тренаж") >= 0 || text.indexOf("ai") >= 0) return { key: "medium", xp: 50, label: "средняя" };
+        return { key: "simple", xp: 20, label: "простая" };
+      }
+
+      function acceptedIds() {
+        return (api.getState().xpEvents || []).filter(function (event) {
+          return event.eventType === "assignment_accepted";
+        }).map(function (event) {
+          return event.entityId;
+        });
+      }
+
+      function decorateTasks() {
+        var accepted = acceptedIds();
+        cards.forEach(function (card) {
+          if (card.dataset.xpReady === "1") return;
+          var title = card.querySelector("h3");
+          var foot = card.querySelector(".task-card__foot");
+          if (!title || !foot) return;
+          var difficulty = difficultyFor(card);
+          var id = "task-" + slug(title.textContent);
+          card.dataset.assignmentId = id;
+          card.dataset.xpReady = "1";
+          var isAccepted = accepted.indexOf(id) >= 0;
+          foot.insertAdjacentHTML("beforeend", '<span class="priority priority--manager">+' + difficulty.xp + ' XP</span><button class="priority" type="button" data-accept-assignment="' + id + '" data-difficulty="' + difficulty.key + '">' + (isAccepted ? "принято" : "принять") + '</button>');
+          var button = foot.querySelector('[data-accept-assignment="' + id + '"]');
+          if (button && isAccepted) button.disabled = true;
+        });
+      }
+
+      document.addEventListener("click", function (event) {
+        var button = event.target.closest("[data-accept-assignment]");
+        if (!button || button.disabled) return;
+        var card = button.closest(".task-card");
+        var title = card && card.querySelector("h3") ? card.querySelector("h3").textContent.trim() : "Практическое задание";
+        api.awardXp({
+          eventType: "assignment_accepted",
+          entityId: button.getAttribute("data-accept-assignment"),
+          difficulty: button.getAttribute("data-difficulty"),
+          title: title,
+          label: "Принято задание \"" + title + "\""
+        });
+        button.textContent = "принято";
+        button.disabled = true;
+      });
+
+      decorateTasks();
+    })();
+  </script>
+</body>
+</html>

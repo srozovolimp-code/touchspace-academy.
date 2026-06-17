@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Реселлеры брендов | TouchSpace Академия</title>
+  <style>
+    :root {
+      --blue: #0a84ff;
+      --ink: #111827;
+      --muted: #64748b;
+      --line: #dfe7f3;
+      --page: #eef4ff;
+      --green: #23c483;
+      --orange: #ff8a3d;
+      --shadow-soft: 0 14px 38px rgba(24,45,90,.08);
+      --max: 1500px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(180deg,#f8fbff 0%,var(--page) 52%,#f6f9ff 100%); color: var(--ink); font-family: Inter,"SF Pro Display","Segoe UI",Arial,sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .page { max-width: var(--max); margin: 0 auto; padding: 24px; }
+    .shell { display: grid; grid-template-columns: 76px minmax(0,1fr); gap: 24px; }
+    .main { min-width: 0; }
+    .supplier-hero, .panel, .toolbar {
+      border: 1px solid rgba(255,255,255,.88);
+      border-radius: 30px;
+      background: rgba(255,255,255,.84);
+      box-shadow: var(--shadow-soft);
+    }
+    .supplier-hero { display: grid; grid-template-columns: minmax(0,1fr) 360px; gap: 22px; align-items: end; margin-bottom: 18px; padding: 28px; }
+    .path { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; color: #6b7280; font-size: 13px; font-weight: 850; }
+    .path a { color: #177be8; }
+    .eyebrow { display: inline-flex; min-height: 34px; align-items: center; width: fit-content; margin-bottom: 14px; padding: 0 13px; border-radius: 999px; background: #eef5ff; color: #177be8; font-size: 13px; font-weight: 900; }
+    h1 { margin: 0; font-size: clamp(38px,4.5vw,62px); line-height: .96; letter-spacing: -.055em; }
+    .supplier-hero p { max-width: 820px; margin: 12px 0 0; color: var(--muted); font-size: 16px; line-height: 1.55; }
+    .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+    .stat { min-height: 92px; padding: 16px; border: 1px solid var(--line); border-radius: 20px; background: #fff; }
+    .stat strong { display: block; font-size: 28px; line-height: 1; letter-spacing: -.04em; }
+    .stat span { display: block; margin-top: 7px; color: var(--muted); font-size: 12px; font-weight: 850; line-height: 1.25; }
+    .toolbar { display: grid; grid-template-columns: minmax(260px,1fr) auto auto; gap: 12px; align-items: center; margin-bottom: 18px; padding: 14px; border-radius: 24px; }
+    .search-field { display: flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 15px; border: 1px solid var(--line); border-radius: 17px; background: #f7faff; color: #8a97aa; }
+    .search-field input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 15px; border: 0; border-radius: 15px; background: var(--blue); color: #fff; font-weight: 950; box-shadow: 0 12px 28px rgba(10,132,255,.22); }
+    .btn.secondary { border: 1px solid var(--line); background: #fff; color: #177be8; box-shadow: none; }
+    .content-layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 18px; align-items: start; }
+    .panel { padding: 18px; }
+    .side-panel { position: sticky; top: 22px; display: grid; gap: 14px; }
+    .panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+    .panel-head h2 { margin: 0; font-size: 22px; line-height: 1.08; letter-spacing: -.025em; }
+    .panel-head p { margin: 5px 0 0; color: var(--muted); font-size: 13px; line-height: 1.35; }
+    .brand-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .pill { display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px; border-radius: 999px; background: #f1f6ff; color: #36506f; font-size: 12px; font-weight: 900; }
+    .pill.green { background: #ecfbf5; color: #16865a; }
+    .tree { display: grid; gap: 10px; }
+    .company-node { border: 1px solid var(--line); border-radius: 22px; background: #fff; overflow: hidden; }
+    .company-head, .student-head {
+      display: grid;
+      grid-template-columns: 22px 20px 34px minmax(0,1fr) auto;
+      column-gap: 12px;
+      row-gap: 8px;
+      align-items: center;
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: background .16s ease;
+    }
+    .company-head { padding: 14px 16px; }
+    .student-head { padding: 12px 16px 12px 42px; border-top: 1px solid #edf2fb; }
+    .company-head:hover, .student-head:hover { background: #f8fbff; }
+    .company-head:focus-visible, .student-head:focus-visible { outline: 3px solid rgba(10,132,255,.2); outline-offset: -3px; }
+    .company-copy, .student-copy { padding-left: 8px; }
+    .toggle { display: grid; place-items: center; width: 22px; height: 22px; border: 0; border-radius: 8px; background: #eef5ff; color: #177be8; font-weight: 950; cursor: pointer; }
+    .toggle:hover { background: #e4f0ff; }
+    .toggle::before { content: "+"; }
+    .is-open > .company-head .toggle::before, .student-node.is-open > .student-head .toggle::before { content: "-"; }
+    .check {
+      display: grid;
+      place-items: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 7px;
+      border: 1.5px solid #c9d6e8;
+      background: #fff;
+      box-shadow: 0 6px 14px rgba(24,45,90,.06), inset 0 0 0 3px #fff;
+      transition: background .16s ease, border-color .16s ease, box-shadow .16s ease;
+    }
+    .check::after {
+      content: "";
+      width: 9px;
+      height: 5px;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      opacity: 0;
+      transform: translateY(-1px) rotate(-45deg);
+      transition: opacity .16s ease;
+    }
+    .check.is-checked, .check.is-mixed {
+      border-color: var(--blue);
+      background: linear-gradient(135deg,var(--blue),#45a3ff);
+      box-shadow: 0 8px 18px rgba(10,132,255,.18);
+    }
+    .check.is-checked::after { opacity: 1; }
+    .check.is-mixed::after {
+      width: 9px;
+      height: 0;
+      border-left: 0;
+      border-bottom: 2px solid #fff;
+      opacity: 1;
+      transform: none;
+    }
+    .avatar { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 13px; background: linear-gradient(135deg,#0a84ff,#23c483); color: #fff; font-size: 12px; font-weight: 950; }
+    .company-copy strong, .student-copy strong { display: block; color: var(--ink); font-size: 15px; line-height: 1.15; }
+    .copy-title { display: flex; align-items: center; gap: 8px; width: 100%; max-width: 100%; min-width: 0; vertical-align: middle; line-height: 24px; flex-wrap: nowrap; }
+    .copy-title strong { display: inline-block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 24px; }
+    .company-badge {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      max-width: 220px;
+      height: 24px;
+      min-height: 24px;
+      margin-top: 0;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: #eef5ff;
+      color: #177be8;
+      font-size: 11px;
+      font-weight: 950;
+      line-height: 24px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-shadow: inset 0 0 0 1px rgba(10,132,255,.12);
+    }
+    .company-badge[data-company-filter] {
+      border: 0;
+      cursor: pointer;
+      transition: background .16s ease, color .16s ease, box-shadow .16s ease, transform .16s ease;
+    }
+    .company-badge[data-company-filter]:hover {
+      transform: translateY(-1px);
+      background: rgba(10,132,255,.14);
+      color: #0a68d1;
+      box-shadow: inset 0 0 0 1px rgba(10,132,255,.2), 0 8px 18px rgba(10,132,255,.1);
+    }
+    .company-badge.is-active {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(10,132,255,.18);
+    }
+    .tree-rating { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 24px; height: 24px; min-width: 24px; padding: 0; border-radius: 50%; background: #fff7d6; color: #9a6a00; font-size: 12px; font-weight: 950; line-height: 24px; text-align: center; box-shadow: inset 0 0 0 1px rgba(181,121,0,.18); }
+    .tree-rating.sum { background: #eef5ff; color: #177be8; box-shadow: inset 0 0 0 1px rgba(10,132,255,.18); }
+    .company-copy span, .student-copy span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; font-weight: 750; line-height: 1.3; }
+    .company-copy .copy-title, .student-copy .copy-title { display: flex; margin-top: 0; color: inherit; font-size: inherit; font-weight: inherit; line-height: 24px; }
+    .company-copy .company-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0;
+      color: #177be8;
+      font-size: 11px;
+      font-weight: 950;
+      line-height: 24px;
+    }
+    .company-copy .company-badge.is-active { color: #fff; }
+    .company-copy .tree-rating, .student-copy .tree-rating { display: inline-flex; align-items: center; justify-content: center; margin-top: 0; color: #9a6a00; font-size: 12px; font-weight: 950; line-height: 24px; }
+    .company-copy .tree-rating.sum, .student-copy .tree-rating.sum { color: #177be8; }
+    .company-meta, .student-meta { display: flex; flex-wrap: wrap; gap: 7px; justify-content: flex-end; }
+    .student-list, .course-list { display: none; }
+    .company-node.is-open > .student-list, .student-node.is-open > .course-list { display: grid; }
+    .course-list { gap: 8px; padding: 0 16px 14px 128px; }
+    .course-card { display: grid; grid-template-columns: minmax(0,1fr) 120px 76px; gap: 12px; align-items: center; padding: 12px; border: 1px solid #edf2fb; border-radius: 16px; background: #f8fbff; }
+    .course-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+    .course-card span { color: var(--muted); font-size: 12px; font-weight: 750; }
+    .progress { height: 9px; border-radius: 999px; background: #e4edf9; overflow: hidden; }
+    .progress i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg,var(--blue),var(--green)); }
+    .empty { display: none; padding: 36px 18px; border: 1px dashed #c7d6ea; border-radius: 22px; background: #f8fbff; color: var(--muted); text-align: center; font-weight: 850; }
+    .selection-scroll-wrap {
+      position: relative;
+      padding-right: 12px;
+    }
+    .selection-scroll {
+      max-height: 520px;
+      overflow-y: auto;
+      padding-right: 4px;
+      overscroll-behavior: contain;
+      scrollbar-width: none;
+    }
+    .selection-scroll::-webkit-scrollbar { display: none; }
+    .selection-scrollbar {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: none;
+      width: 6px;
+      height: 100%;
+      border-radius: 999px;
+      background: #edf4ff;
+      pointer-events: none;
+    }
+    .selection-scroll-wrap.is-scrollable .selection-scrollbar { display: block; }
+    .selection-scrollbar__thumb {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 6px;
+      min-height: 44px;
+      border-radius: 999px;
+      background: rgba(10,132,255,.72);
+      box-shadow: 0 6px 14px rgba(10,132,255,.16);
+      transform: translateY(0);
+    }
+    .selection-list { display: grid; gap: 12px; }
+    .selection-card { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; padding: 13px; border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: 0 10px 24px rgba(24,45,90,.05); }
+    .selection-main { min-width: 0; }
+    .selection-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .selection-title strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; line-height: 1.15; }
+    .favorite-mark { display: grid; flex: 0 0 auto; place-items: center; width: 24px; height: 24px; border-radius: 9px; background: #fff7d6; color: #b57900; font-size: 14px; font-weight: 950; }
+    .selection-meta { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; font-weight: 750; line-height: 1.35; }
+    .selection-brands { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+    .selection-brand { display: inline-flex; align-items: center; min-height: 24px; padding: 0 8px; border-radius: 999px; background: #f1f6ff; color: #36506f; font-size: 11px; font-weight: 900; }
+    .rating-box { display: grid; justify-items: end; align-content: start; gap: 8px; }
+    .rating-label { color: var(--muted); font-size: 11px; font-weight: 900; line-height: 1; text-transform: uppercase; }
+    .rating-row { display: flex; gap: 4px; padding: 4px; border: 1px solid #edf2fb; border-radius: 999px; background: #f8fbff; }
+    .rating-button { display: grid; place-items: center; width: 24px; height: 24px; border: 0; border-radius: 999px; background: transparent; color: #9aa8ba; font-size: 12px; font-weight: 950; }
+    .rating-button.is-active { background: #fff; color: #177be8; box-shadow: 0 5px 12px rgba(10,132,255,.14); }
+    .brand-summary { display: grid; gap: 12px; }
+    .brand-summary__card { padding: 14px; border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: 0 10px 24px rgba(24,45,90,.05); }
+    .brand-summary__top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+    .brand-summary__name { display: flex; gap: 10px; align-items: flex-start; min-width: 0; }
+    .brand-mark { display: grid; flex: 0 0 auto; place-items: center; width: 38px; height: 38px; border-radius: 14px; background: linear-gradient(135deg,#eef5ff,#eafbf5); color: #177be8; font-size: 14px; font-weight: 950; }
+    .brand-summary__name b { display: block; font-size: 15px; line-height: 1.15; }
+    .brand-summary__name span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; font-weight: 750; line-height: 1.25; }
+    .brand-summary__metric { flex: 0 0 auto; min-width: 82px; text-align: right; }
+    .brand-summary__metric strong { display: block; font-size: 26px; line-height: .9; letter-spacing: -.04em; }
+    .brand-summary__metric span { display: block; margin-top: 6px; color: var(--muted); font-size: 11px; font-weight: 900; line-height: 1.15; }
+    .brand-summary__bar { height: 8px; margin-top: 13px; border-radius: 999px; background: #e9f0fa; overflow: hidden; }
+    .brand-summary__bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#0a84ff,#23c483); }
+    .brand-summary__foot { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+    .side-note { padding: 14px; border-radius: 20px; background: #f7faff; border: 1px solid var(--line); color: var(--muted); font-size: 13px; font-weight: 750; line-height: 1.45; }
+    @media (max-width: 980px) {
+      .supplier-hero, .toolbar, .content-layout { grid-template-columns: 1fr; }
+      .side-panel { position: static; }
+      .stats { grid-template-columns: 1fr 1fr 1fr; }
+      .company-head, .student-head { grid-template-columns: 22px 20px 30px minmax(0,1fr); }
+      .company-meta, .student-meta { grid-column: 4; justify-content: flex-start; }
+      .course-list { padding-left: 58px; }
+      .course-card { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .page { padding: 12px 10px 28px; }
+      .stats { grid-template-columns: 1fr; }
+      .supplier-hero, .panel { border-radius: 24px; padding: 18px; }
+      .selection-scroll { max-height: 520px; }
+      .selection-card { grid-template-columns: 1fr; }
+      .rating-box { justify-items: start; }
+      .student-head { padding-left: 16px; }
+      .course-list { padding-left: 16px; }
+    }
+  </style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Найти торговую точку, компанию, реселлера или бренд"></header>
+
+        <section class="supplier-hero">
+          <div>
+            <nav class="path" aria-label="Хлебные крошки"><a href="index.html">Разделы</a><span>/</span><a href="supplier-dashboard.html">Кабинет поставщика</a><span>/</span><span>Реселлеры брендов</span></nav>
+            <span class="eyebrow">Supplier Learning Tree</span>
+            <h1>Торговые точки и реселлеры</h1>
+            <p>Оксана Розова поставляет Pergo, Calitex и Coswick. В этом разделе видны только торговые точки и реселлеры, которые проходили обучение по этим брендам. Компания отображается бейджем рядом с торговой точкой.</p>
+            <div class="brand-row">
+              <span class="pill green">Pergo</span>
+              <span class="pill green">Calitex</span>
+              <span class="pill green">Coswick</span>
+            </div>
+          </div>
+          <aside class="stats" aria-label="Сводка">
+            <div class="stat"><strong data-stat="companies">0</strong><span>торговых точек</span></div>
+            <div class="stat"><strong data-stat="students">0</strong><span>реселлеров</span></div>
+            <div class="stat"><strong data-stat="courses">0</strong><span>прохождений</span></div>
+          </aside>
+        </section>
+
+        <section class="toolbar" aria-label="Поиск и действия">
+          <label class="search-field">
+            <span>Поиск</span>
+            <input id="tree-search" type="search" placeholder="Торговая точка, компания, реселлер, бренд или курс">
+          </label>
+          <button class="btn secondary" type="button" data-select-visible>Выбрать видимых</button>
+          <button class="btn secondary" type="button" data-clear-selection>Снять выбор</button>
+        </section>
+
+        <div class="content-layout">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Дерево торговых точек</h2>
+                <p>Слева выбирайте торговые точки или отдельных реселлеров. Компания показана бейджем рядом с названием точки.</p>
+              </div>
+              <div class="brand-row" style="margin-top:0;justify-content:flex-end"><span class="pill" data-active-company-filter hidden></span><span class="pill" data-selected-count>0 выбрано</span></div>
+            </div>
+            <div class="tree" id="supplier-tree"></div>
+            <div class="empty" id="empty-state">Нет торговых точек или реселлеров по брендам этого поставщика</div>
+          </section>
+
+          <aside class="side-panel">
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Избранные реселлеры</h2>
+                  <p>Личный список поставщика с внутренней отметкой интереса.</p>
+                </div>
+              </div>
+              <div class="selection-scroll-wrap" data-selection-scroll-wrap>
+                <div class="selection-scroll" data-selection-scroll>
+                  <div class="selection-list" data-selection-list></div>
+                </div>
+                <div class="selection-scrollbar" aria-hidden="true">
+                  <span class="selection-scrollbar__thumb" data-selection-scroll-thumb></span>
+                </div>
+              </div>
+              <div class="empty" data-selection-empty>Пока в избранном никого нет</div>
+            </section>
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>По брендам</h2>
+                  <p>Сводка по видимым прохождениям.</p>
+                </div>
+              </div>
+              <div class="brand-summary" data-brand-summary></div>
+            </section>
+            <div class="side-note">Курсы по брендам других поставщиков не попадают в дерево и не учитываются в сводке, даже если реселлер проходил их на платформе.</div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="shared-header.js"></script>
+  <script>
+    (function () {
+      var supplier = {
+        name: "Оксана Розова",
+        brands: ["pergo", "calitex", "coswick"]
+      };
+
+      var brandLabels = {
+        pergo: "Pergo",
+        calitex: "Calitex",
+        coswick: "Coswick",
+        quickstep: "Quick-Step",
+        egger: "EGGER",
+        ikea: "IKEA"
+      };
+
+      var companies = [
+        {
+          id: "roga-tverskaya",
+          name: "Шоурум Тверская",
+          company: 'ООО "Рога и Копыта"',
+          city: "Москва, Тверская 12",
+          students: [
+            { id: "roga-1", name: "Сергей Розов", role: "Менеджер", courses: [
+              { brand: "pergo", title: "Pergo: философия и продажа", progress: 82, result: "тест пройден" },
+              { brand: "calitex", title: "Calitex: качество и аргументы", progress: 58, result: "в процессе" },
+              { brand: "egger", title: "EGGER: мебельные материалы", progress: 91, result: "скрыто для поставщика" }
+            ] },
+            { id: "roga-2", name: "Марина Лапина", role: "Супервайзер", courses: [
+              { brand: "coswick", title: "Coswick: дерево и аргументация", progress: 74, result: "тест пройден" },
+              { brand: "pergo", title: "Pergo: AquaSafe и TitanX", progress: 96, result: "сертификат" }
+            ] },
+            { id: "roga-3", name: "Илья Соколов", role: "Менеджер", courses: [
+              { brand: "quickstep", title: "Quick-Step: базовый курс", progress: 64, result: "скрыто для поставщика" }
+            ] }
+          ]
+        },
+        {
+          id: "roga-europolis",
+          name: "ТЦ Европолис",
+          company: 'ООО "Рога и Копыта"',
+          city: "Москва, проспект Мира 211",
+          students: [
+            { id: "roga-4", name: "Антон Никитин", role: "Менеджер", courses: [
+              { brand: "pergo", title: "Pergo: работа с возражениями", progress: 68, result: "в процессе" },
+              { brand: "coswick", title: "Coswick: премиальные сценарии", progress: 47, result: "в процессе" }
+            ] },
+            { id: "roga-5", name: "Екатерина Селезнёва", role: "Продавец-консультант", courses: [
+              { brand: "calitex", title: "Calitex: HydroSeal и X-Guard", progress: 93, result: "сертификат" }
+            ] }
+          ]
+        },
+        {
+          id: "floorpro-nevskiy",
+          name: "FloorPro Невский",
+          company: "FloorPro Retail",
+          city: "Санкт-Петербург, Невский 84",
+          students: [
+            { id: "floor-1", name: "Анна Владимирова", role: "Руководитель отдела", courses: [
+              { brand: "calitex", title: "Calitex: HydroSeal и X-Guard", progress: 88, result: "тест пройден" },
+              { brand: "coswick", title: "Coswick: премиальные сценарии", progress: 41, result: "в процессе" }
+            ] },
+            { id: "floor-2", name: "Виктор Дисней", role: "Менеджер", courses: [
+              { brand: "pergo", title: "Pergo: работа с возражениями", progress: 52, result: "повторить тест" }
+            ] }
+          ]
+        },
+        {
+          id: "floorpro-lakhta",
+          name: "FloorPro Лахта",
+          company: "FloorPro Retail",
+          city: "Санкт-Петербург, Лахтинский проспект 2",
+          students: [
+            { id: "floor-3", name: "Полина Смирнова", role: "Менеджер", courses: [
+              { brand: "pergo", title: "Pergo: AquaSafe и TitanX", progress: 77, result: "тест пройден" }
+            ] }
+          ]
+        },
+        {
+          id: "home-light-kazan",
+          name: "Home & Light Казань",
+          company: "Home & Light",
+          city: "Казань, ул. Баумана 18",
+          students: [
+            { id: "home-1", name: "Олег Морозов", role: "Категорийный менеджер", courses: [
+              { brand: "ikea", title: "IKEA: свет и хранение", progress: 100, result: "скрыто для поставщика" }
+            ] },
+            { id: "home-2", name: "Наталья Белова", role: "Менеджер", courses: [
+              { brand: "calitex", title: "Calitex: подбор для активного дома", progress: 67, result: "в процессе" }
+            ] }
+          ]
+        }
+      ];
+
+      var selected = new Set();
+      var openedCompanies = new Set();
+      var openedStudents = new Set();
+      var activeCompanyFilter = "";
+      var ratingKey = "touchspaceSupplierStudentRatings";
+      var ratings = loadRatings();
+      var tree = document.getElementById("supplier-tree");
+      var empty = document.getElementById("empty-state");
+      var search = document.getElementById("tree-search");
+
+      function loadRatings() {
+        try {
+          return JSON.parse(localStorage.getItem(ratingKey) || "{}") || {};
+        } catch (error) {
+          return {};
+        }
+      }
+
+      function saveRatings() {
+        localStorage.setItem(ratingKey, JSON.stringify(ratings));
+      }
+
+      function initials(name) {
+        return name.split(/\s+/).filter(Boolean).slice(0, 2).map(function (part) { return part.charAt(0).toUpperCase(); }).join("");
+      }
+
+      function escapeHtml(value) {
+        return String(value == null ? "" : value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function allowedCourses(student) {
+        return student.courses.filter(function (course) {
+          return supplier.brands.indexOf(course.brand) >= 0;
+        });
+      }
+
+      function visibleData() {
+        var query = search.value.trim().toLowerCase();
+        return companies.filter(function (company) {
+          return !activeCompanyFilter || company.company === activeCompanyFilter;
+        }).map(function (company) {
+          var students = company.students.map(function (student) {
+            var courses = allowedCourses(student);
+            return Object.assign({}, student, { courses: courses });
+          }).filter(function (student) {
+            var text = [company.name, company.company || "", company.city, student.name, student.role].concat(student.courses.map(function (course) {
+              return brandLabels[course.brand] + " " + course.title + " " + course.result;
+            })).join(" ").toLowerCase();
+            return student.courses.length && (!query || text.indexOf(query) >= 0);
+          });
+          return Object.assign({}, company, { students: students });
+        }).filter(function (company) {
+          return company.students.length;
+        });
+      }
+
+      function studentTemplate(student) {
+        var checked = selected.has(student.id);
+        var checkClass = checked ? " is-checked" : "";
+        var openClass = openedStudents.has(student.id) ? " is-open" : "";
+        var rating = Number(ratings[student.id] || 0);
+        var ratingBadge = rating ? '<span class="tree-rating" aria-label="Рейтинг поставщика ' + rating + '">' + rating + '</span>' : "";
+        var courseHtml = student.courses.map(function (course) {
+          return '<article class="course-card">' +
+            '<div><strong>' + course.title + '</strong><span>' + brandLabels[course.brand] + " · " + course.result + '</span></div>' +
+            '<div class="progress" aria-label="Прогресс ' + course.progress + '%"><i style="width:' + course.progress + '%"></i></div>' +
+            '<span class="pill">' + course.progress + '%</span>' +
+          '</article>';
+        }).join("");
+        return '<article class="student-node' + openClass + '" data-student-id="' + student.id + '">' +
+          '<div class="student-head" data-check-student-row="' + student.id + '" role="checkbox" aria-checked="' + checked + '" tabindex="0">' +
+            '<button class="toggle" type="button" data-toggle-student aria-label="Раскрыть курсы реселлера"></button>' +
+            '<span class="check' + checkClass + '" aria-hidden="true"></span>' +
+            '<span class="avatar">' + initials(student.name) + '</span>' +
+            '<span class="student-copy"><span class="copy-title"><strong>' + student.name + '</strong>' + ratingBadge + '</span><span>' + student.role + '</span></span>' +
+            '<span class="student-meta"><span class="pill">' + student.courses.length + ' курса</span></span>' +
+          '</div>' +
+          '<div class="course-list">' + courseHtml + '</div>' +
+        '</article>';
+      }
+
+      function companyTemplate(company) {
+        var studentIds = company.students.map(function (student) { return student.id; });
+        var checkedCount = studentIds.filter(function (id) { return selected.has(id); }).length;
+        var checked = checkedCount === studentIds.length;
+        var indeterminate = checkedCount > 0 && checkedCount < studentIds.length;
+        var checkClass = checked ? " is-checked" : (indeterminate ? " is-mixed" : "");
+        var ariaChecked = indeterminate ? "mixed" : String(checked);
+        var coursesCount = company.students.reduce(function (sum, student) { return sum + student.courses.length; }, 0);
+        var ratingSum = company.students.reduce(function (sum, student) { return sum + Number(ratings[student.id] || 0); }, 0);
+        var ratingSumBadge = ratingSum ? '<span class="tree-rating sum" aria-label="Суммарный рейтинг реселлеров торговой точки ' + ratingSum + '">' + ratingSum + '</span>' : "";
+        var openClass = openedCompanies.has(company.id) ? " is-open" : "";
+        var companyBadge = company.company ? '<span class="company-badge' + (activeCompanyFilter === company.company ? ' is-active' : '') + '" data-company-filter="' + escapeHtml(company.company) + '" role="button" tabindex="0" title="Показать только торговые точки компании">' + escapeHtml(company.company) + '</span>' : "";
+        return '<article class="company-node' + openClass + '" data-company-id="' + company.id + '">' +
+          '<div class="company-head" data-check-company-row="' + company.id + '" role="checkbox" aria-checked="' + ariaChecked + '" tabindex="0">' +
+            '<button class="toggle" type="button" data-toggle-company aria-label="Раскрыть торговую точку"></button>' +
+            '<span class="check' + checkClass + '" aria-hidden="true"></span>' +
+            '<span class="avatar">' + initials(company.name.replace(/[\"«»]/g, "")) + '</span>' +
+            '<span class="company-copy"><span class="copy-title"><strong>' + company.name + '</strong>' + companyBadge + ratingSumBadge + '</span><span>' + company.city + '</span></span>' +
+            '<span class="company-meta"><span class="pill">' + company.students.length + ' реселлеров</span><span class="pill">' + coursesCount + ' прохождений</span></span>' +
+          '</div>' +
+          '<div class="student-list">' + company.students.map(studentTemplate).join("") + '</div>' +
+        '</article>';
+      }
+
+      function updateStats(data) {
+        var studentsCount = data.reduce(function (sum, company) { return sum + company.students.length; }, 0);
+        var coursesCount = data.reduce(function (sum, company) {
+          return sum + company.students.reduce(function (studentSum, student) { return studentSum + student.courses.length; }, 0);
+        }, 0);
+        document.querySelector("[data-stat='companies']").textContent = data.length;
+        document.querySelector("[data-stat='students']").textContent = studentsCount;
+        document.querySelector("[data-stat='courses']").textContent = coursesCount;
+        document.querySelector("[data-selected-count]").textContent = selected.size + " выбрано";
+        var filterLabel = document.querySelector("[data-active-company-filter]");
+        if (filterLabel) {
+          filterLabel.hidden = !activeCompanyFilter;
+          filterLabel.textContent = activeCompanyFilter ? "Компания: " + activeCompanyFilter : "";
+        }
+      }
+
+      function flatVisibleStudents() {
+        return visibleData().flatMap(function (company) {
+          return company.students.map(function (student) {
+            return Object.assign({}, student, { outlet: company.name, company: company.company || company.name, city: company.city });
+          });
+        });
+      }
+
+      function updateSelectionScrollbar() {
+        var wrap = document.querySelector("[data-selection-scroll-wrap]");
+        var scroll = document.querySelector("[data-selection-scroll]");
+        var thumb = document.querySelector("[data-selection-scroll-thumb]");
+        if (!wrap || !scroll || !thumb) return;
+        var maxScroll = scroll.scrollHeight - scroll.clientHeight;
+        var selectedCount = document.querySelectorAll("[data-selection-list] .selection-card").length;
+        var scrollable = selectedCount > 4 && maxScroll > 1;
+        wrap.classList.toggle("is-scrollable", scrollable);
+        if (!scrollable) {
+          thumb.style.height = "0px";
+          thumb.style.transform = "translateY(0)";
+          return;
+        }
+        var ratio = scroll.clientHeight / scroll.scrollHeight;
+        var thumbHeight = Math.max(44, Math.round(scroll.clientHeight * ratio));
+        var trackTravel = scroll.clientHeight - thumbHeight;
+        var thumbTop = maxScroll ? Math.round((scroll.scrollTop / maxScroll) * trackTravel) : 0;
+        thumb.style.height = thumbHeight + "px";
+        thumb.style.transform = "translateY(" + thumbTop + "px)";
+      }
+
+      function renderSelectionPanel() {
+        var list = document.querySelector("[data-selection-list]");
+        var emptySelection = document.querySelector("[data-selection-empty]");
+        var students = flatVisibleStudents().filter(function (student) {
+          return selected.has(student.id);
+        });
+        list.innerHTML = students.map(function (student) {
+          var brands = Array.from(new Set(student.courses.map(function (course) { return brandLabels[course.brand]; })));
+          var rating = Number(ratings[student.id] || 0);
+          var ratingButtons = [1, 2, 3, 4, 5].map(function (value) {
+            return '<button class="rating-button' + (value <= rating ? " is-active" : "") + '" type="button" data-rate-student="' + student.id + '" data-rate-value="' + value + '" aria-label="Поставить рейтинг ' + value + ' для ' + student.name + '">' + value + '</button>';
+          }).join("");
+          return '<article class="selection-card">' +
+            '<div class="selection-main">' +
+              '<div class="selection-title"><span class="favorite-mark">★</span><strong>' + student.name + '</strong></div>' +
+              '<span class="selection-meta">' + student.outlet + ' · ' + student.company + ' · ' + student.role + '</span>' +
+              '<div class="selection-brands">' + brands.map(function (brand) { return '<span class="selection-brand">' + brand + '</span>'; }).join("") + '</div>' +
+            '</div>' +
+            '<div class="rating-box">' +
+              '<span class="rating-label">рейтинг</span>' +
+              '<div class="rating-row">' + ratingButtons + '</div>' +
+            '</div>' +
+          '</article>';
+        }).join("");
+        emptySelection.style.display = students.length ? "none" : "block";
+        requestAnimationFrame(updateSelectionScrollbar);
+      }
+
+      function renderBrandSummary(data) {
+        var summary = {};
+        supplier.brands.forEach(function (brand) {
+          summary[brand] = { students: new Set(), courses: 0 };
+        });
+        data.forEach(function (company) {
+          company.students.forEach(function (student) {
+            student.courses.forEach(function (course) {
+              summary[course.brand].students.add(student.id);
+              summary[course.brand].courses += 1;
+            });
+          });
+        });
+        var maxCourses = Math.max.apply(null, supplier.brands.map(function (brand) { return summary[brand].courses; }).concat([1]));
+        document.querySelector("[data-brand-summary]").innerHTML = supplier.brands.map(function (brand) {
+          var percent = summary[brand].courses ? Math.max(8, Math.round(summary[brand].courses / maxCourses * 100)) : 0;
+          return '<article class="brand-summary__card">' +
+            '<div class="brand-summary__top">' +
+              '<div class="brand-summary__name">' +
+                '<span class="brand-mark">' + brandLabels[brand].charAt(0) + '</span>' +
+                '<div><b>' + brandLabels[brand] + '</b><span>видимые курсы поставщика</span></div>' +
+              '</div>' +
+              '<div class="brand-summary__metric"><strong>' + summary[brand].courses + '</strong><span>прохождений</span></div>' +
+            '</div>' +
+            '<div class="brand-summary__bar" aria-hidden="true"><i style="width:' + percent + '%"></i></div>' +
+            '<div class="brand-summary__foot"><span class="pill">' + summary[brand].students.size + ' реселлеров</span></div>' +
+          '</article>';
+        }).join("");
+      }
+
+      function render() {
+        var data = visibleData();
+        tree.innerHTML = data.map(companyTemplate).join("");
+        empty.style.display = data.length ? "none" : "block";
+        updateStats(data);
+        renderBrandSummary(data);
+        renderSelectionPanel();
+      }
+
+      function visibleStudentIds() {
+        return visibleData().flatMap(function (company) {
+          return company.students.map(function (student) { return student.id; });
+        });
+      }
+
+      tree.addEventListener("click", function (event) {
+        var companyFilter = event.target.closest("[data-company-filter]");
+        if (companyFilter) {
+          event.preventDefault();
+          event.stopPropagation();
+          var value = companyFilter.getAttribute("data-company-filter");
+          activeCompanyFilter = activeCompanyFilter === value ? "" : value;
+          render();
+          return;
+        }
+
+        var companyToggle = event.target.closest("[data-toggle-company]");
+        if (companyToggle) {
+          event.stopPropagation();
+          var companyNode = companyToggle.closest(".company-node");
+          var companyId = companyNode.getAttribute("data-company-id");
+          companyNode.classList.toggle("is-open");
+          if (companyNode.classList.contains("is-open")) openedCompanies.add(companyId); else openedCompanies.delete(companyId);
+          return;
+        }
+        var studentToggle = event.target.closest("[data-toggle-student]");
+        if (studentToggle) {
+          event.stopPropagation();
+          var studentNode = studentToggle.closest(".student-node");
+          var studentId = studentNode.getAttribute("data-student-id");
+          studentNode.classList.toggle("is-open");
+          if (studentNode.classList.contains("is-open")) openedStudents.add(studentId); else openedStudents.delete(studentId);
+          return;
+        }
+        var companyRow = event.target.closest("[data-check-company-row]");
+        if (companyRow) {
+          var company = visibleData().find(function (item) { return item.id === companyRow.getAttribute("data-check-company-row"); });
+          if (company) {
+            var allSelected = company.students.every(function (student) { return selected.has(student.id); });
+            company.students.forEach(function (student) {
+              if (allSelected) selected.delete(student.id); else selected.add(student.id);
+            });
+            render();
+          }
+          return;
+        }
+        var studentRow = event.target.closest("[data-check-student-row]");
+        if (studentRow) {
+          var id = studentRow.getAttribute("data-check-student-row");
+          if (selected.has(id)) selected.delete(id); else selected.add(id);
+          render();
+        }
+      });
+
+      tree.addEventListener("keydown", function (event) {
+        var companyFilter = event.target.closest("[data-company-filter]");
+        var checkRow = event.target.closest("[data-check-company-row], [data-check-student-row]");
+        if ((!companyFilter && !checkRow) || (event.key !== "Enter" && event.key !== " ")) return;
+        event.preventDefault();
+        event.stopPropagation();
+        if (companyFilter) {
+          companyFilter.click();
+          return;
+        }
+        if (checkRow) checkRow.click();
+      });
+
+      document.addEventListener("click", function (event) {
+        var ratingButton = event.target.closest("[data-rate-student]");
+        if (!ratingButton) return;
+        ratings[ratingButton.getAttribute("data-rate-student")] = Number(ratingButton.getAttribute("data-rate-value"));
+        saveRatings();
+        render();
+      });
+
+      search.addEventListener("input", render);
+      document.querySelector("[data-selection-scroll]").addEventListener("scroll", updateSelectionScrollbar);
+      window.addEventListener("resize", updateSelectionScrollbar);
+      document.querySelector("[data-select-visible]").addEventListener("click", function () {
+        visibleStudentIds().forEach(function (id) { selected.add(id); });
+        render();
+      });
+      document.querySelector("[data-clear-selection]").addEventListener("click", function () {
+        selected.clear();
+        activeCompanyFilter = "";
+        render();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
