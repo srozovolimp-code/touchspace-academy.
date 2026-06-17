@@ -14,8 +14,10 @@ backups/
 .vscode/
 *.log
 
+# Accidental nested repository created by GitHub Desktop
+TouchSpace_Academy_hierarchy/
+
 # OS and temporary files
 *.tmp
 *.temp
 ~$*
-
