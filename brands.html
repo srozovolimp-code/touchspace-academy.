@@ -1596,7 +1596,7 @@ WoodRock,Кварц-виниловый ламинат,WoodRock Stone,5
         buildFilters(visibleRows.length ? visibleRows : rows);
         renderAlphabet(availableBrands);
 
-        var featuredBrands = hasActiveFilters() ? [] : ['Calitex', 'Pergo', 'Alpine Floor'].map(function (name) {
+        var featuredBrands = hasActiveFilters() ? [] : ['Calitex', 'Pergo', 'Alpine Floor', 'Alpine Floor Advanced'].map(function (name) {
           return visibleBrands.find(function (brand) { return brand.name === name; });
         }).filter(Boolean);
         var featuredNames = new Set(featuredBrands.map(function (brand) { return brand.name; }));
