@@ -14,6 +14,19 @@
         ["sales", "Консультация и продажа", "Подбор покрытия под квартиру, коммерцию, влажные зоны, теплый пол и дизайн-проект.", "Продажи", "3 урока", "Практика", "22 мин", "art-violet", "../../icons/8.png", "alpine-floor.html"]
       ]
     },
+    "alpine-floor-advanced": {
+      name: "Alpine Floor Advanced",
+      category: "Шаблон расширенной академии Alpine Floor",
+      logo: "../../images/brand-logos/Alpine_Floor.png",
+      summary: "Шаблон расширенной академии без учебного контента. Страницы, блоки и тестовые структуры подготовлены для загрузки материалов.",
+      final: false,
+      courses: [
+        ["template-block-01", "Alpine Floor Advanced — модуль 01", "Шаблон модуля без учебного контента: 4 раздела, блоки материалов и тестовые структуры.", "Модуль 01", "4 раздела", "Шаблон", "40 мин", "art-blue", "../../icons/5.png", "alpine-floor-advanced-block-01.html"],
+        ["template-block-02", "Alpine Floor Advanced — модуль 02", "Шаблон модуля без учебного контента: 4 раздела, блоки материалов и тестовые структуры.", "Модуль 02", "4 раздела", "Шаблон", "40 мин", "art-mint", "../../icons/7.png", "alpine-floor-advanced-block-02.html"],
+        ["template-block-03", "Alpine Floor Advanced — модуль 03", "Шаблон модуля без учебного контента: 4 раздела, блоки материалов и тестовые структуры.", "Модуль 03", "4 раздела", "Шаблон", "40 мин", "art-violet", "../../icons/8.png", "alpine-floor-advanced-block-03.html"],
+        ["template-block-04", "Alpine Floor Advanced — модуль 04", "Шаблон модуля без учебного контента: 4 раздела, блоки материалов и тестовые структуры.", "Модуль 04", "4 раздела", "Шаблон", "40 мин", "art-blue", "../../icons/9.png", "alpine-floor-advanced-block-04.html"]
+      ]
+    },
     "alta-step": {
       name: "Alta Step",
       category: "SPC и кварц-виниловый ламинат",
