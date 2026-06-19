@@ -1,0 +1,38 @@
+{
+  "verified_at": "2026-06-19",
+  "technologies": [
+    {
+      "id": "titanx",
+      "name": "TitanX",
+      "region": "international",
+      "market_label": "Международный ассортимент",
+      "status": "current",
+      "verified_at": "2026-06-19",
+      "source_ids": ["S02"],
+      "short": "Система защитной поверхности для повышения стойкости к повседневному износу.",
+      "seller_note": "Говорите о повышенной стойкости, но не обещайте абсолютную нецарапаемость."
+    },
+    {
+      "id": "aquasafe",
+      "name": "AquaSafe",
+      "region": "international",
+      "market_label": "Международный ассортимент",
+      "status": "current",
+      "verified_at": "2026-06-19",
+      "source_ids": ["S02", "S03"],
+      "short": "Технология для повышения устойчивости выбранных ламинатных полов к бытовой влаге при соблюдении условий монтажа.",
+      "seller_note": "Не описывайте AquaSafe как защиту от любого затопления."
+    },
+    {
+      "id": "perfectfold",
+      "name": "PerfectFold",
+      "region": "international",
+      "market_label": "Международный ассортимент",
+      "status": "current",
+      "verified_at": "2026-06-19",
+      "source_ids": ["S03"],
+      "short": "Замковая система для удобной укладки совместимых коллекций.",
+      "seller_note": "Перед рекомендацией уточняйте замок конкретной коллекции."
+    }
+  ]
+}

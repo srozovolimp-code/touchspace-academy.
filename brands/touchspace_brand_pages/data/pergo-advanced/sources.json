@@ -1,0 +1,40 @@
+{
+  "verified_at": "2026-06-19",
+  "sources": [
+    {
+      "id": "S01",
+      "title": "Официальные материалы Pergo: история бренда",
+      "region": "international",
+      "reliability": "A",
+      "url": "https://www.pergo.com/"
+    },
+    {
+      "id": "S02",
+      "title": "Официальные материалы Pergo: ламинат и технологии поверхности",
+      "region": "international",
+      "reliability": "A",
+      "url": "https://www.pergo.com/"
+    },
+    {
+      "id": "S03",
+      "title": "Официальные материалы Pergo: замковые соединения и монтаж",
+      "region": "international",
+      "reliability": "A",
+      "url": "https://www.pergo.com/"
+    },
+    {
+      "id": "S04",
+      "title": "Каталог TouchSpace: локальные позиции Pergo",
+      "region": "touchspace",
+      "reliability": "B",
+      "url": "../../brands.html"
+    },
+    {
+      "id": "S05",
+      "title": "Учебные правила TouchSpace: корректная коммуникация ламината",
+      "region": "internal",
+      "reliability": "A",
+      "url": "../../library.html"
+    }
+  ]
+}

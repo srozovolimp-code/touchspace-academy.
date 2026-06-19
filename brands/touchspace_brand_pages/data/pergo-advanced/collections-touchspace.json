@@ -1,0 +1,45 @@
+{
+  "verified_at": "2026-06-19",
+  "collections": [
+    {
+      "id": "goeteborg-pro",
+      "name": "Goeteborg pro",
+      "category": "laminate",
+      "region": "touchspace",
+      "market_label": "Каталог TouchSpace",
+      "status": "touchspace_catalog_only",
+      "verified_at": "2026-06-19",
+      "source_ids": ["S04"]
+    },
+    {
+      "id": "malmo-pro",
+      "name": "Malmo pro",
+      "category": "laminate",
+      "region": "touchspace",
+      "market_label": "Каталог TouchSpace",
+      "status": "touchspace_catalog_only",
+      "verified_at": "2026-06-19",
+      "source_ids": ["S04"]
+    },
+    {
+      "id": "chevron-12-pro",
+      "name": "Chevron 12 pro",
+      "category": "laminate",
+      "region": "touchspace",
+      "market_label": "Каталог TouchSpace",
+      "status": "touchspace_catalog_only",
+      "verified_at": "2026-06-19",
+      "source_ids": ["S04"]
+    },
+    {
+      "id": "viskan-pro",
+      "name": "Viskan pro",
+      "category": "vinyl",
+      "region": "touchspace",
+      "market_label": "Каталог TouchSpace",
+      "status": "touchspace_catalog_only",
+      "verified_at": "2026-06-19",
+      "source_ids": ["S04"]
+    }
+  ]
+}

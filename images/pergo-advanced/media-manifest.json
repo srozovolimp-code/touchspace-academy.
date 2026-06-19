@@ -1,0 +1,19 @@
+{
+  "created_at": "2026-06-19",
+  "items": [
+    {
+      "id": "pergo-logo",
+      "path": "../brand-logos/Pergo.png",
+      "purpose": "Логотип Pergo в hero и карточках",
+      "source": "Локальный нормализованный логотип",
+      "alt": "Логотип Pergo"
+    },
+    {
+      "id": "construction-diagram-css",
+      "path": "generated-in-css",
+      "purpose": "Схематичное объяснение слоев ламината",
+      "source": "Сгенерировано CSS без имитации натурального среза древесины",
+      "alt": "Схема слоев ламината"
+    }
+  ]
+}

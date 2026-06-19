@@ -1,0 +1,32 @@
+{
+  "verified_at": "2026-06-19",
+  "topics": [
+    {
+      "id": "subfloor",
+      "title": "Основание",
+      "source_ids": ["S03"],
+      "region": "international",
+      "status": "current",
+      "verified_at": "2026-06-19",
+      "rule": "Основание должно быть подготовлено по инструкции конкретного продукта."
+    },
+    {
+      "id": "expansion-gaps",
+      "title": "Компенсационные зазоры",
+      "source_ids": ["S03"],
+      "region": "international",
+      "status": "current",
+      "verified_at": "2026-06-19",
+      "rule": "Зазоры нельзя отменять общим обещанием; требования проверяются по инструкции."
+    },
+    {
+      "id": "underfloor-heating",
+      "title": "Теплый пол",
+      "source_ids": ["S03"],
+      "region": "international",
+      "status": "needs_verification",
+      "verified_at": "2026-06-19",
+      "rule": "Совместимость зависит от продукта, системы и режима эксплуатации."
+    }
+  ]
+}

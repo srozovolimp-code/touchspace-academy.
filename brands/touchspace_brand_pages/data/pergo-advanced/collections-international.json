@@ -1,0 +1,27 @@
+{
+  "verified_at": "2026-06-19",
+  "collections": [
+    {
+      "id": "pergo-laminate-general",
+      "name": "Ламинат Pergo",
+      "category": "laminate",
+      "region": "international",
+      "market_label": "Международный ассортимент",
+      "status": "current",
+      "verified_at": "2026-06-19",
+      "source_ids": ["S01", "S02"],
+      "note": "Ассортимент, названия коллекций и доступность зависят от региона."
+    },
+    {
+      "id": "pergo-vinyl-general",
+      "name": "Виниловые покрытия Pergo",
+      "category": "vinyl",
+      "region": "international",
+      "market_label": "Международный ассортимент",
+      "status": "current",
+      "verified_at": "2026-06-19",
+      "source_ids": ["S01"],
+      "note": "Используется только для разделения категорий; характеристики проверяются отдельно."
+    }
+  ]
+}
