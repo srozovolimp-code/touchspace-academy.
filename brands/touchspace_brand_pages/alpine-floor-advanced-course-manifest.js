@@ -1,6 +1,6 @@
 window.AlpineFloorAdvancedCourseManifest = {
   "идентификатор": "alpine-floor-advanced",
-  "название": "Расширенная академия Alpine Floor",
+  "название": "Академия Alpine Floor",
   "подзаголовок": "Ассортимент, подбор и коммуникация",
   "версия": "2.0.0",
   "логотип": "../../images/brand-logos/Alpine_Floor.png",
