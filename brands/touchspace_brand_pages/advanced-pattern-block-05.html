@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{PAGE_TITLE}} | TouchSpace Академия</title>
+  <link rel="stylesheet" href="../../shared-header.css">
+  <link rel="stylesheet" href="../../mobile-responsive.css">
+  <link rel="stylesheet" href="calitex-academy.css">
+  <link rel="stylesheet" href="academy-content-blocks.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+      <main class="main">
+        <header class="header" data-search-placeholder="Поиск по академии"></header>
+        <div class="academy-module-root" data-academy-module-root></div>
+      </main>
+    </div>
+  </div>
+  <script src="../../shared-header.js"></script>
+  <script src="advanced-pattern-course-manifest.js?v=2"></script>
+  <script src="advanced-pattern-block-05-data.js?v=2"></script>
+  <script>
+    window.AcademyModuleConfig = {
+      manifestGlobal: "AdvancedPatternCourseManifest",
+      dataGlobal: "AdvancedPatternBlock05Data",
+      moduleId: "advanced-pattern-block-05",
+      storageKey: "touchspace-academy:advanced-pattern:block-05:v1"
+    };
+  </script>
+  <script src="academy-module-renderer.js?v=2"></script>
+</body>
+</html>

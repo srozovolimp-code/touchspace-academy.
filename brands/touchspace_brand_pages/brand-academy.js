@@ -30,6 +30,22 @@
     ["alpine-floor-algorithm", "Итоговый алгоритм консультации", "Вы сведете материалы курса в последовательный сценарий: задача, образ, категория, варианты, ограничения и следующий шаг.", "Модуль 7", "6 разделов", "Итоговый", "50 мин", "art-blue", "../../icons/12.png", "alpine-floor-advanced-block-07.html"]
   ]
 },
+    "advanced-pattern": {
+      name: "{{BRAND_NAME}}",
+      category: "{{ACADEMY_CATEGORY}}",
+      logo: "../../icons/5.png",
+      summary: "{{ACADEMY_DESCRIPTION}}",
+      final: false,
+      courses: [
+        ["block-01", "{{MODULE_01_TITLE}}", "{{MODULE_01_DESCRIPTION}}", "{{MODULE_01_LABEL}}", "{{MODULE_01_SIZE}}", "{{MODULE_01_LEVEL}}", "{{MODULE_01_TIME}}", "art-blue", "../../icons/5.png", "advanced-pattern-block-01.html"],
+        ["block-02", "{{MODULE_02_TITLE}}", "{{MODULE_02_DESCRIPTION}}", "{{MODULE_02_LABEL}}", "{{MODULE_02_SIZE}}", "{{MODULE_02_LEVEL}}", "{{MODULE_02_TIME}}", "art-mint", "../../icons/7.png", "advanced-pattern-block-02.html"],
+        ["block-03", "{{MODULE_03_TITLE}}", "{{MODULE_03_DESCRIPTION}}", "{{MODULE_03_LABEL}}", "{{MODULE_03_SIZE}}", "{{MODULE_03_LEVEL}}", "{{MODULE_03_TIME}}", "art-violet", "../../icons/8.png", "advanced-pattern-block-03.html"],
+        ["block-04", "{{MODULE_04_TITLE}}", "{{MODULE_04_DESCRIPTION}}", "{{MODULE_04_LABEL}}", "{{MODULE_04_SIZE}}", "{{MODULE_04_LEVEL}}", "{{MODULE_04_TIME}}", "art-blue", "../../icons/9.png", "advanced-pattern-block-04.html"],
+        ["block-05", "{{MODULE_05_TITLE}}", "{{MODULE_05_DESCRIPTION}}", "{{MODULE_05_LABEL}}", "{{MODULE_05_SIZE}}", "{{MODULE_05_LEVEL}}", "{{MODULE_05_TIME}}", "art-mint", "../../icons/10.png", "advanced-pattern-block-05.html"],
+        ["block-06", "{{MODULE_06_TITLE}}", "{{MODULE_06_DESCRIPTION}}", "{{MODULE_06_LABEL}}", "{{MODULE_06_SIZE}}", "{{MODULE_06_LEVEL}}", "{{MODULE_06_TIME}}", "art-violet", "../../icons/11.png", "advanced-pattern-block-06.html"],
+        ["block-07", "{{MODULE_07_TITLE}}", "{{MODULE_07_DESCRIPTION}}", "{{MODULE_07_LABEL}}", "{{MODULE_07_SIZE}}", "{{MODULE_07_LEVEL}}", "{{MODULE_07_TIME}}", "art-blue", "../../icons/12.png", "advanced-pattern-block-07.html"]
+      ]
+    },
     "pergo-advanced": {
       name: "Pergo Advanced",
       category: "История, технологии, ассортимент и консультация",
