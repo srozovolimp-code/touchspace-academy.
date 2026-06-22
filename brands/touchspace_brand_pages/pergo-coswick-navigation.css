@@ -1,0 +1,14 @@
+/* Navigation parity with Coswick Advanced. */
+.academy-module-root.coswick-standardized .academy-nav.lesson-list{display:grid;grid-template-columns:1fr;gap:8px;padding:16px;overflow:auto}
+.academy-module-root.coswick-standardized .academy-tab.lesson-tab{width:100%;min-height:0;display:grid;grid-template-columns:34px minmax(0,1fr) 18px;gap:10px;align-items:center;padding:12px;border:0;border-radius:18px;background:transparent;color:#66758a;text-align:left;cursor:pointer}
+.academy-module-root.coswick-standardized .academy-tab.lesson-tab:hover{background:#f7faff}
+.academy-module-root.coswick-standardized .academy-tab.lesson-tab.is-active{background:#edf4ff;color:var(--ink)}
+.academy-module-root.coswick-standardized .academy-tab.lesson-tab.is-locked{opacity:.46;cursor:not-allowed}
+.academy-module-root.coswick-standardized .academy-tab__num.tab-num{display:grid;place-items:center;width:34px;height:34px;border-radius:14px;background:#f2f6fc;color:var(--blue);font-size:13px;font-weight:950}
+.academy-module-root.coswick-standardized .academy-tab.lesson-tab.is-active .academy-tab__num.tab-num{background:var(--blue);color:#fff}
+.academy-module-root.coswick-standardized .academy-tab__title.tab-title{display:block;font-size:13px;font-weight:950;line-height:1.2}
+.academy-module-root.coswick-standardized .academy-tab__meta.tab-meta{display:block;margin-top:3px;color:#8a97aa;font-size:11px;font-weight:850}
+.academy-module-root.coswick-standardized .tab-check{display:grid;place-items:center;width:18px;height:18px;border:2px solid #d1dae8;border-radius:999px;color:transparent;font-size:10px;font-weight:950}
+.academy-module-root.coswick-standardized .academy-tab.lesson-tab.is-done .tab-check{border-color:rgba(35,196,131,.55);background:rgba(35,196,131,.12);color:var(--green)}
+@media(max-width:1180px){.academy-module-root.coswick-standardized .academy-nav.lesson-list{grid-template-columns:repeat(4,minmax(180px,1fr));overflow-x:auto}}
+@media(max-width:760px){.academy-module-root.coswick-standardized .academy-nav.lesson-list{grid-template-columns:1fr}}
