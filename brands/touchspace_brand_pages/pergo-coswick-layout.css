@@ -1,0 +1,12 @@
+/* Layout parity with Coswick Advanced. */
+.academy-module-root.coswick-standardized,.academy-final-root.coswick-standardized{display:block}
+.academy-module-root.coswick-standardized .academy-topline,.academy-final-root.coswick-standardized .academy-topline{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;padding:16px 18px;border:1px solid rgba(255,255,255,.9);border-radius:28px;background:rgba(255,255,255,.88);box-shadow:var(--shadow-soft)}
+.academy-module-root.coswick-standardized .academy-shell.module-shell{grid-template-columns:310px minmax(0,1fr);min-height:calc(100vh - 150px);border:1px solid rgba(255,255,255,.92);border-radius:38px;background:rgba(255,255,255,.74);box-shadow:var(--shadow);overflow:hidden}
+.academy-module-root.coswick-standardized .academy-panel.course-panel{display:flex;flex-direction:column;min-height:100%;border-right:1px solid var(--line);background:#fff}
+.academy-module-root.coswick-standardized .academy-cover.course-cover{min-height:270px;padding:22px;background:#1f2937}
+.academy-module-root.coswick-standardized .academy-cover.course-cover:before{background:radial-gradient(circle at 76% 20%,rgba(255,255,255,.16),transparent 32%),radial-gradient(circle at 88% 42%,rgba(95,147,255,.18),transparent 25%),linear-gradient(145deg,rgba(26,34,46,.48),rgba(8,18,31,.92)),linear-gradient(135deg,#1d2a38,#33485d)}
+.academy-module-root.coswick-standardized .academy-progress.course-progress-panel{padding:18px 20px;border-bottom:1px solid var(--line);background:#fff}
+.academy-module-root.coswick-standardized .academy-progress__row.progress-row{gap:10px;color:#66758a;font-size:12px}
+.academy-module-root.coswick-standardized .academy-progress__track.progress-track{height:9px;background:#e8eef7}
+.academy-module-root.coswick-standardized .academy-progress__track.progress-track span{background:linear-gradient(90deg,var(--blue),#70adff);transition:width 260ms ease}
+@media(max-width:1180px){.academy-module-root.coswick-standardized .academy-shell.module-shell{grid-template-columns:1fr}.academy-module-root.coswick-standardized .academy-panel.course-panel{border-right:0;border-bottom:1px solid var(--line)}}
