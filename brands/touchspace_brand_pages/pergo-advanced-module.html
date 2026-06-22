@@ -3,23 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Модуль Pergo Advanced | TouchSpace Академия</title>
-  <link rel="stylesheet" href="../../shared-header.css">
-  <link rel="stylesheet" href="../../mobile-responsive.css">
-  <link rel="stylesheet" href="pergo-advanced.css">
+  <title>Переход в Академию Pergo | TouchSpace Академия</title>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var legacyModule = params.get("module") || "brand-history";
+      var routes = {
+        "brand-history": "pergo-advanced-block-01.html",
+        "construction-tech": "pergo-advanced-block-02.html",
+        "technology-dictionary": "pergo-advanced-block-03.html",
+        "assortment-architecture": "pergo-advanced-block-04.html",
+        "decor-visual": "pergo-advanced-block-05.html",
+        "sales-selection": "pergo-advanced-block-06.html",
+        "installation-care": "pergo-advanced-block-07.html",
+        "final": "pergo-advanced-final-test.html"
+      };
+      window.location.replace(routes[legacyModule] || "pergo-advanced-academy.html");
+    })();
+  </script>
 </head>
-<body data-pergo-advanced-page="module">
-  <div class="page">
-    <div class="shell">
-      <aside class="sidebar" aria-label="Навигация"></aside>
-      <main class="main">
-        <header class="header"></header>
-        <div class="pa-root" data-pergo-advanced-root></div>
-      </main>
-    </div>
-  </div>
-  <script src="../../shared-header.js"></script>
-  <script src="../../lesson-scheduler.js"></script>
-  <script src="pergo-advanced.js"></script>
+<body>
+  <p><a href="pergo-advanced-academy.html">Открыть Академию Pergo</a></p>
 </body>
 </html>

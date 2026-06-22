@@ -71,7 +71,7 @@
       module_attempts: {},
       final_score: null,
       final_attempts: 0,
-      last_route: "pergo-advanced-module.html?module=brand-history"
+      last_route: "pergo-advanced-block-01.html"
     };
   }
 
@@ -184,11 +184,20 @@
   }
 
   function moduleUrl(id) {
-    return "pergo-advanced-module.html?module=" + encodeURIComponent(id);
+    var routes = {
+      "brand-history": "pergo-advanced-block-01.html",
+      "construction-tech": "pergo-advanced-block-02.html",
+      "technology-dictionary": "pergo-advanced-block-03.html",
+      "assortment-architecture": "pergo-advanced-block-04.html",
+      "decor-visual": "pergo-advanced-block-05.html",
+      "sales-selection": "pergo-advanced-block-06.html",
+      "installation-care": "pergo-advanced-block-07.html"
+    };
+    return routes[id] || academyUrl();
   }
 
   function testUrlFinal() {
-    return "pergo-advanced-module.html?module=final";
+    return "pergo-advanced-final-test.html";
   }
 
   function renderAcademy() {
