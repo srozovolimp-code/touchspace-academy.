@@ -86,8 +86,8 @@
   }
 
   function renderCards(items) {
-    return '<div class="academy-grid">' + (items || []).map(function (item) {
-      return '<div class="academy-card">' +
+    return '<div class="academy-grid coswick-grid">' + (items || []).map(function (item) {
+      return '<div class="academy-card coswick-card">' +
         (item.название ? '<strong>' + esc(item.название) + '</strong>' : '') +
         (item.значение ? '<span>' + esc(item.значение) + '</span>' : '') +
         (item.описание ? '<p>' + esc(item.описание) + '</p>' : '') +
@@ -96,14 +96,14 @@
   }
 
   function renderText(content) {
-    return '<div class="academy-text">' + (content.абзацы || []).filter(Boolean).map(function (text) {
+    return '<div class="academy-text coswick-text">' + (content.абзацы || []).filter(Boolean).map(function (text) {
       return '<p>' + esc(text) + '</p>';
     }).join("") + '</div>';
   }
 
   function renderList(content) {
     var items = content.элементы || content.пункты || content.данные || [];
-    return '<ul class="academy-list">' + items.map(function (item) {
+    return '<ul class="academy-list coswick-list">' + items.map(function (item) {
       if (typeof item === "string") return '<li>' + esc(item) + '</li>';
       return '<li>' +
         (item.название ? '<strong>' + esc(item.название) + '</strong>' : '') +
@@ -115,11 +115,11 @@
   function renderTable(content) {
     var columns = content.столбцы || [];
     var rows = content.строки || [];
-    var head = columns.length ? '<div class="academy-table__row academy-table__row--head academy-table__row--' + columns.length + '">' + columns.map(function (cell) {
+    var head = columns.length ? '<div class="academy-table__row coswick-table__row academy-table__row--head coswick-table__row--head academy-table__row--' + columns.length + ' coswick-table__row--' + columns.length + '">' + columns.map(function (cell) {
       return '<span>' + esc(cell) + '</span>';
     }).join("") + '</div>' : '';
-    return '<div class="academy-table">' + head + rows.map(function (row) {
-      return '<div class="academy-table__row academy-table__row--' + row.length + '">' + row.map(function (cell) {
+    return '<div class="academy-table coswick-table">' + head + rows.map(function (row) {
+      return '<div class="academy-table__row coswick-table__row academy-table__row--' + row.length + ' coswick-table__row--' + row.length + '">' + row.map(function (cell) {
         return '<span>' + esc(cell) + '</span>';
       }).join("") + '</div>';
     }).join("") + '</div>';
@@ -127,7 +127,7 @@
 
   function renderAlgorithm(content) {
     return '<div class="academy-algorithm">' + (content.этапы || []).map(function (step) {
-      return '<div class="academy-step"><div>' +
+      return '<div class="academy-step coswick-step"><div>' +
         (step.название ? '<strong>' + esc(step.название) + '</strong>' : '') +
         (step.описание ? '<span>' + esc(step.описание) + '</span>' : '') +
       '</div></div>';
@@ -135,24 +135,24 @@
   }
 
   function renderTimeline(content) {
-    return '<div class="academy-algorithm">' + (content.события || []).map(function (event) {
-      return '<div class="academy-step"><div><strong>' + esc(event.год || '') + '</strong><span>' + esc(event.событие || '') + '</span></div></div>';
+    return '<div class="academy-algorithm coswick-timeline">' + (content.события || []).map(function (event) {
+      return '<article class="academy-step coswick-step"><b>' + esc(event.год || '') + '</b><p>' + esc(event.событие || '') + '</p></article>';
     }).join("") + '</div>';
   }
 
   function renderExamples(content) {
-    return '<div class="academy-examples">' + (content.примеры || []).map(function (example) {
+    return '<div class="academy-examples coswick-examples">' + (content.примеры || []).map(function (example) {
       var parts = ['ситуация', 'неправильно', 'правильно', 'почему', 'решение'].map(function (key) {
         return example[key] ? '<p><b>' + esc(key.charAt(0).toUpperCase() + key.slice(1)) + ':</b> ' + esc(example[key]) + '</p>' : '';
       }).join("");
-      return '<div class="academy-example">' + parts + '</div>';
+      return '<div class="academy-example coswick-example">' + parts + '</div>';
     }).join("") + '</div>';
   }
 
   function calloutClass(style) {
-    if (style === 'предупреждение') return 'academy-callout academy-callout--warning';
-    if (style === 'вывод') return 'academy-callout academy-callout--summary';
-    return 'academy-callout academy-callout--accent';
+    if (style === 'предупреждение') return 'academy-callout academy-callout--warning coswick-callout';
+    if (style === 'вывод') return 'academy-callout academy-callout--summary coswick-callout';
+    return 'academy-callout academy-callout--accent coswick-callout';
   }
 
   function renderBlock(block) {
@@ -171,7 +171,7 @@
       return '';
     }
 
-    return '<section class="academy-content-section">' +
+    return '<section class="academy-content-section content-section">' +
       (block.заголовок ? '<h3>' + esc(block.заголовок) + '</h3>' : '') +
       body +
     '</section>';

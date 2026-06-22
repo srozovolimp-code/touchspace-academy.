@@ -827,6 +827,200 @@ input:focus-visible {
   gap: 18px;
 }
 
+.coswick-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.coswick-card,
+.coswick-step {
+  padding: 16px;
+  border: 1px solid rgba(223, 230, 242, .86);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(24, 45, 90, .05);
+}
+
+.coswick-card strong,
+.coswick-step strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.coswick-card span,
+.coswick-step span {
+  color: #34445a;
+  font-weight: 850;
+  line-height: 1.38;
+}
+
+.coswick-card p,
+.coswick-step p {
+  margin: 8px 0 0;
+  color: #607086;
+  font-weight: 720;
+  line-height: 1.45;
+}
+
+.coswick-text {
+  display: grid;
+  gap: 12px;
+}
+
+.coswick-text p,
+.coswick-list li {
+  margin: 0;
+  padding: 16px 18px;
+  border-radius: 22px;
+  background: #f7faff;
+  color: #34445a;
+  font-weight: 760;
+  line-height: 1.52;
+}
+
+.coswick-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.coswick-list li strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--blue);
+  font-weight: 950;
+}
+
+.coswick-list li span {
+  display: block;
+  color: #607086;
+  font-weight: 720;
+  line-height: 1.45;
+}
+
+.coswick-timeline {
+  display: grid;
+  gap: 10px;
+}
+
+.coswick-timeline article {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr);
+  gap: 14px;
+  padding: 14px;
+  border-radius: 22px;
+  background: #f7faff;
+  border: 1px solid rgba(223, 230, 242, .76);
+}
+
+.coswick-timeline b {
+  display: grid;
+  place-items: center;
+  min-height: 52px;
+  border-radius: 17px;
+  background: #fff;
+  color: var(--blue);
+  font-weight: 950;
+}
+
+.coswick-timeline p {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 720;
+  line-height: 1.42;
+}
+
+.coswick-callout {
+  padding: 22px 24px;
+  border-radius: 26px;
+  background: #edf4ff;
+  color: #45607f;
+  font-weight: 820;
+  line-height: 1.5;
+  border: 1px solid rgba(10, 132, 255, .14);
+}
+
+.content-section {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, .72);
+  border: 1px solid rgba(223, 230, 242, .86);
+}
+
+.content-section h3 {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: -.035em;
+}
+
+.coswick-table {
+  display: grid;
+  gap: 10px;
+}
+
+.coswick-table__row {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid rgba(223, 230, 242, .86);
+}
+
+.coswick-table__row span {
+  padding: 12px;
+  border-radius: 15px;
+  background: #f7faff;
+  color: #34445a;
+  font-weight: 760;
+  line-height: 1.42;
+}
+
+.coswick-table__row--head span {
+  background: #edf4ff;
+  color: var(--blue);
+  font-weight: 950;
+}
+
+.coswick-table__row--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.coswick-table__row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.coswick-table__row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.coswick-examples {
+  display: grid;
+  gap: 12px;
+}
+
+.coswick-example {
+  padding: 16px;
+  border-radius: 22px;
+  background: #fff;
+  border: 1px solid rgba(223, 230, 242, .86);
+}
+
+.coswick-example b {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.coswick-example p {
+  margin: 0;
+  color: #34445a;
+  font-weight: 760;
+  line-height: 1.45;
+}
+
 @media (max-width: 1180px) {
   .academy-shell {
     grid-template-columns: 1fr;
