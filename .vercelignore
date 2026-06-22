@@ -1,0 +1,15 @@
+.git
+.vercel
+.DS_Store
+
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+backups/
+old_brand_pages/
+TouchSpace_Academy_hierarchy_backup_*.zip
+logos.zip
