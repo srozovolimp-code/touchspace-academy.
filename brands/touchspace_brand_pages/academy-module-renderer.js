@@ -12,6 +12,18 @@
     return name ? window[name] : null;
   }
 
+  function academyHref(manifest) {
+    return esc((manifest && manifest.идентификатор ? manifest.идентификатор : "alpine-floor-advanced") + "-academy.html");
+  }
+
+  function academyTitle(manifest) {
+    return esc((manifest && manifest.название) || "Академия бренда");
+  }
+
+  function academyLogo(manifest) {
+    return esc((manifest && manifest.логотип) || "../../icons/5.png");
+  }
+
   function canBypassTests() {
     var api = window.TouchSpaceAcademy;
     var user = api && api.getActiveUser ? api.getActiveUser() : null;
@@ -385,7 +397,10 @@
       render();
     }
 
-    root.innerHTML = '<div class="academy-topline"><nav class="breadcrumb" aria-label="Хлебные крошки"><a href="../../brands.html">Бренды</a><span>/</span><a href="alpine-floor-advanced-academy.html">Академия Alpine Floor</a><span>/</span><span>' + esc(moduleMeta.название) + '</span></nav><a class="back-link" href="alpine-floor-advanced-academy.html">Назад в академию</a></div><section class="academy-shell"><aside class="academy-panel"><div class="academy-cover"><div class="academy-cover__top"><div class="brand-logo"><img src="../../images/brand-logos/Alpine_Floor.png" alt="Alpine Floor"></div></div><h1>' + esc(moduleMeta.название) + '</h1><p>' + esc(moduleMeta.примерная_продолжительность_минут || '') + ' мин · последовательное прохождение · ' + pages.length + ' разделов</p></div><div class="academy-progress"><div class="academy-progress__row"><span data-progress-label></span><span data-progress-percent></span></div><div class="academy-progress__track"><span data-progress-bar></span></div></div><div class="academy-nav" data-academy-nav></div></aside><div class="academy-stage"><div class="academy-toolbar"><div class="academy-count" data-stage-count></div><div><button class="icon-btn" type="button" data-prev aria-label="Предыдущий раздел">↑</button><button class="icon-btn" type="button" data-next aria-label="Следующий раздел">↓</button></div></div><div data-stage></div></div></section><div class="quiz-modal" data-quiz-modal aria-hidden="true"><div class="quiz-modal__panel" role="dialog" aria-modal="true" aria-labelledby="quiz-title"><div class="quiz-modal__head"><div><span data-quiz-kicker></span><h3 id="quiz-title" data-quiz-title></h3></div><button class="icon-btn" type="button" data-close-quiz aria-label="Закрыть тест">×</button></div><div class="quiz-modal__body"><div data-quiz-content></div><div class="feedback" data-feedback></div></div><div class="quiz-modal__foot"><button class="btn secondary" type="button" data-close-quiz>Вернуться к материалу</button><button class="btn" type="button" data-check-page>Проверить тест</button><button class="btn" type="button" data-quiz-next hidden>К следующему разделу</button><button class="btn" type="button" data-quiz-next-module hidden>К следующему модулю</button><span class="result" data-modal-result aria-live="polite" role="status"></span></div></div></div>';
+    var academyUrl = academyHref(manifest);
+    var academyName = academyTitle(manifest);
+    var logoUrl = academyLogo(manifest);
+    root.innerHTML = '<div class="academy-topline"><nav class="breadcrumb" aria-label="Хлебные крошки"><a href="../../brands.html">Бренды</a><span>/</span><a href="' + academyUrl + '">' + academyName + '</a><span>/</span><span>' + esc(moduleMeta.название) + '</span></nav><a class="back-link" href="' + academyUrl + '">Назад в академию</a></div><section class="academy-shell"><aside class="academy-panel"><div class="academy-cover"><div class="academy-cover__top"><div class="brand-logo"><img src="' + logoUrl + '" alt="' + academyName + '"></div></div><h1>' + esc(moduleMeta.название) + '</h1><p>' + esc(moduleMeta.примерная_продолжительность_минут || '') + ' мин · последовательное прохождение · ' + pages.length + ' разделов</p></div><div class="academy-progress"><div class="academy-progress__row"><span data-progress-label></span><span data-progress-percent></span></div><div class="academy-progress__track"><span data-progress-bar></span></div></div><div class="academy-nav" data-academy-nav></div></aside><div class="academy-stage"><div class="academy-toolbar"><div class="academy-count" data-stage-count></div><div><button class="icon-btn" type="button" data-prev aria-label="Предыдущий раздел">↑</button><button class="icon-btn" type="button" data-next aria-label="Следующий раздел">↓</button></div></div><div data-stage></div></div></section><div class="quiz-modal" data-quiz-modal aria-hidden="true"><div class="quiz-modal__panel" role="dialog" aria-modal="true" aria-labelledby="quiz-title"><div class="quiz-modal__head"><div><span data-quiz-kicker></span><h3 id="quiz-title" data-quiz-title></h3></div><button class="icon-btn" type="button" data-close-quiz aria-label="Закрыть тест">×</button></div><div class="quiz-modal__body"><div data-quiz-content></div><div class="feedback" data-feedback></div></div><div class="quiz-modal__foot"><button class="btn secondary" type="button" data-close-quiz>Вернуться к материалу</button><button class="btn" type="button" data-check-page>Проверить тест</button><button class="btn" type="button" data-quiz-next hidden>К следующему разделу</button><button class="btn" type="button" data-quiz-next-module hidden>К следующему модулю</button><span class="result" data-modal-result aria-live="polite" role="status"></span></div></div></div>';
 
     root.addEventListener('click', function (event) {
       var go = event.target.closest('[data-go]');
@@ -435,7 +450,7 @@
     var test = data.тест;
     function moduleStorageKey(moduleId) {
       var match = String(moduleId || '').match(/block-(\d{2})$/);
-      return match ? 'touchspace-academy:alpine-floor-advanced:block-' + match[1] + ':v1' : '';
+      return match ? 'touchspace-academy:' + manifest.идентификатор + ':block-' + match[1] + ':v1' : '';
     }
 
     function courseModulesCompleted() {
@@ -447,7 +462,9 @@
     }
 
     var canOpen = courseModulesCompleted();
-    root.innerHTML = '<div class="academy-topline"><nav class="breadcrumb" aria-label="Хлебные крошки"><a href="../../brands.html">Бренды</a><span>/</span><a href="alpine-floor-advanced-academy.html">Академия Alpine Floor</a><span>/</span><span>' + esc(test.название) + '</span></nav><a class="back-link" href="alpine-floor-advanced-academy.html">Назад в академию</a></div><section class="academy-stage"><article class="academy-slide"><span class="academy-kicker">Итоговая проверка</span><h1 class="academy-title">' + esc(test.название) + '</h1><p class="academy-lead">' + esc(test.описание || '') + '</p><div class="academy-actions"><div class="academy-actions__row"><button class="btn" type="button" data-open-final' + (canOpen ? '' : ' disabled') + '>Открыть тест</button><span class="result" data-final-result aria-live="polite" role="status">' + (canOpen ? 'Для прохождения нужно набрать не менее ' + threshold(test, 85) + '%.' : 'Итоговый тест откроется после прохождения всех модулей.') + '</span></div></div></article></section><div class="quiz-modal" data-quiz-modal aria-hidden="true"><div class="quiz-modal__panel" role="dialog" aria-modal="true" aria-labelledby="quiz-title"><div class="quiz-modal__head"><div><span>Итоговая проверка</span><h3 id="quiz-title">' + esc(test.название) + '</h3></div><button class="icon-btn" type="button" data-close-quiz aria-label="Закрыть тест">×</button></div><div class="quiz-modal__body"><div data-quiz-content>' + (test.вопросы || []).map(function (question, index) { return questionHtml(question, 0, index); }).join("") + '</div><div class="feedback" data-feedback></div></div><div class="quiz-modal__foot"><button class="btn secondary" type="button" data-close-quiz>Вернуться</button><button class="btn" type="button" data-check-final>Проверить тест</button><span class="result" data-modal-result aria-live="polite" role="status"></span></div></div></div>';
+    var academyUrl = academyHref(manifest);
+    var academyName = academyTitle(manifest);
+    root.innerHTML = '<div class="academy-topline"><nav class="breadcrumb" aria-label="Хлебные крошки"><a href="../../brands.html">Бренды</a><span>/</span><a href="' + academyUrl + '">' + academyName + '</a><span>/</span><span>' + esc(test.название) + '</span></nav><a class="back-link" href="' + academyUrl + '">Назад в академию</a></div><section class="academy-stage"><article class="academy-slide"><span class="academy-kicker">Итоговая проверка</span><h1 class="academy-title">' + esc(test.название) + '</h1><p class="academy-lead">' + esc(test.описание || '') + '</p><div class="academy-actions"><div class="academy-actions__row"><button class="btn" type="button" data-open-final' + (canOpen ? '' : ' disabled') + '>Открыть тест</button><span class="result" data-final-result aria-live="polite" role="status">' + (canOpen ? 'Для прохождения нужно набрать не менее ' + threshold(test, 85) + '%.' : 'Итоговый тест откроется после прохождения всех модулей.') + '</span></div></div></article></section><div class="quiz-modal" data-quiz-modal aria-hidden="true"><div class="quiz-modal__panel" role="dialog" aria-modal="true" aria-labelledby="quiz-title"><div class="quiz-modal__head"><div><span>Итоговая проверка</span><h3 id="quiz-title">' + esc(test.название) + '</h3></div><button class="icon-btn" type="button" data-close-quiz aria-label="Закрыть тест">×</button></div><div class="quiz-modal__body"><div data-quiz-content>' + (test.вопросы || []).map(function (question, index) { return questionHtml(question, 0, index); }).join("") + '</div><div class="feedback" data-feedback></div></div><div class="quiz-modal__foot"><button class="btn secondary" type="button" data-close-quiz>Вернуться</button><button class="btn" type="button" data-check-final>Проверить тест</button><span class="result" data-modal-result aria-live="polite" role="status"></span></div></div></div>';
 
     root.addEventListener('click', function (event) {
       if (event.target.closest('[data-open-final]')) {
