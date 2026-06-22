@@ -427,22 +427,23 @@
 .academy-module-root .quiz-modal__foot .btn,
 .academy-final-root .academy-actions .btn,
 .academy-final-root .quiz-modal__foot .btn {
-  flex: 0 0 auto;
-  min-height: 44px;
-  width: auto;
+  flex: 0 0 auto !important;
+  min-height: 44px !important;
+  height: 44px !important;
+  width: auto !important;
   max-width: 100%;
-  padding: 0 16px;
-  border: 0;
-  border-radius: 15px;
-  background: var(--blue);
-  color: #fff;
-  font-size: 16px;
-  font-weight: 900;
-  line-height: 1.15;
+  padding: 0 16px !important;
+  border: 0 !important;
+  border-radius: 15px !important;
+  background: var(--blue) !important;
+  color: #fff !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  line-height: 1.15 !important;
   text-align: center;
-  text-decoration: none;
-  white-space: normal;
-  box-shadow: 0 12px 28px rgba(10, 132, 255, .22);
+  text-decoration: none !important;
+  white-space: nowrap;
+  box-shadow: 0 12px 28px rgba(10, 132, 255, .22) !important;
 }
 
 .academy-module-root .academy-actions .btn.secondary,
@@ -450,8 +451,8 @@
 .academy-final-root .academy-actions .btn.secondary,
 .academy-final-root .quiz-modal__foot .btn.secondary {
   background: #eef5ff;
-  color: #177be8;
-  box-shadow: none;
+  color: #177be8 !important;
+  box-shadow: none !important;
 }
 
 .academy-module-root .academy-actions .btn:disabled,
