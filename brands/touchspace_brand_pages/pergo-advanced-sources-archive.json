@@ -1,0 +1,849 @@
+{
+  "note": "Архив проверяемых источников Pergo Advanced. Данные сохранены отдельно и не подключаются к страницам курса.",
+  "generated_at": "2026-06-22T06:27:25.928Z",
+  "course": "pergo-advanced",
+  "source_blocks": [
+    {
+      "file": "pergo-advanced-block-01-data.js",
+      "variable": "PergoAdvancedBlock01Data",
+      "module_id": "pergo-advanced-block-01",
+      "module_number": 1,
+      "module_title": "Бренд Pergo и развитие категории",
+      "page_id": "pergo-advanced-block-01-page-01",
+      "page_number": 1,
+      "page_title": "Идея № 23 и GL80",
+      "original_block": {
+        "идентификатор_блока": "m1p1b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S01. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-01-data.js",
+      "variable": "PergoAdvancedBlock01Data",
+      "module_id": "pergo-advanced-block-01",
+      "module_number": 1,
+      "module_title": "Бренд Pergo и развитие категории",
+      "page_id": "pergo-advanced-block-01-page-02",
+      "page_number": 2,
+      "page_title": "От Perstorp Golv к имени Pergo",
+      "original_block": {
+        "идентификатор_блока": "m1p2b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S01. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-01-data.js",
+      "variable": "PergoAdvancedBlock01Data",
+      "module_id": "pergo-advanced-block-01",
+      "module_number": 1,
+      "module_title": "Бренд Pergo и развитие категории",
+      "page_id": "pergo-advanced-block-01-page-03",
+      "page_number": 3,
+      "page_title": "Ключевые этапы технологий",
+      "original_block": {
+        "идентификатор_блока": "m1p3b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S01. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-01-data.js",
+      "variable": "PergoAdvancedBlock01Data",
+      "module_id": "pergo-advanced-block-01",
+      "module_number": 1,
+      "module_title": "Бренд Pergo и развитие категории",
+      "page_id": "pergo-advanced-block-01-page-04",
+      "page_number": 4,
+      "page_title": "Категории, рынки и источники",
+      "original_block": {
+        "идентификатор_блока": "m1p4b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S01, S02, S15. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-02-data.js",
+      "variable": "PergoAdvancedBlock02Data",
+      "module_id": "pergo-advanced-block-02",
+      "module_number": 2,
+      "module_title": "Конструкция ламината Pergo",
+      "page_id": "pergo-advanced-block-02-page-01",
+      "page_number": 1,
+      "page_title": "Четыре функциональных слоя",
+      "original_block": {
+        "идентификатор_блока": "m2p1b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S02, S04. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-02-data.js",
+      "variable": "PergoAdvancedBlock02Data",
+      "module_id": "pergo-advanced-block-02",
+      "module_number": 2,
+      "module_title": "Конструкция ламината Pergo",
+      "page_id": "pergo-advanced-block-02-page-02",
+      "page_number": 2,
+      "page_title": "Декоративный слой и язык декоров",
+      "original_block": {
+        "идентификатор_блока": "m2p2b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S08, S13. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-02-data.js",
+      "variable": "PergoAdvancedBlock02Data",
+      "module_id": "pergo-advanced-block-02",
+      "module_number": 2,
+      "module_title": "Конструкция ламината Pergo",
+      "page_id": "pergo-advanced-block-02-page-03",
+      "page_number": 3,
+      "page_title": "HDF-основа, геометрия и среда",
+      "original_block": {
+        "идентификатор_блока": "m2p3b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S04, S05, S06. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-02-data.js",
+      "variable": "PergoAdvancedBlock02Data",
+      "module_id": "pergo-advanced-block-02",
+      "module_number": 2,
+      "module_title": "Конструкция ламината Pergo",
+      "page_id": "pergo-advanced-block-02-page-04",
+      "page_number": 4,
+      "page_title": "Ламинат, rigid vinyl и дерево",
+      "original_block": {
+        "идентификатор_блока": "m2p4b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S01, S02, S12, S14. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-03-data.js",
+      "variable": "PergoAdvancedBlock03Data",
+      "module_id": "pergo-advanced-block-03",
+      "module_number": 3,
+      "module_title": "Технологии Pergo",
+      "page_id": "pergo-advanced-block-03-page-01",
+      "page_number": 1,
+      "page_title": "TitanX: защитная поверхность",
+      "original_block": {
+        "идентификатор_блока": "m3p1b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S01, S02, S05. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-03-data.js",
+      "variable": "PergoAdvancedBlock03Data",
+      "module_id": "pergo-advanced-block-03",
+      "module_number": 3,
+      "module_title": "Технологии Pergo",
+      "page_id": "pergo-advanced-block-03-page-02",
+      "page_number": 2,
+      "page_title": "AquaSafe: вода и монтажная система",
+      "original_block": {
+        "идентификатор_блока": "m3p2b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S02, S03, S04, S05. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-03-data.js",
+      "variable": "PergoAdvancedBlock03Data",
+      "module_id": "pergo-advanced-block-03",
+      "module_number": 3,
+      "module_title": "Технологии Pergo",
+      "page_id": "pergo-advanced-block-03-page-03",
+      "page_number": 3,
+      "page_title": "Uniclic и PerfectFold",
+      "original_block": {
+        "идентификатор_блока": "m3p3b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S06, S07, S09, S10, S12, S14. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-03-data.js",
+      "variable": "PergoAdvancedBlock03Data",
+      "module_id": "pergo-advanced-block-03",
+      "module_number": 3,
+      "module_title": "Технологии Pergo",
+      "page_id": "pergo-advanced-block-03-page-04",
+      "page_number": 4,
+      "page_title": "Unizip, Sensation и проверка заявлений",
+      "original_block": {
+        "идентификатор_блока": "m3p4b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S01, S09, S10, S11. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-04-data.js",
+      "variable": "PergoAdvancedBlock04Data",
+      "module_id": "pergo-advanced-block-04",
+      "module_number": 4,
+      "module_title": "Ассортимент и продуктовая навигация",
+      "page_id": "pergo-advanced-block-04-page-01",
+      "page_number": 1,
+      "page_title": "Как читать ассортимент Pergo",
+      "original_block": {
+        "идентификатор_блока": "m4p1b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S02, S07, S09, S10, S11, S12, S14. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-04-data.js",
+      "variable": "PergoAdvancedBlock04Data",
+      "module_id": "pergo-advanced-block-04",
+      "module_number": 4,
+      "module_title": "Ассортимент и продуктовая навигация",
+      "page_id": "pergo-advanced-block-04-page-02",
+      "page_number": 2,
+      "page_title": "Perstorp и Odense: два масштаба",
+      "original_block": {
+        "идентификатор_блока": "m4p2b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S07, S08, S09. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-04-data.js",
+      "variable": "PergoAdvancedBlock04Data",
+      "module_id": "pergo-advanced-block-04",
+      "module_number": 4,
+      "module_title": "Ассортимент и продуктовая навигация",
+      "page_id": "pergo-advanced-block-04-page-03",
+      "page_number": 3,
+      "page_title": "Bergen pro и Kungshamn",
+      "original_block": {
+        "идентификатор_блока": "m4p3b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S10, S11. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-04-data.js",
+      "variable": "PergoAdvancedBlock04Data",
+      "module_id": "pergo-advanced-block-04",
+      "module_number": 4,
+      "module_title": "Ассортимент и продуктовая навигация",
+      "page_id": "pergo-advanced-block-04-page-04",
+      "page_number": 4,
+      "page_title": "Rigid vinyl и локальный каталог",
+      "original_block": {
+        "идентификатор_блока": "m4p4b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S12, S13, S14, S15. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-05-data.js",
+      "variable": "PergoAdvancedBlock05Data",
+      "module_id": "pergo-advanced-block-05",
+      "module_number": 5,
+      "module_title": "Декоры, цвета и визуальные сценарии",
+      "page_id": "pergo-advanced-block-05-page-01",
+      "page_number": 1,
+      "page_title": "Название декора и визуальный прототип",
+      "original_block": {
+        "идентификатор_блока": "m5p1b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S08, S13. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-05-data.js",
+      "variable": "PergoAdvancedBlock05Data",
+      "module_id": "pergo-advanced-block-05",
+      "module_number": 5,
+      "module_title": "Декоры, цвета и визуальные сценарии",
+      "page_id": "pergo-advanced-block-05-page-02",
+      "page_number": 2,
+      "page_title": "Светлота, температура, подтон и контраст",
+      "original_block": {
+        "идентификатор_блока": "m5p2b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S08, S13. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-05-data.js",
+      "variable": "PergoAdvancedBlock05Data",
+      "module_id": "pergo-advanced-block-05",
+      "module_number": 5,
+      "module_title": "Декоры, цвета и визуальные сценарии",
+      "page_id": "pergo-advanced-block-05-page-03",
+      "page_number": 3,
+      "page_title": "Формат, фаска и ритм",
+      "original_block": {
+        "идентификатор_блока": "m5p3b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S07, S09, S10, S11. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-05-data.js",
+      "variable": "PergoAdvancedBlock05Data",
+      "module_id": "pergo-advanced-block-05",
+      "module_number": 5,
+      "module_title": "Декоры, цвета и визуальные сценарии",
+      "page_id": "pergo-advanced-block-05-page-04",
+      "page_number": 4,
+      "page_title": "Проверка образца в интерьере",
+      "original_block": {
+        "идентификатор_блока": "m5p4b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S07, S08, S09, S10, S11, S13. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-06-data.js",
+      "variable": "PergoAdvancedBlock06Data",
+      "module_id": "pergo-advanced-block-06",
+      "module_number": 6,
+      "module_title": "Подбор и продажа Pergo",
+      "page_id": "pergo-advanced-block-06-page-01",
+      "page_number": 1,
+      "page_title": "Технический бриф до показа коллекций",
+      "original_block": {
+        "идентификатор_блока": "m6p1b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S03, S04, S05, S06. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-06-data.js",
+      "variable": "PergoAdvancedBlock06Data",
+      "module_id": "pergo-advanced-block-06",
+      "module_number": 6,
+      "module_title": "Подбор и продажа Pergo",
+      "page_id": "pergo-advanced-block-06-page-02",
+      "page_number": 2,
+      "page_title": "Матрица «задача — решение»",
+      "original_block": {
+        "идентификатор_блока": "m6p2b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S03, S07, S09, S10, S11, S12, S14. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-06-data.js",
+      "variable": "PergoAdvancedBlock06Data",
+      "module_id": "pergo-advanced-block-06",
+      "module_number": 6,
+      "module_title": "Подбор и продажа Pergo",
+      "page_id": "pergo-advanced-block-06-page-03",
+      "page_number": 3,
+      "page_title": "Сравнение, цена и ценность",
+      "original_block": {
+        "идентификатор_блока": "m6p3b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S07, S08, S09, S10, S11, S12, S13, S14. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-06-data.js",
+      "variable": "PergoAdvancedBlock06Data",
+      "module_id": "pergo-advanced-block-06",
+      "module_number": 6,
+      "module_title": "Подбор и продажа Pergo",
+      "page_id": "pergo-advanced-block-06-page-04",
+      "page_number": 4,
+      "page_title": "Возражения и завершение продажи",
+      "original_block": {
+        "идентификатор_блока": "m6p4b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S02, S03, S04, S05. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-07-data.js",
+      "variable": "PergoAdvancedBlock07Data",
+      "module_id": "pergo-advanced-block-07",
+      "module_number": 7,
+      "module_title": "Монтаж, эксплуатация и гарантия",
+      "page_id": "pergo-advanced-block-07-page-01",
+      "page_number": 1,
+      "page_title": "Основание, влажность и акклиматизация",
+      "original_block": {
+        "идентификатор_блока": "m7p1b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S04, S06. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-07-data.js",
+      "variable": "PergoAdvancedBlock07Data",
+      "module_id": "pergo-advanced-block-07",
+      "module_number": 7,
+      "module_title": "Монтаж, эксплуатация и гарантия",
+      "page_id": "pergo-advanced-block-07-page-02",
+      "page_number": 2,
+      "page_title": "Плавающий пол, зазоры и тяжелые объекты",
+      "original_block": {
+        "идентификатор_блока": "m7p2b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S04, S05. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-07-data.js",
+      "variable": "PergoAdvancedBlock07Data",
+      "module_id": "pergo-advanced-block-07",
+      "module_number": 7,
+      "module_title": "Монтаж, эксплуатация и гарантия",
+      "page_id": "pergo-advanced-block-07-page-03",
+      "page_number": 3,
+      "page_title": "Теплый пол и водостойкая отделка",
+      "original_block": {
+        "идентификатор_блока": "m7p3b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S03, S04, S05. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    },
+    {
+      "file": "pergo-advanced-block-07-data.js",
+      "variable": "PergoAdvancedBlock07Data",
+      "module_id": "pergo-advanced-block-07",
+      "module_number": 7,
+      "module_title": "Монтаж, эксплуатация и гарантия",
+      "page_id": "pergo-advanced-block-07-page-04",
+      "page_number": 4,
+      "page_title": "Уход, гарантия и передача инструкции",
+      "original_block": {
+        "идентификатор_блока": "m7p4b5",
+        "категория": "контент_страницы",
+        "тип_блока": "уведомление",
+        "заголовок": "Проверяемые источники",
+        "назначение": {
+          "обязателен_для_отображения": true,
+          "можно_скрывать": false,
+          "использовать_как_учебный_контент": true
+        },
+        "содержимое": {
+          "стиль": "вывод",
+          "текст": "Страница опирается на: S05. Изменяемые характеристики проверяются по конкретному рынку, артикулу и дате."
+        }
+      }
+    }
+  ],
+  "official_sources": {
+    "verified_at": "2026-06-19",
+    "sources": [
+      {
+        "id": "S01",
+        "title": "About Pergo — история бренда",
+        "region": "international",
+        "reliability": "B",
+        "verified_at": "2026-06-19",
+        "url": "https://int.pergo.com/en-sg/about-us",
+        "confirms": "1977: идея №23; 1980: Perstorp Golv GL80; 1989: имя Pergo; развитие TitanX, click, PerfectFold, vinyl и Sensation."
+      },
+      {
+        "id": "S02",
+        "title": "Pergo laminate floors",
+        "region": "international",
+        "reliability": "B",
+        "verified_at": "2026-06-19",
+        "url": "https://int.pergo.com/en/laminate",
+        "confirms": "Актуальная международная коммуникация ламината, TitanX, AquaSafe и аксессуаров."
+      },
+      {
+        "id": "S03",
+        "title": "Water resistant laminate flooring from Pergo",
+        "region": "international",
+        "reliability": "B",
+        "verified_at": "2026-06-19",
+        "url": "https://int.pergo.com/en/laminate/water-resistant-laminate-floors",
+        "confirms": "AquaSafe и заявленная защита поверхности от проникновения воды до 72 часов для соответствующих продуктов."
+      },
+      {
+        "id": "S04",
+        "title": "Installation instructions Pergo Laminate — LMP General",
+        "region": "international",
+        "reliability": "A",
+        "verified_at": "2026-06-19",
+        "document_version": "11.2025",
+        "url": "https://int.pergo.com/-/media/imported%20assets/flooring/b/7/f/pginstallationlmpgeneralenpdf221569.ashx?filename=Installation+instructions+Pergo+Laminate+-+LMP+General.pdf&rev=9a753059f2bf46478dd1ca1720e50e3d&type=original",
+        "confirms": "Требования к основанию, влажности, зазорам, плавающей укладке, теплому полу, тяжелым объектам и влажной отделке."
+      },
+      {
+        "id": "S05",
+        "title": "Warranty conditions Pergo Laminate",
+        "region": "nordic/international",
+        "reliability": "A",
+        "verified_at": "2026-06-19",
+        "document_version": "01.2023",
+        "url": "https://int.pergo.com/-/media/imported%20assets/flooring/0/a/c/pgwarranty%20norlmpenpdf113468.ashx?filename=Warranty+Pergo+Laminate.pdf&rev=048b22eed4ac4676a0e0e8b16dab82cd&type=original",
+        "confirms": "Практические условия гарантии, ограничения по воде, уходу, монтажу, аксессуарам и тяжелым предметам."
+      },
+      {
+        "id": "S06",
+        "title": "How to install laminate flooring",
+        "region": "international",
+        "reliability": "B",
+        "verified_at": "2026-06-19",
+        "url": "https://int.pergo.com/en/laminate/how-to-install-laminate-flooring",
+        "confirms": "Акклиматизация, базовый порядок монтажа, подложка, смешивание панелей и смещение торцевых стыков."
+      },
+      {
+        "id": "S07",
+        "title": "Perstorp collection",
+        "region": "international",
+        "reliability": "B",
+        "verified_at": "2026-06-19",
+        "url": "https://int.pergo.com/en/laminate/perstorp",
+        "confirms": "Компактный формат, отсутствие фаски, Uniclic, TitanX и AquaSafe."
+      },
+      {
+        "id": "S08",
+        "title": "Warm Natural Oak — Perstorp",
+        "region": "international",
+        "reliability": "B",
+        "verified_at": "2026-06-19",
+        "url": "https://int.pergo.com/en/laminate/perstorp/l0370-04394_warm-natural-oak",
+        "confirms": "Пример артикула: 1200 × 190 × 8 мм, 7 панелей, 1,596 м², класс 32, Uniclic, без фаски."
+      },
+      {
+        "id": "S09",
+        "title": "Odense collection",
+        "region": "international",
+        "reliability": "B",
+        "verified_at": "2026-06-19",
+        "url": "https://int.pergo.com/en/laminate/odense",
+        "confirms": "Длинный и широкий формат, Sensation, AquaSafe и PerfectFold."
+      },
+      {
+        "id": "S10",
+        "title": "Bergen pro collection",
+        "region": "international",
+        "reliability": "B",
+        "verified_at": "2026-06-19",
+        "url": "https://int.pergo.com/en/laminate/bergen-pro",
+        "confirms": "Узкая планка, Sensation, TitanX, AquaSafe, Uniclic и категория Pro."
+      },
+      {
+        "id": "S11",
+        "title": "Kungshamn Herringbone Laminate",
+        "region": "international",
+        "reliability": "B",
+        "verified_at": "2026-06-19",
+        "url": "https://int.pergo.com/en/laminate/kungshamn",
+        "confirms": "Елочный формат, Unizip, одна универсальная планка, TitanX, AquaSafe и Sensation."
+      },
+      {
+        "id": "S12",
+        "title": "Glomma pad pro",
+        "region": "international",
+        "reliability": "B",
+        "verified_at": "2026-06-19",
+        "url": "https://int.pergo.com/en/vinyl/glomma-pad-pro",
+        "confirms": "Rigid vinyl, Uniclic, встроенная подложка и водостойкая конструкция."
+      },
+      {
+        "id": "S13",
+        "title": "Natural Temper Oak — Glomma pad pro",
+        "region": "international",
+        "reliability": "B",
+        "verified_at": "2026-06-19",
+        "url": "https://int.pergo.com/en/vinyl/glomma-pad-pro/v4431-40306_natural-temper-oak",
+        "confirms": "Пример артикула: 1494 × 209 × 6 мм, 6 панелей, 1,873 м², класс 33 и встроенная подложка."
+      },
+      {
+        "id": "S14",
+        "title": "Namsen pad pro",
+        "region": "international",
+        "reliability": "B",
+        "verified_at": "2026-06-19",
+        "url": "https://int.pergo.com/en/vinyl/namsen-pad-pro",
+        "confirms": "Классический формат rigid vinyl, Uniclic, встроенная подложка и водостойкая конструкция."
+      },
+      {
+        "id": "S15",
+        "title": "TouchSpace Academy — каталог брендов",
+        "region": "touchspace",
+        "reliability": "C",
+        "verified_at": "2026-06-19",
+        "url": "../../brands.html",
+        "confirms": "Локальные записи Pergo в каталоге TouchSpace; не подтверждает международный статус коллекций."
+      }
+    ]
+  }
+}
