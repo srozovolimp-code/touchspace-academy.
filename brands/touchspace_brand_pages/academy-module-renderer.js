@@ -319,7 +319,10 @@
       }
       var page = pages[current];
       var passed = pagePassed(stateValue, pageId(page));
-      return '<article class="academy-slide lesson-slide is-active"><span class="academy-kicker lesson-kicker">Раздел ' + (current + 1) + '</span><h2 class="academy-title lesson-title">' + esc(page.название) + '</h2><p class="academy-lead lesson-lead">' + esc(page.цель_страницы || '') + '</p><div class="academy-blocks blocks">' + (page.контент_страницы || []).map(renderBlock).join("") + '</div><div class="academy-actions lesson-actions"><div class="academy-actions__row lesson-actions__row"><button class="btn secondary" type="button" data-prev>Назад</button><button class="btn" type="button" data-open-test="' + current + '">' + (passed ? 'Повторить тест' : 'Пройти тест раздела') + '</button><button class="btn" type="button" data-next' + (unlocked(stateValue, current + 1) ? '' : ' disabled') + '>Следующий раздел</button><span class="result ' + (passed ? 'good' : '') + '">' + (passed ? 'Раздел пройден.' : 'Для прохождения нужно набрать не менее ' + threshold(currentTest(current), 80) + '%.') + '</span></div><p class="academy-note lesson-actions__note">Тест открывается в отдельном окне после материала раздела.</p></div></article>';
+      var backControl = current === 0
+        ? '<a class="btn secondary" href="' + academyUrl + '">Назад</a>'
+        : '<button class="btn secondary" type="button" data-prev>Назад</button>';
+      return '<article class="academy-slide lesson-slide is-active"><span class="academy-kicker lesson-kicker">Раздел ' + (current + 1) + '</span><h2 class="academy-title lesson-title">' + esc(page.название) + '</h2><p class="academy-lead lesson-lead">' + esc(page.цель_страницы || '') + '</p><div class="academy-blocks blocks">' + (page.контент_страницы || []).map(renderBlock).join("") + '</div><div class="academy-actions lesson-actions"><div class="academy-actions__row lesson-actions__row">' + backControl + '<button class="btn" type="button" data-open-test="' + current + '">' + (passed ? 'Повторить тест' : 'Пройти тест раздела') + '</button><button class="btn" type="button" data-next' + (unlocked(stateValue, current + 1) ? '' : ' disabled') + '>Следующий раздел</button><span class="result ' + (passed ? 'good' : '') + '">' + (passed ? 'Раздел пройден.' : 'Для прохождения нужно набрать не менее ' + threshold(currentTest(current), 80) + '%.') + '</span></div><p class="academy-note lesson-actions__note">Тест открывается в отдельном окне после материала раздела.</p></div></article>';
     }
 
     function render() {
@@ -328,7 +331,7 @@
       renderProgress(stateValue);
       root.querySelector('[data-stage-count]').textContent = 'Раздел ' + (current + 1) + ' из ' + (pages.length + 1);
       root.querySelector('[data-stage]').innerHTML = renderStage(stateValue);
-      root.querySelectorAll('[data-prev]').forEach(function (button) { button.disabled = current === 0; });
+      root.querySelectorAll('.stage-actions [data-prev]').forEach(function (button) { button.disabled = current === 0; });
     }
 
     function openQuiz(index) {
