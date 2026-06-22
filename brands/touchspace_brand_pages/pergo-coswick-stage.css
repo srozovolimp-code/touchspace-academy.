@@ -1,0 +1,9 @@
+/* Stage parity with Coswick Advanced. */
+.academy-module-root.coswick-standardized .academy-stage.stage{position:relative;min-height:720px;max-height:calc(100vh - 150px);padding:30px;overflow-x:hidden;overflow-y:auto;background:linear-gradient(180deg,#fff 0%,#f7fbff 100%)}
+.academy-module-root.coswick-standardized .academy-toolbar.stage-toolbar{position:relative;z-index:5;margin-bottom:18px}
+.academy-module-root.coswick-standardized .academy-slide.lesson-slide{display:block;min-height:610px;padding-bottom:40px;animation:pergoLessonIn 520ms cubic-bezier(.2,.8,.2,1) both}
+.academy-module-root.coswick-standardized .academy-title.lesson-title,.academy-final-root.coswick-standardized .academy-title.lesson-title{margin:22px 0 12px;max-width:900px;font-size:clamp(42px,6vw,82px);line-height:.9;letter-spacing:-.07em;text-wrap:balance}
+.academy-module-root.coswick-standardized .academy-lead.lesson-lead,.academy-final-root.coswick-standardized .academy-lead.lesson-lead{max-width:800px;margin:0;color:#66758a;font-size:18px;font-weight:700;line-height:1.55}
+.academy-module-root.coswick-standardized .academy-blocks.blocks{gap:18px;margin-top:28px}
+@keyframes pergoLessonIn{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:760px){.academy-module-root.coswick-standardized .academy-topline,.academy-final-root.coswick-standardized .academy-topline,.academy-module-root.coswick-standardized .academy-toolbar.stage-toolbar{align-items:flex-start;flex-direction:column}.academy-module-root.coswick-standardized .academy-stage.stage{min-height:660px;max-height:none;padding:20px}.academy-module-root.coswick-standardized .academy-title.lesson-title,.academy-final-root.coswick-standardized .academy-title.lesson-title{font-size:clamp(42px,12vw,58px);line-height:1.02}}
