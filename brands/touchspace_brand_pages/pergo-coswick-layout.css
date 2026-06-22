@@ -1,12 +1,18 @@
-/* Layout parity with Coswick Advanced. */
+/* Coswick Advanced parity for Pergo. */
 .academy-module-root,.academy-final-root{display:block}
-.academy-module-root .academy-topline,.academy-final-root .academy-topline{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;padding:16px 18px;border:1px solid rgba(255,255,255,.9);border-radius:28px;background:rgba(255,255,255,.88);box-shadow:var(--shadow-soft)}
-.academy-module-root .academy-shell.module-shell{grid-template-columns:310px minmax(0,1fr);min-height:calc(100vh - 150px);border:1px solid rgba(255,255,255,.92);border-radius:38px;background:rgba(255,255,255,.74);box-shadow:var(--shadow);overflow:hidden}
-.academy-module-root .academy-panel.course-panel{display:flex;flex-direction:column;min-height:100%;border-right:1px solid var(--line);background:#fff}
-.academy-module-root .academy-cover.course-cover{min-height:270px;padding:22px;background:#1f2937}
-.academy-module-root .academy-cover.course-cover:before{background:radial-gradient(circle at 76% 20%,rgba(255,255,255,.16),transparent 32%),radial-gradient(circle at 88% 42%,rgba(95,147,255,.18),transparent 25%),linear-gradient(145deg,rgba(26,34,46,.48),rgba(8,18,31,.92)),linear-gradient(135deg,#1d2a38,#33485d)}
-.academy-module-root .academy-progress.course-progress-panel{padding:18px 20px;border-bottom:1px solid var(--line);background:#fff}
-.academy-module-root .academy-progress__row.progress-row{gap:10px;color:#66758a;font-size:12px}
-.academy-module-root .academy-progress__track.progress-track{height:9px;background:#e8eef7}
-.academy-module-root .academy-progress__track.progress-track span{background:linear-gradient(90deg,var(--blue),#70adff);transition:width 260ms ease}
-@media(max-width:1180px){.academy-module-root .academy-shell.module-shell{grid-template-columns:1fr}.academy-module-root .academy-panel.course-panel{border-right:0;border-bottom:1px solid var(--line)}}
+.academy-module-root .academy-topline,.academy-final-root .academy-topline{margin-bottom:18px;padding:16px 18px;border-radius:28px;background:rgba(255,255,255,.88);box-shadow:var(--shadow-soft)}
+.academy-module-root .module-shell{grid-template-columns:310px minmax(0,1fr);min-height:calc(100vh - 150px);border-radius:38px;box-shadow:var(--shadow)}
+.academy-module-root .course-panel{min-height:100%;border-right:1px solid var(--line);background:#fff}
+.academy-module-root .course-cover{min-height:270px;padding:22px}
+.academy-module-root .course-cover:before{background:radial-gradient(circle at 76% 20%,rgba(255,255,255,.16),transparent 32%),linear-gradient(145deg,rgba(26,34,46,.48),rgba(8,18,31,.92)),linear-gradient(135deg,#1d2a38,#33485d)}
+.academy-module-root .course-progress-panel{padding:18px 20px;background:#fff}
+.academy-module-root .progress-row{font-size:12px}
+.academy-module-root .progress-track{height:9px;background:#e8eef7}
+.academy-module-root .progress-track span{background:linear-gradient(90deg,var(--blue),#70adff)}
+.academy-module-root .stage{min-height:720px;padding:30px;background:linear-gradient(180deg,#fff,#f7fbff)}
+.academy-module-root .lesson-slide{min-height:610px;padding-bottom:40px}
+.academy-module-root .lesson-title,.academy-final-root .lesson-title{margin:22px 0 12px;max-width:900px;font-size:clamp(42px,6vw,82px);line-height:.9;letter-spacing:-.07em}
+.academy-module-root .lesson-lead,.academy-final-root .lesson-lead{max-width:800px;font-size:18px;line-height:1.55}
+.academy-module-root .blocks{gap:18px;margin-top:28px}
+@media(max-width:1180px){.academy-module-root .module-shell{grid-template-columns:1fr}.academy-module-root .course-panel{border-right:0;border-bottom:1px solid var(--line)}}
+@media(max-width:760px){.academy-module-root .stage{min-height:660px;padding:20px}.academy-module-root .lesson-title,.academy-final-root .lesson-title{font-size:clamp(42px,12vw,58px);line-height:1.02}}
