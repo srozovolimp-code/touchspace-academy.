@@ -408,24 +408,36 @@
 .academy-table__row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
 .academy-actions {
-  margin-top: 10px;
+  margin-top: 28px;
   padding: 18px;
-  border: 1px solid rgba(223, 230, 242, .92);
   border-radius: 26px;
-  background: rgba(255, 255, 255, .84);
+  background: rgba(255, 255, 255, .82);
+  border: 1px solid rgba(223, 230, 242, .92);
   box-shadow: 0 14px 34px rgba(24, 45, 90, .06);
 }
 
-.academy-actions__row {
+.academy-actions__row,
+.lesson-actions__row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
 }
 
+.lesson-actions {
+  margin-top: 28px;
+  padding: 18px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, .82);
+  border: 1px solid rgba(223, 230, 242, .92);
+  box-shadow: 0 14px 34px rgba(24, 45, 90, .06);
+}
+
 .academy-module-root .academy-actions .btn,
+.academy-module-root .lesson-actions .btn,
 .academy-module-root .quiz-modal__foot .btn,
 .academy-final-root .academy-actions .btn,
+.academy-final-root .lesson-actions .btn,
 .academy-final-root .quiz-modal__foot .btn {
   flex: 0 0 auto !important;
   min-height: 44px !important;
@@ -447,8 +459,10 @@
 }
 
 .academy-module-root .academy-actions .btn.secondary,
+.academy-module-root .lesson-actions .btn.secondary,
 .academy-module-root .quiz-modal__foot .btn.secondary,
 .academy-final-root .academy-actions .btn.secondary,
+.academy-final-root .lesson-actions .btn.secondary,
 .academy-final-root .quiz-modal__foot .btn.secondary {
   background: #eef5ff;
   color: #177be8 !important;
@@ -456,19 +470,25 @@
 }
 
 .academy-module-root .academy-actions .btn:disabled,
+.academy-module-root .lesson-actions .btn:disabled,
 .academy-module-root .quiz-modal__foot .btn:disabled,
 .academy-module-root .academy-actions .btn[aria-disabled="true"],
+.academy-module-root .lesson-actions .btn[aria-disabled="true"],
 .academy-final-root .academy-actions .btn:disabled,
+.academy-final-root .lesson-actions .btn:disabled,
 .academy-final-root .quiz-modal__foot .btn:disabled,
-.academy-final-root .academy-actions .btn[aria-disabled="true"] {
+.academy-final-root .academy-actions .btn[aria-disabled="true"],
+.academy-final-root .lesson-actions .btn[aria-disabled="true"] {
   opacity: .45;
   cursor: not-allowed;
   box-shadow: none;
 }
 
 .academy-module-root .academy-actions .result,
+.academy-module-root .lesson-actions .result,
 .academy-module-root .quiz-modal__foot .result,
 .academy-final-root .academy-actions .result,
+.academy-final-root .lesson-actions .result,
 .academy-final-root .quiz-modal__foot .result {
   min-width: min(100%, 240px);
   color: #607086;
@@ -476,7 +496,8 @@
   line-height: 1.35;
 }
 
-.academy-note {
+.academy-note,
+.lesson-actions__note {
   margin: 10px 0 0;
   color: #718095;
   font-size: 13px;
