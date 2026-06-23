@@ -1,0 +1,87 @@
+name: Patch Advanced brand cards
+
+on:
+  push:
+    branches:
+      - rebuild-advanced-template-from-coswick-2026-06-23
+    paths:
+      - .github/workflows/patch-advanced-brand-cards.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: rebuild-advanced-template-from-coswick-2026-06-23
+          fetch-depth: 0
+
+      - name: Make Advanced cards inherit base-brand catalog data
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('brands.html')
+          text = path.read_text(encoding='utf-8')
+          marker = """      var rows = RAW_CSV.trim().split(/\\n/).slice(1).map(function (line) {
+        var parts = line.split(',');
+        return {
+          brand: parts[0].trim(),
+          category: normalizeCategoryName(parts[1]),
+          collection: parts[2].trim(),
+          productCount: Number(parts[3]) || 0
+        };
+      });
+"""
+          patch = """
+
+      // Advanced academy cards keep their own title and destination,
+      // but inherit product statistics, categories and collection badges
+      // from the corresponding base brand card.
+      var advancedBrandSources = {
+        'Alpine Floor Advanced': 'Alpine Floor',
+        'Coswick advanced': 'Coswick',
+        'Pergo Advanced': 'Pergo'
+      };
+      var sourceRowsForAdvancedCards = rows.slice();
+      rows = rows.filter(function (row) {
+        return !advancedBrandSources[row.brand];
+      });
+      Object.keys(advancedBrandSources).forEach(function (advancedName) {
+        var sourceName = advancedBrandSources[advancedName];
+        sourceRowsForAdvancedCards.forEach(function (row) {
+          if (row.brand !== sourceName) return;
+          rows.push({
+            brand: advancedName,
+            category: row.category,
+            collection: row.collection,
+            productCount: row.productCount
+          });
+        });
+      });
+"""
+
+          if 'var advancedBrandSources = {' not in text:
+              if marker not in text:
+                  raise SystemExit('Target marker was not found in brands.html')
+              text = text.replace(marker, marker + patch, 1)
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Remove one-shot workflow and commit result
+        shell: bash
+        run: |
+          rm -f .github/workflows/patch-advanced-brand-cards.yml
+          git config user.name "TouchSpace automation"
+          git config user.email "actions@users.noreply.github.com"
+          git add brands.html .github/workflows/patch-advanced-brand-cards.yml
+          if git diff --cached --quiet; then
+            echo "No changes required"
+            exit 0
+          fi
+          git commit -m "Make Advanced brand cards inherit base-brand badges"
+          git push origin HEAD:rebuild-advanced-template-from-coswick-2026-06-23
