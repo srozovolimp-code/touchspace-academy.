@@ -4,18 +4,13 @@ on:
   push:
     branches:
       - rebuild-advanced-template-from-coswick-2026-06-23
-    paths:
-      - .github/workflows/patch-advanced-brand-cards.yml
-  pull_request:
-    branches:
-      - main
 
 permissions:
   contents: write
 
 jobs:
   patch:
-    if: github.event_name == 'push' || github.event.pull_request.head.ref == 'rebuild-advanced-template-from-coswick-2026-06-23'
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,7 +18,7 @@ jobs:
           ref: rebuild-advanced-template-from-coswick-2026-06-23
           fetch-depth: 0
 
-      - name: Make Advanced cards inherit base-brand catalog data
+      - name: Copy base brand metadata to Advanced cards
         shell: bash
         run: |
           python3 - <<'PY'
@@ -31,60 +26,59 @@ jobs:
 
           path = Path('brands.html')
           text = path.read_text(encoding='utf-8')
-          marker = """      var rows = RAW_CSV.trim().split(/\\n/).slice(1).map(function (line) {
-        var parts = line.split(',');
-        return {
-          brand: parts[0].trim(),
-          category: normalizeCategoryName(parts[1]),
-          collection: parts[2].trim(),
-          productCount: Number(parts[3]) || 0
-        };
+          old = """      var brands = Object.keys(byBrand).map(function (name) {
+        var item = byBrand[name];
+        item.categories = Array.from(item.categories).sort(localeSort);
+        item.collections = Array.from(item.collections).sort(localeSort);
+        return item;
       });
-"""
-          patch = """
 
-      // Advanced academy cards keep their own title and destination,
-      // but inherit product statistics, categories and collection badges
-      // from the corresponding base brand card.
+      var searchInput = document.querySelector('[data-search]') || { value: '', addEventListener: function () {} };
+"""
+          new = """      var brands = Object.keys(byBrand).map(function (name) {
+        var item = byBrand[name];
+        item.categories = Array.from(item.categories).sort(localeSort);
+        item.collections = Array.from(item.collections).sort(localeSort);
+        return item;
+      });
+
       var advancedBrandSources = {
         'Alpine Floor Advanced': 'Alpine Floor',
         'Coswick advanced': 'Coswick',
         'Pergo Advanced': 'Pergo'
       };
-      var sourceRowsForAdvancedCards = rows.slice();
-      rows = rows.filter(function (row) {
-        return !advancedBrandSources[row.brand];
-      });
-      Object.keys(advancedBrandSources).forEach(function (advancedName) {
-        var sourceName = advancedBrandSources[advancedName];
-        sourceRowsForAdvancedCards.forEach(function (row) {
-          if (row.brand !== sourceName) return;
-          rows.push({
-            brand: advancedName,
+
+      brands.forEach(function (brand) {
+        var sourceName = advancedBrandSources[brand.name];
+        var source = sourceName && byBrand[sourceName];
+        if (!source) return;
+
+        brand.categories = Array.from(source.categories).sort(localeSort);
+        brand.collections = Array.from(source.collections).sort(localeSort);
+        brand.products = source.products;
+        brand.rows = source.rows.map(function (row) {
+          return {
+            brand: brand.name,
             category: row.category,
             collection: row.collection,
             productCount: row.productCount
-          });
+          };
         });
       });
-"""
 
-          if 'var advancedBrandSources = {' not in text:
-              if marker not in text:
-                  raise SystemExit('Target marker was not found in brands.html')
-              text = text.replace(marker, marker + patch, 1)
-              path.write_text(text, encoding='utf-8')
+      var searchInput = document.querySelector('[data-search]') || { value: '', addEventListener: function () {} };
+"""
+          if old not in text:
+              raise SystemExit('Target block not found or already patched')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
           PY
 
-      - name: Commit result
+      - name: Commit result and remove one-off workflow
         shell: bash
         run: |
-          git config user.name "TouchSpace automation"
-          git config user.email "actions@users.noreply.github.com"
-          git add brands.html
-          if git diff --cached --quiet; then
-            echo "No changes required"
-            exit 0
-          fi
-          git commit -m "Make Advanced brand cards inherit base-brand badges"
+          rm .github/workflows/patch-advanced-brand-cards.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add brands.html .github/workflows/patch-advanced-brand-cards.yml
+          git commit -m "Copy base brand badges to Advanced cards"
           git push origin HEAD:rebuild-advanced-template-from-coswick-2026-06-23
