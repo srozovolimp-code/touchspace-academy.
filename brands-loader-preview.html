@@ -1,1 +1,31 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Бренды | TouchSpace Академия</title></head><body><p>loader placeholder</p></body></html>
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Бренды | TouchSpace Академия</title>
+</head>
+<body>
+<script>
+(function () {
+  var marker = "      var brands = Object.keys(byBrand).map(function (name) {\n        var item = byBrand[name];\n        item.categories = Array.from(item.categories).sort(localeSort);\n        item.collections = Array.from(item.collections).sort(localeSort);\n        return item;\n      });\n\n      var searchInput = document.querySelector('[data-search]') || { value: '', addEventListener: function () {} };";
+  var replacement = "      var brands = Object.keys(byBrand).map(function (name) {\n        var item = byBrand[name];\n        item.categories = Array.from(item.categories).sort(localeSort);\n        item.collections = Array.from(item.collections).sort(localeSort);\n        return item;\n      });\n\n      var advancedBrandSources = {\n        'Alpine Floor Advanced': 'Alpine Floor',\n        'Coswick advanced': 'Coswick',\n        'Pergo Advanced': 'Pergo'\n      };\n\n      brands.forEach(function (brand) {\n        var sourceName = advancedBrandSources[brand.name];\n        var source = sourceName && byBrand[sourceName];\n        if (!source) return;\n        brand.categories = Array.from(source.categories).sort(localeSort);\n        brand.collections = Array.from(source.collections).sort(localeSort);\n        brand.products = source.products;\n        brand.rows = source.rows.map(function (row) {\n          return { brand: brand.name, category: row.category, collection: row.collection, productCount: row.productCount };\n        });\n      });\n\n      var searchInput = document.querySelector('[data-search]') || { value: '', addEventListener: function () {} };";
+
+  fetch('brands-source.html?v=20260623', { cache: 'no-store' })
+    .then(function (response) {
+      if (!response.ok) throw new Error('Не удалось загрузить страницу брендов');
+      return response.text();
+    })
+    .then(function (html) {
+      if (html.indexOf(marker) === -1) throw new Error('Не найден блок карточек брендов');
+      document.open();
+      document.write(html.replace(marker, replacement));
+      document.close();
+    })
+    .catch(function (error) {
+      document.body.textContent = error.message || String(error);
+    });
+})();
+</script>
+</body>
+</html>
