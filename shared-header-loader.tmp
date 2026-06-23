@@ -1,0 +1,7 @@
+(function () {
+  var current = document.currentScript;
+  var coreUrl = current && current.src ? new URL('shared-header-core.js', current.src).href : 'shared-header-core.js';
+  var fixUrl = current && current.src ? new URL('shared-header-advanced-card-fix.js', current.src).href : 'shared-header-advanced-card-fix.js';
+  document.write('<script src="' + coreUrl.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '"><\\/script>');
+  document.write('<script src="' + fixUrl.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '"><\\/script>');
+})();
