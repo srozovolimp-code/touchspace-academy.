@@ -1,0 +1,1727 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Бренды | TouchSpace Академия</title>
+  <style>
+    :root {
+      --blue: #0a84ff;
+      --blue-2: #5f93ff;
+      --soft: #e4edff;
+      --ink: #111827;
+      --muted: #6b7280;
+      --line: #dfe6f2;
+      --page: #eef4ff;
+      --card: #fff;
+      --green: #23c483;
+      --orange: #ff8a3d;
+      --shadow: 0 24px 80px rgba(24, 45, 90, 0.12);
+      --shadow-soft: 0 14px 38px rgba(24, 45, 90, 0.08);
+      --max: 1500px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f8fbff 0%, var(--page) 48%, #f6f9ff 100%);
+      color: var(--ink);
+      font-family: Inter, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      max-width: var(--max); margin: 0 auto; padding: 24px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 76px minmax(0, 1fr); gap: 24px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 22px;
+      z-index: 60;
+      height: calc(100vh - 44px);
+      min-height: 520px;
+      padding: 18px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+      overflow: visible;
+    }
+
+    .nav {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 10px;
+      overflow: visible;
+    }
+
+    .nav__item {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 56px;
+      height: 56px;
+      border: 0;
+      border-radius: 18px;
+      background: transparent;
+      transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .nav__item:hover {
+      background: rgba(10, 132, 255, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .nav__item.is-active {
+      background: var(--blue);
+      box-shadow: 0 12px 28px rgba(10, 132, 255, 0.26);
+    }
+
+    .nav__item img {
+      width: 25px;
+      height: 25px;
+      object-fit: contain;
+      transition: filter 180ms ease;
+    }
+
+    .nav__item.is-active img {
+      filter: brightness(0) invert(1);
+    }
+
+    .nav__item::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: calc(100% + 12px);
+      top: 50%;
+      z-index: 100;
+      padding: 10px 13px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 16px 38px rgba(24, 45, 90, 0.14);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-6px, -50%);
+      transition: opacity 160ms ease, transform 160ms ease;
+      backdrop-filter: blur(14px);
+    }
+
+    .nav__item::before {
+      content: "";
+      position: absolute;
+      left: calc(100% + 7px);
+      top: 50%;
+      z-index: 101;
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.94);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-6px, -50%) rotate(45deg);
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .nav__item:hover::after,
+    .nav__item:hover::before,
+    .nav__item:focus-visible::after,
+    .nav__item:focus-visible::before {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+
+    .main {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 260px minmax(260px, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .wordmark {
+      font-size: 28px;
+      font-weight: 950;
+      line-height: 0.82;
+      letter-spacing: -0.065em;
+    }
+
+    .wordmark span {
+      display: block;
+    }
+
+    .wordmark span:last-child {
+      padding-left: 74px;
+    }
+
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 62px;
+      padding: 0 22px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow-soft);
+      color: #9aa4b2;
+    }
+
+    .search input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 16px;
+    }
+
+    .header-actions {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .notification-wrap {
+      position: relative;
+    }
+
+    .notification {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 62px;
+      height: 62px;
+      border: 0;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow-soft);
+      color: #9aa4b2;
+      cursor: pointer;
+      transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .notification:hover,
+    .notification.is-open {
+      background: #fff;
+      box-shadow: 0 18px 42px rgba(95, 147, 255, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .notification::after {
+      content: "";
+      position: absolute;
+      right: 17px;
+      top: 16px;
+      width: 9px;
+      height: 9px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      background: var(--orange);
+    }
+
+    .notification img {
+      width: 25px;
+      height: 25px;
+      object-fit: contain;
+    }
+
+    .notification-panel {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 14px);
+      z-index: 80;
+      width: min(380px, calc(100vw - 48px));
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: 26px;
+      background: radial-gradient(circle at 88% 10%, rgba(95, 147, 255, 0.18), transparent 32%), rgba(255, 255, 255, 0.94);
+      box-shadow: 0 26px 70px rgba(24, 45, 90, 0.18);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px) scale(0.98);
+      transform-origin: top right;
+      transition: opacity 180ms ease, transform 180ms ease;
+      backdrop-filter: blur(18px);
+    }
+
+    .notification-panel.is-open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    .notification-panel::before {
+      content: "";
+      position: absolute;
+      right: 23px;
+      top: -6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.94);
+      transform: rotate(45deg);
+    }
+
+    .notification-panel__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .notification-panel__head strong {
+      font-size: 18px;
+      letter-spacing: -0.03em;
+    }
+
+    .notification-panel__count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .notification-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .notification-item {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 12px;
+      padding: 12px;
+      border: 0;
+      border-radius: 18px;
+      background: rgba(244, 248, 255, 0.82);
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: background 180ms ease, transform 180ms ease;
+    }
+
+    .notification-item:hover {
+      background: #fff;
+      transform: translateY(-1px);
+    }
+
+    .notification-item__icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #e4edff, #f7fbff);
+      color: var(--blue);
+      font-weight: 950;
+    }
+
+    .notification-item__copy strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 14px;
+      line-height: 1.16;
+    }
+
+    .notification-item__copy span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .notification-panel__foot {
+      width: 100%;
+      min-height: 40px;
+      margin-top: 10px;
+      border: 0;
+      border-radius: 16px;
+      background: #fff;
+      color: var(--blue);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 222px;
+      height: 62px;
+      padding: 8px 10px 8px 18px;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .user__meta {
+      min-width: 0;
+    }
+
+    .user__name {
+      display: block;
+      font-weight: 800;
+    }
+
+    .user__role {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      margin-left: auto;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--blue), #8ee2ff);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 22px;
+    }
+
+    .hero-panel {
+      position: relative;
+      min-height: 320px;
+      padding: 34px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at 88% 12%, rgba(35, 196, 131, 0.2), transparent 28%),
+        linear-gradient(135deg, #ffffff 0%, #edf5ff 100%);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-panel::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      bottom: -115px;
+      width: 310px;
+      height: 310px;
+      border-radius: 50%;
+      background: rgba(10, 132, 255, 0.1);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(10, 132, 255, 0.1);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 22px 0 16px;
+      font-size: clamp(42px, 6vw, 76px);
+      line-height: 0.92;
+      letter-spacing: -0.065em;
+    }
+
+    .hero-panel p {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0;
+      color: #526174;
+      font-size: 18px;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    .stats-panel {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .stat-card {
+      min-height: 150px;
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stat-card b {
+      display: block;
+      font-size: 38px;
+      letter-spacing: -0.05em;
+    }
+
+    .stat-card span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 850;
+      line-height: 1.35;
+    }
+
+    .content-layout {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .filter-panel {
+      position: sticky;
+      top: 22px;
+      display: grid;
+      gap: 14px;
+      max-height: calc(100vh - 44px);
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .filter-block,
+    .toolbar,
+    .empty-state {
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(14px);
+    }
+
+    .filter-block {
+      padding: 18px;
+    }
+
+    .filter-block h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      letter-spacing: -0.03em;
+    }
+
+    .filter-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .filter-search {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 40px;
+      margin-bottom: 10px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #f7faff;
+      color: #8a97aa;
+    }
+
+    .filter-search svg {
+      width: 17px;
+      height: 17px;
+      flex: 0 0 auto;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .filter-search input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .filter-search input::placeholder {
+      color: #8a97aa;
+      font-weight: 750;
+    }
+
+    .filter-list--scroll {
+      max-height: 280px;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .filter-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #f7faff;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 850;
+      text-align: left;
+    }
+
+    .filter-item span:first-child {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .filter-item small {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .filter-item.is-active {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 12px 26px rgba(10, 132, 255, 0.22);
+    }
+
+    .filter-item.is-active small {
+      color: rgba(255, 255, 255, 0.76);
+    }
+
+    .filter-empty {
+      padding: 12px;
+      border: 1px dashed #c7d6ea;
+      border-radius: 16px;
+      background: #f8fbff;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 850;
+      text-align: center;
+    }
+
+    .reset-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid rgba(10, 132, 255, 0.18);
+      border-radius: 16px;
+      background: rgba(10, 132, 255, 0.08);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .catalog-area {
+      display: grid;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      min-height: 76px;
+      padding: 16px 18px;
+    }
+
+    .result-title {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: -0.04em;
+    }
+
+    .active-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      min-height: 30px;
+      padding: 7px 10px;
+      border: 0;
+      border-radius: 999px;
+      background: #edf4ff;
+      color: #36506f;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.2;
+      font-family: inherit;
+      text-align: left;
+    }
+
+    button.chip {
+      cursor: pointer;
+      transition: background 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms ease;
+    }
+
+    button.chip:hover {
+      transform: translateY(-1px);
+      background: rgba(10, 132, 255, 0.12);
+      color: var(--blue);
+      box-shadow: 0 10px 22px rgba(10, 132, 255, 0.12);
+    }
+
+    .chip.is-active {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(10, 132, 255, 0.2);
+    }
+
+    .chip--green {
+      background: #e5f9f0;
+      color: #11734a;
+    }
+
+    button.chip--green:hover {
+      background: rgba(17, 115, 74, 0.12);
+      color: #11734a;
+      box-shadow: 0 10px 22px rgba(17, 115, 74, 0.12);
+    }
+
+    .chip--green.is-active {
+      background: #11734a;
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(17, 115, 74, 0.18);
+    }
+
+    .chip--orange {
+      background: #fff1e9;
+      color: #a24a12;
+    }
+
+    .alphabet {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .letter {
+      display: grid;
+      place-items: center;
+      min-width: 38px;
+      height: 38px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #f7faff;
+      color: #506078;
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .letter.is-active {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 12px 26px rgba(10, 132, 255, 0.2);
+    }
+
+    .featured-grid,
+    .brand-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .featured-card,
+    .brand-card {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .featured-card.is-link,
+    .brand-card.is-link {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      transition: box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .featured-card.is-link:hover,
+    .brand-card.is-link:hover {
+      box-shadow: 0 18px 46px rgba(10, 132, 255, 0.14);
+      transform: translateY(-2px);
+    }
+
+    .featured-card {
+      min-height: 258px;
+      padding: 22px;
+    }
+
+    .brand-card {
+      min-height: 292px;
+      padding: 22px;
+    }
+
+    .brand-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      display: grid;
+      place-items: center;
+      width: 104px;
+      height: 66px;
+      padding: 4px 6px;
+      border: 1px solid rgba(211, 223, 239, 0.95);
+      border-radius: 20px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 251, 255, 0.94));
+      color: var(--blue);
+      font-size: 16px;
+      font-weight: 950;
+      letter-spacing: -0.035em;
+      flex: 0 0 auto;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.75),
+        0 12px 28px rgba(24, 45, 90, 0.08);
+      overflow: hidden;
+    }
+
+    .brand-logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center center;
+      margin: auto;
+      transform: scale(1.12);
+      transform-origin: center center;
+    }
+
+    .brand-logo.has-logo {
+      color: transparent;
+    }
+
+    .metric {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-align: right;
+      line-height: 1.35;
+    }
+
+    .featured-card h3,
+    .brand-card h3 {
+      margin: 18px 0 10px;
+      font-size: 25px;
+      line-height: 1.04;
+      letter-spacing: -0.045em;
+    }
+
+    .brand-card p,
+    .featured-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .card-foot {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 18px;
+      padding-right: 48px;
+      position: relative;
+      min-height: 50px;
+    }
+
+    .card-foot.no-favorite {
+      padding-right: 0;
+    }
+
+    .brand-favorite {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(223, 230, 242, 0.95);
+      border-radius: 15px;
+      background: #fff;
+      color: #9aa4b2;
+      font-size: 0;
+      box-shadow: 0 10px 24px rgba(24, 45, 90, 0.08);
+      transition: color 160ms ease, background 160ms ease, border-color 160ms ease, transform 160ms ease;
+      z-index: 2;
+    }
+
+    .brand-favorite img {
+      display: block;
+      width: 19px;
+      height: 19px;
+      object-fit: contain;
+      transition: filter 160ms ease;
+    }
+
+    .brand-favorite:hover {
+      transform: translateY(-1px);
+      color: var(--blue);
+      border-color: rgba(10, 132, 255, 0.32);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.12), 0 14px 30px rgba(10, 132, 255, 0.2);
+    }
+
+    .brand-favorite.is-favorite {
+      background: #edf4ff;
+      border-color: rgba(10, 132, 255, 0.36);
+      color: var(--blue);
+      box-shadow: 0 12px 28px rgba(10, 132, 255, 0.16);
+    }
+
+    .brand-favorite.is-favorite img {
+      filter: brightness(0) saturate(100%) invert(41%) sepia(99%) saturate(2524%) hue-rotate(198deg) brightness(103%) contrast(105%);
+    }
+
+    .empty-state {
+      display: none;
+      padding: 34px;
+      text-align: center;
+    }
+
+    .empty-state.is-visible {
+      display: block;
+    }
+
+    .empty-state h2 {
+      margin: 0 0 8px;
+      font-size: 26px;
+      letter-spacing: -0.04em;
+    }
+
+    .empty-state p {
+      margin: 0;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    @media (max-width: 1100px) {
+      .hero,
+      .content-layout,
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-panel {
+        position: static;
+        max-height: none;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .filter-block:first-child,
+      .filter-block:last-child {
+        grid-column: 1 / -1;
+      }
+
+      .featured-grid,
+      .brand-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        padding: 14px 12px 40px;
+      }
+
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+        min-height: 0;
+        padding: 10px;
+      }
+
+      .nav {
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      .nav__item {
+        width: 100%;
+      }
+
+      .nav__item::before,
+      .nav__item::after {
+        display: none;
+      }
+
+      .header {
+        grid-template-columns: 1fr;
+      }
+
+      .header-actions {
+        justify-content: space-between;
+      }
+
+      .user {
+        min-width: 0;
+      }
+
+      .hero-panel {
+        min-height: 0;
+        padding: 24px;
+        border-radius: 28px;
+      }
+
+      .stats-panel,
+      .filter-panel,
+      .featured-grid,
+      .brand-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .alphabet {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="shared-header.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Навигация"></aside>
+
+      <main class="main">
+        <header class="header" data-search-placeholder="Найти бренд, категорию или коллекцию" data-search-input-attr="data-search"></header>
+
+        <section class="hero" aria-labelledby="page-title">
+          <div class="hero-panel">
+            <span class="eyebrow">Новая страница / По брендам</span>
+            <h1 id="page-title">Бренды, категории и коллекции</h1>
+            <p>Каталог собран из файла связей: каждая карточка бренда показывает товарные категории, коллекции и количество товаров. Фильтры работают вместе и помогают быстро сузить базу знаний.</p>
+          </div>
+          <div class="stats-panel" aria-label="Статистика каталога">
+            <div class="stat-card"><b data-stat="brands">0</b><span>брендов в базе</span></div>
+            <div class="stat-card"><b data-stat="categories">0</b><span>товарных категорий</span></div>
+            <div class="stat-card"><b data-stat="collections">0</b><span>коллекций</span></div>
+            <div class="stat-card"><b data-stat="products">0</b><span>товаров в связях</span></div>
+          </div>
+        </section>
+
+        <section class="content-layout" aria-label="Каталог брендов">
+          <aside class="filter-panel">
+            <div class="filter-block">
+              <h2>Действия</h2>
+              <button class="reset-button" type="button" data-reset>Сбросить фильтры</button>
+            </div>
+            <div class="filter-block">
+              <h2>Категории</h2>
+              <label class="filter-search">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <input type="search" placeholder="Найти категорию" data-filter-search="category">
+              </label>
+              <div class="filter-list filter-list--scroll" data-filter-list="category"></div>
+            </div>
+            <div class="filter-block">
+              <h2>Бренды</h2>
+              <label class="filter-search">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <input type="search" placeholder="Найти бренд" data-filter-search="brand">
+              </label>
+              <div class="filter-list filter-list--scroll" data-filter-list="brand"></div>
+            </div>
+            <div class="filter-block">
+              <h2>Коллекции</h2>
+              <label class="filter-search">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <input type="search" placeholder="Найти коллекцию" data-filter-search="collection">
+              </label>
+              <div class="filter-list filter-list--scroll" data-filter-list="collection"></div>
+            </div>
+          </aside>
+
+          <div class="catalog-area">
+            <div class="toolbar">
+              <div>
+                <h2 class="result-title" data-result-title>Все бренды</h2>
+                <div class="active-filter" data-active-filters></div>
+              </div>
+              <div class="alphabet" data-alphabet aria-label="Фильтр по алфавиту"></div>
+            </div>
+
+            <div class="featured-grid" data-featured-grid aria-label="Ключевые бренды"></div>
+            <div class="brand-grid" data-brand-grid></div>
+            <div class="empty-state" data-empty>
+              <h2>Ничего не найдено</h2>
+              <p>Попробуйте убрать часть фильтров или изменить запрос.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="shared-header.js"></script>
+  <script>
+    var RAW_CSV = `brand,category,collection,product_count
+Alpine Floor,Кварц-Виниловый ламинат,Chevron Alpine LVT,11
+Alpine Floor,Кварц-Виниловый ламинат,Classic,9
+Alpine Floor,Кварц-Виниловый ламинат,Classic Light,5
+Alpine Floor,Кварц-Виниловый ламинат,Easy Line,17
+Alpine Floor,Кварц-Виниловый ламинат,Grand Sequoia LVT,11
+Alpine Floor,Кварц-Виниловый ламинат,Grand Sequoia Superior,11
+Alpine Floor,Кварц-Виниловый ламинат,Grand Sequoia Village,10
+Alpine Floor,Кварц-Виниловый ламинат,Intense,11
+Alpine Floor,Кварц-Виниловый ламинат,Light Stone,11
+Alpine Floor,Кварц-Виниловый ламинат,Parquet LVT,22
+Alpine Floor,Кварц-Виниловый ламинат,Parquet Premium,11
+Alpine Floor,Кварц-Виниловый ламинат,Premium XL,29
+Alpine Floor,Кварц-Виниловый ламинат,Real Wood,7
+Alpine Floor,Кварц-Виниловый ламинат,Sequoia,13
+Alpine Floor,Кварц-Виниловый ламинат,Solo Plus,1
+Alpine Floor,Кварц-Виниловый ламинат,Stone Mineral Core,18
+Alpine Floor,Кварц-Виниловый ламинат,Ultra,22
+Alpine Floor Advanced,Академия бренда,Академия Alpine Floor,1
+Alta Step,Кварц-Виниловый ламинат,Encanto,4
+Alta Step,Кварц-виниловый ламинат,Encanto,1
+Calitex,Кварц-виниловый ламинат,Diamonds,6
+Calitex,Кварц-виниловый ламинат,Elementals,10
+Calitex,Кварц-виниловый ламинат,Originals,17
+Calitex,Кварц-виниловый ламинат,Stones,7
+Coswick,Инженерная доска,Классическая,2
+Coswick,Модульный паркет,Американский орех,6
+Coswick,Модульный паркет,Без коллекции,4
+Coswick,Модульный паркет,Белые ночи,31
+Coswick,Модульный паркет,Дизайнерские решения,18
+Coswick,Модульный паркет,Натуральная палитра,33
+Coswick,Модульный паркет,Оттенки серого,22
+Coswick,Модульный паркет,Таинственный лес,40
+Coswick,Паркет елка,Американский орех,2
+Coswick,Паркет елка,Без коллекции,2
+Coswick,Паркет елка,Белые ночи,11
+Coswick,Паркет елка,Дизайнерские решения,11
+Coswick,Паркет елка,Натуральная палитра,28
+Coswick,Паркет елка,Оттенки серого,31
+Coswick,Паркет елка,Таинственный лес,27
+Coswick,Паркетная доска,Авторская,1
+Coswick,Паркетная доска,Американский орех,15
+Coswick,Паркетная доска,Без коллекции,32
+Coswick,Паркетная доска,Белые ночи,10
+Coswick,Паркетная доска,Белые ночи,26
+Coswick,Паркетная доска,Дизайнерские решения,27
+Coswick,Паркетная доска,Дизайнерские решения,8
+Coswick,Паркетная доска,Натуральная палитра,46
+Coswick,Паркетная доска,Оттенки серого,41
+Coswick,Паркетная доска,Таинственный лес,51
+Coswick advanced,Академия бренда,Бренд Coswick,1
+Ensten,Кварц-Виниловый ламинат,Hygge,22
+Ensten,Кварц-Виниловый ламинат,Valland Parquet,11
+Kahrs,Паркетная доска,Гармония,1
+Karelia,Аксессуары,Без коллекции,1
+Karelia,Кварц-Виниловый ламинат,Great Classics Premium,15
+Karelia,Кварц-Виниловый ламинат,Instrumental collection,5
+Karelia,Кварц-виниловый ламинат,Instrumental collection,5
+Karelia,Кварц-Виниловый ламинат,Sea Romance,3
+Karelia,Кварц-Виниловый ламинат,Без коллекции,1
+Karelia,Паркет елка,Angle,1
+Karelia,Паркетная доска,BLOOM,5
+Karelia,Паркетная доска,Chevron,1
+Karelia,Паркетная доска,Dawn,9
+Karelia,Паркетная доска,Earth,6
+Karelia,Паркетная доска,Libra,8
+Karelia,Паркетная доска,Light,3
+Karelia,Паркетная доска,Midnight,1
+Karelia,Паркетная доска,Polar,2
+Karelia,Паркетная доска,Spice,3
+Karelia,Паркетная доска,Time,1
+Karelia,Паркетная доска,Urban Soul,3
+Karelia,Паркетная доска,Без коллекции,1
+Karelia,Паркетная доска,Пралине,6
+Karelia,Паркетная доска,Эксклюзив,1
+Lab Arte,Инженерная доска,Authentica,119
+Lab Arte,Инженерная доска,Lab Arte,1
+Lab Arte,Инженерная доска,Без коллекции,34
+Lab Arte,Модульный паркет,Geometry,28
+Lab Arte,Паркет елка,Angle,246
+Lab Arte,Паркет елка,Chevron,585
+Millennium,Кварц-Виниловый ламинат,Millennium Herringbone,10
+Millennium,Кварц-Виниловый ламинат,Rockfloor,1
+Millennium,Кварц-Виниловый ламинат,Rockfloor 180,1
+Millennium,Кварц-Виниловый ламинат,Rockfloor Herringbone,2
+NatisSton,Кварц-Виниловый ламинат,Leger,1
+NatisSton,Кварц-Виниловый ламинат,Rubis,7
+Norland,Кварц-Виниловый ламинат,Lagom Parquet,11
+Norland,Кварц-Виниловый ламинат,Lagom Parquet LVT,11
+Norland,Кварц-Виниловый ламинат,Neowood,2
+Norland,Кварц-Виниловый ламинат,Sigrid,14
+Norland,Кварц-Виниловый ламинат,Sigrid LVT,21
+Norland,Кварц-Виниловый ламинат,Sigrid Plus,11
+Orac Decor,Аксессуары,Без коллекции,5
+Pergo,Аксессуары,Без коллекции,7
+Pergo,Виниловый ламинат,Classic Plank Premium Click,2
+Pergo,Виниловый ламинат,Glomma pad pro,9
+Pergo,Виниловый ламинат,Modern Plank Optimum Glue,1
+Pergo,Виниловый ламинат,Namsen pad pro,10
+Pergo,Виниловый ламинат,Namsen pro,4
+Pergo,Виниловый ламинат,Viskan pad pro,6
+Pergo,Виниловый ламинат,Viskan pro,3
+Pergo,Виниловый ламинат,Vorma pad pro,3
+Pergo,Ламинат,Chevron 12 pro,4
+Pergo,Ламинат,Ebeltoft 12 pro,4
+Pergo,Ламинат,Elements 12 pro,2
+Pergo,Ламинат,Goeteborg pro,13
+Pergo,Ламинат,Malmo pro,6
+Pergo,Ламинат,Skara 12 pro,3
+Pergo,Ламинат,Skara Pro,5
+Pergo,Ламинат,Uppsala pro,9
+Pergo Advanced,Академия бренда,Академия Pergo Advanced,1
+Polarwood,Паркет елка,Herringbone,5
+Polarwood,Паркетная доска,Classic,6
+Polarwood,Паркетная доска,Elegance,1
+Polarwood,Паркетная доска,Space,5
+Polarwood,Паркетная доска,Spice,1
+Royal Parket,Инженерная доска,Authentica,19
+Royal Parket,Паркет елка,Angle,19
+Royal Parket,Паркетная доска,Click 130,11
+Royal Parket,Паркетная доска,Click 150,4
+Tulesna,Кварц-Виниловый ламинат,Art Parquet,1
+Tulesna,Кварц-Виниловый ламинат,Ottimo,20
+Tulesna,Кварц-Виниловый ламинат,Premium,8
+Tulesna,Кварц-Виниловый ламинат,Verano,3
+Unilin,Ламинат,Skara 12 pro,6
+Unilin,Ламинат,Skara Pro,6
+WoodRock,Кварц-виниловый ламинат,WoodRock,12
+WoodRock,Кварц-виниловый ламинат,WoodRock Stone,5
+Техномассив,Инженерная доска,Authentica,81
+Техномассив,Инженерная доска,Без коллекции,3
+Техномассив,Инженерная доска,Флекс,214
+Техномассив,Паркет елка,Angle,2`;
+
+    (function () {
+      var rows = RAW_CSV.trim().split(/\n/).slice(1).map(function (line) {
+        var parts = line.split(',');
+        return {
+          brand: parts[0].trim(),
+          category: normalizeCategoryName(parts[1]),
+          collection: parts[2].trim(),
+          productCount: Number(parts[3]) || 0
+        };
+      });
+
+      var state = {
+        category: 'all',
+        brand: 'all',
+        collection: 'all',
+        search: '',
+        letter: 'all'
+      };
+
+      var filterSearch = {
+        category: '',
+        brand: '',
+        collection: ''
+      };
+
+      var byBrand = rows.reduce(function (acc, row) {
+        if (!acc[row.brand]) {
+          acc[row.brand] = {
+            name: row.brand,
+            categories: new Set(),
+            collections: new Set(),
+            products: 0,
+            rows: []
+          };
+        }
+
+        acc[row.brand].categories.add(row.category);
+        acc[row.brand].collections.add(row.collection);
+        acc[row.brand].products += row.productCount;
+        acc[row.brand].rows.push(row);
+        return acc;
+      }, {});
+
+      var brands = Object.keys(byBrand).map(function (name) {
+        var item = byBrand[name];
+        item.categories = Array.from(item.categories).sort(localeSort);
+        item.collections = Array.from(item.collections).sort(localeSort);
+        return item;
+      });
+
+      var searchInput = document.querySelector('[data-search]') || { value: '', addEventListener: function () {} };
+      var brandGrid = document.querySelector('[data-brand-grid]');
+      var featuredGrid = document.querySelector('[data-featured-grid]');
+      var emptyState = document.querySelector('[data-empty]');
+      var resultTitle = document.querySelector('[data-result-title]');
+      var activeFilters = document.querySelector('[data-active-filters]');
+      var alphabet = document.querySelector('[data-alphabet]');
+
+      function normalizeCategoryName(value) {
+        return String(value || '')
+          .trim()
+          .replace(/\s+/g, ' ')
+          .replace('Кварц-Виниловый', 'Кварц-виниловый');
+      }
+
+      function localeSort(a, b) {
+        return a.localeCompare(b, 'ru');
+      }
+
+      function countUnique(key) {
+        return Array.from(new Set(rows.map(function (row) { return row[key]; }))).length;
+      }
+
+      function initials(name) {
+        return name.split(/\s+/).map(function (part) { return part[0]; }).join('').slice(0, 2).toUpperCase();
+      }
+
+      var brandLogoMap = {
+        'Alpine Floor': 'images/brand-logos/Alpine_Floor.png',
+        'Alpine Floor Advanced': 'images/brand-logos/Alpine_Floor.png',
+        'Alta Step': 'images/brand-logos/Alta_Step.png',
+        'Calitex': 'images/brand-logos/Calitex.png',
+        'Coswick': 'images/brand-logos/Coswick.png',
+        'Coswick advanced': 'images/brand-logos/Coswick.png',
+        'Ensten': 'images/brand-logos/Ensten.png',
+        'Kahrs': 'images/brand-logos/Kahrs.png',
+        'Kährs': 'images/brand-logos/Kahrs.png',
+        'Karelia': 'images/brand-logos/Karelia.png',
+        'Lab Arte': 'images/brand-logos/Lab_Arte.svg',
+        'Millennium': 'images/brand-logos/Millennium.png',
+        'NatisSton': 'images/brand-logos/NatisSton.png',
+        'Norland': 'images/brand-logos/Norland.png',
+        'Orac Decor': 'images/brand-logos/Orac_Decor.png',
+        'Pergo': 'images/brand-logos/Pergo.png',
+        'Pergo Advanced': 'images/brand-logos/Pergo.png',
+        'Polarwood': 'images/brand-logos/Polarwood.png',
+        'Quick Step': 'images/brand-logos/Quick_Step.png',
+        'Quick-Step': 'images/brand-logos/Quick_Step.png',
+        'Royal Parket': 'images/brand-logos/Royal_Parket.png',
+        'Tarkett': 'images/brand-logos/Tarkett.png',
+        'Tulesna': 'images/brand-logos/Tulesna.png',
+        'Unilin': 'images/brand-logos/Unilin.png',
+        'WoodRock': 'images/brand-logos/WoodRock.png',
+        'Техномассив': 'images/brand-logos/Tehnomassiv.png'
+      };
+
+      function brandLogoHtml(brand) {
+        var src = brandLogoMap[brand.name];
+        if (!src) {
+          return '<div class="brand-logo">' + escapeHtml(initials(brand.name)) + '</div>';
+        }
+
+        return '<div class="brand-logo has-logo"><img src="' + escapeHtml(src) + '" alt="' + escapeHtml(brand.name) + '"></div>';
+      }
+
+      function formatNumber(value) {
+        return new Intl.NumberFormat('ru-RU').format(value);
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function brandLetter(name) {
+        return name.trim().charAt(0).toUpperCase();
+      }
+
+      function matchesRow(row) {
+        var query = state.search.toLowerCase().trim();
+        var haystack = [row.brand, row.category, row.collection].join(' ').toLowerCase();
+
+        return (state.category === 'all' || row.category === state.category) &&
+          (state.brand === 'all' || row.brand === state.brand) &&
+          (state.collection === 'all' || row.collection === state.collection) &&
+          (!query || haystack.indexOf(query) !== -1);
+      }
+
+      function matchesState(brand) {
+        return brand.rows.some(matchesRow);
+      }
+
+      function sortBrands(items) {
+        return items.slice().sort(function (a, b) {
+          return localeSort(a.name, b.name);
+        });
+      }
+
+      function renderAlphabet(availableBrands) {
+        var letters = Array.from(new Set(availableBrands.map(function (brand) {
+          return brandLetter(brand.name);
+        }))).sort(localeSort);
+
+        alphabet.innerHTML = ['all'].concat(letters).map(function (letter) {
+          var label = letter === 'all' ? 'Все' : letter;
+          return '<button class="letter' + (state.letter === letter ? ' is-active' : '') + '" type="button" data-letter="' + letter + '">' + label + '</button>';
+        }).join('');
+      }
+
+      function makeFilterButton(type, label, count) {
+        var button = document.createElement('button');
+        var displayLabel = label === 'all' ? 'Все' : label;
+        button.className = 'filter-item';
+        button.type = 'button';
+        button.dataset.filterType = type;
+        button.dataset.filterValue = label;
+        button.innerHTML = '<span>' + displayLabel + '</span><small>' + count + '</small>';
+        button.classList.toggle('is-active', state[type] === label);
+        return button;
+      }
+
+      function fillFilter(type, values) {
+        var list = document.querySelector('[data-filter-list="' + type + '"]');
+        var query = (filterSearch[type] || '').toLowerCase().trim();
+        var filteredValues = query
+          ? values.filter(function (item) { return item.name.toLowerCase().indexOf(query) !== -1; })
+          : values;
+
+        list.innerHTML = '';
+        list.appendChild(makeFilterButton(type, 'all', type === 'brand' ? brands.length : values.length));
+
+        if (!filteredValues.length) {
+          var empty = document.createElement('div');
+          empty.className = 'filter-empty';
+          empty.textContent = 'Ничего не найдено';
+          list.appendChild(empty);
+          return;
+        }
+
+        filteredValues.forEach(function (item) {
+          list.appendChild(makeFilterButton(type, item.name, item.count));
+        });
+      }
+
+      function buildFilters(visibleRows) {
+        function aggregate(key) {
+          var map = visibleRows.reduce(function (acc, row) {
+            acc[row[key]] = (acc[row[key]] || 0) + row.productCount;
+            return acc;
+          }, {});
+
+          return Object.keys(map).map(function (name) {
+            return { name: name, count: map[name] };
+          }).sort(function (a, b) {
+            return b.count - a.count || localeSort(a.name, b.name);
+          });
+        }
+
+        fillFilter('category', aggregate('category'));
+        fillFilter('brand', aggregate('brand'));
+        fillFilter('collection', aggregate('collection'));
+      }
+
+      var brandPages = {
+        'Alpine Floor': 'brands/touchspace_brand_pages/alpine-floor-academy.html',
+        'Alpine Floor Advanced': 'brands/touchspace_brand_pages/alpine-floor-advanced-academy.html',
+        'Alta Step': 'brands/touchspace_brand_pages/alta-step-academy.html',
+        'Calitex': 'brands/touchspace_brand_pages/calitex-academy.html',
+        'Coswick': 'brands/touchspace_brand_pages/coswick-academy.html',
+        'Coswick advanced': 'brands/touchspace_brand_pages/coswick-advanced-academy.html',
+        'Ensten': 'brands/touchspace_brand_pages/ensten-academy.html',
+        'Kahrs': 'brands/touchspace_brand_pages/kahrs.html',
+        'Karelia': 'brands/touchspace_brand_pages/karelia.html',
+        'Lab Arte': 'brands/touchspace_brand_pages/lab-arte.html',
+        'Millennium': 'brands/touchspace_brand_pages/millennium.html',
+        'NatisSton': 'brands/touchspace_brand_pages/natisston.html',
+        'Norland': 'brands/touchspace_brand_pages/norland-academy.html',
+        'Orac Decor': 'brands/touchspace_brand_pages/orac-decor.html',
+        'Pergo': 'brands/touchspace_brand_pages/pergo.html',
+        'Pergo Advanced': 'brands/touchspace_brand_pages/pergo-advanced-academy.html',
+        'Polarwood': 'brands/touchspace_brand_pages/polarwood.html',
+        'Royal Parket': 'brands/touchspace_brand_pages/royal-parket.html',
+        'Tulesna': 'brands/touchspace_brand_pages/tulesna-academy.html',
+        'Unilin': 'brands/touchspace_brand_pages/unilin.html',
+        'WoodRock': 'brands/touchspace_brand_pages/woodrock.html',
+        'Техномассив': 'brands/touchspace_brand_pages/tehnomassiv.html'
+      };
+
+      function cardTemplate(brand, featured) {
+        var brandPage = brandPages[brand.name];
+        var href = brandPage || '';
+        var isSupplierAccount = window.TouchSpaceAcademy && window.TouchSpaceAcademy.isSupplierAccount && window.TouchSpaceAcademy.isSupplierAccount();
+        var categoryChips = brand.categories.slice(0, 3).map(function (name) {
+          return '<button class="chip chip--green' + (state.category === name ? ' is-active' : '') + '" type="button" data-card-filter-type="category" data-card-filter-value="' + escapeHtml(name) + '">' + escapeHtml(name) + '</button>';
+        }).join('');
+        var collectionChips = brand.collections.slice(0, featured ? 3 : 4).map(function (name) {
+          return '<button class="chip' + (state.collection === name ? ' is-active' : '') + '" type="button" data-card-filter-type="collection" data-card-filter-value="' + escapeHtml(name) + '">' + escapeHtml(name) + '</button>';
+        }).join('');
+        var more = brand.collections.length > (featured ? 3 : 4)
+          ? '<span class="chip chip--orange">+' + (brand.collections.length - (featured ? 3 : 4)) + ' коллекций</span>'
+          : '';
+        var favoriteDescription = brand.categories.length + ' категорий, ' + brand.collections.length + ' коллекций, ' + formatNumber(brand.products) + ' товаров';
+        var favoriteButton = isSupplierAccount ? '' : '<button class="brand-favorite" type="button" aria-label="Добавить ' + escapeHtml(brand.name) + ' в избранное" aria-pressed="false" data-brand-favorite="' + escapeHtml(brand.name) + '" data-favorite-id="brand-' + escapeHtml(brand.name.toLowerCase().replace(/\s+/g, '-')) + '" data-favorite-title="' + escapeHtml(brand.name) + '" data-favorite-type="Бренд" data-favorite-url="' + escapeHtml(href || 'brands.html') + '" data-favorite-description="' + escapeHtml(favoriteDescription) + '"><img src="icons/favorites.svg" alt="" aria-hidden="true"></button>';
+
+        return '<article class="' + (featured ? 'featured-card' : 'brand-card') + (href ? ' is-link' : '') + '"' + (href ? ' data-brand-href="' + escapeHtml(href) + '"' : '') + '>' +
+          '<div class="brand-head">' + brandLogoHtml(brand) + '<div class="metric">' + formatNumber(brand.products) + ' товаров<br>' + brand.collections.length + ' коллекций</div></div>' +
+          '<h3>' + escapeHtml(brand.name) + '</h3>' +
+          '<p>' + brand.categories.length + ' категорий: ' + escapeHtml(brand.categories.slice(0, 3).join(', ')) + (brand.categories.length > 3 ? '...' : '') + '</p>' +
+          '<div class="pills">' + categoryChips + '</div>' +
+          '<div class="card-foot' + (isSupplierAccount ? ' no-favorite' : '') + '">' + collectionChips + more + favoriteButton + '</div>' +
+          '</article>';
+      }
+
+      function favoriteItemFromBrandButton(button) {
+        return {
+          id: button.getAttribute('data-favorite-id'),
+          title: button.getAttribute('data-favorite-title'),
+          type: button.getAttribute('data-favorite-type'),
+          url: button.getAttribute('data-favorite-url'),
+          description: button.getAttribute('data-favorite-description')
+        };
+      }
+
+      function renderBrandFavorites() {
+        var api = window.TouchSpaceAcademy;
+        var isSupplierAccount = api && api.isSupplierAccount && api.isSupplierAccount();
+        document.querySelectorAll('[data-brand-favorite]').forEach(function (button) {
+          button.hidden = !!isSupplierAccount;
+          button.setAttribute('aria-hidden', String(!!isSupplierAccount));
+          if (isSupplierAccount) return;
+          var active = api && api.isFavorite && api.isFavorite(button.getAttribute('data-favorite-id'));
+          button.classList.toggle('is-favorite', !!active);
+          button.setAttribute('aria-pressed', String(!!active));
+          button.setAttribute('aria-label', (active ? 'Убрать ' : 'Добавить ') + button.getAttribute('data-favorite-title') + (active ? ' из избранного' : ' в избранное'));
+        });
+      }
+
+      function activeChip(label, value) {
+        if (value === 'all') return '';
+        return '<span class="chip chip--orange">' + label + ': ' + value + '</span>';
+      }
+
+      function hasActiveFilters() {
+        return state.category !== 'all' ||
+          state.brand !== 'all' ||
+          state.collection !== 'all' ||
+          state.letter !== 'all' ||
+          state.search.trim() !== '';
+      }
+
+      function render() {
+        var visibleRows = rows.filter(matchesRow);
+        var visibleBrandNames = new Set(visibleRows.map(function (row) { return row.brand; }));
+        var availableBrands = sortBrands(brands.filter(function (brand) {
+          return visibleBrandNames.has(brand.name) && matchesState(brand);
+        }));
+        var visibleBrands = state.letter === 'all'
+          ? availableBrands
+          : availableBrands.filter(function (brand) {
+            return brandLetter(brand.name) === state.letter;
+          });
+
+        buildFilters(visibleRows.length ? visibleRows : rows);
+        renderAlphabet(availableBrands);
+
+        var featuredBrands = hasActiveFilters() ? [] : ['Calitex', 'Pergo', 'Pergo Advanced', 'Alpine Floor', 'Alpine Floor Advanced'].map(function (name) {
+          return visibleBrands.find(function (brand) { return brand.name === name; });
+        }).filter(Boolean);
+        var featuredNames = new Set(featuredBrands.map(function (brand) { return brand.name; }));
+        var regularBrands = hasActiveFilters() ? visibleBrands : visibleBrands.filter(function (brand) {
+          return !featuredNames.has(brand.name);
+        });
+
+        featuredGrid.innerHTML = featuredBrands.map(function (brand) {
+          return cardTemplate(brand, true);
+        }).join('');
+        brandGrid.innerHTML = regularBrands.map(function (brand) {
+          return cardTemplate(brand, false);
+        }).join('');
+
+        emptyState.classList.toggle('is-visible', visibleBrands.length === 0);
+        featuredGrid.hidden = featuredBrands.length === 0;
+        brandGrid.hidden = visibleBrands.length === 0;
+        resultTitle.textContent = 'Показано ' + visibleBrands.length + ' из ' + brands.length + ' брендов';
+        activeFilters.innerHTML =
+          activeChip('Категория', state.category) +
+          activeChip('Бренд', state.brand) +
+          activeChip('Коллекция', state.collection) +
+          activeChip('Буква', state.letter) +
+          (state.search ? '<span class="chip">Поиск: ' + state.search + '</span>' : '');
+        renderBrandFavorites();
+      }
+
+      document.querySelector('[data-stat="brands"]').textContent = formatNumber(brands.length);
+      document.querySelector('[data-stat="categories"]').textContent = formatNumber(countUnique('category'));
+      document.querySelector('[data-stat="collections"]').textContent = formatNumber(countUnique('collection'));
+      document.querySelector('[data-stat="products"]').textContent = formatNumber(rows.reduce(function (sum, row) { return sum + row.productCount; }, 0));
+
+      document.addEventListener('click', function (event) {
+        var favorite = event.target.closest('[data-brand-favorite]');
+        if (favorite) {
+          event.preventDefault();
+          event.stopPropagation();
+          if (window.TouchSpaceAcademy && window.TouchSpaceAcademy.isSupplierAccount && window.TouchSpaceAcademy.isSupplierAccount()) return;
+          if (window.TouchSpaceAcademy && window.TouchSpaceAcademy.toggleFavorite) {
+            window.TouchSpaceAcademy.toggleFavorite(favoriteItemFromBrandButton(favorite));
+            renderBrandFavorites();
+          }
+          return;
+        }
+
+        var cardFilter = event.target.closest('[data-card-filter-type]');
+        if (cardFilter) {
+          event.preventDefault();
+          event.stopPropagation();
+          state[cardFilter.dataset.cardFilterType] = cardFilter.dataset.cardFilterValue;
+          render();
+          return;
+        }
+
+        var brandCard = event.target.closest('[data-brand-href]');
+        if (brandCard) {
+          window.location.href = brandCard.getAttribute('data-brand-href');
+          return;
+        }
+
+        var filter = event.target.closest('[data-filter-type]');
+        if (filter) {
+          state[filter.dataset.filterType] = filter.dataset.filterValue;
+          render();
+        }
+
+        if (event.target.closest('[data-reset]')) {
+          state.category = 'all';
+          state.brand = 'all';
+          state.collection = 'all';
+          state.letter = 'all';
+          state.search = '';
+          filterSearch.category = '';
+          filterSearch.brand = '';
+          filterSearch.collection = '';
+          searchInput.value = '';
+          document.querySelectorAll('[data-filter-search]').forEach(function (input) {
+            input.value = '';
+          });
+          render();
+        }
+
+        var letter = event.target.closest('[data-letter]');
+        if (letter) {
+          state.letter = letter.dataset.letter;
+          render();
+        }
+      });
+
+      document.addEventListener('input', function (event) {
+        var filterInput = event.target.closest('[data-filter-search]');
+        if (!filterInput) return;
+        filterSearch[filterInput.dataset.filterSearch] = filterInput.value;
+        render();
+      });
+
+      function bindSearchInput() {
+        var input = document.querySelector('[data-search]');
+        if (!input || input.dataset.brandSearchBound === '1') return;
+        searchInput = input;
+        searchInput.dataset.brandSearchBound = '1';
+        searchInput.addEventListener('input', function () {
+          state.search = searchInput.value;
+          render();
+        });
+      }
+
+      bindSearchInput();
+      document.addEventListener('DOMContentLoaded', bindSearchInput);
+      window.addEventListener('ts-academy-user-change', render);
+
+      Array.prototype.slice.call(document.querySelectorAll('.nav__item')).forEach(function (item) {
+        item.addEventListener('click', function () {
+          var href = item.getAttribute('data-href');
+          if (href && window.location.pathname.split('/').pop() !== href) {
+            window.location.href = href;
+          }
+        });
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
