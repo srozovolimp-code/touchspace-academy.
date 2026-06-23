@@ -1,17 +1,79 @@
-# Alpine Floor Advanced content guide
+# Alpine Floor Advanced — регламент шаблона
 
-This branch contains an empty course template for `Alpine Floor Advanced`.
+Шаблон Alpine Floor Advanced построен по канонической архитектуре `Coswick Advanced`.
 
-Fill content only in these files:
+## Эталон
+
+Эталон визуала и механики:
+
+- `coswick-advanced-block-01.html`
+- остальные страницы `coswick-advanced-block-*.html`
+
+Шаблон обязан сохранять ту же структуру интерфейса:
+
+- `module-shell`
+- `course-panel`
+- `course-cover`
+- `course-progress-panel`
+- `lesson-list`
+- `stage`
+- `stage-toolbar`
+- `quiz-modal`
+
+Также обязательны:
+
+- последовательная разблокировка разделов;
+- тест каждого раздела в pop-up;
+- итоговый тест модуля;
+- прогресс разделов и итогового теста;
+- переход к следующему модулю;
+- переход с последнего модуля к итоговому тесту курса;
+- обход блокировок для администратора и поставщика;
+- мобильное поведение как у Coswick Advanced.
+
+## Файлы шаблона
+
+Общие файлы механики и визуала:
+
+- `advanced-template-module.css`
+- `advanced-template-module.js`
+
+Страницы модулей:
+
+- `alpine-floor-advanced-block-01.html`
+- `alpine-floor-advanced-block-02.html`
+- `alpine-floor-advanced-block-03.html`
+- `alpine-floor-advanced-block-04.html`
+- `alpine-floor-advanced-block-05.html`
+- `alpine-floor-advanced-block-06.html`
+- `alpine-floor-advanced-block-07.html`
+
+Контент хранится только в файлах данных:
 
 - `alpine-floor-advanced-block-01-data.js`
 - `alpine-floor-advanced-block-02-data.js`
 - `alpine-floor-advanced-block-03-data.js`
 - `alpine-floor-advanced-block-04-data.js`
+- `alpine-floor-advanced-block-05-data.js`
+- `alpine-floor-advanced-block-06-data.js`
+- `alpine-floor-advanced-block-07-data.js`
 
-Do not change the HTML files unless the layout itself must be changed.
+Архитектура курса и переходы хранятся в:
 
-Safe fields to fill:
+- `alpine-floor-advanced-course-manifest.js`
+
+## Что нельзя делать
+
+- Не подключать к страницам `academy-module-renderer.js`.
+- Не подключать `academy-content-blocks.css`.
+- Не менять общие `shared-header.css`, `mobile-responsive.css` и `shared-header.js` ради одного бренда.
+- Не превращать страницу модуля в отдельный лендинг.
+- Не менять DOM Coswick-паттерна без отдельного согласования.
+- Не помещать учебный контент непосредственно в HTML.
+
+## Что можно менять при наполнении
+
+Безопасно редактировать:
 
 - `метаданные.модуль.название`
 - `метаданные.модуль.подзаголовок`
@@ -25,14 +87,16 @@ Safe fields to fill:
 - `тесты.итоговый_тест_модуля.название`
 - `тесты.итоговый_тест_модуля.вопросы[]`
 
-Keep these identifiers stable unless Codex updates the related HTML:
+Не менять без синхронной правки связанных данных:
 
 - `идентификатор_страницы`
 - `связанный_тест`
 - `идентификатор_теста`
 - `порядковый_номер`
+- `идентификатор` модуля в манифесте
+- имена глобальных переменных файлов данных
 
-Supported content block types:
+## Поддерживаемые блоки
 
 - `уведомление`
 - `текст`
@@ -42,11 +106,11 @@ Supported content block types:
 - `хронология`
 - `примеры`
 - `список`
+- `сравнение`
 
-Supported question types:
+## Поддерживаемые вопросы
 
 - `один_ответ`
 - `несколько_ответов`
 - `верно_неверно`
 - `последовательность`
-
