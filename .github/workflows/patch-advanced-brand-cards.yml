@@ -1,0 +1,83 @@
+name: Patch Advanced brand cards
+
+on:
+  pull_request:
+    branches:
+      - advanced-cards-base
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event.pull_request.head.ref == 'rebuild-advanced-template-from-coswick-2026-06-23'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Copy base brand metadata to Advanced cards
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('brands.html')
+          text = path.read_text(encoding='utf-8')
+          old = """      var brands = Object.keys(byBrand).map(function (name) {
+        var item = byBrand[name];
+        item.categories = Array.from(item.categories).sort(localeSort);
+        item.collections = Array.from(item.collections).sort(localeSort);
+        return item;
+      });
+
+      var searchInput = document.querySelector('[data-search]') || { value: '', addEventListener: function () {} };
+"""
+          new = """      var brands = Object.keys(byBrand).map(function (name) {
+        var item = byBrand[name];
+        item.categories = Array.from(item.categories).sort(localeSort);
+        item.collections = Array.from(item.collections).sort(localeSort);
+        return item;
+      });
+
+      var advancedBrandSources = {
+        'Alpine Floor Advanced': 'Alpine Floor',
+        'Coswick advanced': 'Coswick',
+        'Pergo Advanced': 'Pergo'
+      };
+
+      brands.forEach(function (brand) {
+        var sourceName = advancedBrandSources[brand.name];
+        var source = sourceName && byBrand[sourceName];
+        if (!source) return;
+
+        brand.categories = Array.from(source.categories).sort(localeSort);
+        brand.collections = Array.from(source.collections).sort(localeSort);
+        brand.products = source.products;
+        brand.rows = source.rows.map(function (row) {
+          return {
+            brand: brand.name,
+            category: row.category,
+            collection: row.collection,
+            productCount: row.productCount
+          };
+        });
+      });
+
+      var searchInput = document.querySelector('[data-search]') || { value: '', addEventListener: function () {} };
+"""
+          if old not in text:
+              raise SystemExit('Target block not found or already patched')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Commit result
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add brands.html
+          git commit -m "Copy base brand badges to Advanced cards"
+          git push origin HEAD:${{ github.head_ref }}
