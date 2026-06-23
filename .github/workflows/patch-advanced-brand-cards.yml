@@ -1,3 +1,4 @@
+# synchronize PR workflow trigger
 name: Patch Advanced brand cards
 
 on:
