@@ -1,16 +1,16 @@
 name: Patch Advanced brand cards
 
 on:
-  push:
+  pull_request:
     branches:
-      - rebuild-advanced-template-from-coswick-2026-06-23
+      - main
 
 permissions:
   contents: write
 
 jobs:
   patch:
-    if: github.actor != 'github-actions[bot]'
+    if: github.event.pull_request.head.ref == 'rebuild-advanced-template-from-coswick-2026-06-23'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
