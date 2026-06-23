@@ -6,12 +6,16 @@ on:
       - rebuild-advanced-template-from-coswick-2026-06-23
     paths:
       - .github/workflows/patch-advanced-brand-cards.yml
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: write
 
 jobs:
   patch:
+    if: github.event_name == 'push' || github.event.pull_request.head.ref == 'rebuild-advanced-template-from-coswick-2026-06-23'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -72,13 +76,12 @@ jobs:
               path.write_text(text, encoding='utf-8')
           PY
 
-      - name: Remove one-shot workflow and commit result
+      - name: Commit result
         shell: bash
         run: |
-          rm -f .github/workflows/patch-advanced-brand-cards.yml
           git config user.name "TouchSpace automation"
           git config user.email "actions@users.noreply.github.com"
-          git add brands.html .github/workflows/patch-advanced-brand-cards.yml
+          git add brands.html
           if git diff --cached --quiet; then
             echo "No changes required"
             exit 0
