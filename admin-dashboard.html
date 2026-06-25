@@ -34,6 +34,28 @@
     .panel { padding:20px; }
     .panel h2 { margin:0; font-size:24px; line-height:1.05; letter-spacing:-.035em; }
     .panel p { margin:7px 0 0; color:var(--muted); font-size:14px; line-height:1.45; }
+    .moderation-panel { margin-bottom:18px; }
+    .panel-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:16px; }
+    .panel-head__actions { display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:flex-end; }
+    .select { min-height:44px; border:1px solid var(--line); border-radius:15px; background:#fff; color:var(--ink); padding:0 38px 0 13px; outline:none; font-weight:850; }
+    .moderation-grid { display:grid; grid-template-columns:360px minmax(0,1fr); gap:14px; align-items:start; }
+    .moderation-list { display:grid; gap:10px; max-height:620px; overflow:auto; padding-right:2px; }
+    .moderation-card { width:100%; text-align:left; display:grid; gap:8px; border:1px solid var(--line); border-radius:20px; background:#fff; padding:14px; color:var(--ink); box-shadow:0 10px 26px rgba(24,45,90,.05); }
+    .moderation-card.is-active { border-color:rgba(10,132,255,.45); box-shadow:0 0 0 4px rgba(10,132,255,.08), 0 12px 30px rgba(24,45,90,.08); }
+    .moderation-card strong { display:block; font-size:15px; line-height:1.22; letter-spacing:-.015em; }
+    .moderation-card span { display:block; color:var(--muted); font-size:12px; line-height:1.35; font-weight:750; }
+    .source-pill { display:inline-flex; width:fit-content; min-height:26px; align-items:center; border-radius:999px; padding:0 9px; background:#eef5ff; color:#177be8; font-size:11px; font-weight:950; text-transform:uppercase; letter-spacing:.06em; }
+    .moderation-detail { min-height:420px; border:1px solid var(--line); border-radius:24px; background:#fff; padding:18px; }
+    .moderation-detail h3 { margin:0; font-size:24px; line-height:1.08; letter-spacing:-.035em; }
+    .moderation-detail__meta { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 16px; }
+    .detail-pill { display:inline-flex; min-height:30px; align-items:center; border-radius:999px; padding:0 10px; background:#f5f8fc; color:#526174; font-size:12px; font-weight:850; }
+    .detail-section { margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
+    .detail-section h4 { margin:0 0 9px; font-size:13px; color:#718095; font-weight:950; letter-spacing:.07em; text-transform:uppercase; }
+    .detail-section p { margin:0; color:#344154; font-size:14px; line-height:1.55; }
+    .detail-list { display:grid; gap:8px; margin:0; padding:0; list-style:none; }
+    .detail-list li { padding:10px 11px; border:1px solid var(--line); border-radius:14px; background:#f8fbff; color:#344154; font-size:13px; font-weight:750; line-height:1.35; }
+    .detail-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+    .moderation-empty { min-height:260px; display:grid; place-items:center; padding:26px; border:1px dashed rgba(23,32,51,.18); border-radius:22px; color:var(--muted); text-align:center; line-height:1.45; background:rgba(255,255,255,.58); }
     .forms { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-top:16px; }
     .account-form { display:grid; gap:11px; padding:16px; border:1px solid var(--line); border-radius:24px; background:#fff; }
     .account-form h3 { margin:0; font-size:18px; letter-spacing:-.02em; }
@@ -54,7 +76,7 @@
     .empty { padding:20px; border:1px dashed rgba(23,32,51,.18); border-radius:22px; background:rgba(255,255,255,.58); color:var(--muted); text-align:center; line-height:1.45; }
     .toast { position:fixed; right:24px; bottom:24px; z-index:1000; padding:13px 15px; border-radius:18px; background:#172033; color:#fff; box-shadow:0 18px 44px rgba(23,32,51,.25); opacity:0; transform:translateY(10px); pointer-events:none; transition:.2s; }
     .toast.show { opacity:1; transform:translateY(0); }
-    @media(max-width:1100px){.admin-hero,.layout{grid-template-columns:1fr}.quick-grid{grid-template-columns:repeat(2,1fr)}.forms{grid-template-columns:1fr}}
+    @media(max-width:1100px){.admin-hero,.layout,.moderation-grid{grid-template-columns:1fr}.quick-grid{grid-template-columns:repeat(2,1fr)}.forms{grid-template-columns:1fr}}
     @media(max-width:760px){.page{padding:14px}.shell{grid-template-columns:1fr}.quick-grid,.stats{grid-template-columns:1fr}.admin-hero{padding:22px;border-radius:26px}h1{font-size:38px}}
   </style>
 </head>
@@ -85,6 +107,29 @@
           <a class="quick-link" href="admin-companies.html"><strong>Администрирование компаний</strong><span>Компании, торговые точки и привязанные реселлеры.</span></a>
           <a class="quick-link" href="#account-forms"><strong>Создать аккаунт</strong><span>Добавление поставщика или реселлера как полноценного пользователя.</span></a>
         </nav>
+
+        <section class="panel moderation-panel" aria-label="Модерация контента">
+          <div class="panel-head">
+            <div>
+              <h2>Модерация контента</h2>
+              <p>Здесь собираются материалы, отправленные на проверку из кабинета поставщика и других разделов платформы.</p>
+            </div>
+            <div class="panel-head__actions">
+              <select class="select" data-moderation-filter aria-label="Фильтр по разделу">
+                <option value="all">Все разделы</option>
+                <option value="brand-page">Страницы брендов</option>
+                <option value="event">Мероприятия</option>
+              </select>
+              <span class="detail-pill" data-moderation-count>0 на проверке</span>
+            </div>
+          </div>
+          <div class="moderation-grid">
+            <div class="moderation-list" data-moderation-list></div>
+            <div class="moderation-detail" data-moderation-detail>
+              <div class="moderation-empty">Выберите заявку слева, чтобы посмотреть весь контент и принять решение.</div>
+            </div>
+          </div>
+        </section>
 
         <section class="layout" id="account-forms">
           <div class="panel">
@@ -137,6 +182,14 @@
       var suppliers = document.querySelector('[data-total-suppliers]');
       var resellers = document.querySelector('[data-total-resellers]');
       var companiesTotal = document.querySelector('[data-total-companies]');
+      var moderationFilter = document.querySelector('[data-moderation-filter]');
+      var moderationList = document.querySelector('[data-moderation-list]');
+      var moderationDetail = document.querySelector('[data-moderation-detail]');
+      var moderationCount = document.querySelector('[data-moderation-count]');
+      var supplierBrandKey = 'tsSupplierBrands';
+      var supplierEventKey = 'touchspaceSupplierEventModeration';
+      var approvedEventKey = 'touchspaceApprovedEvents';
+      var activeModerationId = '';
 
       function toast(message) {
         toastNode.textContent = message;
@@ -148,6 +201,203 @@
         return String(value || '').replace(/[&<>"]/g, function (char) {
           return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[char];
         });
+      }
+
+      function loadJson(key, fallback) {
+        try {
+          var value = JSON.parse(localStorage.getItem(key) || 'null');
+          return Array.isArray(value) ? value : fallback;
+        } catch (error) {
+          return fallback;
+        }
+      }
+
+      function saveJson(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+      }
+
+      function sourceLabel(type) {
+        return type === 'brand-page' ? 'Страница бренда' : 'Мероприятие';
+      }
+
+      function compactText(value, fallback) {
+        var text = String(value || '').trim();
+        return text || fallback || 'Не заполнено';
+      }
+
+      function attachmentSummary(attachments) {
+        attachments = attachments || {};
+        var parts = [];
+        if ((attachments.files || []).length) parts.push((attachments.files || []).length + ' файлов');
+        if ((attachments.images || []).length) parts.push((attachments.images || []).length + ' изображений');
+        if ((attachments.videos || []).length) parts.push((attachments.videos || []).length + ' видео на загрузку');
+        if ((attachments.kinescope || []).length) parts.push((attachments.kinescope || []).length + ' Kinescope');
+        return parts.length ? parts.join(' · ') : 'Материалы не прикреплены';
+      }
+
+      function listItems(items) {
+        return items && items.length
+          ? '<ul class="detail-list">' + items.map(function (item) { return '<li>' + escapeHtml(item) + '</li>'; }).join('') + '</ul>'
+          : '<p>Нет данных.</p>';
+      }
+
+      function brandModerationItems() {
+        return loadJson(supplierBrandKey, []).filter(function (brand) {
+          return brand && brand.moderationStatus === 'review';
+        }).map(function (brand) {
+          var page = brand.page || {};
+          return {
+            id: 'brand-page:' + brand.id,
+            type: 'brand-page',
+            source: 'Кабинет поставщика',
+            title: page.title || brand.name || 'Страница бренда',
+            subtitle: 'Бренд · ' + compactText((brand.categories || []).join(', '), 'категория не указана'),
+            summary: page.description || brand.description || '',
+            raw: brand
+          };
+        });
+      }
+
+      function eventModerationItems() {
+        return loadJson(supplierEventKey, []).map(function (event, index) {
+          return {
+            id: 'event:' + index,
+            type: 'event',
+            source: 'Конструктор мероприятий',
+            title: event.title || 'Мероприятие',
+            subtitle: compactText(event.type, 'Мероприятие') + ' · ' + compactText(event.date, 'без даты') + ' ' + compactText(event.time, ''),
+            summary: attachmentSummary(event.attachments),
+            raw: event,
+            index: index
+          };
+        });
+      }
+
+      function moderationItems() {
+        var items = brandModerationItems().concat(eventModerationItems());
+        var filter = moderationFilter ? moderationFilter.value : 'all';
+        return filter === 'all' ? items : items.filter(function (item) { return item.type === filter; });
+      }
+
+      function allModerationItems() {
+        return brandModerationItems().concat(eventModerationItems());
+      }
+
+      function renderBrandDetail(item) {
+        var brand = item.raw;
+        var page = brand.page || {};
+        var blocks = page.blocks || [];
+        return '<h3>' + escapeHtml(item.title) + '</h3>' +
+          '<div class="moderation-detail__meta">' +
+            '<span class="source-pill">' + escapeHtml(sourceLabel(item.type)) + '</span>' +
+            '<span class="detail-pill">' + escapeHtml(item.source) + '</span>' +
+            '<span class="detail-pill">' + escapeHtml(compactText((brand.categories || []).join(', '), 'категория не указана')) + '</span>' +
+          '</div>' +
+          '<div class="detail-section"><h4>Описание</h4><p>' + escapeHtml(compactText(page.description || brand.description, 'Описание не заполнено')) + '</p></div>' +
+          '<div class="detail-section"><h4>Позиционирование</h4><p>' + escapeHtml(compactText(page.positioning || brand.positioning, 'Позиционирование не заполнено')) + '</p></div>' +
+          '<div class="detail-section"><h4>Структура страницы</h4>' +
+            listItems([
+              compactText(page.structureIntro, 'Вступление не заполнено'),
+              compactText(page.historyTitle, 'История не заполнена') + ': ' + compactText(page.historyContext, 'контекст не заполнен'),
+              compactText(page.philosophyTitle, 'Философия не заполнена') + ': ' + compactText(page.philosophyText, 'текст не заполнен'),
+              compactText(page.techTitle, 'Технологии не заполнены') + ': ' + compactText(page.techText, 'текст не заполнен'),
+              compactText(page.salesTitle, 'Продажа не заполнена') + ': ' + compactText(page.salesText, 'текст не заполнен')
+            ]) +
+          '</div>' +
+          '<div class="detail-section"><h4>Дополнительные блоки</h4>' + listItems(blocks.map(function (block) { return compactText(block.title, 'Блок') + ': ' + compactText(block.text, 'текст не заполнен'); })) + '</div>' +
+          '<div class="detail-actions"><button class="btn" type="button" data-approve-moderation="' + escapeHtml(item.id) + '">Одобрить</button></div>';
+      }
+
+      function renderEventDetail(item) {
+        var event = item.raw;
+        var attachments = event.attachments || {};
+        return '<h3>' + escapeHtml(item.title) + '</h3>' +
+          '<div class="moderation-detail__meta">' +
+            '<span class="source-pill">' + escapeHtml(sourceLabel(item.type)) + '</span>' +
+            '<span class="detail-pill">' + escapeHtml(item.source) + '</span>' +
+            '<span class="detail-pill">' + escapeHtml(compactText(event.status, 'На модерации')) + '</span>' +
+          '</div>' +
+          '<div class="detail-section"><h4>Параметры</h4>' +
+            listItems([
+              'Тип: ' + compactText(event.type, 'не указан'),
+              'Дата и время: ' + compactText(event.date, 'без даты') + ' ' + compactText(event.time, ''),
+              'Формат: ' + compactText(event.format, 'не указан'),
+              'Место: ' + compactText(event.place, 'не указано'),
+              'Мест: ' + compactText(event.seats, 'не указано'),
+              'Спикеры: ' + compactText(event.speakers, 'не указаны')
+            ]) +
+          '</div>' +
+          '<div class="detail-section"><h4>Описание</h4><p>' + escapeHtml(compactText(event.description, 'Описание не заполнено')) + '</p></div>' +
+          '<div class="detail-section"><h4>Файлы</h4>' + listItems(attachments.files || []) + '</div>' +
+          '<div class="detail-section"><h4>Изображения</h4>' + listItems(attachments.images || []) + '</div>' +
+          '<div class="detail-section"><h4>Видео на загрузку</h4>' + listItems(attachments.videos || []) + '</div>' +
+          '<div class="detail-section"><h4>Kinescope</h4>' + listItems(attachments.kinescope || []) + '</div>' +
+          '<div class="detail-actions"><button class="btn" type="button" data-approve-moderation="' + escapeHtml(item.id) + '">Одобрить</button></div>';
+      }
+
+      function renderModerationDetail(item) {
+        if (!item) {
+          moderationDetail.innerHTML = '<div class="moderation-empty">Выберите заявку слева, чтобы посмотреть весь контент и принять решение.</div>';
+          return;
+        }
+        moderationDetail.innerHTML = item.type === 'brand-page' ? renderBrandDetail(item) : renderEventDetail(item);
+      }
+
+      function renderModeration() {
+        if (!moderationList || !moderationDetail) return;
+        var items = moderationItems();
+        var allItems = allModerationItems();
+        moderationCount.textContent = allItems.length + ' на проверке';
+        if (!items.length) {
+          activeModerationId = '';
+          moderationList.innerHTML = '<div class="moderation-empty">В этом разделе нет заявок на модерацию.</div>';
+          renderModerationDetail(null);
+          return;
+        }
+        if (!items.some(function (item) { return item.id === activeModerationId; })) {
+          activeModerationId = items[0].id;
+        }
+        moderationList.innerHTML = items.map(function (item) {
+          return '<button class="moderation-card' + (item.id === activeModerationId ? ' is-active' : '') + '" type="button" data-select-moderation="' + escapeHtml(item.id) + '">' +
+            '<span class="source-pill">' + escapeHtml(sourceLabel(item.type)) + '</span>' +
+            '<strong>' + escapeHtml(item.title) + '</strong>' +
+            '<span>' + escapeHtml(item.subtitle) + '</span>' +
+            '<span>' + escapeHtml(item.summary || 'Контент ожидает проверки') + '</span>' +
+          '</button>';
+        }).join('');
+        renderModerationDetail(items.find(function (item) { return item.id === activeModerationId; }));
+      }
+
+      function approveModerationItem(id) {
+        var type = id.split(':')[0];
+        var entityId = id.slice(type.length + 1);
+        if (type === 'brand-page') {
+          var brands = loadJson(supplierBrandKey, []);
+          var brand = brands.find(function (item) { return String(item.id) === entityId; });
+          if (brand) {
+            brand.moderationStatus = 'approved';
+            brand.pageReady = true;
+            brand.approvedAt = new Date().toLocaleDateString('ru-RU');
+            saveJson(supplierBrandKey, brands);
+            toast('Страница бренда одобрена');
+          }
+        }
+        if (type === 'event') {
+          var events = loadJson(supplierEventKey, []);
+          var approved = loadJson(approvedEventKey, []);
+          var index = Number(entityId);
+          if (events[index]) {
+            var event = events.splice(index, 1)[0];
+            event.status = 'Одобрено';
+            event.approvedAt = new Date().toLocaleDateString('ru-RU');
+            approved.unshift(event);
+            saveJson(supplierEventKey, events);
+            saveJson(approvedEventKey, approved);
+            toast('Мероприятие одобрено');
+          }
+        }
+        activeModerationId = '';
+        renderModeration();
       }
 
       function render() {
@@ -231,9 +481,28 @@
         }
       });
 
+      moderationFilter.addEventListener('change', function () {
+        activeModerationId = '';
+        renderModeration();
+      });
+
+      moderationList.addEventListener('click', function (event) {
+        var select = event.target.closest('[data-select-moderation]');
+        if (!select) return;
+        activeModerationId = select.getAttribute('data-select-moderation');
+        renderModeration();
+      });
+
+      moderationDetail.addEventListener('click', function (event) {
+        var approve = event.target.closest('[data-approve-moderation]');
+        if (!approve) return;
+        approveModerationItem(approve.getAttribute('data-approve-moderation'));
+      });
+
       window.addEventListener('ts-academy-admin-accounts-change', render);
       window.addEventListener('ts-academy-admin-companies-change', render);
       render();
+      renderModeration();
     })();
   </script>
 </body>
