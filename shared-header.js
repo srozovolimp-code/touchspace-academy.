@@ -1009,7 +1009,6 @@
   }
 
   var menuItems = [
-    { key: "touchspace-b2b", label: "TouchSpace B2B", desc: "Личный кабинет TouchSpace B2B", aria: "TouchSpace B2B", href: "https://b2b.touchspace.biz/personal/", tsIcon: true },
     { key: "home", label: "главная", desc: "Главная страница", aria: "Главная", href: "index.html", icon: "icons/home.svg" },
     { key: "courses", label: "все курсы", desc: "Все доступные курсы", aria: "Курсы", href: "courses.html", icon: "icons/catalog.svg" },
     { key: "brands", label: "бренды", desc: "Бренды и проекты", aria: "Бренды", href: "brands.html", icon: "icons/Star.svg" },
@@ -1025,7 +1024,8 @@
     { key: "polls", label: "опросы", desc: "Опросы и голосования", aria: "Опросы", href: "polls.html", icon: "icons/oprosy.png", activeIcon: "icons/oprosy_white.png" },
     { key: "rating", label: "рейтинг", desc: "Таблица лидеров", aria: "Рейтинг", href: "rating.html", icon: "icons/reyting.png", activeIcon: "icons/reyting_white.png" },
     { key: "events", label: "мероприятия", desc: "События и встречи", aria: "Мероприятия", href: "events.html", icon: "icons/meropriyatiya.png", activeIcon: "icons/meropriyatiya_white.png" },
-    { key: "handbook", label: "моя компания", desc: "Структура и сотрудники", aria: "Моя компания", href: "employee-handbook.html", icon: "icons/moya_kompaniya.png", activeIcon: "icons/moya_kompaniya_white.png" }
+    { key: "handbook", label: "моя компания", desc: "Структура и сотрудники", aria: "Моя компания", href: "employee-handbook.html", icon: "icons/moya_kompaniya.png", activeIcon: "icons/moya_kompaniya_white.png" },
+    { key: "touchspace-b2b", label: "TouchSpace B2B", desc: "Личный кабинет TouchSpace B2B", aria: "TouchSpace B2B", href: "https://b2b.touchspace.biz/personal/", tsIcon: true }
   ];
 
   function currentPageName() {
