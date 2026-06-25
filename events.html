@@ -358,14 +358,14 @@
                 <p>Запись сохраняется в браузере, чтобы прототип сразу показывал состояние участника.</p>
               </div>
               <div class="panel-tools">
-                <div class="view-toggle" aria-label="Вид мероприятий">
-                  <button class="view-button is-active" type="button" data-view="grid">Плитка</button>
-                  <button class="view-button" type="button" data-view="list">Список</button>
+                <div class="view-toggle" aria-label="Статус мероприятий">
+                  <button class="view-button is-active" type="button" data-status="current">Текущие</button>
+                  <button class="view-button" type="button" data-status="past">Прошедшие</button>
                 </div>
                 <span class="pill" data-count>0 событий</span>
               </div>
             </div>
-            <div class="event-list" data-event-list></div>
+            <div class="event-list is-grid" data-event-list></div>
             <div class="empty" data-empty>По этому фильтру мероприятий не найдено</div>
           </section>
 
@@ -396,7 +396,7 @@
       var supplierEventKey = "touchspaceSupplierEventModeration";
       var joined = loadJoined();
       var activeFilter = "all";
-      var viewMode = "grid";
+      var activeStatus = "current";
       var search = document.getElementById("event-search");
       var supplierEventBlock = document.querySelector("[data-supplier-event]");
       var supplierEventModal = document.querySelector("[data-event-create-modal]");
@@ -414,6 +414,20 @@
         brand: { name: "Оксана Розова", role: "Бренд-тренер TouchSpace", photo: "images/events/speaker-brand-trainer.png" },
         sales: { name: "Алексей Миронов", role: "Методолог продаж и обучения", photo: "images/events/speaker-sales-methodology.png" },
         showroom: { name: "Мария Ковалёва", role: "Эксперт по интерьерному подбору", photo: "images/events/speaker-showroom-expert.png" }
+      };
+      var monthNumbers = {
+        янв: 0,
+        фев: 1,
+        мар: 2,
+        апр: 3,
+        май: 4,
+        июн: 5,
+        июл: 6,
+        авг: 7,
+        сен: 8,
+        окт: 9,
+        ноя: 10,
+        дек: 11
       };
 
       function loadJoined() {
@@ -525,6 +539,22 @@
         return event.format.indexOf(activeFilter === "online" ? "онлайн" : "очно") >= 0;
       }
 
+      function eventDate(event) {
+        var now = new Date();
+        var month = monthNumbers[String(event.month || "").toLowerCase()];
+        return new Date(now.getFullYear(), typeof month === "number" ? month : now.getMonth(), Number(event.day) || 1, 23, 59, 59, 999);
+      }
+
+      function isPastEvent(event) {
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return eventDate(event) < today;
+      }
+
+      function matchesStatus(event) {
+        return activeStatus === "past" ? isPastEvent(event) : !isPastEvent(event);
+      }
+
       function matchesSearch(event) {
         var query = search.value.trim().toLowerCase();
         if (!query) return true;
@@ -587,10 +617,10 @@
       }
 
       function renderEvents() {
-        var filtered = events.filter(function (event) { return matchesFilter(event) && matchesSearch(event); });
+        var filtered = events.filter(function (event) { return matchesStatus(event) && matchesFilter(event) && matchesSearch(event); });
         var list = document.querySelector("[data-event-list]");
-        list.classList.toggle("is-grid", viewMode === "grid");
-        list.classList.toggle("is-list", viewMode === "list");
+        list.classList.add("is-grid");
+        list.classList.remove("is-list");
         list.innerHTML = filtered.map(eventTemplate).join("");
         document.querySelector("[data-count]").textContent = filtered.length + " событий";
         document.querySelector("[data-empty]").classList.toggle("is-visible", filtered.length === 0);
@@ -663,10 +693,10 @@
         });
       });
 
-      document.querySelectorAll("[data-view]").forEach(function (button) {
+      document.querySelectorAll("[data-status]").forEach(function (button) {
         button.addEventListener("click", function () {
-          viewMode = button.getAttribute("data-view");
-          document.querySelectorAll("[data-view]").forEach(function (item) { item.classList.toggle("is-active", item === button); });
+          activeStatus = button.getAttribute("data-status");
+          document.querySelectorAll("[data-status]").forEach(function (item) { item.classList.toggle("is-active", item === button); });
           renderEvents();
         });
       });
