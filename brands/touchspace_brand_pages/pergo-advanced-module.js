@@ -226,6 +226,17 @@
     return '<article class="lesson-slide is-active" data-rendered-page="' + index + '" data-rendered-id="' + esc(pageId(page)) + '"><span class="lesson-kicker">Раздел ' + (index + 1) + '</span><h2 class="lesson-title">' + safe(page.название) + '</h2><p class="lesson-lead">' + safe(page.цель_страницы) + '</p><div class="blocks">' + (page.контент_страницы || []).map(renderBlock).join('') + '</div><div class="lesson-actions"><div class="lesson-actions__row"><button class="btn secondary" type="button" data-course-prev>Назад</button><button class="btn" type="button" data-open-test="' + index + '">' + (passed ? 'Повторить тест' : 'Пройти тест раздела') + '</button><button class="btn" type="button" data-course-next' + (canNext ? '' : ' disabled') + '>Следующий раздел</button><span class="result ' + (passed ? 'good' : '') + '" data-result>' + (passed ? 'Раздел пройден. Следующий открыт.' : (canBypassTests() ? 'Следующий раздел доступен для вашей роли.' : 'Для перехода нужно 100% правильных ответов.')) + '</span></div><p class="lesson-actions__note">Тест открывается в отдельном окне после материала раздела.</p></div></article>';
   }
 
+  function resetCourseScroll() {
+    requestAnimationFrame(function () {
+      var main = document.querySelector('.main');
+      var stage = document.querySelector('.stage');
+      if (main) main.scrollTop = 0;
+      if (stage) stage.scrollTop = 0;
+      if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    });
+  }
+
   function renderPage(index) {
     var state = loadState();
     current = index;
@@ -234,6 +245,7 @@
     document.querySelector('[data-stage-count]').textContent = 'Раздел ' + (current + 1) + ' из ' + (pages.length + 1);
     document.querySelector('[data-course-stage]').innerHTML = renderStageContent(current, state);
     document.querySelectorAll('[data-course-prev]').forEach(function (button) { button.disabled = current === 0; });
+    resetCourseScroll();
   }
 
   function openQuiz(index) {

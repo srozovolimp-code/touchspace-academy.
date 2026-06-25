@@ -1,0 +1,75 @@
+.course-cover:before { background: radial-gradient(circle at 76% 20%, rgba(255,255,255,.16), transparent 32%), linear-gradient(145deg, rgba(26,34,46,.48), rgba(8,18,31,.92)), url("../../images/brand-logos/Polarwood.png") right 18px top 78px / 154px auto no-repeat, linear-gradient(135deg, #1d2a38, #33485d); }
+.lesson-slide { padding-bottom: 40px; }
+.coswick-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.coswick-card, .coswick-step { padding: 16px; border: 1px solid rgba(223,230,242,.86); border-radius: 22px; background: #fff; box-shadow: 0 10px 24px rgba(24,45,90,.05); }
+.coswick-card strong, .coswick-step strong { display: block; margin-bottom: 6px; color: var(--blue); font-size: 13px; font-weight: 950; }
+.coswick-card span, .coswick-step span { color: #34445a; font-weight: 850; line-height: 1.38; }
+.coswick-card p, .coswick-step p { margin: 8px 0 0; color: #607086; font-weight: 720; line-height: 1.45; }
+.coswick-text { display: grid; gap: 12px; }
+.coswick-text p, .coswick-list li { margin: 0; padding: 16px 18px; border-radius: 22px; background: #f7faff; color: #34445a; font-weight: 760; line-height: 1.52; }
+.coswick-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.coswick-list li strong { display: block; margin-bottom: 5px; color: var(--blue); font-weight: 950; }
+.coswick-list li span { display: block; color: #607086; font-weight: 720; line-height: 1.45; }
+.coswick-timeline { display: grid; gap: 10px; }
+.coswick-timeline article { display: grid; grid-template-columns: 118px minmax(0,1fr); gap: 14px; padding: 14px; border-radius: 22px; background: #f7faff; border: 1px solid rgba(223,230,242,.76); }
+.coswick-timeline b { display: grid; place-items: center; min-height: 52px; border-radius: 17px; background: #fff; color: var(--blue); font-weight: 950; text-align:center; }
+.coswick-timeline p { margin: 0; color: var(--muted); font-weight: 720; line-height: 1.42; }
+.coswick-callout { padding: 22px 24px; border-radius: 26px; background: #edf4ff; color: #45607f; font-weight: 820; line-height: 1.5; border: 1px solid rgba(10,132,255,.14); }
+.coswick-formula { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.content-section { display: grid; gap: 14px; padding: 20px; border-radius: 28px; background: rgba(255,255,255,.72); border: 1px solid rgba(223,230,242,.86); }
+.content-section h3 { margin: 0; font-size: 24px; letter-spacing: -.035em; }
+.lesson-title { max-width: 980px; line-height: .98; text-wrap: balance; }
+.coswick-table { display: grid; gap: 10px; overflow-x:auto; }
+.coswick-table__row { display: grid; gap: 10px; padding: 12px; border-radius: 20px; background: #fff; border: 1px solid rgba(223,230,242,.86); min-width: 520px; }
+.coswick-table__row span { padding: 12px; border-radius: 15px; background: #f7faff; color: #34445a; font-weight: 760; line-height: 1.42; }
+.coswick-table__row--head span { background: #edf4ff; color: var(--blue); font-weight: 950; }
+.coswick-table__row--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.coswick-table__row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.coswick-table__row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.coswick-examples { display: grid; gap: 12px; }
+.coswick-example { padding: 16px; border-radius: 22px; background: #fff; border: 1px solid rgba(223,230,242,.86); }
+.coswick-example p { margin: 6px 0; color: #34445a; font-weight: 760; line-height: 1.45; }
+.coswick-example b { color: var(--blue); font-size: 13px; font-weight: 950; }
+.lesson-slide .blocks { gap: 18px; }
+.lesson-actions { margin-top: 28px; padding: 18px; border-radius: 26px; background: rgba(255,255,255,.82); border: 1px solid rgba(223,230,242,.92); box-shadow: 0 14px 34px rgba(24,45,90,.06); }
+.lesson-actions__row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.lesson-actions__note { margin: 10px 0 0; color: #718095; font-size: 13px; font-weight: 850; line-height: 1.45; }
+.quiz-modal { position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center; padding: 22px; background: rgba(15,23,42,.38); backdrop-filter: blur(12px); }
+.quiz-modal.is-open { display: flex; }
+.quiz-modal__panel { width: min(860px,100%); max-height: min(760px,calc(100vh - 44px)); display:flex; flex-direction:column; border-radius:32px; background:#fff; box-shadow:0 36px 120px rgba(15,23,42,.24); overflow:hidden; }
+.quiz-modal__head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:22px 24px; border-bottom:1px solid var(--line); background:#f7faff; }
+.quiz-modal__head h3 { margin:4px 0 0; font-size:28px; letter-spacing:-.045em; }
+.quiz-modal__head span { color:var(--blue); font-size:12px; font-weight:950; text-transform:uppercase; }
+.quiz-modal__body { padding:22px 24px; overflow:auto; }
+.quiz-modal__foot { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:18px 24px; border-top:1px solid var(--line); }
+.quiz-close { flex:0 0 auto; }
+.question { padding:16px; border-radius:20px; border:1px solid var(--line); margin-bottom:14px; transition:.2s ease; }
+.question.is-correct { border-color:rgba(22,134,90,.34); background:#ecfbf5; }
+.question.is-wrong { border-color:rgba(155,47,47,.28); background:#fff6f6; }
+.question label { display:flex; gap:10px; align-items:flex-start; margin-top:10px; color:#34445a; font-weight:760; }
+.feedback { display:grid; gap:8px; margin-top:14px; }
+.feedback div { padding:12px 14px; border-radius:16px; background:#fff6f6; color:#9b2f2f; font-weight:800; line-height:1.35; }
+.result.good { color:#16865a; }
+.result.bad { color:#9b2f2f; }
+.lesson-tab.is-locked { opacity:.46; cursor:not-allowed; }
+.btn:disabled, .icon-btn:disabled, .btn[aria-disabled="true"] { opacity:.45; cursor:not-allowed; box-shadow:none; pointer-events:none; }
+.sequence-list { display:grid; gap:10px; margin-top:12px; }
+.sequence-row { display:grid; grid-template-columns:48px minmax(0,1fr); gap:10px; align-items:center; }
+.sequence-row b { display:grid; place-items:center; width:38px; height:38px; border-radius:14px; background:#eef5ff; color:var(--blue); }
+.sequence-row select { width:100%; min-height:42px; border:1px solid var(--line); border-radius:14px; padding:9px 12px; color:#34445a; font:inherit; font-weight:760; }
+@media (max-width:980px) { .coswick-grid, .coswick-formula { grid-template-columns:1fr; } .coswick-timeline article { grid-template-columns:1fr; } .lesson-title { font-size:clamp(42px,9vw,64px); line-height:1.04; } }
+@media (max-width:640px) { .quiz-modal{padding:10px}.quiz-modal__panel{border-radius:24px}.quiz-modal__head,.quiz-modal__body,.quiz-modal__foot{padding:16px}.quiz-modal__head h3{font-size:23px}.coswick-table__row{min-width:620px} }
+
+.final-test-grid { display:grid; gap:14px; }
+.final-test-question { padding:18px; border:1px solid var(--line); border-radius:22px; background:#fff; }
+.final-test-question.is-correct { border-color:rgba(22,134,90,.34); background:#ecfbf5; }
+.final-test-question.is-wrong { border-color:rgba(155,47,47,.28); background:#fff6f6; }
+.final-test-question > strong { display:block; margin-bottom:12px; color:#24364d; line-height:1.4; }
+.final-test-question label { display:flex; gap:10px; align-items:flex-start; margin-top:9px; color:#42536a; font-weight:760; }
+.final-score-card { padding:22px; border-radius:26px; background:#edf4ff; border:1px solid rgba(10,132,255,.14); }
+.final-score-card h3 { margin:0 0 8px; }
+.final-score-card p { margin:0; color:#526982; font-weight:760; line-height:1.5; }
+.module-status-list { display:grid; gap:8px; }
+.module-status-item { display:grid; grid-template-columns:32px minmax(0,1fr) auto; align-items:center; gap:9px; padding:10px 12px; border-radius:16px; background:#f7faff; font-weight:800; color:#526982; }
+.module-status-item b { display:grid; place-items:center; width:28px; height:28px; border-radius:10px; background:#fff; color:var(--blue); }
+.module-status-item.is-done span:last-child { color:#16865a; }

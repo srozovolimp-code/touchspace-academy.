@@ -22,3 +22,4 @@ TouchSpace_Academy_hierarchy/
 *.temp
 ~$*
 .vercel
+.env*

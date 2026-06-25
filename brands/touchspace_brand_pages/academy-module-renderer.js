@@ -334,6 +334,17 @@
       root.querySelectorAll('.stage-actions [data-prev]').forEach(function (button) { button.disabled = current === 0; });
     }
 
+    function resetCourseScroll() {
+      requestAnimationFrame(function () {
+        var main = document.querySelector('.main');
+        var stage = root.querySelector('.stage');
+        if (main) main.scrollTop = 0;
+        if (stage) stage.scrollTop = 0;
+        if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      });
+    }
+
     function openQuiz(index) {
       var test = currentTest(index);
       var isFinal = index === pages.length;
@@ -416,11 +427,11 @@
       var quizNextModule = event.target.closest('[data-quiz-next-module]');
       if (go) {
         var target = Number(go.getAttribute('data-go'));
-        if (unlocked(state(), target)) { current = target; render(); }
+        if (unlocked(state(), target)) { current = target; render(); resetCourseScroll(); }
       } else if (nextButton) {
-        if (unlocked(state(), current + 1)) { current += 1; render(); }
+        if (unlocked(state(), current + 1)) { current += 1; render(); resetCourseScroll(); }
       } else if (prevButton) {
-        if (current > 0) { current -= 1; render(); }
+        if (current > 0) { current -= 1; render(); resetCourseScroll(); }
       } else if (open) {
         openQuiz(Number(open.getAttribute('data-open-test')));
       } else if (close) {
@@ -431,6 +442,7 @@
         closeQuiz();
         current += 1;
         render();
+        resetCourseScroll();
       } else if (quizNextModule) {
         var targetUrl = next ? next.url : manifest.итоговый_тест.url;
         window.location.href = targetUrl;
