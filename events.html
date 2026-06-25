@@ -178,6 +178,14 @@
     }
     .file-row strong, .video-row strong { display: block; font-size: 15px; line-height: 1.2; }
     .file-row span, .video-row span { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; font-weight: 800; }
+    .video-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+    .video-tile { overflow: hidden; border: 1px solid #e3edf9; border-radius: 22px; background: #fff; box-shadow: 0 12px 28px rgba(24,45,90,.08); }
+    .video-thumb { position: relative; height: 180px; overflow: hidden; background: #eef5ff; }
+    .video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .video-thumb:after { content: "▶"; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); display: grid; place-items: center; width: 54px; height: 54px; border-radius: 999px; background: rgba(255,255,255,.9); color: #177be8; font-size: 22px; box-shadow: 0 14px 30px rgba(0,0,0,.16); }
+    .video-tile-body { display: grid; gap: 12px; padding: 14px; }
+    .video-tile-body strong { display: block; font-size: 16px; line-height: 1.2; }
+    .video-tile-body span { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; font-weight: 800; }
     .gallery-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
     .gallery-thumb { position: relative; min-height: 170px; border: 0; border-radius: 22px; overflow: hidden; background: #eef5ff; box-shadow: 0 12px 28px rgba(24,45,90,.08); }
     .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -287,6 +295,7 @@
       .detail-copy { min-height: 0; }
       .detail-image { min-height: 280px; }
       .detail-stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .video-grid { grid-template-columns: 1fr; }
       .gallery-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
       .event-card { grid-template-columns: 74px minmax(0,1fr); }
       .event-side { grid-column: 2; justify-items: start; min-width: 0; }
@@ -797,8 +806,8 @@
         var active = typeof activeIndex === "number" ? videos[activeIndex] : null;
         resourceBody.innerHTML =
           (active ? '<div class="video-viewer is-open"><div class="media-frame"><video src="' + esc(active.src) + '" poster="' + esc(active.poster) + '" controls autoplay></video></div><div class="media-caption"><span>' + esc(active.title) + '</span><span>' + esc(active.meta) + '</span></div></div>' : '') +
-          '<div class="resource-list" style="' + (active ? 'margin-top:14px' : '') + '">' + videos.map(function (video, videoIndex) {
-            return '<article class="video-row"><div><strong>' + esc(video.title) + '</strong><span>' + esc(video.meta) + '</span></div><button class="btn secondary" type="button" data-video-index="' + videoIndex + '" data-video-event="' + item.id + '">Смотреть</button></article>';
+          '<div class="video-grid" style="' + (active ? 'margin-top:14px' : '') + '">' + videos.map(function (video, videoIndex) {
+            return '<article class="video-tile"><div class="video-thumb"><img src="' + esc(video.poster) + '" alt="' + esc(video.title) + '"></div><div class="video-tile-body"><div><strong>' + esc(video.title) + '</strong><span>' + esc(video.meta) + '</span></div><button class="btn secondary" type="button" data-video-index="' + videoIndex + '" data-video-event="' + item.id + '">Смотреть</button></div></article>';
           }).join("") + '</div>';
       }
 
