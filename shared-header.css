@@ -18,6 +18,30 @@
   backdrop-filter: blur(18px);
 }
 
+.sidebar .nav__ts {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(217, 229, 246, .92);
+  font-size: 18px;
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: -.08em;
+}
+
+.sidebar .nav__ts-t {
+  color: #172033;
+}
+
+.sidebar .nav__ts-s {
+  margin-left: -1px;
+  color: #0a84ff;
+}
+
 .main {
   min-width: 0;
 }
