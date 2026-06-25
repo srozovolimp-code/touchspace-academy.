@@ -140,6 +140,70 @@
     .speaker-card img { width: 74px; height: 74px; border-radius: 24px; object-fit: cover; display: block; }
     .speaker-card strong { display: block; font-size: 15px; line-height: 1.15; }
     .speaker-card span { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; font-weight: 750; line-height: 1.35; }
+    .resource-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .resource-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      display: none;
+      padding: 24px;
+      overflow: auto;
+      background: rgba(15,25,42,.5);
+      backdrop-filter: blur(16px);
+    }
+    .resource-modal.is-open { display: block; }
+    .resource-card {
+      width: min(1040px,100%);
+      margin: 0 auto;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 30px;
+      background: linear-gradient(180deg,#fff 0%,#f8fbff 100%);
+      box-shadow: 0 34px 90px rgba(15,25,42,.28);
+      overflow: hidden;
+    }
+    .resource-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; padding: 20px; border-bottom: 1px solid var(--line); }
+    .resource-head h2 { margin: 0; font-size: 26px; line-height: 1.08; letter-spacing: -.03em; }
+    .resource-head p { margin: 7px 0 0; color: var(--muted); font-size: 13px; line-height: 1.4; }
+    .resource-body { padding: 20px; }
+    .resource-list { display: grid; gap: 10px; }
+    .file-row, .video-row {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px;
+      border: 1px solid #e3edf9;
+      border-radius: 18px;
+      background: #fff;
+    }
+    .file-row strong, .video-row strong { display: block; font-size: 15px; line-height: 1.2; }
+    .file-row span, .video-row span { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; font-weight: 800; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
+    .gallery-thumb { position: relative; min-height: 170px; border: 0; border-radius: 22px; overflow: hidden; background: #eef5ff; box-shadow: 0 12px 28px rgba(24,45,90,.08); }
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gallery-viewer, .video-viewer { display: none; gap: 12px; }
+    .gallery-viewer.is-open, .video-viewer.is-open { display: grid; }
+    .media-frame { position: relative; overflow: hidden; border-radius: 24px; background: #111827; }
+    .media-frame img, .media-frame video { display: block; width: 100%; max-height: 68vh; object-fit: contain; background: #111827; }
+    .media-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255,255,255,.54);
+      border-radius: 999px;
+      background: rgba(255,255,255,.86);
+      color: #177be8;
+      font-size: 26px;
+      line-height: 1;
+      box-shadow: 0 12px 28px rgba(0,0,0,.18);
+    }
+    .media-nav.prev { left: 14px; }
+    .media-nav.next { right: 14px; }
+    .media-caption { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: #4b5870; font-size: 13px; font-weight: 850; }
     .event-card .btn.ghost { box-shadow: none; }
     .empty { display: none; padding: 30px 18px; border: 1px dashed #c7d6ea; border-radius: 22px; background: #f8fbff; color: var(--muted); text-align: center; font-weight: 850; }
     .empty.is-visible { display: block; }
@@ -223,6 +287,7 @@
       .detail-copy { min-height: 0; }
       .detail-image { min-height: 280px; }
       .detail-stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .gallery-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
       .event-card { grid-template-columns: 74px minmax(0,1fr); }
       .event-side { grid-column: 2; justify-items: start; min-width: 0; }
       .event-date { min-height: 74px; }
@@ -240,6 +305,8 @@
       .detail-page { border-radius: 26px; }
       .detail-hero, .detail-body { padding: 16px; }
       .detail-stats { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .file-row, .video-row { grid-template-columns: 1fr; }
     }
   </style>
   <link rel="stylesheet" href="shared-header.css">
@@ -414,6 +481,19 @@
     <div class="detail-page" role="dialog" aria-modal="true" aria-label="Карточка мероприятия" data-detail-page></div>
   </section>
 
+  <section class="resource-modal" data-resource-modal aria-hidden="true">
+    <div class="resource-card" role="dialog" aria-modal="true" aria-label="Материалы мероприятия">
+      <div class="resource-head">
+        <div>
+          <h2 data-resource-title>Материалы</h2>
+          <p data-resource-subtitle></p>
+        </div>
+        <button class="modal-close" type="button" data-close-resource aria-label="Закрыть">×</button>
+      </div>
+      <div class="resource-body" data-resource-body></div>
+    </div>
+  </section>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="shared-header.js"></script>
   <script>
@@ -428,6 +508,11 @@
       var supplierEventModal = document.querySelector("[data-event-create-modal]");
       var supplierEventForm = document.querySelector("[data-supplier-event-form]");
       var supplierEventList = document.querySelector("[data-event-moderation-list]");
+      var resourceModal = document.querySelector("[data-resource-modal]");
+      var resourceBody = document.querySelector("[data-resource-body]");
+      var activeGallery = [];
+      var activeGalleryIndex = 0;
+      var activeResourceEventId = "";
       var events = [
         { id: "past-sales-intensive", day: "18", month: "июн", title: "Запись: интенсив по продажам напольных покрытий", desc: "Прошедший практикум по структуре консультации, подбору аргументов и работе с сомнениями клиента.", topic: "Как выстроить консультацию от задачи клиента до уверенного выбора покрытия: вопросы, сценарии, аргументы и финальная проверка решения.", type: "business", format: "онлайн", time: "13:00", duration: "2 часа", seats: 90, booked: 90, location: "Запись вебинара", image: "images/calitex_realistic/calitex-archive-team.jpg", tags: ["Продажи", "Архив"], speakers: ["sales", "showroom"], agenda: ["Структура консультации по помещению и нагрузке", "Как объяснять различия категорий без перегруза", "Разбор типовых ошибок в финальном предложении"] },
         { id: "brand-day", day: "25", month: "июн", title: "Большой бренд-день: напольные покрытия 2026", desc: "Коллекции Pergo, Calitex и Coswick, живые разборы аргументов и ответы поставщиков.", topic: "Как уверенно продавать напольные покрытия через сценарии клиента, технологии брендов и понятную аргументацию.", type: "brand", format: "очно + онлайн", time: "11:00", duration: "3 часа", seats: 42, booked: 27, location: "Москва, шоурум TouchSpace + трансляция", image: "images/calitex_realistic/calitex-showroom-collection.jpg", tags: ["Pergo", "Calitex", "Coswick"], speakers: ["brand", "sales", "showroom"], agenda: ["Ключевые отличия коллекций Pergo, Calitex и Coswick", "Практикум по аргументам для кухни, прихожей и активного дома", "Разбор вопросов участников и сценариев продажи"] },
@@ -476,6 +561,15 @@
         el.classList.add("show");
         clearTimeout(toast.timer);
         toast.timer = setTimeout(function () { el.classList.remove("show"); }, 1700);
+      }
+
+      function esc(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
       }
 
       function isSupplierAccount() {
@@ -609,6 +703,105 @@
         return '<article class="speaker-card"><img src="' + speaker.photo + '" alt="' + speaker.name + '"><div><strong>' + speaker.name + '</strong><span>' + speaker.role + '</span></div></article>';
       }
 
+      function eventFiles(item) {
+        return [
+          { title: "Программа мероприятия", meta: item.day + " " + item.month + " · PDF · 1.2 МБ", url: "events.html" },
+          { title: "Презентация спикера", meta: item.format + " · PDF · 4.8 МБ", url: "library.html" },
+          { title: "Чек-лист для участника", meta: "Материалы после встречи · DOCX", url: "employee-handbook.html" }
+        ];
+      }
+
+      function eventGallery(item) {
+        return [
+          { title: item.title, src: item.image },
+          { title: "Работа с образцами", src: "images/calitex_realistic/calitex-showroom-collection.jpg" },
+          { title: "Командный разбор", src: "images/calitex_realistic/calitex-archive-team.jpg" },
+          { title: "Интерьерный пример", src: "images/calitex_realistic/calitex-living-room-floor.jpg" },
+          { title: "Материальная лаборатория", src: "images/calitex_realistic/calitex-material-lab.jpg" },
+          { title: "Проверка качества", src: "images/calitex_realistic/calitex-factory-quality.jpg" }
+        ];
+      }
+
+      function eventVideos(item) {
+        return [
+          {
+            title: "Запись мероприятия",
+            meta: item.duration + " · " + item.format,
+            src: "scorm/calitex-test/assets/kL4IQPlXZD-ghw5__transcoded-MbzhbhJG0iZHVNWS-1.mp4",
+            poster: item.image
+          },
+          {
+            title: "Фрагмент практикума",
+            meta: "Демо-видео · 3 минуты",
+            src: "scorm/calitex-test/assets/kL4IQPlXZD-ghw5__transcoded-MbzhbhJG0iZHVNWS-1.mp4",
+            poster: "images/calitex_realistic/calitex-showroom-collection.jpg"
+          }
+        ];
+      }
+
+      function resourceButton(type, label, item) {
+        return '<button class="btn ghost" type="button" data-resource="' + type + '" data-resource-event="' + item.id + '">' + label + '</button>';
+      }
+
+      function openResourceModal(item, type) {
+        if (!resourceModal || !resourceBody) return;
+        activeResourceEventId = item.id;
+        var titles = { files: "Файлы", gallery: "Фотогалерея", videos: "Видео" };
+        document.querySelector("[data-resource-title]").textContent = titles[type] || "Материалы";
+        document.querySelector("[data-resource-subtitle]").textContent = item.title;
+        if (type === "files") renderFileModal(item);
+        if (type === "gallery") renderGalleryModal(item, -1);
+        if (type === "videos") renderVideoModal(item);
+        resourceModal.classList.add("is-open");
+        resourceModal.setAttribute("aria-hidden", "false");
+      }
+
+      function closeResourceModal() {
+        if (!resourceModal) return;
+        var video = resourceModal.querySelector("video");
+        if (video) video.pause();
+        activeGallery = [];
+        activeResourceEventId = "";
+        resourceModal.classList.remove("is-open");
+        resourceModal.setAttribute("aria-hidden", "true");
+      }
+
+      function renderFileModal(item) {
+        activeGallery = [];
+        resourceBody.innerHTML = '<div class="resource-list">' + eventFiles(item).map(function (file) {
+          return '<article class="file-row"><div><strong>' + esc(file.title) + '</strong><span>' + esc(file.meta) + '</span></div><a class="btn secondary" href="' + esc(file.url) + '">Открыть</a></article>';
+        }).join("") + '</div>';
+      }
+
+      function renderGalleryModal(item, index) {
+        activeGallery = eventGallery(item);
+        var hasViewer = index >= 0;
+        activeGalleryIndex = hasViewer ? Math.max(0, Math.min(index, activeGallery.length - 1)) : 0;
+        var current = activeGallery[activeGalleryIndex];
+        resourceBody.innerHTML =
+          (hasViewer ? '<div class="gallery-viewer is-open">' +
+            '<div class="media-frame"><img src="' + esc(current.src) + '" alt="' + esc(current.title) + '">' +
+              '<button class="media-nav prev" type="button" data-gallery-prev aria-label="Предыдущее фото">‹</button>' +
+              '<button class="media-nav next" type="button" data-gallery-next aria-label="Следующее фото">›</button>' +
+            '</div>' +
+            '<div class="media-caption"><span>' + esc(current.title) + '</span><span>' + (activeGalleryIndex + 1) + ' из ' + activeGallery.length + '</span></div>' +
+          '</div>' : '') +
+          '<div class="gallery-grid" style="' + (hasViewer ? 'margin-top:14px' : '') + '">' + activeGallery.map(function (photo, photoIndex) {
+            return '<button class="gallery-thumb" type="button" data-gallery-index="' + photoIndex + '"><img src="' + esc(photo.src) + '" alt="' + esc(photo.title) + '"></button>';
+          }).join("") + '</div>';
+      }
+
+      function renderVideoModal(item, activeIndex) {
+        activeGallery = [];
+        var videos = eventVideos(item);
+        var active = typeof activeIndex === "number" ? videos[activeIndex] : null;
+        resourceBody.innerHTML =
+          (active ? '<div class="video-viewer is-open"><div class="media-frame"><video src="' + esc(active.src) + '" poster="' + esc(active.poster) + '" controls autoplay></video></div><div class="media-caption"><span>' + esc(active.title) + '</span><span>' + esc(active.meta) + '</span></div></div>' : '') +
+          '<div class="resource-list" style="' + (active ? 'margin-top:14px' : '') + '">' + videos.map(function (video, videoIndex) {
+            return '<article class="video-row"><div><strong>' + esc(video.title) + '</strong><span>' + esc(video.meta) + '</span></div><button class="btn secondary" type="button" data-video-index="' + videoIndex + '" data-video-event="' + item.id + '">Смотреть</button></article>';
+          }).join("") + '</div>';
+      }
+
       function openDetail(id) {
         var item = events.find(function (event) { return event.id === id; });
         if (!item) return;
@@ -634,6 +827,7 @@
                 '<div class="detail-stat"><strong>' + item.time + '</strong><span>начало</span></div>' +
               '</div>' +
               '<div class="hero-actions">' + joinButton + '<button class="btn secondary" type="button" data-close-detail>К расписанию</button></div>' +
+              '<div class="resource-actions">' + resourceButton("files", "Файлы", item) + resourceButton("gallery", "Фотогалерея", item) + resourceButton("videos", "Видео", item) + '</div>' +
             '</div>' +
             '<div class="detail-image"><img src="' + item.image + '" alt=""></div>' +
           '</div>' +
@@ -684,6 +878,38 @@
           closeDetail();
           return;
         }
+        if (event.target.matches("[data-resource-modal]") || event.target.closest("[data-close-resource]")) {
+          closeResourceModal();
+          return;
+        }
+        var resource = event.target.closest("[data-resource]");
+        if (resource) {
+          var resourceItem = events.find(function (item) { return item.id === resource.getAttribute("data-resource-event"); });
+          if (resourceItem) openResourceModal(resourceItem, resource.getAttribute("data-resource"));
+          return;
+        }
+        var galleryThumb = event.target.closest("[data-gallery-index]");
+        if (galleryThumb) {
+          var detailItem = events.find(function (item) { return item.id === activeResourceEventId; });
+          if (detailItem) renderGalleryModal(detailItem, Number(galleryThumb.getAttribute("data-gallery-index")));
+          return;
+        }
+        if (event.target.closest("[data-gallery-prev]") || event.target.closest("[data-gallery-next]")) {
+          var galleryItem = events.find(function (item) { return item.id === activeResourceEventId; });
+          if (galleryItem && activeGallery.length) {
+            activeGalleryIndex += event.target.closest("[data-gallery-next]") ? 1 : -1;
+            if (activeGalleryIndex < 0) activeGalleryIndex = activeGallery.length - 1;
+            if (activeGalleryIndex >= activeGallery.length) activeGalleryIndex = 0;
+            renderGalleryModal(galleryItem, activeGalleryIndex);
+          }
+          return;
+        }
+        var videoButton = event.target.closest("[data-video-index]");
+        if (videoButton) {
+          var videoItem = events.find(function (item) { return item.id === videoButton.getAttribute("data-video-event"); });
+          if (videoItem) renderVideoModal(videoItem, Number(videoButton.getAttribute("data-video-index")));
+          return;
+        }
         var join = event.target.closest("[data-join]");
         if (join) {
           var id = join.getAttribute("data-join");
@@ -722,7 +948,17 @@
       document.addEventListener("keydown", function (event) {
         if (event.key === "Escape") {
           closeDetail();
+          closeResourceModal();
           closeEventCreateModal();
+        }
+        if (resourceModal && resourceModal.classList.contains("is-open") && activeGallery.length && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
+          var galleryItem = events.find(function (item) { return item.id === activeResourceEventId; });
+          if (galleryItem) {
+            activeGalleryIndex += event.key === "ArrowRight" ? 1 : -1;
+            if (activeGalleryIndex < 0) activeGalleryIndex = activeGallery.length - 1;
+            if (activeGalleryIndex >= activeGallery.length) activeGalleryIndex = 0;
+            renderGalleryModal(galleryItem, activeGalleryIndex);
+          }
         }
       });
 
