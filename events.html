@@ -565,6 +565,7 @@
     (function () {
       var storageKey = "touchspaceJoinedEvents";
       var supplierEventKey = "touchspaceSupplierEventModeration";
+      var approvedEventKey = "touchspaceApprovedEvents";
       var joined = loadJoined();
       var activeFilter = "all";
       var activeStatus = "current";
@@ -606,6 +607,7 @@
         ноя: 10,
         дек: 11
       };
+      var monthNames = ["янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
 
       function loadJoined() {
         try {
@@ -654,6 +656,62 @@
 
       function saveSupplierEvents(items) {
         localStorage.setItem(supplierEventKey, JSON.stringify(items));
+      }
+
+      function loadApprovedEvents() {
+        try {
+          var items = JSON.parse(localStorage.getItem(approvedEventKey) || "[]");
+          return Array.isArray(items) ? items : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function parseEventDate(value) {
+        var match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (!match) return null;
+        return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]), 23, 59, 59, 999);
+      }
+
+      function approvedEventType(item) {
+        var text = String(item.type || "").toLowerCase();
+        if (text.indexOf("бренд") >= 0) return "brand";
+        if (String(item.format || "").toLowerCase().indexOf("онлайн") >= 0) return "online";
+        if (String(item.format || "").toLowerCase().indexOf("очно") >= 0) return "offline";
+        return "business";
+      }
+
+      function normalizeApprovedEvent(item, index) {
+        var date = parseEventDate(item.date) || new Date();
+        var seats = Number(item.seats) || 30;
+        var title = String(item.title || "Мероприятие поставщика");
+        var description = String(item.description || "Мероприятие одобрено администратором и опубликовано в расписании.");
+        return {
+          id: "approved-event-" + index + "-" + String(item.date || "").replace(/\D/g, "") + "-" + title.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "-").replace(/^-|-$/g, "").slice(0, 36),
+          day: String(date.getDate()).padStart(2, "0"),
+          month: monthNames[date.getMonth()] || "дата",
+          dateISO: item.date || "",
+          title: title,
+          desc: description,
+          topic: description,
+          type: approvedEventType(item),
+          format: String(item.format || "онлайн"),
+          time: String(item.time || "12:00"),
+          duration: "60 минут",
+          seats: seats,
+          booked: 0,
+          location: String(item.place || "TouchSpace"),
+          image: "images/calitex_realistic/calitex-material-lab.jpg",
+          tags: [String(item.type || "Мероприятие"), "Поставщик"].filter(Boolean),
+          speakers: ["brand"],
+          agenda: description ? [description] : ["Программа мероприятия будет уточнена поставщиком."],
+          attachments: item.attachments || {},
+          approved: true
+        };
+      }
+
+      function allEvents() {
+        return events.concat(loadApprovedEvents().map(normalizeApprovedEvent));
       }
 
       function fileNames(inputName) {
@@ -772,6 +830,10 @@
       }
 
       function eventDate(event) {
+        if (event.dateISO) {
+          var approvedDate = parseEventDate(event.dateISO);
+          if (approvedDate) return approvedDate;
+        }
         var now = new Date();
         var month = monthNumbers[String(event.month || "").toLowerCase()];
         return new Date(now.getFullYear(), typeof month === "number" ? month : now.getMonth(), Number(event.day) || 1, 23, 59, 59, 999);
@@ -815,6 +877,12 @@
       }
 
       function eventFiles(item) {
+        var attached = item.attachments && item.attachments.files ? item.attachments.files : [];
+        if (attached.length) {
+          return attached.map(function (name) {
+            return { title: name, meta: "Файл поставщика · после модерации", url: "#" };
+          });
+        }
         return [
           { title: "Программа мероприятия", meta: item.day + " " + item.month + " · PDF · 1.2 МБ", url: "events.html" },
           { title: "Презентация спикера", meta: item.format + " · PDF · 4.8 МБ", url: "library.html" },
@@ -933,7 +1001,7 @@
       }
 
       function openDetail(id) {
-        var item = events.find(function (event) { return event.id === id; });
+        var item = allEvents().find(function (event) { return event.id === id; });
         if (!item) return;
         var freeSeats = item.seats - item.booked;
         var isJoined = joined.has(item.id);
@@ -976,7 +1044,7 @@
       }
 
       function renderEvents() {
-        var filtered = events.filter(function (event) { return matchesStatus(event) && matchesFilter(event) && matchesSearch(event); });
+        var filtered = allEvents().filter(function (event) { return matchesStatus(event) && matchesFilter(event) && matchesSearch(event); });
         var list = document.querySelector("[data-event-list]");
         list.classList.add("is-grid");
         list.classList.remove("is-list");
@@ -995,7 +1063,7 @@
       }
 
       function renderCalendar() {
-        var selectedEvents = events.filter(function (event) { return joined.has(event.id); });
+        var selectedEvents = allEvents().filter(function (event) { return joined.has(event.id); });
         document.querySelector("[data-calendar-list]").innerHTML = selectedEvents.map(function (event) {
           return '<article class="calendar-item"><div class="calendar-dot">' + event.day + '</div><div><strong>' + event.title + '</strong><span>' + event.month + ' · ' + event.time + ' · ' + event.format + '</span></div></article>';
         }).join("");
@@ -1013,18 +1081,18 @@
         }
         var resource = event.target.closest("[data-resource]");
         if (resource) {
-          var resourceItem = events.find(function (item) { return item.id === resource.getAttribute("data-resource-event"); });
+          var resourceItem = allEvents().find(function (item) { return item.id === resource.getAttribute("data-resource-event"); });
           if (resourceItem) openResourceModal(resourceItem, resource.getAttribute("data-resource"));
           return;
         }
         var galleryThumb = event.target.closest("[data-gallery-index]");
         if (galleryThumb) {
-          var detailItem = events.find(function (item) { return item.id === activeResourceEventId; });
+          var detailItem = allEvents().find(function (item) { return item.id === activeResourceEventId; });
           if (detailItem) renderGalleryModal(detailItem, Number(galleryThumb.getAttribute("data-gallery-index")));
           return;
         }
         if (event.target.closest("[data-gallery-prev]") || event.target.closest("[data-gallery-next]")) {
-          var galleryItem = events.find(function (item) { return item.id === activeResourceEventId; });
+          var galleryItem = allEvents().find(function (item) { return item.id === activeResourceEventId; });
           if (galleryItem && activeGallery.length) {
             activeGalleryIndex += event.target.closest("[data-gallery-next]") ? 1 : -1;
             if (activeGalleryIndex < 0) activeGalleryIndex = activeGallery.length - 1;
@@ -1035,13 +1103,13 @@
         }
         var videoButton = event.target.closest("[data-video-index]");
         if (videoButton) {
-          var videoItem = events.find(function (item) { return item.id === videoButton.getAttribute("data-video-event"); });
+          var videoItem = allEvents().find(function (item) { return item.id === videoButton.getAttribute("data-video-event"); });
           if (videoItem) renderVideoModal(videoItem, Number(videoButton.getAttribute("data-video-index")));
           return;
         }
         var detailVideoButton = event.target.closest("[data-detail-video-index]");
         if (detailVideoButton) {
-          var detailVideoItem = events.find(function (item) { return item.id === detailVideoButton.getAttribute("data-video-event"); });
+          var detailVideoItem = allEvents().find(function (item) { return item.id === detailVideoButton.getAttribute("data-video-event"); });
           var detailVideoBlock = detailVideoButton.closest("[data-detail-video]");
           if (detailVideoItem && detailVideoBlock) {
             detailVideoBlock.outerHTML = renderDetailVideoSection(detailVideoItem, Number(detailVideoButton.getAttribute("data-detail-video-index")));
@@ -1051,7 +1119,7 @@
         var join = event.target.closest("[data-join]");
         if (join) {
           var id = join.getAttribute("data-join");
-          var item = events.find(function (event) { return event.id === id; });
+          var item = allEvents().find(function (event) { return event.id === id; });
           if (item && isPastEvent(item)) {
             toast("Запись на прошедшее мероприятие закрыта");
             return;
@@ -1090,7 +1158,7 @@
           closeEventCreateModal();
         }
         if (resourceModal && resourceModal.classList.contains("is-open") && activeGallery.length && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
-          var galleryItem = events.find(function (item) { return item.id === activeResourceEventId; });
+          var galleryItem = allEvents().find(function (item) { return item.id === activeResourceEventId; });
           if (galleryItem) {
             activeGalleryIndex += event.key === "ArrowRight" ? 1 : -1;
             if (activeGalleryIndex < 0) activeGalleryIndex = activeGallery.length - 1;
