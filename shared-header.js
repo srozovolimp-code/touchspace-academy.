@@ -948,7 +948,7 @@
       ".sidebar .nav__item img{width:25px;height:25px;object-fit:contain;transition:filter 180ms ease}" +
       ".sidebar .nav__item.is-active img:not([data-active-icon]){filter:brightness(0) invert(1)}" +
       ".sidebar .nav__item span[data-menu-fallback]{font-size:20px;line-height:1}" +
-      ".sidebar .nav__ts{display:inline-flex;align-items:baseline;justify-content:center;width:34px;height:34px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1px rgba(217,229,246,.92);font-weight:950;font-size:18px;line-height:1;letter-spacing:-.08em}" +
+      ".sidebar .nav__ts{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;font-weight:950;font-size:24px;line-height:1;letter-spacing:-.12em}" +
       ".sidebar .nav__ts-t{color:#172033}" +
       ".sidebar .nav__ts-s{color:#0a84ff;margin-left:-1px}" +
       ".sidebar .nav__badge{position:absolute;right:6px;top:6px;display:grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border:2px solid #fff;border-radius:999px;background:#ff8a3d;color:#fff;font-size:10px;font-weight:950;line-height:1}" +
