@@ -76,6 +76,32 @@
     .event-card .meta { margin-top: 11px; }
     .event-side { display: grid; justify-items: end; gap: 8px; min-width: 150px; }
     .seats { color: var(--muted); font-size: 12px; font-weight: 850; }
+    .event-card.is-past .event-image img,
+    .event-card.is-past .event-date,
+    .detail-page.is-past .detail-image img,
+    .detail-page.is-past .featured-meta .pill:first-child { filter: grayscale(1); }
+    .event-card.is-past .event-image,
+    .event-card.is-past .event-date,
+    .detail-page.is-past .detail-image { position: relative; }
+    .event-card.is-past .event-image:after,
+    .event-card.is-past .event-date:after,
+    .detail-page.is-past .detail-image:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(104, 116, 133, .48);
+      pointer-events: none;
+    }
+    .event-card.is-past .event-date:after { border-radius: inherit; }
+    .event-card.is-past .event-image:after,
+    .detail-page.is-past .detail-image:after { border-radius: inherit; }
+    .event-card.is-past .btn[disabled],
+    .detail-page.is-past .btn[disabled] {
+      background: #eef2f7;
+      color: #7b8797;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
     .event-list.is-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
     .event-list.is-grid .event-card { position: relative; display: flex; min-height: 100%; flex-direction: column; align-items: stretch; gap: 0; padding: 0; overflow: hidden; border-radius: 28px; }
     .event-list.is-grid .event-image { display: block; height: 172px; }
@@ -565,12 +591,16 @@
 
       function eventTemplate(event) {
         var isJoined = joined.has(event.id);
+        var isPast = isPastEvent(event);
         var tags = event.tags.map(function (tag) { return '<span class="pill">' + tag + '</span>'; }).join("");
-        return '<article class="event-card" data-open-event="' + event.id + '">' +
+        var joinButton = isPast
+          ? '<button class="btn secondary" type="button" disabled aria-disabled="true">Мероприятие прошло</button>'
+          : '<button class="btn secondary' + (isJoined ? " is-joined" : "") + '" type="button" data-join="' + event.id + '">' + (isJoined ? "Вы записаны" : "Записаться") + '</button>';
+        return '<article class="event-card' + (isPast ? ' is-past' : '') + '" data-open-event="' + event.id + '">' +
           '<div class="event-image"><img src="' + event.image + '" alt=""></div>' +
           '<div class="event-date"><div><b>' + event.day + '</b><span>' + event.month + '</span></div></div>' +
           '<div class="event-content"><h3>' + event.title + '</h3><p>' + event.desc + '</p><div class="meta"><span class="pill green">' + event.format + '</span><span class="pill">' + event.time + '</span><span class="pill">' + event.location + '</span>' + tags + '</div></div>' +
-          '<div class="event-side"><span class="seats">' + (event.seats - event.booked) + ' свободно</span><button class="btn secondary' + (isJoined ? " is-joined" : "") + '" type="button" data-join="' + event.id + '">' + (isJoined ? "Вы записаны" : "Записаться") + '</button><button class="btn ghost" type="button" data-details="' + event.id + '">Подробнее</button></div>' +
+          '<div class="event-side"><span class="seats">' + (isPast ? "завершено" : (event.seats - event.booked) + " свободно") + '</span>' + joinButton + '<button class="btn ghost" type="button" data-details="' + event.id + '">Подробнее</button></div>' +
         '</article>';
       }
 
@@ -584,6 +614,10 @@
         if (!item) return;
         var freeSeats = item.seats - item.booked;
         var isJoined = joined.has(item.id);
+        var isPast = isPastEvent(item);
+        var joinButton = isPast
+          ? '<button class="btn" type="button" disabled aria-disabled="true">Мероприятие прошло</button>'
+          : '<button class="btn' + (isJoined ? " is-joined" : "") + '" type="button" data-join="' + item.id + '">' + (isJoined ? "Вы записаны" : "Записаться") + '</button>';
         var detail = document.querySelector("[data-event-detail]");
         document.querySelector("[data-detail-page]").innerHTML =
           '<div class="detail-hero">' +
@@ -595,11 +629,11 @@
               '</div>' +
               '<div class="detail-stats">' +
                 '<div class="detail-stat"><strong>' + item.seats + '</strong><span>всего мест</span></div>' +
-                '<div class="detail-stat"><strong>' + freeSeats + '</strong><span>свободно</span></div>' +
+                '<div class="detail-stat"><strong>' + (isPast ? "0" : freeSeats) + '</strong><span>' + (isPast ? "запись закрыта" : "свободно") + '</span></div>' +
                 '<div class="detail-stat"><strong>' + item.duration + '</strong><span>длительность</span></div>' +
                 '<div class="detail-stat"><strong>' + item.time + '</strong><span>начало</span></div>' +
               '</div>' +
-              '<div class="hero-actions"><button class="btn' + (isJoined ? " is-joined" : "") + '" type="button" data-join="' + item.id + '">' + (isJoined ? "Вы записаны" : "Записаться") + '</button><button class="btn secondary" type="button" data-close-detail>К расписанию</button></div>' +
+              '<div class="hero-actions">' + joinButton + '<button class="btn secondary" type="button" data-close-detail>К расписанию</button></div>' +
             '</div>' +
             '<div class="detail-image"><img src="' + item.image + '" alt=""></div>' +
           '</div>' +
@@ -607,6 +641,7 @@
             '<section class="detail-section"><h3>Описание темы</h3><p>' + item.desc + '</p><ul class="detail-plan">' + item.agenda.map(function (point) { return '<li>' + point + '</li>'; }).join("") + '</ul></section>' +
             '<aside class="detail-section"><h3>Место проведения</h3><p>' + item.location + '</p><div class="speaker-list" style="margin-top:16px">' + item.speakers.map(speakerTemplate).join("") + '</div></aside>' +
           '</div>';
+        document.querySelector("[data-detail-page]").classList.toggle("is-past", isPast);
         detail.classList.add("is-open");
         detail.setAttribute("aria-hidden", "false");
       }
@@ -652,6 +687,11 @@
         var join = event.target.closest("[data-join]");
         if (join) {
           var id = join.getAttribute("data-join");
+          var item = events.find(function (event) { return event.id === id; });
+          if (item && isPastEvent(item)) {
+            toast("Запись на прошедшее мероприятие закрыта");
+            return;
+          }
           if (joined.has(id)) {
             joined.delete(id);
             toast("Запись отменена");
