@@ -251,6 +251,31 @@
       border-color: rgba(10,132,255,.5);
       box-shadow: 0 0 0 4px rgba(10,132,255,.08);
     }
+    .supplier-upload {
+      display: grid;
+      gap: 8px;
+      min-height: 96px;
+      padding: 12px;
+      border: 1px dashed #b8c9e2;
+      border-radius: 18px;
+      background: #f8fbff;
+    }
+    .supplier-upload input { width: 100%; color: #526174; font-size: 13px; }
+    .supplier-upload-preview { display: flex; flex-wrap: wrap; gap: 7px; min-height: 28px; }
+    .upload-chip {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      min-height: 28px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid #e3edf9;
+      color: #36506f;
+      font-size: 12px;
+      font-weight: 850;
+    }
+    .upload-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .supplier-event__actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
     .muted { color: var(--muted); font-size: 13px; font-weight: 800; }
     .moderation-list { display: grid; gap: 8px; margin-top: 14px; }
@@ -429,6 +454,34 @@
               <label for="supplier-event-desc">Описание</label>
               <textarea class="supplier-textarea" id="supplier-event-desc" name="description" placeholder="Тема, программа, для кого мероприятие и что участник получит."></textarea>
             </div>
+            <div class="supplier-field">
+              <label for="supplier-event-files">Файлы</label>
+              <div class="supplier-upload">
+                <input id="supplier-event-files" name="files" type="file" multiple data-upload-input="files">
+                <div class="supplier-upload-preview" data-upload-preview="files"></div>
+                <span class="muted">PDF, презентации, чек-листы и другие материалы.</span>
+              </div>
+            </div>
+            <div class="supplier-field">
+              <label for="supplier-event-images">Изображения</label>
+              <div class="supplier-upload">
+                <input id="supplier-event-images" name="images" type="file" accept="image/*" multiple data-upload-input="images">
+                <div class="supplier-upload-preview" data-upload-preview="images"></div>
+                <span class="muted">Фото для галереи мероприятия.</span>
+              </div>
+            </div>
+            <div class="supplier-field">
+              <label for="supplier-event-videos">Видео</label>
+              <div class="supplier-upload">
+                <input id="supplier-event-videos" name="videoFiles" type="file" accept="video/*" multiple data-upload-input="videos">
+                <div class="supplier-upload-preview" data-upload-preview="videos"></div>
+                <span class="muted">Видео будет отправлено в Kinescope после модерации.</span>
+              </div>
+            </div>
+            <div class="supplier-field full">
+              <label for="supplier-event-kinescope">Kinescope</label>
+              <textarea class="supplier-textarea" id="supplier-event-kinescope" name="kinescope" placeholder="Вставьте ссылки или ID видео Kinescope, каждое с новой строки"></textarea>
+            </div>
             <div class="supplier-field full">
               <label for="supplier-event-bulk">Массовая загрузка</label>
               <textarea class="supplier-textarea" id="supplier-event-bulk" name="bulk" placeholder="Бренд-день Calitex; 2026-07-20; 12:00; онлайн; Zoom; 80&#10;Практикум Pergo; 2026-07-22; 15:00; очно; Шоурум Москва; 25"></textarea>
@@ -603,11 +656,36 @@
         localStorage.setItem(supplierEventKey, JSON.stringify(items));
       }
 
+      function fileNames(inputName) {
+        var input = supplierEventForm && supplierEventForm.elements[inputName];
+        return input && input.files ? Array.from(input.files).map(function (file) { return file.name; }) : [];
+      }
+
+      function kinescopeLinks(value) {
+        return String(value || "").split(/\n+/).map(function (line) {
+          return line.trim();
+        }).filter(Boolean);
+      }
+
+      function attachmentSummary(item) {
+        var attachments = item.attachments || {};
+        var files = (attachments.files || []).length;
+        var images = (attachments.images || []).length;
+        var videos = (attachments.videos || []).length;
+        var kinescope = (attachments.kinescope || []).length;
+        var parts = [];
+        if (files) parts.push(files + " файлов");
+        if (images) parts.push(images + " изображений");
+        if (videos) parts.push(videos + " видео на загрузку");
+        if (kinescope) parts.push(kinescope + " Kinescope");
+        return parts.length ? parts.join(" · ") : "Материалы не прикреплены";
+      }
+
       function renderSupplierEvents() {
         if (!supplierEventList) return;
         var items = loadSupplierEvents();
         supplierEventList.innerHTML = items.length ? items.map(function (item) {
-          return '<article class="moderation-item"><div><strong>' + item.title + '</strong><span>' + item.type + ' · ' + item.date + ' ' + item.time + ' · ' + item.format + '</span></div><span class="pill">на модерации</span></article>';
+          return '<article class="moderation-item"><div><strong>' + item.title + '</strong><span>' + item.type + ' · ' + item.date + ' ' + item.time + ' · ' + item.format + '</span><span>' + attachmentSummary(item) + '</span></div><span class="pill">на модерации</span></article>';
         }).join("") : '<div class="moderation-item"><div><strong>Нет мероприятий на модерации</strong><span>После отправки заявка появится здесь.</span></div></div>';
       }
 
@@ -640,6 +718,12 @@
           seats: String(formData.get("seats") || ""),
           speakers: String(formData.get("speakers") || ""),
           description: String(formData.get("description") || ""),
+          attachments: {
+            files: fileNames("files"),
+            images: fileNames("images"),
+            videos: fileNames("videoFiles"),
+            kinescope: kinescopeLinks(formData.get("kinescope"))
+          },
           status: "На модерации",
           sentAt: new Date().toLocaleDateString("ru-RU")
         };
@@ -659,10 +743,25 @@
             seats: parts[5] || "",
             speakers: "",
             description: "Создано из массовой загрузки поставщика.",
+            attachments: { files: [], images: [], videos: [], kinescope: [] },
             status: "На модерации",
             sentAt: new Date().toLocaleDateString("ru-RU")
           };
         }).filter(Boolean);
+      }
+
+      function renderUploadPreview(type, files) {
+        var target = document.querySelector('[data-upload-preview="' + type + '"]');
+        if (!target) return;
+        target.innerHTML = files.length ? Array.from(files).map(function (file) {
+          return '<span class="upload-chip"><span>' + esc(file.name) + '</span></span>';
+        }).join("") : '<span class="muted">Ничего не выбрано</span>';
+      }
+
+      function resetUploadPreviews() {
+        document.querySelectorAll("[data-upload-preview]").forEach(function (target) {
+          target.innerHTML = '<span class="muted">Ничего не выбрано</span>';
+        });
       }
 
       function matchesFilter(event) {
@@ -1026,6 +1125,12 @@
       search.addEventListener("input", renderEvents);
       document.querySelector("[data-open-event-create]").addEventListener("click", openEventCreateModal);
       document.querySelector("[data-close-event-create]").addEventListener("click", closeEventCreateModal);
+      document.querySelectorAll("[data-upload-input]").forEach(function (input) {
+        renderUploadPreview(input.getAttribute("data-upload-input"), input.files);
+        input.addEventListener("change", function () {
+          renderUploadPreview(input.getAttribute("data-upload-input"), input.files);
+        });
+      });
       supplierEventModal.addEventListener("click", function (event) {
         if (event.target === supplierEventModal) closeEventCreateModal();
       });
@@ -1044,6 +1149,7 @@
         });
         saveSupplierEvents(items);
         supplierEventForm.reset();
+        resetUploadPreviews();
         renderSupplierEvents();
         closeEventCreateModal();
         toast((bulkEvents.length || 1) + " меропр. отправлено на модерацию");
