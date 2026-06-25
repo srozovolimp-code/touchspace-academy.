@@ -133,6 +133,9 @@
     .detail-section { padding: 18px; border: 1px solid var(--line); border-radius: 26px; background: #fff; }
     .detail-section h3 { margin: 0 0 12px; font-size: 20px; line-height: 1.1; letter-spacing: -.025em; }
     .detail-section p { margin: 0; color: var(--muted); line-height: 1.5; }
+    .detail-video-section { margin-top: 18px; }
+    .detail-video-section:first-child { margin-top: 0; margin-bottom: 18px; }
+    .detail-video-section .video-grid { margin-top: 12px; }
     .detail-plan { display: grid; gap: 10px; margin-top: 14px; }
     .detail-plan li { margin-left: 18px; color: #334155; line-height: 1.42; }
     .speaker-list { display: grid; gap: 12px; }
@@ -811,6 +814,25 @@
           }).join("") + '</div>';
       }
 
+      function renderDetailVideoSection(item, activeIndex) {
+        var videos = eventVideos(item);
+        if (!videos.length) return "";
+        var active = typeof activeIndex === "number" ? videos[activeIndex] : null;
+        return '<div class="detail-video-section" data-detail-video data-video-event="' + item.id + '">' +
+          '<h3>Видео</h3>' +
+          (active ? '<div class="video-viewer is-open"><div class="media-frame"><video src="' + esc(active.src) + '" poster="' + esc(active.poster) + '" controls autoplay></video></div><div class="media-caption"><span>' + esc(active.title) + '</span><span>' + esc(active.meta) + '</span></div></div>' : '') +
+          '<div class="video-grid" style="' + (active ? 'margin-top:14px' : '') + '">' + videos.map(function (video, videoIndex) {
+            return '<article class="video-tile"><div class="video-thumb"><img src="' + esc(video.poster) + '" alt="' + esc(video.title) + '"></div><div class="video-tile-body"><div><strong>' + esc(video.title) + '</strong><span>' + esc(video.meta) + '</span></div><button class="btn secondary" type="button" data-detail-video-index="' + videoIndex + '" data-video-event="' + item.id + '">Смотреть</button></div></article>';
+          }).join("") + '</div>' +
+        '</div>';
+      }
+
+      function renderDescriptionSection(item, isPast) {
+        var description = '<div><h3>Описание темы</h3><p>' + item.desc + '</p><ul class="detail-plan">' + item.agenda.map(function (point) { return '<li>' + point + '</li>'; }).join("") + '</ul></div>';
+        var videos = renderDetailVideoSection(item);
+        return '<section class="detail-section">' + (isPast ? videos + description : description + videos) + '</section>';
+      }
+
       function openDetail(id) {
         var item = events.find(function (event) { return event.id === id; });
         if (!item) return;
@@ -836,12 +858,12 @@
                 '<div class="detail-stat"><strong>' + item.time + '</strong><span>начало</span></div>' +
               '</div>' +
               '<div class="hero-actions">' + joinButton + '<button class="btn secondary" type="button" data-close-detail>К расписанию</button></div>' +
-              '<div class="resource-actions">' + resourceButton("files", "Файлы", item) + resourceButton("gallery", "Фотогалерея", item) + resourceButton("videos", "Видео", item) + '</div>' +
+              '<div class="resource-actions">' + resourceButton("files", "Файлы", item) + resourceButton("gallery", "Фотогалерея", item) + '</div>' +
             '</div>' +
             '<div class="detail-image"><img src="' + item.image + '" alt=""></div>' +
           '</div>' +
           '<div class="detail-body">' +
-            '<section class="detail-section"><h3>Описание темы</h3><p>' + item.desc + '</p><ul class="detail-plan">' + item.agenda.map(function (point) { return '<li>' + point + '</li>'; }).join("") + '</ul></section>' +
+            renderDescriptionSection(item, isPast) +
             '<aside class="detail-section"><h3>Место проведения</h3><p>' + item.location + '</p><div class="speaker-list" style="margin-top:16px">' + item.speakers.map(speakerTemplate).join("") + '</div></aside>' +
           '</div>';
         document.querySelector("[data-detail-page]").classList.toggle("is-past", isPast);
@@ -917,6 +939,15 @@
         if (videoButton) {
           var videoItem = events.find(function (item) { return item.id === videoButton.getAttribute("data-video-event"); });
           if (videoItem) renderVideoModal(videoItem, Number(videoButton.getAttribute("data-video-index")));
+          return;
+        }
+        var detailVideoButton = event.target.closest("[data-detail-video-index]");
+        if (detailVideoButton) {
+          var detailVideoItem = events.find(function (item) { return item.id === detailVideoButton.getAttribute("data-video-event"); });
+          var detailVideoBlock = detailVideoButton.closest("[data-detail-video]");
+          if (detailVideoItem && detailVideoBlock) {
+            detailVideoBlock.outerHTML = renderDetailVideoSection(detailVideoItem, Number(detailVideoButton.getAttribute("data-detail-video-index")));
+          }
           return;
         }
         var join = event.target.closest("[data-join]");
