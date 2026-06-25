@@ -230,6 +230,7 @@
         var parts = [];
         if ((attachments.files || []).length) parts.push((attachments.files || []).length + ' файлов');
         if ((attachments.images || []).length) parts.push((attachments.images || []).length + ' изображений');
+        if ((attachments.speakerPhotos || []).length) parts.push((attachments.speakerPhotos || []).length + ' фото спикеров');
         if ((attachments.videos || []).length) parts.push((attachments.videos || []).length + ' видео на загрузку');
         if ((attachments.kinescope || []).length) parts.push((attachments.kinescope || []).length + ' Kinescope');
         return parts.length ? parts.join(' · ') : 'Материалы не прикреплены';
@@ -330,6 +331,7 @@
           '<div class="detail-section"><h4>Описание</h4><p>' + escapeHtml(compactText(event.description, 'Описание не заполнено')) + '</p></div>' +
           '<div class="detail-section"><h4>Файлы</h4>' + listItems(attachments.files || []) + '</div>' +
           '<div class="detail-section"><h4>Изображения</h4>' + listItems(attachments.images || []) + '</div>' +
+          '<div class="detail-section"><h4>Фотографии спикеров</h4>' + listItems(attachments.speakerPhotos || []) + '</div>' +
           '<div class="detail-section"><h4>Видео на загрузку</h4>' + listItems(attachments.videos || []) + '</div>' +
           '<div class="detail-section"><h4>Kinescope</h4>' + listItems(attachments.kinescope || []) + '</div>' +
           '<div class="detail-actions"><button class="btn" type="button" data-approve-moderation="' + escapeHtml(item.id) + '">Одобрить</button></div>';

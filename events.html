@@ -386,10 +386,10 @@
           <div class="supplier-event__head">
             <div>
               <span class="eyebrow">Поставщик</span>
-              <h2>Мероприятия поставщика</h2>
+              <h2>Конструктор мероприятий</h2>
               <p>Создавайте вебинары, бренд-дни и очные встречи. После отправки мероприятие попадёт на модерацию и появится в расписании после проверки.</p>
             </div>
-            <span class="pill">модерация</span>
+            <span class="pill">конструктор</span>
           </div>
           <div class="supplier-event__actions">
             <button class="btn" type="button" data-open-event-create>Создать мероприятие</button>
@@ -403,7 +403,7 @@
             <div class="supplier-event-modal__head">
               <div>
                 <span class="eyebrow">Новое мероприятие</span>
-                <h2>Отправка на модерацию</h2>
+                <h2>Конструктор мероприятия</h2>
                 <p>Заполните одну карточку или вставьте несколько строк в массовую загрузку. Формат строки: название; дата; время; формат; место; места.</p>
               </div>
               <button class="modal-close" type="button" data-close-event-create aria-label="Закрыть">×</button>
@@ -451,6 +451,14 @@
               <input class="supplier-input" id="supplier-event-speakers" name="speakers" placeholder="Имена и роли через запятую">
             </div>
             <div class="supplier-field full">
+              <label for="supplier-event-speaker-photos">Фотографии спикеров</label>
+              <div class="supplier-upload">
+                <input id="supplier-event-speaker-photos" name="speakerPhotos" type="file" accept="image/*" multiple data-upload-input="speakerPhotos">
+                <div class="supplier-upload-preview" data-upload-preview="speakerPhotos"></div>
+                <span class="muted">Загрузите фото в том же порядке, что и список спикеров.</span>
+              </div>
+            </div>
+            <div class="supplier-field full">
               <label for="supplier-event-desc">Описание</label>
               <textarea class="supplier-textarea" id="supplier-event-desc" name="description" placeholder="Тема, программа, для кого мероприятие и что участник получит."></textarea>
             </div>
@@ -488,7 +496,7 @@
             </div>
           </form>
           <div class="supplier-event__actions">
-            <button class="btn" type="button" data-submit-event>Отправить на модерацию</button>
+            <button class="btn" type="button" data-submit-event>Сохранить и отправить</button>
             <span class="muted">Заявка сохраняется в прототипе.</span>
           </div>
           </div>
@@ -681,6 +689,21 @@
         return "business";
       }
 
+      function approvedSpeakers(item) {
+        return String(item.speakers || "").split(",").map(function (speaker, index) {
+          var parts = speaker.split("—");
+          var name = String(parts[0] || speaker).trim();
+          var role = String(parts[1] || "Спикер мероприятия").trim();
+          if (!name) return null;
+          return {
+            name: name,
+            role: role,
+            photo: "images/events/speaker-brand-trainer.png",
+            photoName: ((item.attachments || {}).speakerPhotos || [])[index] || ""
+          };
+        }).filter(Boolean);
+      }
+
       function normalizeApprovedEvent(item, index) {
         var date = parseEventDate(item.date) || new Date();
         var seats = Number(item.seats) || 30;
@@ -703,7 +726,7 @@
           location: String(item.place || "TouchSpace"),
           image: "images/calitex_realistic/calitex-material-lab.jpg",
           tags: [String(item.type || "Мероприятие"), "Поставщик"].filter(Boolean),
-          speakers: ["brand"],
+          speakers: approvedSpeakers(item).length ? approvedSpeakers(item) : ["brand"],
           agenda: description ? [description] : ["Программа мероприятия будет уточнена поставщиком."],
           attachments: item.attachments || {},
           approved: true
@@ -729,11 +752,13 @@
         var attachments = item.attachments || {};
         var files = (attachments.files || []).length;
         var images = (attachments.images || []).length;
+        var speakerPhotos = (attachments.speakerPhotos || []).length;
         var videos = (attachments.videos || []).length;
         var kinescope = (attachments.kinescope || []).length;
         var parts = [];
         if (files) parts.push(files + " файлов");
         if (images) parts.push(images + " изображений");
+        if (speakerPhotos) parts.push(speakerPhotos + " фото спикеров");
         if (videos) parts.push(videos + " видео на загрузку");
         if (kinescope) parts.push(kinescope + " Kinescope");
         return parts.length ? parts.join(" · ") : "Материалы не прикреплены";
@@ -779,6 +804,7 @@
           attachments: {
             files: fileNames("files"),
             images: fileNames("images"),
+            speakerPhotos: fileNames("speakerPhotos"),
             videos: fileNames("videoFiles"),
             kinescope: kinescopeLinks(formData.get("kinescope"))
           },
@@ -801,7 +827,7 @@
             seats: parts[5] || "",
             speakers: "",
             description: "Создано из массовой загрузки поставщика.",
-            attachments: { files: [], images: [], videos: [], kinescope: [] },
+            attachments: { files: [], images: [], speakerPhotos: [], videos: [], kinescope: [] },
             status: "На модерации",
             sentAt: new Date().toLocaleDateString("ru-RU")
           };
@@ -872,6 +898,9 @@
       }
 
       function speakerTemplate(id) {
+        if (typeof id === "object" && id) {
+          return '<article class="speaker-card"><img src="' + esc(id.photo || "images/events/speaker-brand-trainer.png") + '" alt="' + esc(id.name || "Спикер") + '"><div><strong>' + esc(id.name || "Спикер") + '</strong><span>' + esc(id.role || "Спикер мероприятия") + (id.photoName ? " · фото: " + esc(id.photoName) : "") + '</span></div></article>';
+        }
         var speaker = speakers[id];
         return '<article class="speaker-card"><img src="' + speaker.photo + '" alt="' + speaker.name + '"><div><strong>' + speaker.name + '</strong><span>' + speaker.role + '</span></div></article>';
       }
