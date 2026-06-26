@@ -305,9 +305,61 @@
         return brandModerationItems().concat(eventModerationItems());
       }
 
+      function renderAdvancedBrandDetail(item) {
+        var brand = item.raw;
+        var page = brand.page || {};
+        var modules = Array.isArray(page.modules) ? page.modules : [];
+        var blockRows = [];
+        modules.forEach(function (module, moduleIndex) {
+          (module.blocks || []).forEach(function (block, blockIndex) {
+            blockRows.push(
+              'Модуль ' + (moduleIndex + 1) + ', блок ' + (blockIndex + 1) + ': ' +
+              compactText(block.title, 'блок без названия') +
+              ' · тест: ' + compactText(block.testTitle, 'не указан') +
+              ' · вопрос: ' + compactText(block.testQuestion, 'не указан')
+            );
+          });
+        });
+        return '<h3>' + escapeHtml(item.title) + '</h3>' +
+          '<div class="moderation-detail__meta">' +
+            '<span class="source-pill">' + escapeHtml(sourceLabel(item.type)) + '</span>' +
+            '<span class="detail-pill">' + escapeHtml(item.source) + '</span>' +
+            '<span class="detail-pill">' + escapeHtml(compactText((brand.categories || []).join(', '), 'категория не указана')) + '</span>' +
+          '</div>' +
+          '<div class="detail-section"><h4>Главная страница бренда</h4>' +
+            listItems([
+              'H1: ' + compactText(page.title || brand.name, 'не заполнен'),
+              'Описание: ' + compactText(page.description || brand.description, 'не заполнено'),
+              'Позиционирование: ' + compactText(page.positioning || brand.positioning, 'не заполнено'),
+              'Вступление курса: ' + compactText(page.courseIntro, 'не заполнено'),
+              'Для кого курс: ' + compactText(page.audience, 'не заполнено'),
+              'Результат курса: ' + compactText(page.outcome, 'не заполнен')
+            ]) +
+          '</div>' +
+          '<div class="detail-section"><h4>Модули Advanced</h4>' +
+            listItems(modules.map(function (module, index) {
+              return 'Модуль ' + (index + 1) + ': ' + compactText(module.title, 'без названия') +
+                ' · ' + compactText(module.description, 'описание не заполнено') +
+                ' · блоков: ' + ((module.blocks || []).length) +
+                ' · тест модуля: ' + compactText(module.moduleTestTitle, 'не указан');
+            })) +
+          '</div>' +
+          '<div class="detail-section"><h4>Блоки и тесты</h4>' + listItems(blockRows) + '</div>' +
+          '<div class="detail-section"><h4>Финальный тест всего курса</h4>' +
+            listItems([
+              compactText(page.finalTestTitle, 'Название финального теста не заполнено'),
+              compactText(page.finalTestDescription, 'Описание финального теста не заполнено')
+            ]) +
+          '</div>' +
+          '<div class="detail-actions"><button class="btn" type="button" data-approve-moderation="' + escapeHtml(item.id) + '">Одобрить</button></div>';
+      }
+
       function renderBrandDetail(item) {
         var brand = item.raw;
         var page = brand.page || {};
+        if (page.schema === 'advanced-brand-course-v1' || Array.isArray(page.modules)) {
+          return renderAdvancedBrandDetail(item);
+        }
         var blocks = page.blocks || [];
         return '<h3>' + escapeHtml(item.title) + '</h3>' +
           '<div class="moderation-detail__meta">' +

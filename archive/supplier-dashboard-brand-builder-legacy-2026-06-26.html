@@ -349,42 +349,6 @@
       font-size: 12px;
       font-weight: 900;
     }
-    .advanced-module-list,
-    .advanced-block-list { display: grid; gap: 12px; }
-    .advanced-module-editor {
-      display: grid;
-      gap: 12px;
-      padding: 12px;
-      border: 1px solid rgba(10,132,255,.16);
-      border-radius: 20px;
-      background: #f7faff;
-    }
-    .advanced-module-editor .advanced-block-list { padding-left: 10px; border-left: 2px solid rgba(10,132,255,.16); }
-    .advanced-block-editor {
-      display: grid;
-      gap: 10px;
-      padding: 12px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: #fff;
-    }
-    .advanced-preview-modules { display: grid; gap: 16px; }
-    .advanced-preview-module { padding: 26px; }
-    .advanced-preview-blocks { display: grid; gap: 12px; margin-top: 16px; }
-    .advanced-test-pill {
-      display: inline-flex;
-      width: fit-content;
-      align-items: center;
-      min-height: 28px;
-      margin-top: 12px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: #ecfdf3;
-      color: #187349;
-      border: 1px solid rgba(35,196,131,.22);
-      font-size: 12px;
-      font-weight: 900;
-    }
     .builder-preview {
       display: grid;
       gap: 16px;
@@ -685,14 +649,14 @@
           <div class="panel-head">
             <div>
               <h2>Конструктор страницы бренда</h2>
-              <p>Страница бренда собирается как Advanced-курс: главная, модули, учебные блоки с тестами, тесты модулей и финальный тест.</p>
+              <p>Шаблон собран по логике страницы Calitex: вводный hero, структура обучения и ключевые учебные блоки.</p>
             </div>
             <button class="btn secondary" type="button" data-close-builder>Закрыть</button>
           </div>
           <div class="builder-shell">
             <aside class="builder-controls">
               <details class="builder-group" open>
-                <summary>Главная страница бренда</summary>
+                <summary>Hero страницы</summary>
                 <div class="builder-group__body">
                   <div class="field">
                     <label for="builder-title">Заголовок H1</label>
@@ -707,37 +671,74 @@
                     <textarea class="textarea" id="builder-positioning" data-builder-field="positioning" placeholder="Например: надёжность, дизайн, комфорт, аргументы продажи"></textarea>
                   </div>
                   <div class="field">
-                    <label>Вступление курса</label>
-                    <textarea class="textarea" data-builder-field="courseIntro"></textarea>
-                  </div>
-                  <div class="field">
-                    <label>Для кого курс</label>
-                    <textarea class="textarea" data-builder-field="audience"></textarea>
-                  </div>
-                  <div class="field">
-                    <label>Что умеет продавец после курса</label>
-                    <textarea class="textarea" data-builder-field="outcome"></textarea>
-                  </div>
-                  <div class="field">
                     <label for="builder-hero-image">Изображение hero</label>
-                    <select class="select" id="builder-hero-image" data-builder-field="heroImage" data-image-options></select>
+                    <select class="select" id="builder-hero-image" data-builder-field="heroImage">
+                      <option value="images/calitex_realistic/calitex-showroom-collection.jpg">Шоурум / коллекция</option>
+                      <option value="images/calitex_realistic/calitex-living-room-floor.jpg">Интерьер с покрытием</option>
+                      <option value="images/calitex_realistic/calitex-comfort-home.jpg">Комфортный дом</option>
+                      <option value="images/calitex_realistic/calitex-active-home-water.jpg">Активный дом / вода</option>
+                      <option value="images/calitex_realistic/calitex-factory-quality.jpg">Производство и качество</option>
+                      <option value="images/calitex_realistic/calitex-certificates-global.jpg">Сертификаты</option>
+                      <option value="images/calitex_realistic/calitex-material-lab.jpg">Материалы / лаборатория</option>
+                    </select>
                   </div>
                 </div>
               </details>
 
-              <details class="builder-group" open>
-                <summary>Модули Advanced</summary>
+              <details class="builder-group">
+                <summary>Структура обучения</summary>
                 <div class="builder-group__body">
-                  <div class="advanced-module-list" data-advanced-module-list></div>
-                  <button class="btn secondary" type="button" data-add-advanced-module>Добавить модуль</button>
+                  <div class="field"><label>Описание структуры</label><textarea class="textarea" data-builder-field="structureIntro"></textarea></div>
+                  <div class="field"><label>Модуль 01</label><input class="input" data-builder-field="module1Title"><textarea class="textarea" data-builder-field="module1Text"></textarea></div>
+                  <div class="field"><label>Модуль 02</label><input class="input" data-builder-field="module2Title"><textarea class="textarea" data-builder-field="module2Text"></textarea></div>
+                  <div class="field"><label>Модуль 03</label><input class="input" data-builder-field="module3Title"><textarea class="textarea" data-builder-field="module3Text"></textarea></div>
+                  <div class="field"><label>Модуль 04</label><input class="input" data-builder-field="module4Title"><textarea class="textarea" data-builder-field="module4Text"></textarea></div>
+                </div>
+              </details>
+
+              <details class="builder-group">
+                <summary>История бренда</summary>
+                <div class="builder-group__body">
+                  <div class="field"><label>Заголовок модуля</label><input class="input" data-builder-field="historyTitle"></div>
+                  <div class="field"><label>Контекст</label><textarea class="textarea" data-builder-field="historyContext"></textarea></div>
+                  <div class="field"><label>Подсказка менеджеру</label><textarea class="textarea" data-builder-field="historyTip"></textarea></div>
+                  <div class="field"><label>Изображение</label><select class="select" data-builder-field="historyImage" data-image-options></select></div>
+                </div>
+              </details>
+
+              <details class="builder-group">
+                <summary>Философия и ДНК</summary>
+                <div class="builder-group__body">
+                  <div class="field"><label>Заголовок</label><input class="input" data-builder-field="philosophyTitle"></div>
+                  <div class="field"><label>Описание блока</label><textarea class="textarea" data-builder-field="philosophyText"></textarea></div>
+                  <div class="field"><label>Изображение</label><select class="select" data-builder-field="philosophyImage" data-image-options></select></div>
+                </div>
+              </details>
+
+              <details class="builder-group">
+                <summary>Технологии</summary>
+                <div class="builder-group__body">
+                  <div class="field"><label>Заголовок</label><input class="input" data-builder-field="techTitle"></div>
+                  <div class="field"><label>Описание блока</label><textarea class="textarea" data-builder-field="techText"></textarea></div>
+                  <div class="field"><label>Изображение</label><select class="select" data-builder-field="techImage" data-image-options></select></div>
+                </div>
+              </details>
+
+              <details class="builder-group">
+                <summary>Продажа</summary>
+                <div class="builder-group__body">
+                  <div class="field"><label>Заголовок</label><input class="input" data-builder-field="salesTitle"></div>
+                  <div class="field"><label>Описание блока</label><textarea class="textarea" data-builder-field="salesText"></textarea></div>
+                  <div class="field"><label>Финальный призыв</label><textarea class="textarea" data-builder-field="finalText"></textarea></div>
+                  <div class="field"><label>Изображение</label><select class="select" data-builder-field="salesImage" data-image-options></select></div>
                 </div>
               </details>
 
               <details class="builder-group" open>
-                <summary>Финальный тест всего курса</summary>
+                <summary>Дополнительные блоки</summary>
                 <div class="builder-group__body">
-                  <div class="field"><label>Название теста</label><input class="input" data-builder-field="finalTestTitle"></div>
-                  <div class="field"><label>Описание теста</label><textarea class="textarea" data-builder-field="finalTestDescription"></textarea></div>
+                  <div class="builder-block-list" data-builder-block-list></div>
+                  <button class="btn secondary" type="button" data-add-builder-block>Добавить блок</button>
                 </div>
               </details>
 
@@ -760,23 +761,49 @@
               </section>
 
               <section class="brand-page-structure">
-                <h2>Структура Advanced-курса</h2>
-                <p data-preview="courseIntro">Курс собирается из модулей, учебных блоков и проверок знаний.</p>
+                <h2>Структура обучения</h2>
+                <p data-preview="structureIntro" data-inline-edit="structureIntro" contenteditable="true">4 ключевых блока, которые помогут продавцу уверенно объяснять ценность бренда клиенту.</p>
                 <div class="brand-page-grid">
-                  <article class="brand-page-card"><b>Главная</b><h3>Страница бренда</h3><p data-preview="audience">Для кого этот курс и какую задачу он закрывает.</p></article>
-                  <article class="brand-page-card"><b>Модули</b><h3 data-preview-module-count>0 модулей</h3><p>Каждый модуль состоит из учебных блоков и завершается тестом.</p></article>
-                  <article class="brand-page-card"><b>Блоки</b><h3 data-preview-block-count>0 блоков</h3><p>Внутри блоков можно указать отдельные проверочные вопросы.</p></article>
-                  <article class="brand-page-card"><b>Итог</b><h3 data-preview="finalTestTitle">Финальный тест курса</h3><p data-preview="outcome">Что продавец сможет после прохождения курса.</p></article>
+                  <article class="brand-page-card"><b>Модуль 01</b><h3 data-preview="module1Title" data-inline-edit="module1Title" contenteditable="true">История бренда</h3><p data-preview="module1Text" data-inline-edit="module1Text" contenteditable="true">Происхождение, доверие и факты, которые усиливают аргументацию.</p></article>
+                  <article class="brand-page-card"><b>Модуль 02</b><h3 data-preview="module2Title" data-inline-edit="module2Title" contenteditable="true">Философия и ДНК</h3><p data-preview="module2Text" data-inline-edit="module2Text" contenteditable="true">Ценности, стиль, аудитория и причины выбрать бренд.</p></article>
+                  <article class="brand-page-card"><b>Модуль 03</b><h3 data-preview="module3Title" data-inline-edit="module3Title" contenteditable="true">Технологии</h3><p data-preview="module3Text" data-inline-edit="module3Text" contenteditable="true">Материалы, конструкция, преимущества и доказательства качества.</p></article>
+                  <article class="brand-page-card"><b>Модуль 04</b><h3 data-preview="module4Title" data-inline-edit="module4Title" contenteditable="true">Продажа</h3><p data-preview="module4Text" data-inline-edit="module4Text" contenteditable="true">Сценарии консультации, возражения и формула рекомендации.</p></article>
                 </div>
               </section>
 
-              <div class="advanced-preview-modules" data-preview-modules></div>
+              <section class="brand-page-section">
+                <span class="brand-page-kicker">Модуль 01 — История бренда</span>
+                <h2 data-preview="historyTitle" data-inline-edit="historyTitle" contenteditable="true">Вводное: бренд, задающий стандарт</h2>
+                <div class="brand-page-two">
+                  <article class="brand-page-card"><h3>Контекст</h3><p data-preview="historyContext" data-inline-edit="historyContext" contenteditable="true">Короткая история бренда и факты, которые помогают создать доверие.</p></article>
+                  <article class="brand-page-card"><h3>Подсказка менеджеру</h3><p data-preview="historyTip" data-inline-edit="historyTip" contenteditable="true">История должна звучать как аргумент выбора, а не как сухая справка.</p></article>
+                </div>
+                <div class="brand-page-image" data-preview-image="historyImage"></div>
+              </section>
 
               <section class="brand-page-section">
-                <span class="brand-page-kicker">Финал курса</span>
-                <h2 data-preview="finalTestTitle">Финальный тест курса</h2>
-                <p data-preview="finalTestDescription">Проверка знаний по всем модулям Advanced-курса.</p>
+                <span class="brand-page-kicker">Модуль 02 — Философия</span>
+                <h2 data-preview="philosophyTitle" data-inline-edit="philosophyTitle" contenteditable="true">Философия и ДНК бренда</h2>
+                <p data-preview="philosophyText" data-inline-edit="philosophyText" contenteditable="true">Описание бренда появится здесь как основной description страницы.</p>
+                <div class="brand-page-image" data-preview-image="philosophyImage"></div>
               </section>
+
+              <section class="brand-page-section">
+                <span class="brand-page-kicker">Модуль 03 — Технологии</span>
+                <h2 data-preview="techTitle" data-inline-edit="techTitle" contenteditable="true">Технологии и преимущества</h2>
+                <p data-preview="techText" data-inline-edit="techText" contenteditable="true">Материалы, конструкция, преимущества и доказательства качества.</p>
+                <div class="brand-page-image" data-preview-image="techImage"></div>
+              </section>
+
+              <section class="brand-page-section">
+                <span class="brand-page-kicker">Модуль 04 — Продажа</span>
+                <h2 data-preview="salesTitle" data-inline-edit="salesTitle" contenteditable="true">Как продавать бренд</h2>
+                <p data-preview="salesText" data-inline-edit="salesText" contenteditable="true">Сценарии консультации, работа с возражениями и формула рекомендации.</p>
+                <div class="brand-page-card" style="margin-top:14px;"><h3>Итоговый блок</h3><p data-preview="finalText" data-inline-edit="finalText" contenteditable="true">Добавьте тест по бренду и отправьте страницу на модерацию.</p></div>
+                <div class="brand-page-image" data-preview-image="salesImage"></div>
+              </section>
+
+              <div data-preview-custom-blocks></div>
             </div>
           </div>
         </section>
@@ -837,8 +864,8 @@
       var toast = document.getElementById("toast");
       var brandBuilder = document.getElementById("brand-builder");
       var builderPreview = document.querySelector(".builder-preview");
-      var advancedModuleList = document.querySelector("[data-advanced-module-list]");
-      var previewModules = document.querySelector("[data-preview-modules]");
+      var builderBlockList = document.querySelector("[data-builder-block-list]");
+      var previewCustomBlocks = document.querySelector("[data-preview-custom-blocks]");
       var currentBuilderBrandId = null;
 
       var imageOptions = [
@@ -852,16 +879,33 @@
       ];
 
       var builderDefaults = {
-        schema: "advanced-brand-course-v1",
         title: "Название бренда",
         description: "Описание бренда появится здесь.",
         positioning: "Ключевое позиционирование бренда и польза для продавца.",
         heroImage: "images/calitex_realistic/calitex-showroom-collection.jpg",
-        courseIntro: "Курс собирается из модулей, учебных блоков и проверок знаний.",
-        audience: "Для продавцов, которые консультируют клиентов по бренду и помогают выбрать подходящее покрытие.",
-        outcome: "После курса продавец уверенно объясняет ценность бренда, сравнивает решения и отвечает на возражения.",
-        finalTestTitle: "Финальный тест курса",
-        finalTestDescription: "Проверка знаний по всем модулям Advanced-курса."
+        structureIntro: "4 ключевых блока, которые помогут продавцу уверенно объяснять ценность бренда клиенту.",
+        module1Title: "История бренда",
+        module1Text: "Происхождение, доверие и факты, которые усиливают аргументацию.",
+        module2Title: "Философия и ДНК",
+        module2Text: "Ценности, стиль, аудитория и причины выбрать бренд.",
+        module3Title: "Технологии",
+        module3Text: "Материалы, конструкция, преимущества и доказательства качества.",
+        module4Title: "Продажа",
+        module4Text: "Сценарии консультации, возражения и формула рекомендации.",
+        historyTitle: "Вводное: бренд, задающий стандарт",
+        historyContext: "Короткая история бренда и факты, которые помогают создать доверие.",
+        historyTip: "История должна звучать как аргумент выбора, а не как сухая справка.",
+        historyImage: "images/calitex_realistic/calitex-archive-team.jpg",
+        philosophyTitle: "Философия и ДНК бренда",
+        philosophyText: "Описание бренда появится здесь как основной description страницы.",
+        philosophyImage: "images/calitex_realistic/calitex-living-room-floor.jpg",
+        techTitle: "Технологии и преимущества",
+        techText: "Материалы, конструкция, преимущества и доказательства качества.",
+        techImage: "images/calitex_realistic/calitex-material-lab.jpg",
+        salesTitle: "Как продавать бренд",
+        salesText: "Сценарии консультации, работа с возражениями и формула рекомендации.",
+        finalText: "Добавьте тест по бренду и отправьте страницу на модерацию.",
+        salesImage: "images/calitex_realistic/calitex-comfort-home.jpg"
       };
 
       function loadBrands() {
@@ -1035,191 +1079,100 @@
         });
       }
 
-      function defaultBlock(title, text) {
-        return {
-          title: title || "Учебный блок",
-          text: text || "Опишите материал, который должен изучить продавец.",
-          testTitle: "Тест блока",
-          testQuestion: "Добавьте проверочный вопрос по этому блоку."
-        };
-      }
-
-      function defaultModule(title, text) {
-        return {
-          title: title || "Новый модуль",
-          description: text || "Кратко опишите задачу модуля.",
-          blocks: [defaultBlock("Блок 1", "Материал первого блока модуля.")],
-          moduleTestTitle: "Тест модуля",
-          moduleTestDescription: "Проверка знаний по материалам модуля."
-        };
-      }
-
-      function migrateLegacyPage(page, brand) {
-        var legacy = page || {};
-        var modules = [
-          defaultModule(legacy.module1Title || legacy.historyTitle || "История бренда", legacy.module1Text || legacy.historyContext || "Происхождение, доверие и факты о бренде."),
-          defaultModule(legacy.module2Title || legacy.philosophyTitle || "Философия и ДНК", legacy.module2Text || legacy.philosophyText || "Ценности, стиль и аудитория бренда."),
-          defaultModule(legacy.module3Title || legacy.techTitle || "Технологии", legacy.module3Text || legacy.techText || "Материалы, конструкция и доказательства качества."),
-          defaultModule(legacy.module4Title || legacy.salesTitle || "Продажа", legacy.module4Text || legacy.salesText || "Сценарии консультации и работа с возражениями.")
-        ];
-        if (Array.isArray(legacy.blocks) && legacy.blocks.length) {
-          modules.push({
-            title: "Дополнительные материалы",
-            description: "Блоки, перенесённые из старой версии конструктора.",
-            blocks: legacy.blocks.map(function (block) {
-              return defaultBlock(block.title, block.text);
-            }),
-            moduleTestTitle: "Тест по дополнительным материалам",
-            moduleTestDescription: "Проверка знаний по перенесённым блокам."
-          });
-        }
-        return Object.assign({}, builderDefaults, {
-          title: legacy.title || brand.name || builderDefaults.title,
-          description: legacy.description || brand.description || builderDefaults.description,
-          positioning: legacy.positioning || brand.positioning || builderDefaults.positioning,
-          heroImage: legacy.heroImage || builderDefaults.heroImage,
-          courseIntro: legacy.structureIntro || builderDefaults.courseIntro,
-          audience: builderDefaults.audience,
-          outcome: legacy.finalText || builderDefaults.outcome,
-          modules: modules,
-          finalTestTitle: "Финальный тест курса",
-          finalTestDescription: legacy.finalText || builderDefaults.finalTestDescription
-        });
-      }
-
-      function normalizeAdvancedPage(brand) {
-        var page = brand.page || {};
-        if (page.schema === builderDefaults.schema || Array.isArray(page.modules)) {
-          var normalized = Object.assign({}, builderDefaults, page);
-          normalized.title = normalized.title || brand.name || builderDefaults.title;
-          normalized.description = normalized.description || brand.description || builderDefaults.description;
-          normalized.modules = Array.isArray(normalized.modules) && normalized.modules.length ? normalized.modules.map(function (module) {
-            return Object.assign({}, defaultModule(), module, {
-              blocks: Array.isArray(module.blocks) && module.blocks.length ? module.blocks.map(function (block) {
-                return Object.assign({}, defaultBlock(), block);
-              }) : [defaultBlock()]
-            });
-          }) : [defaultModule()];
-          return normalized;
-        }
-        return migrateLegacyPage(page, brand);
-      }
-
-      function collectAdvancedModules() {
-        return Array.prototype.slice.call(document.querySelectorAll("[data-advanced-module]")).map(function (module) {
-          var blocks = Array.prototype.slice.call(module.querySelectorAll("[data-advanced-block]")).map(function (block) {
-            return {
-              title: (block.querySelector('[data-block-field="title"]') || {}).value || "",
-              text: (block.querySelector('[data-block-field="text"]') || {}).value || "",
-              testTitle: (block.querySelector('[data-block-field="testTitle"]') || {}).value || "",
-              testQuestion: (block.querySelector('[data-block-field="testQuestion"]') || {}).value || ""
-            };
-          }).filter(function (block) {
-            return block.title.trim() || block.text.trim() || block.testTitle.trim() || block.testQuestion.trim();
-          });
+      function collectBuilderBlocks() {
+        return Array.prototype.slice.call(document.querySelectorAll("[data-builder-block]")).map(function (block) {
           return {
-            title: (module.querySelector('[data-module-field="title"]') || {}).value || "",
-            description: (module.querySelector('[data-module-field="description"]') || {}).value || "",
-            blocks: blocks,
-            moduleTestTitle: (module.querySelector('[data-module-field="moduleTestTitle"]') || {}).value || "",
-            moduleTestDescription: (module.querySelector('[data-module-field="moduleTestDescription"]') || {}).value || ""
+            title: (block.querySelector('[data-block-field="title"]') || {}).value || "",
+            text: (block.querySelector('[data-block-field="text"]') || {}).value || "",
+            image: (block.querySelector('[data-block-field="image"]') || {}).value || imageOptions[0][0]
           };
-        }).filter(function (module) {
-          return module.title.trim() || module.description.trim() || module.blocks.length || module.moduleTestTitle.trim() || module.moduleTestDescription.trim();
+        }).filter(function (block) {
+          return block.title.trim() || block.text.trim();
         });
       }
 
       function blockEditorTemplate(block, index) {
-        var item = Object.assign({}, defaultBlock(), block || {});
-        return '<article class="advanced-block-editor" data-advanced-block>' +
-          '<div class="builder-block-head"><strong>Блок ' + (index + 1) + '</strong><button class="builder-block-remove" type="button" data-remove-advanced-block>Удалить</button></div>' +
-          '<div class="field"><label>Заголовок блока</label><input class="input" data-block-field="title" value="' + escapeHtml(item.title) + '"></div>' +
-          '<div class="field"><label>Материал блока</label><textarea class="textarea" data-block-field="text">' + escapeHtml(item.text) + '</textarea></div>' +
-          '<div class="field"><label>Название теста блока</label><input class="input" data-block-field="testTitle" value="' + escapeHtml(item.testTitle) + '"></div>' +
-          '<div class="field"><label>Проверочный вопрос блока</label><textarea class="textarea" data-block-field="testQuestion">' + escapeHtml(item.testQuestion) + '</textarea></div>' +
+        var item = block || {};
+        return '<article class="builder-block-editor" data-builder-block>' +
+          '<div class="builder-block-head"><strong>Блок ' + (index + 1) + '</strong><button class="builder-block-remove" type="button" data-remove-builder-block>Удалить</button></div>' +
+          '<div class="field"><label>Заголовок блока</label><input class="input" data-block-field="title" value="' + escapeHtml(item.title || "") + '"></div>' +
+          '<div class="field"><label>Текст блока</label><textarea class="textarea" data-block-field="text">' + escapeHtml(item.text || "") + '</textarea></div>' +
+          '<div class="field"><label>Изображение блока</label><select class="select" data-block-field="image">' + imageSelectOptions(item.image || imageOptions[0][0]) + '</select></div>' +
         '</article>';
       }
 
-      function moduleEditorTemplate(module, index) {
-        var item = Object.assign({}, defaultModule(), module || {});
-        var blocks = Array.isArray(item.blocks) && item.blocks.length ? item.blocks : [defaultBlock()];
-        return '<article class="advanced-module-editor" data-advanced-module>' +
-          '<div class="builder-block-head"><strong>Модуль ' + (index + 1) + '</strong><button class="builder-block-remove" type="button" data-remove-advanced-module>Удалить модуль</button></div>' +
-          '<div class="field"><label>Название модуля</label><input class="input" data-module-field="title" value="' + escapeHtml(item.title) + '"></div>' +
-          '<div class="field"><label>Описание модуля</label><textarea class="textarea" data-module-field="description">' + escapeHtml(item.description) + '</textarea></div>' +
-          '<div class="advanced-block-list" data-advanced-block-list>' + blocks.map(blockEditorTemplate).join("") + '</div>' +
-          '<button class="btn secondary" type="button" data-add-advanced-block>Добавить блок в модуль</button>' +
-          '<div class="field"><label>Тест модуля</label><input class="input" data-module-field="moduleTestTitle" value="' + escapeHtml(item.moduleTestTitle) + '"></div>' +
-          '<div class="field"><label>Описание теста модуля</label><textarea class="textarea" data-module-field="moduleTestDescription">' + escapeHtml(item.moduleTestDescription) + '</textarea></div>' +
-        '</article>';
+      function renderBuilderBlockEditors(blocks) {
+        if (!builderBlockList) return;
+        builderBlockList.innerHTML = (blocks || []).map(blockEditorTemplate).join("");
       }
 
-      function renderModuleEditors(modules) {
-        if (!advancedModuleList) return;
-        var items = Array.isArray(modules) && modules.length ? modules : [defaultModule()];
-        advancedModuleList.innerHTML = items.map(moduleEditorTemplate).join("");
-      }
-
-      function renderAdvancedPreview(page) {
-        if (!previewModules) return;
-        previewModules.innerHTML = (page.modules || []).map(function (module, moduleIndex) {
-          var blocks = Array.isArray(module.blocks) ? module.blocks : [];
-          return '<section class="brand-page-section advanced-preview-module">' +
-            '<span class="brand-page-kicker">Модуль ' + (moduleIndex + 1) + '</span>' +
-            '<h2>' + escapeHtml(module.title || "Модуль") + '</h2>' +
-            '<p>' + escapeHtml(module.description || "Описание модуля не заполнено.") + '</p>' +
-            '<div class="advanced-preview-blocks">' +
-              blocks.map(function (block, blockIndex) {
-                return '<article class="brand-page-card">' +
-                  '<b>Блок ' + (blockIndex + 1) + '</b>' +
-                  '<h3>' + escapeHtml(block.title || "Учебный блок") + '</h3>' +
-                  '<p>' + escapeHtml(block.text || "Материал блока не заполнен.") + '</p>' +
-                  '<span class="advanced-test-pill">' + escapeHtml(block.testTitle || "Тест блока") + '</span>' +
-                  '<p>' + escapeHtml(block.testQuestion || "Проверочный вопрос не заполнен.") + '</p>' +
-                '</article>';
-              }).join("") +
-            '</div>' +
-            '<div class="brand-page-card" style="margin-top:14px;"><b>Тест модуля</b><h3>' + escapeHtml(module.moduleTestTitle || "Тест модуля") + '</h3><p>' + escapeHtml(module.moduleTestDescription || "Описание теста модуля не заполнено.") + '</p></div>' +
+      function renderCustomBlockPreview(blocks) {
+        if (!previewCustomBlocks) return;
+        previewCustomBlocks.innerHTML = (blocks || []).map(function (block, index) {
+          return '<section class="brand-page-section">' +
+            '<span class="brand-page-kicker">Дополнительный блок</span>' +
+            '<h2 data-preview-block-index="' + index + '" data-preview-block-field="title" contenteditable="true">' + escapeHtml(block.title || "Новый блок") + '</h2>' +
+            '<p data-preview-block-index="' + index + '" data-preview-block-field="text" contenteditable="true">' + escapeHtml(block.text || "Описание блока появится здесь.") + '</p>' +
+            '<div class="brand-page-image" style="background-image:url(' + "'" + escapeHtml(block.image || imageOptions[0][0]) + "'" + ');"></div>' +
           '</section>';
         }).join("");
+      }
+
+      function editableText(node) {
+        return node.innerText.replace(/\u00a0/g, " ").trim();
+      }
+
+      function syncInlinePreviewEdit(node) {
+        var key = node.getAttribute("data-inline-edit");
+        var text = editableText(node);
+        if (key) {
+          var input = builderInputByKey(key);
+          if (input) input.value = text;
+          if (key === "title") setText("[data-preview-logo]", text || builderDefaults.title);
+          return;
+        }
+        var blockField = node.getAttribute("data-preview-block-field");
+        if (!blockField) return;
+        var index = Number(node.getAttribute("data-preview-block-index"));
+        var block = document.querySelectorAll("[data-builder-block]")[index];
+        if (!block) return;
+        var field = block.querySelector('[data-block-field="' + blockField + '"]');
+        if (field) field.value = text;
+      }
+
+      function collectBuilderPage() {
+        var page = {};
+        builderInputs().forEach(function (input) {
+          var key = input.getAttribute("data-builder-field");
+          page[key] = input.value.trim();
+        });
+        page.blocks = collectBuilderBlocks();
+        return page;
       }
 
       function pageValue(page, key) {
         return (page && page[key]) || builderDefaults[key] || "";
       }
 
-      function collectBuilderPage() {
-        var page = { schema: builderDefaults.schema };
-        builderInputs().forEach(function (input) {
-          var key = input.getAttribute("data-builder-field");
-          page[key] = input.value.trim();
-        });
-        page.modules = collectAdvancedModules();
-        return page;
-      }
-
       function fillBuilderFields(brand) {
-        var page = normalizeAdvancedPage(brand);
+        var page = Object.assign({}, builderDefaults, brand.page || {});
+        page.title = brand.name || page.title;
+        page.description = brand.description || page.description;
+        if (brand.positioning) page.positioning = brand.positioning;
         hydrateImageSelects();
         builderInputs().forEach(function (input) {
           var key = input.getAttribute("data-builder-field");
           input.value = pageValue(page, key);
         });
-        renderModuleEditors(page.modules);
+        renderBuilderBlockEditors(page.blocks || []);
       }
 
       function updateBuilderPreview() {
         var page = Object.assign({}, builderDefaults, collectBuilderPage());
-        page.modules = page.modules && page.modules.length ? page.modules : [defaultModule()];
-        var blockCount = page.modules.reduce(function (sum, module) {
-          return sum + (Array.isArray(module.blocks) ? module.blocks.length : 0);
-        }, 0);
         setText("[data-preview-title]", pageValue(page, "title"));
         setText("[data-preview-description]", pageValue(page, "description"));
         setText("[data-preview-positioning]", pageValue(page, "positioning"));
         setText("[data-preview-logo]", pageValue(page, "title"));
-        setText("[data-preview-module-count]", page.modules.length + " " + (page.modules.length === 1 ? "модуль" : "модулей"));
-        setText("[data-preview-block-count]", blockCount + " " + (blockCount === 1 ? "блок" : "блоков"));
         var media = document.querySelector("[data-preview-media]");
         if (media) {
           media.style.backgroundImage = "linear-gradient(180deg, rgba(17,24,39,.04), rgba(17,24,39,.40)), url('" + pageValue(page, "heroImage") + "')";
@@ -1227,7 +1180,11 @@
         Object.keys(builderDefaults).forEach(function (key) {
           setText('[data-preview="' + key + '"]', pageValue(page, key));
         });
-        renderAdvancedPreview(page);
+        document.querySelectorAll("[data-preview-image]").forEach(function (node) {
+          var key = node.getAttribute("data-preview-image");
+          node.style.backgroundImage = "url('" + pageValue(page, key) + "')";
+        });
+        renderCustomBlockPreview(page.blocks || []);
       }
 
       function openBrandBuilder(brand) {
@@ -1276,11 +1233,7 @@
           tests: 0,
           description: description,
           positioning: "",
-          page: Object.assign({}, builderDefaults, {
-            title: name,
-            description: description,
-            modules: [defaultModule()]
-          }),
+          page: { title: name, description: description },
           pageReady: false,
           moderationStatus: "draft"
         });
@@ -1315,45 +1268,34 @@
         input.addEventListener("input", updateBuilderPreview);
         input.addEventListener("change", updateBuilderPreview);
       });
-      document.querySelector("[data-add-advanced-module]").addEventListener("click", function () {
-        var modules = collectAdvancedModules();
-        modules.push(defaultModule("Новый модуль", "Опишите задачу нового модуля."));
-        renderModuleEditors(modules);
+      document.querySelector("[data-add-builder-block]").addEventListener("click", function () {
+        var blocks = collectBuilderBlocks();
+        blocks.push({
+          title: "Новый учебный блок",
+          text: "Опишите, что должен узнать продавец в этом блоке.",
+          image: imageOptions[0][0]
+        });
+        renderBuilderBlockEditors(blocks);
         updateBuilderPreview();
       });
-      if (advancedModuleList) {
-        advancedModuleList.addEventListener("click", function (event) {
-          var removeModule = event.target.closest("[data-remove-advanced-module]");
-          var removeBlock = event.target.closest("[data-remove-advanced-block]");
-          var addBlock = event.target.closest("[data-add-advanced-block]");
-          if (removeModule) {
-            removeModule.closest("[data-advanced-module]").remove();
-            if (!advancedModuleList.querySelector("[data-advanced-module]")) renderModuleEditors([defaultModule()]);
-            updateBuilderPreview();
-            return;
-          }
-          if (removeBlock) {
-            var module = removeBlock.closest("[data-advanced-module]");
-            removeBlock.closest("[data-advanced-block]").remove();
-            if (module && !module.querySelector("[data-advanced-block]")) {
-              module.querySelector("[data-advanced-block-list]").innerHTML = blockEditorTemplate(defaultBlock(), 0);
-            }
-            updateBuilderPreview();
-            return;
-          }
-          if (addBlock) {
-            var blockList = addBlock.closest("[data-advanced-module]").querySelector("[data-advanced-block-list]");
-            var count = blockList.querySelectorAll("[data-advanced-block]").length;
-            blockList.insertAdjacentHTML("beforeend", blockEditorTemplate(defaultBlock("Блок " + (count + 1), "Материал нового блока."), count));
-            updateBuilderPreview();
-          }
+      if (builderBlockList) {
+        builderBlockList.addEventListener("click", function (event) {
+          var remove = event.target.closest("[data-remove-builder-block]");
+          if (!remove) return;
+          remove.closest("[data-builder-block]").remove();
+          updateBuilderPreview();
         });
-        advancedModuleList.addEventListener("input", updateBuilderPreview);
-        advancedModuleList.addEventListener("change", updateBuilderPreview);
+        builderBlockList.addEventListener("input", updateBuilderPreview);
+        builderBlockList.addEventListener("change", updateBuilderPreview);
       }
       if (builderPreview) {
+        builderPreview.addEventListener("input", function (event) {
+          var editable = event.target.closest("[data-inline-edit], [data-preview-block-field]");
+          if (!editable) return;
+          syncInlinePreviewEdit(editable);
+        });
         builderPreview.addEventListener("paste", function (event) {
-          var editable = event.target.closest("[contenteditable]");
+          var editable = event.target.closest("[data-inline-edit], [data-preview-block-field]");
           if (!editable) return;
           event.preventDefault();
           var text = (event.clipboardData || window.clipboardData).getData("text/plain");
