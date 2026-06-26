@@ -312,6 +312,11 @@
       function renderEventDetail(item) {
         var event = item.raw;
         var attachments = event.attachments || {};
+        var speakerPairs = Array.isArray(event.speakerPairs) ? event.speakerPairs.map(function (speaker, index) {
+          var name = compactText(speaker.name, 'Спикер ' + (index + 1));
+          var photo = compactText(speaker.photo, 'фото не загружено');
+          return name + ' · ' + photo;
+        }) : [];
         return '<h3>' + escapeHtml(item.title) + '</h3>' +
           '<div class="moderation-detail__meta">' +
             '<span class="source-pill">' + escapeHtml(sourceLabel(item.type)) + '</span>' +
@@ -329,6 +334,7 @@
             ]) +
           '</div>' +
           '<div class="detail-section"><h4>Описание</h4><p>' + escapeHtml(compactText(event.description, 'Описание не заполнено')) + '</p></div>' +
+          '<div class="detail-section"><h4>Спикеры</h4>' + listItems(speakerPairs.length ? speakerPairs : [compactText(event.speakers, 'Спикеры не указаны')]) + '</div>' +
           '<div class="detail-section"><h4>Файлы</h4>' + listItems(attachments.files || []) + '</div>' +
           '<div class="detail-section"><h4>Изображения</h4>' + listItems(attachments.images || []) + '</div>' +
           '<div class="detail-section"><h4>Фотографии спикеров</h4>' + listItems(attachments.speakerPhotos || []) + '</div>' +

@@ -237,6 +237,32 @@
     .supplier-field.full { grid-column: 1 / -1; }
     .supplier-field.wide { grid-column: span 2; }
     .supplier-field label { color: #718095; font-size: 12px; font-weight: 950; letter-spacing: .06em; text-transform: uppercase; }
+    .speaker-builder-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
+    .speaker-builder { display: grid; gap: 10px; }
+    .speaker-row {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) minmax(220px,.82fr) auto;
+      gap: 10px;
+      align-items: start;
+      padding: 12px;
+      border: 1px solid #e3edf9;
+      border-radius: 18px;
+      background: #fff;
+    }
+    .speaker-row .supplier-upload { min-height: 84px; padding: 10px; }
+    .speaker-remove {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #f8fbff;
+      color: #718095;
+      font-size: 22px;
+      line-height: 1;
+      box-shadow: none;
+    }
     .supplier-input, .supplier-textarea, .supplier-select {
       width: 100%;
       min-width: 0;
@@ -331,6 +357,8 @@
       .event-date { min-height: 74px; }
       .supplier-event-form { grid-template-columns: 1fr; }
       .supplier-field.wide { grid-column: auto; }
+      .speaker-row { grid-template-columns: 1fr; }
+      .speaker-remove { width: 100%; }
     }
     @media (max-width: 560px) {
       .hero, .panel { border-radius: 24px; padding: 18px; }
@@ -448,16 +476,11 @@
               <input class="supplier-input" id="supplier-event-seats" name="seats" type="number" min="1" value="30">
             </div>
             <div class="supplier-field full">
-              <label for="supplier-event-speakers">Спикеры</label>
-              <input class="supplier-input" id="supplier-event-speakers" name="speakers" placeholder="Имена и роли через запятую">
-            </div>
-            <div class="supplier-field full">
-              <label for="supplier-event-speaker-photos">Фотографии спикеров</label>
-              <div class="supplier-upload">
-                <input id="supplier-event-speaker-photos" name="speakerPhotos" type="file" accept="image/*" multiple data-upload-input="speakerPhotos">
-                <div class="supplier-upload-preview" data-upload-preview="speakerPhotos"></div>
-                <span class="muted">Загрузите фото в том же порядке, что и список спикеров.</span>
+              <div class="speaker-builder-head">
+                <label>Спикеры</label>
+                <button class="btn ghost" type="button" data-add-speaker>Добавить спикера</button>
               </div>
+              <div class="speaker-builder" data-speaker-list></div>
             </div>
             <div class="supplier-field full">
               <label for="supplier-event-desc">Описание</label>
@@ -583,6 +606,8 @@
       var supplierEventModal = document.querySelector("[data-event-create-modal]");
       var supplierEventForm = document.querySelector("[data-supplier-event-form]");
       var supplierEventList = document.querySelector("[data-event-moderation-list]");
+      var speakerList = document.querySelector("[data-speaker-list]");
+      var addSpeakerButton = document.querySelector("[data-add-speaker]");
       var resourceModal = document.querySelector("[data-resource-modal]");
       var resourceBody = document.querySelector("[data-resource-body]");
       var activeGallery = [];
@@ -691,6 +716,18 @@
       }
 
       function approvedSpeakers(item) {
+        if (Array.isArray(item.speakerPairs) && item.speakerPairs.length) {
+          return item.speakerPairs.map(function (speaker) {
+            var name = String(speaker.name || "").trim();
+            if (!name) return null;
+            return {
+              name: name,
+              role: "Спикер мероприятия",
+              photo: "images/events/speaker-brand-trainer.png",
+              photoName: String(speaker.photo || "")
+            };
+          }).filter(Boolean);
+        }
         return String(item.speakers || "").split(",").map(function (speaker, index) {
           var parts = speaker.split("—");
           var name = String(parts[0] || speaker).trim();
@@ -781,6 +818,7 @@
 
       function openEventCreateModal() {
         if (!supplierEventModal) return;
+        ensureSpeakerRows();
         supplierEventModal.classList.add("is-open");
         supplierEventModal.setAttribute("aria-hidden", "false");
       }
@@ -791,7 +829,63 @@
         supplierEventModal.setAttribute("aria-hidden", "true");
       }
 
+      function speakerRowTemplate() {
+        return '<article class="speaker-row" data-speaker-row>' +
+          '<div class="supplier-field">' +
+            '<label>Имя спикера</label>' +
+            '<input class="supplier-input" name="speakerName" placeholder="Например: Анна Иванова">' +
+          '</div>' +
+          '<div class="supplier-field">' +
+            '<label>Фото</label>' +
+            '<div class="supplier-upload">' +
+              '<input name="speakerPhoto" type="file" accept="image/*" data-speaker-photo>' +
+              '<div class="supplier-upload-preview" data-speaker-photo-preview><span class="muted">Ничего не выбрано</span></div>' +
+            '</div>' +
+          '</div>' +
+          '<button class="speaker-remove" type="button" data-remove-speaker aria-label="Удалить спикера">×</button>' +
+        '</article>';
+      }
+
+      function addSpeakerRow() {
+        if (!speakerList) return;
+        speakerList.insertAdjacentHTML("beforeend", speakerRowTemplate());
+      }
+
+      function resetSpeakerRows() {
+        if (!speakerList) return;
+        speakerList.innerHTML = "";
+        addSpeakerRow();
+      }
+
+      function ensureSpeakerRows() {
+        if (speakerList && !speakerList.querySelector("[data-speaker-row]")) addSpeakerRow();
+      }
+
+      function renderSpeakerPhotoPreview(input) {
+        var row = input.closest("[data-speaker-row]");
+        var target = row ? row.querySelector("[data-speaker-photo-preview]") : null;
+        if (!target) return;
+        target.innerHTML = input.files.length
+          ? '<span class="upload-chip"><span>' + esc(input.files[0].name) + '</span></span>'
+          : '<span class="muted">Ничего не выбрано</span>';
+      }
+
+      function speakerPairsFromForm() {
+        if (!speakerList) return [];
+        return Array.from(speakerList.querySelectorAll("[data-speaker-row]")).map(function (row) {
+          var nameInput = row.querySelector('[name="speakerName"]');
+          var photoInput = row.querySelector("[data-speaker-photo]");
+          return {
+            name: String(nameInput ? nameInput.value : "").trim(),
+            photo: photoInput && photoInput.files.length ? photoInput.files[0].name : ""
+          };
+        }).filter(function (speaker) {
+          return speaker.name || speaker.photo;
+        });
+      }
+
       function eventFromFormData(formData) {
+        var speakerPairs = speakerPairsFromForm();
         return {
           title: String(formData.get("title") || "").trim(),
           type: String(formData.get("type") || "Мероприятие"),
@@ -800,12 +894,13 @@
           format: String(formData.get("format") || ""),
           place: String(formData.get("place") || ""),
           seats: String(formData.get("seats") || ""),
-          speakers: String(formData.get("speakers") || ""),
+          speakers: speakerPairs.map(function (speaker) { return speaker.name; }).filter(Boolean).join(", "),
+          speakerPairs: speakerPairs,
           description: String(formData.get("description") || ""),
           attachments: {
             files: fileNames("files"),
             images: fileNames("images"),
-            speakerPhotos: fileNames("speakerPhotos"),
+            speakerPhotos: speakerPairs.map(function (speaker) { return speaker.photo; }).filter(Boolean),
             videos: fileNames("videoFiles"),
             kinescope: kinescopeLinks(formData.get("kinescope"))
           },
@@ -827,6 +922,7 @@
             place: parts[4] || "",
             seats: parts[5] || "",
             speakers: "",
+            speakerPairs: [],
             description: "Создано из массовой загрузки поставщика.",
             attachments: { files: [], images: [], speakerPhotos: [], videos: [], kinescope: [] },
             status: "На модерации",
@@ -1229,6 +1325,22 @@
           renderUploadPreview(input.getAttribute("data-upload-input"), input.files);
         });
       });
+      if (addSpeakerButton) {
+        addSpeakerButton.addEventListener("click", addSpeakerRow);
+      }
+      if (speakerList) {
+        speakerList.addEventListener("change", function (event) {
+          if (event.target.matches("[data-speaker-photo]")) renderSpeakerPhotoPreview(event.target);
+        });
+        speakerList.addEventListener("click", function (event) {
+          var remove = event.target.closest("[data-remove-speaker]");
+          if (!remove) return;
+          var row = remove.closest("[data-speaker-row]");
+          if (row) row.remove();
+          ensureSpeakerRows();
+        });
+        resetSpeakerRows();
+      }
       supplierEventModal.addEventListener("click", function (event) {
         if (event.target === supplierEventModal) closeEventCreateModal();
       });
@@ -1248,6 +1360,7 @@
         saveSupplierEvents(items);
         supplierEventForm.reset();
         resetUploadPreviews();
+        resetSpeakerRows();
         renderSupplierEvents();
         closeEventCreateModal();
         toast((bulkEvents.length || 1) + " меропр. отправлено на модерацию");
