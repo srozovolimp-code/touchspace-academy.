@@ -289,6 +289,9 @@
     }
     .supplier-upload input { width: 100%; color: #526174; font-size: 13px; }
     .supplier-upload-preview { display: flex; flex-wrap: wrap; gap: 7px; min-height: 28px; }
+    .speaker-photo-preview { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .speaker-photo-preview img { width: 44px; height: 44px; border-radius: 14px; object-fit: cover; border: 1px solid #e3edf9; background: #fff; }
+    .speaker-photo-preview span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .upload-chip {
       display: inline-flex;
       align-items: center;
@@ -723,7 +726,7 @@
             return {
               name: name,
               role: "Спикер мероприятия",
-              photo: "images/events/speaker-brand-trainer.png",
+              photo: String(speaker.photoData || speaker.photoUrl || "images/events/speaker-brand-trainer.png"),
               photoName: String(speaker.photo || "")
             };
           }).filter(Boolean);
@@ -865,9 +868,25 @@
         var row = input.closest("[data-speaker-row]");
         var target = row ? row.querySelector("[data-speaker-photo-preview]") : null;
         if (!target) return;
-        target.innerHTML = input.files.length
-          ? '<span class="upload-chip"><span>' + esc(input.files[0].name) + '</span></span>'
-          : '<span class="muted">Ничего не выбрано</span>';
+        if (!input.files.length) {
+          target.innerHTML = '<span class="muted">Ничего не выбрано</span>';
+          return;
+        }
+        var file = input.files[0];
+        target.innerHTML = '<div class="speaker-photo-preview"><img src="' + esc(URL.createObjectURL(file)) + '" alt=""><span>' + esc(file.name) + '</span></div>';
+      }
+
+      function readFileAsDataUrl(file) {
+        return new Promise(function (resolve) {
+          if (!file) {
+            resolve("");
+            return;
+          }
+          var reader = new FileReader();
+          reader.onload = function () { resolve(String(reader.result || "")); };
+          reader.onerror = function () { resolve(""); };
+          reader.readAsDataURL(file);
+        });
       }
 
       function speakerPairsFromForm() {
@@ -875,38 +894,54 @@
         return Array.from(speakerList.querySelectorAll("[data-speaker-row]")).map(function (row) {
           var nameInput = row.querySelector('[name="speakerName"]');
           var photoInput = row.querySelector("[data-speaker-photo]");
+          var file = photoInput && photoInput.files.length ? photoInput.files[0] : null;
           return {
             name: String(nameInput ? nameInput.value : "").trim(),
-            photo: photoInput && photoInput.files.length ? photoInput.files[0].name : ""
+            photo: file ? file.name : "",
+            photoFile: file
           };
         }).filter(function (speaker) {
-          return speaker.name || speaker.photo;
+          return speaker.name || speaker.photoFile;
         });
       }
 
-      function eventFromFormData(formData) {
+      function speakerPairsPayload() {
         var speakerPairs = speakerPairsFromForm();
-        return {
-          title: String(formData.get("title") || "").trim(),
-          type: String(formData.get("type") || "Мероприятие"),
-          date: String(formData.get("date") || ""),
-          time: String(formData.get("time") || ""),
-          format: String(formData.get("format") || ""),
-          place: String(formData.get("place") || ""),
-          seats: String(formData.get("seats") || ""),
-          speakers: speakerPairs.map(function (speaker) { return speaker.name; }).filter(Boolean).join(", "),
-          speakerPairs: speakerPairs,
-          description: String(formData.get("description") || ""),
-          attachments: {
-            files: fileNames("files"),
-            images: fileNames("images"),
-            speakerPhotos: speakerPairs.map(function (speaker) { return speaker.photo; }).filter(Boolean),
-            videos: fileNames("videoFiles"),
-            kinescope: kinescopeLinks(formData.get("kinescope"))
-          },
-          status: "На модерации",
-          sentAt: new Date().toLocaleDateString("ru-RU")
-        };
+        return Promise.all(speakerPairs.map(function (speaker) {
+          return readFileAsDataUrl(speaker.photoFile).then(function (photoData) {
+            return {
+              name: speaker.name,
+              photo: speaker.photo,
+              photoData: photoData
+            };
+          });
+        }));
+      }
+
+      function eventFromFormData(formData) {
+        return speakerPairsPayload().then(function (speakerPairs) {
+          return {
+            title: String(formData.get("title") || "").trim(),
+            type: String(formData.get("type") || "Мероприятие"),
+            date: String(formData.get("date") || ""),
+            time: String(formData.get("time") || ""),
+            format: String(formData.get("format") || ""),
+            place: String(formData.get("place") || ""),
+            seats: String(formData.get("seats") || ""),
+            speakers: speakerPairs.map(function (speaker) { return speaker.name; }).filter(Boolean).join(", "),
+            speakerPairs: speakerPairs,
+            description: String(formData.get("description") || ""),
+            attachments: {
+              files: fileNames("files"),
+              images: fileNames("images"),
+              speakerPhotos: speakerPairs.map(function (speaker) { return speaker.photo; }).filter(Boolean),
+              videos: fileNames("videoFiles"),
+              kinescope: kinescopeLinks(formData.get("kinescope"))
+            },
+            status: "На модерации",
+            sentAt: new Date().toLocaleDateString("ru-RU")
+          };
+        });
       }
 
       function eventsFromBulk(value) {
@@ -1346,24 +1381,30 @@
       });
 
       document.querySelector("[data-submit-event]").addEventListener("click", function () {
+        var submitButton = this;
+        if (submitButton.disabled) return;
         var formData = new FormData(supplierEventForm);
         var bulkEvents = eventsFromBulk(formData.get("bulk"));
-        var singleEvent = eventFromFormData(formData);
-        if (!bulkEvents.length && (!singleEvent.title || !singleEvent.date || !singleEvent.time)) {
-          toast("Заполните название, дату и время или используйте массовую загрузку");
-          return;
-        }
-        var items = loadSupplierEvents();
-        (bulkEvents.length ? bulkEvents : [singleEvent]).reverse().forEach(function (item) {
-          items.unshift(item);
+        submitButton.disabled = true;
+        eventFromFormData(formData).then(function (singleEvent) {
+          if (!bulkEvents.length && (!singleEvent.title || !singleEvent.date || !singleEvent.time)) {
+            toast("Заполните название, дату и время или используйте массовую загрузку");
+            return;
+          }
+          var items = loadSupplierEvents();
+          (bulkEvents.length ? bulkEvents : [singleEvent]).reverse().forEach(function (item) {
+            items.unshift(item);
+          });
+          saveSupplierEvents(items);
+          supplierEventForm.reset();
+          resetUploadPreviews();
+          resetSpeakerRows();
+          renderSupplierEvents();
+          closeEventCreateModal();
+          toast((bulkEvents.length || 1) + " меропр. отправлено на модерацию");
+        }).finally(function () {
+          submitButton.disabled = false;
         });
-        saveSupplierEvents(items);
-        supplierEventForm.reset();
-        resetUploadPreviews();
-        resetSpeakerRows();
-        renderSupplierEvents();
-        closeEventCreateModal();
-        toast((bulkEvents.length || 1) + " меропр. отправлено на модерацию");
       });
       setupSupplierEvents();
       window.addEventListener("ts-academy-user-change", setupSupplierEvents);
