@@ -38,6 +38,7 @@
     .btn.ghost { border: 1px solid var(--line); background: #f7faff; color: #4b5870; box-shadow: none; }
     .btn.danger { border: 1px solid rgba(220,38,38,.18); background: #fff6f6; color: #b42323; box-shadow: none; }
     .btn.is-joined { background: #ecfbf5; color: #16865a; box-shadow: none; }
+    .btn[disabled] { opacity: .58; cursor: not-allowed; box-shadow: none; }
     .featured { position: relative; display: grid; align-content: space-between; gap: 18px; min-height: 330px; padding: 24px; border: 1px solid rgba(10,132,255,.18); border-radius: 28px; background: linear-gradient(135deg,#fff 0%,#f7fbff 54%,#eaf4ff 100%); box-shadow: var(--shadow-strong); overflow: hidden; }
     .featured:before { content: ""; position: absolute; right: -70px; top: -80px; width: 220px; height: 220px; border-radius: 70px; background: linear-gradient(135deg,rgba(10,132,255,.18),rgba(35,196,131,.12)); transform: rotate(18deg); }
     .featured > * { position: relative; }
@@ -155,6 +156,7 @@
     .speaker-list { display: grid; gap: 12px; }
     .speaker-card { display: grid; grid-template-columns: 74px minmax(0,1fr); gap: 12px; align-items: center; padding: 12px; border: 1px solid #e9f1ff; border-radius: 20px; background: #f8fbff; }
     .speaker-card img { width: 74px; height: 74px; border-radius: 24px; object-fit: cover; display: block; }
+    .speaker-photo-empty { display: grid; place-items: center; width: 74px; height: 74px; border-radius: 24px; border: 1px dashed #c8d5e8; background: #eef3f8; color: #8a97aa; font-size: 11px; font-weight: 950; text-transform: uppercase; letter-spacing: .04em; }
     .speaker-card strong { display: block; font-size: 15px; line-height: 1.15; }
     .speaker-card span { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; font-weight: 750; line-height: 1.35; }
     .resource-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
@@ -510,6 +512,14 @@
               <textarea class="supplier-textarea" id="supplier-event-topic-desc" name="topicDescription" placeholder="Подробное описание темы для блока внутри детальной карточки мероприятия."></textarea>
             </div>
             <div class="supplier-field">
+              <label for="supplier-event-cover">Обложка</label>
+              <div class="supplier-upload">
+                <input id="supplier-event-cover" name="coverImage" type="file" accept="image/*" data-upload-input="cover">
+                <div class="supplier-upload-preview" data-upload-preview="cover"></div>
+                <span class="muted">Изображение для карточки и верхнего блока мероприятия.</span>
+              </div>
+            </div>
+            <div class="supplier-field">
               <label for="supplier-event-files">Файлы</label>
               <div class="supplier-upload">
                 <input id="supplier-event-files" name="files" type="file" multiple data-upload-input="files">
@@ -751,7 +761,7 @@
             return {
               name: name,
               role: String(speaker.description || speaker.role || ""),
-              photo: String(speaker.photoData || speaker.photoUrl || "images/events/speaker-brand-trainer.png")
+              photo: String(speaker.photoData || speaker.photoUrl || "")
             };
           }).filter(Boolean);
         }
@@ -763,7 +773,7 @@
           return {
             name: name,
             role: role,
-            photo: "images/events/speaker-brand-trainer.png"
+            photo: ""
           };
         }).filter(Boolean);
       }
@@ -774,6 +784,7 @@
         var title = String(item.title || "Мероприятие поставщика");
         var description = String(item.description || "").trim();
         var topicDescription = String(item.topicDescription || "").trim();
+        var coverImage = String(item.coverImageData || item.coverImage || "").trim();
         return {
           id: "approved-event-" + index + "-" + String(item.date || "").replace(/\D/g, "") + "-" + title.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "-").replace(/^-|-$/g, "").slice(0, 36),
           day: String(date.getDate()).padStart(2, "0"),
@@ -790,7 +801,7 @@
           seats: seats,
           booked: 0,
           location: String(item.place || "TouchSpace"),
-          image: "images/calitex_realistic/calitex-material-lab.jpg",
+          image: coverImage || "images/calitex_realistic/calitex-material-lab.jpg",
           tags: [String(item.type || "Мероприятие"), "Поставщик"].filter(Boolean),
           speakers: approvedSpeakers(item).length ? approvedSpeakers(item) : ["brand"],
           agenda: [],
@@ -965,8 +976,21 @@
         }));
       }
 
+      function coverImagePayload() {
+        var input = supplierEventForm && supplierEventForm.elements.coverImage;
+        var file = input && input.files && input.files.length ? input.files[0] : null;
+        return readFileAsDataUrl(file).then(function (dataUrl) {
+          return {
+            name: file ? file.name : "",
+            dataUrl: dataUrl
+          };
+        });
+      }
+
       function eventFromFormData(formData) {
-        return speakerPairsPayload().then(function (speakerPairs) {
+        return Promise.all([speakerPairsPayload(), coverImagePayload()]).then(function (payloads) {
+          var speakerPairs = payloads[0];
+          var coverImage = payloads[1];
           return {
             title: String(formData.get("title") || "").trim(),
             type: String(formData.get("type") || "Мероприятие"),
@@ -979,6 +1003,8 @@
             speakerPairs: speakerPairs,
             description: String(formData.get("description") || ""),
             topicDescription: String(formData.get("topicDescription") || ""),
+            coverImage: coverImage.name,
+            coverImageData: coverImage.dataUrl,
             attachments: {
               files: fileNames("files"),
               images: fileNames("images"),
@@ -1108,7 +1134,10 @@
 
       function speakerTemplate(id) {
         if (typeof id === "object" && id) {
-          return '<article class="speaker-card"><img src="' + esc(id.photo || "images/events/speaker-brand-trainer.png") + '" alt="' + esc(id.name || "Спикер") + '"><div><strong>' + esc(id.name || "Спикер") + '</strong>' + (id.role ? '<span>' + esc(id.role) + '</span>' : '') + '</div></article>';
+          var media = id.photo
+            ? '<img src="' + esc(id.photo) + '" alt="' + esc(id.name || "Спикер") + '">'
+            : '<div class="speaker-photo-empty" aria-hidden="true"></div>';
+          return '<article class="speaker-card">' + media + '<div><strong>' + esc(id.name || "Спикер") + '</strong>' + (id.role ? '<span>' + esc(id.role) + '</span>' : '') + '</div></article>';
         }
         var speaker = speakers[id];
         return '<article class="speaker-card"><img src="' + speaker.photo + '" alt="' + speaker.name + '"><div><strong>' + speaker.name + '</strong><span>' + speaker.role + '</span></div></article>';
@@ -1121,6 +1150,7 @@
             return { title: name, meta: "Файл поставщика · после модерации", url: "#" };
           });
         }
+        if (item.approved) return [];
         return [
           { title: "Программа мероприятия", meta: item.day + " " + item.month + " · PDF · 1.2 МБ", url: "events.html" },
           { title: "Презентация спикера", meta: item.format + " · PDF · 4.8 МБ", url: "library.html" },
@@ -1129,6 +1159,13 @@
       }
 
       function eventGallery(item) {
+        var attached = item.attachments && item.attachments.images ? item.attachments.images : [];
+        if (attached.length) {
+          return attached.map(function (name) {
+            return { title: name, src: item.image };
+          });
+        }
+        if (item.approved) return [];
         return [
           { title: item.title, src: item.image },
           { title: "Работа с образцами", src: "images/calitex_realistic/calitex-showroom-collection.jpg" },
@@ -1140,6 +1177,25 @@
       }
 
       function eventVideos(item) {
+        var attachments = item.attachments || {};
+        var uploaded = (attachments.videos || []).map(function (name) {
+          return {
+            title: name,
+            meta: "Видео поставщика · после загрузки в Kinescope",
+            src: "scorm/calitex-test/assets/kL4IQPlXZD-ghw5__transcoded-MbzhbhJG0iZHVNWS-1.mp4",
+            poster: item.image
+          };
+        });
+        var kinescope = (attachments.kinescope || []).map(function (link, index) {
+          return {
+            title: "Kinescope видео " + (index + 1),
+            meta: link,
+            src: "scorm/calitex-test/assets/kL4IQPlXZD-ghw5__transcoded-MbzhbhJG0iZHVNWS-1.mp4",
+            poster: item.image
+          };
+        });
+        if (uploaded.length || kinescope.length) return uploaded.concat(kinescope);
+        if (item.approved) return [];
         return [
           {
             title: "Запись мероприятия",
@@ -1157,6 +1213,10 @@
       }
 
       function resourceButton(type, label, item) {
+        var disabled = false;
+        if (type === "files") disabled = eventFiles(item).length === 0;
+        if (type === "gallery") disabled = eventGallery(item).length === 0;
+        if (disabled) return '<button class="btn ghost" type="button" disabled aria-disabled="true">' + label + '</button>';
         return '<button class="btn ghost" type="button" data-resource="' + type + '" data-resource-event="' + item.id + '">' + label + '</button>';
       }
 

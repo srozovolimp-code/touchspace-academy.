@@ -358,6 +358,7 @@
           '</div>' +
           '<div class="detail-section"><h4>Описание</h4><p>' + escapeHtml(compactText(event.description, 'Описание не заполнено')) + '</p></div>' +
           '<div class="detail-section"><h4>Описание темы</h4><p>' + escapeHtml(compactText(event.topicDescription, 'Описание темы не заполнено')) + '</p></div>' +
+          '<div class="detail-section"><h4>Обложка</h4><p>' + escapeHtml(compactText(event.coverImage, 'Обложка не загружена')) + '</p></div>' +
           '<div class="detail-section"><h4>Спикеры</h4>' + listItems(speakerPairs.length ? speakerPairs : [compactText(event.speakers, 'Спикеры не указаны')]) + '</div>' +
           '<div class="detail-section"><h4>Файлы</h4>' + listItems(attachments.files || []) + '</div>' +
           '<div class="detail-section"><h4>Изображения</h4>' + listItems(attachments.images || []) + '</div>' +
