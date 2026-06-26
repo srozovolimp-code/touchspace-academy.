@@ -746,22 +746,20 @@
             if (!name) return null;
             return {
               name: name,
-              role: "Спикер мероприятия",
-              photo: String(speaker.photoData || speaker.photoUrl || "images/events/speaker-brand-trainer.png"),
-              photoName: String(speaker.photo || "")
+              role: String(speaker.description || speaker.role || ""),
+              photo: String(speaker.photoData || speaker.photoUrl || "images/events/speaker-brand-trainer.png")
             };
           }).filter(Boolean);
         }
         return String(item.speakers || "").split(",").map(function (speaker, index) {
           var parts = speaker.split("—");
           var name = String(parts[0] || speaker).trim();
-          var role = String(parts[1] || "Спикер мероприятия").trim();
+          var role = String(parts[1] || "").trim();
           if (!name) return null;
           return {
             name: name,
             role: role,
-            photo: "images/events/speaker-brand-trainer.png",
-            photoName: ((item.attachments || {}).speakerPhotos || [])[index] || ""
+            photo: "images/events/speaker-brand-trainer.png"
           };
         }).filter(Boolean);
       }
@@ -770,7 +768,7 @@
         var date = parseEventDate(item.date) || new Date();
         var seats = Number(item.seats) || 30;
         var title = String(item.title || "Мероприятие поставщика");
-        var description = String(item.description || "Мероприятие одобрено администратором и опубликовано в расписании.");
+        var description = String(item.description || "").trim();
         return {
           id: "approved-event-" + index + "-" + String(item.date || "").replace(/\D/g, "") + "-" + title.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "-").replace(/^-|-$/g, "").slice(0, 36),
           day: String(date.getDate()).padStart(2, "0"),
@@ -778,7 +776,7 @@
           dateISO: item.date || "",
           title: title,
           desc: description,
-          topic: description,
+          topic: description || title,
           type: approvedEventType(item),
           format: String(item.format || "онлайн"),
           time: String(item.time || "12:00"),
@@ -789,7 +787,7 @@
           image: "images/calitex_realistic/calitex-material-lab.jpg",
           tags: [String(item.type || "Мероприятие"), "Поставщик"].filter(Boolean),
           speakers: approvedSpeakers(item).length ? approvedSpeakers(item) : ["brand"],
-          agenda: description ? [description] : ["Программа мероприятия будет уточнена поставщиком."],
+          agenda: description ? [description] : [],
           attachments: item.attachments || {},
           approved: true,
           status: item.status || "Одобрено",
@@ -875,6 +873,8 @@
           '<div class="supplier-field">' +
             '<label>Имя спикера</label>' +
             '<input class="supplier-input" name="speakerName" placeholder="Например: Анна Иванова">' +
+            '<label>Описание</label>' +
+            '<input class="supplier-input" name="speakerDescription" placeholder="Например: бренд-тренер, эксперт по продажам">' +
           '</div>' +
           '<div class="supplier-field">' +
             '<label>Фото</label>' +
@@ -931,10 +931,12 @@
         if (!speakerList) return [];
         return Array.from(speakerList.querySelectorAll("[data-speaker-row]")).map(function (row) {
           var nameInput = row.querySelector('[name="speakerName"]');
+          var descriptionInput = row.querySelector('[name="speakerDescription"]');
           var photoInput = row.querySelector("[data-speaker-photo]");
           var file = photoInput && photoInput.files.length ? photoInput.files[0] : null;
           return {
             name: String(nameInput ? nameInput.value : "").trim(),
+            description: String(descriptionInput ? descriptionInput.value : "").trim(),
             photo: file ? file.name : "",
             photoFile: file
           };
@@ -949,6 +951,7 @@
           return readFileAsDataUrl(speaker.photoFile).then(function (photoData) {
             return {
               name: speaker.name,
+              description: speaker.description,
               photo: speaker.photo,
               photoData: photoData
             };
@@ -1097,7 +1100,7 @@
 
       function speakerTemplate(id) {
         if (typeof id === "object" && id) {
-          return '<article class="speaker-card"><img src="' + esc(id.photo || "images/events/speaker-brand-trainer.png") + '" alt="' + esc(id.name || "Спикер") + '"><div><strong>' + esc(id.name || "Спикер") + '</strong><span>' + esc(id.role || "Спикер мероприятия") + (id.photoName ? " · фото: " + esc(id.photoName) : "") + '</span></div></article>';
+          return '<article class="speaker-card"><img src="' + esc(id.photo || "images/events/speaker-brand-trainer.png") + '" alt="' + esc(id.name || "Спикер") + '"><div><strong>' + esc(id.name || "Спикер") + '</strong>' + (id.role ? '<span>' + esc(id.role) + '</span>' : '') + '</div></article>';
         }
         var speaker = speakers[id];
         return '<article class="speaker-card"><img src="' + speaker.photo + '" alt="' + speaker.name + '"><div><strong>' + speaker.name + '</strong><span>' + speaker.role + '</span></div></article>';

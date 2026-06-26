@@ -336,8 +336,9 @@
         var isCancelled = isCancelledEvent(event);
         var speakerPairs = Array.isArray(event.speakerPairs) ? event.speakerPairs.map(function (speaker, index) {
           var name = compactText(speaker.name, 'Спикер ' + (index + 1));
+          var description = compactText(speaker.description, '');
           var photo = compactText(speaker.photo, 'фото не загружено');
-          return name + ' · ' + photo;
+          return name + (description ? ' · ' + description : '') + ' · ' + photo;
         }) : [];
         return '<h3>' + escapeHtml(item.title) + '</h3>' +
           '<div class="moderation-detail__meta">' +
