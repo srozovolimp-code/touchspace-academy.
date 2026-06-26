@@ -353,7 +353,8 @@
               'Формат: ' + compactText(event.format, 'не указан'),
               'Место: ' + compactText(event.place, 'не указано'),
               'Мест: ' + compactText(event.seats, 'не указано'),
-              'Спикеры: ' + compactText(event.speakers, 'не указаны')
+              'Спикеры: ' + compactText(event.speakers, 'не указаны'),
+              'Важность: ' + (event.importantRequested ? 'поставщик просит сделать важным' : 'не запрошена')
             ]) +
           '</div>' +
           '<div class="detail-section"><h4>Описание</h4><p>' + escapeHtml(compactText(event.description, 'Описание не заполнено')) + '</p></div>' +
@@ -367,7 +368,9 @@
           '<div class="detail-section"><h4>Kinescope</h4>' + listItems(attachments.kinescope || []) + '</div>' +
           '<div class="detail-actions">' + (isCancelled
             ? '<button class="btn danger" type="button" data-delete-cancelled-event="' + escapeHtml(item.id) + '">Удалить отменённое</button>'
-            : '<button class="btn" type="button" data-approve-moderation="' + escapeHtml(item.id) + '">Одобрить</button>') + '</div>';
+            : event.importantRequested
+              ? '<button class="btn" type="button" data-approve-moderation="' + escapeHtml(item.id) + '" data-important-decision="yes">Опубликовать важным</button><button class="btn secondary" type="button" data-approve-moderation="' + escapeHtml(item.id) + '" data-important-decision="no">Снять важность и опубликовать</button>'
+              : '<button class="btn" type="button" data-approve-moderation="' + escapeHtml(item.id) + '">Одобрить</button>') + '</div>';
       }
 
       function renderModerationDetail(item) {
@@ -403,7 +406,7 @@
         renderModerationDetail(items.find(function (item) { return item.id === activeModerationId; }));
       }
 
-      function approveModerationItem(id) {
+      function approveModerationItem(id, importantDecision) {
         var type = id.split(':')[0];
         var entityId = id.slice(type.length + 1);
         if (type === 'brand-page') {
@@ -431,6 +434,8 @@
               return;
             }
             event.status = 'Одобрено';
+            event.important = importantDecision === true;
+            event.importantApprovedAt = event.important ? new Date().toLocaleDateString('ru-RU') : '';
             event.approvedAt = new Date().toLocaleDateString('ru-RU');
             approved.unshift(event);
             saveJson(supplierEventKey, events);
@@ -552,7 +557,8 @@
         var approve = event.target.closest('[data-approve-moderation]');
         var remove = event.target.closest('[data-delete-cancelled-event]');
         if (approve) {
-          approveModerationItem(approve.getAttribute('data-approve-moderation'));
+          var decision = approve.getAttribute('data-important-decision');
+          approveModerationItem(approve.getAttribute('data-approve-moderation'), decision === 'yes');
           return;
         }
         if (remove) {

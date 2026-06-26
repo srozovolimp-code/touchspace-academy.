@@ -253,6 +253,20 @@
     .supplier-field.full { grid-column: 1 / -1; }
     .supplier-field.wide { grid-column: span 2; }
     .supplier-field label { color: #718095; font-size: 12px; font-weight: 950; letter-spacing: .06em; text-transform: uppercase; }
+    .supplier-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 12px 13px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      color: #344154;
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .supplier-check input { width: 18px; height: 18px; accent-color: var(--blue); }
     .speaker-builder-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
     .speaker-builder { display: grid; gap: 10px; }
     .speaker-row {
@@ -495,6 +509,13 @@
             <div class="supplier-field">
               <label for="supplier-event-seats">Количество мест</label>
               <input class="supplier-input" id="supplier-event-seats" name="seats" type="number" min="1" value="30">
+            </div>
+            <div class="supplier-field">
+              <label for="supplier-event-important">Важность</label>
+              <label class="supplier-check" for="supplier-event-important">
+                <input id="supplier-event-important" name="importantRequested" type="checkbox" value="yes">
+                Сделать мероприятие важным
+              </label>
             </div>
             <div class="supplier-field full">
               <div class="speaker-builder-head">
@@ -807,6 +828,8 @@
           agenda: [],
           attachments: item.attachments || {},
           approved: true,
+          important: Boolean(item.important),
+          importantRequested: Boolean(item.importantRequested),
           status: item.status || "Одобрено",
           cancelledAt: item.cancelledAt || ""
         };
@@ -1003,6 +1026,8 @@
             speakerPairs: speakerPairs,
             description: String(formData.get("description") || ""),
             topicDescription: String(formData.get("topicDescription") || ""),
+            importantRequested: formData.get("importantRequested") === "yes",
+            important: false,
             coverImage: coverImage.name,
             coverImageData: coverImage.dataUrl,
             attachments: {
@@ -1034,6 +1059,8 @@
             speakerPairs: [],
             description: "Создано из массовой загрузки поставщика.",
             topicDescription: "",
+            importantRequested: false,
+            important: false,
             attachments: { files: [], images: [], speakerPhotos: [], videos: [], kinescope: [] },
             status: "На модерации",
             sentAt: new Date().toLocaleDateString("ru-RU")
@@ -1118,7 +1145,7 @@
         var isJoined = joined.has(event.id);
         var isPast = isPastEvent(event);
         var isCancelled = isCancelledEvent(event);
-        var tags = event.tags.map(function (tag) { return '<span class="pill">' + tag + '</span>'; }).join("");
+        var tags = (event.important ? '<span class="pill orange">Важное</span>' : '') + event.tags.map(function (tag) { return '<span class="pill">' + tag + '</span>'; }).join("");
         var joinButton = isCancelled
           ? '<button class="btn secondary" type="button" disabled aria-disabled="true">Отменено</button>'
           : isPast
@@ -1360,10 +1387,24 @@
       }
 
       function renderFeatured() {
-        var button = document.querySelector("[data-featured-event] [data-join='brand-day']");
-        var isJoined = joined.has("brand-day");
-        button.classList.toggle("is-joined", isJoined);
-        button.textContent = isJoined ? "Вы записаны" : "Записаться";
+        var featured = document.querySelector("[data-featured-event]");
+        if (!featured) return;
+        var item = allEvents().find(function (event) {
+          return event.important && !isPastEvent(event) && !isCancelledEvent(event);
+        }) || allEvents().find(function (event) { return event.id === "brand-day"; });
+        if (!item) return;
+        var isJoined = joined.has(item.id);
+        featured.innerHTML =
+          '<div>' +
+            '<div class="featured-meta"><span class="pill orange">Главное событие</span><span class="pill">' + esc(item.day + " " + item.month) + '</span><span class="pill green">' + esc(item.format) + '</span></div>' +
+            '<div class="featured-icon"><img src="icons/meropriyatiya.png" alt=""></div>' +
+            '<h2>' + esc(item.title) + '</h2>' +
+            '<p>' + esc(item.desc || item.topic || "") + '</p>' +
+          '</div>' +
+          '<div>' +
+            '<div class="featured-meta"><span class="pill">' + esc(item.time) + '</span><span class="pill">' + esc(item.duration) + '</span><span class="pill">' + esc(item.seats + " мест") + '</span></div>' +
+            '<div class="hero-actions"><button class="btn' + (isJoined ? " is-joined" : "") + '" type="button" data-join="' + esc(item.id) + '">' + (isJoined ? "Вы записаны" : "Записаться") + '</button><button class="btn ghost" type="button" data-details="' + esc(item.id) + '">Подробнее</button></div>' +
+          '</div>';
       }
 
       function renderCalendar() {
