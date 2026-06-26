@@ -236,6 +236,11 @@
         return parts.length ? parts.join(' · ') : 'Материалы не прикреплены';
       }
 
+      function isCancelledEvent(event) {
+        var status = String((event || {}).status || '').toLowerCase();
+        return status.indexOf('отмен') >= 0 || Boolean((event || {}).cancelledAt);
+      }
+
       function listItems(items) {
         return items && items.length
           ? '<ul class="detail-list">' + items.map(function (item) { return '<li>' + escapeHtml(item) + '</li>'; }).join('') + '</ul>'
@@ -260,7 +265,7 @@
       }
 
       function eventModerationItems() {
-        return loadJson(supplierEventKey, []).map(function (event, index) {
+        var pending = loadJson(supplierEventKey, []).map(function (event, index) {
           return {
             id: 'event:' + index,
             type: 'event',
@@ -269,9 +274,25 @@
             subtitle: compactText(event.type, 'Мероприятие') + ' · ' + compactText(event.date, 'без даты') + ' ' + compactText(event.time, ''),
             summary: attachmentSummary(event.attachments),
             raw: event,
-            index: index
+            index: index,
+            storage: supplierEventKey
           };
         });
+        var cancelledApproved = loadJson(approvedEventKey, []).map(function (event, index) {
+          if (!isCancelledEvent(event)) return null;
+          return {
+            id: 'approved-event:' + index,
+            type: 'event',
+            source: 'Опубликованные мероприятия',
+            title: event.title || 'Мероприятие',
+            subtitle: compactText(event.type, 'Мероприятие') + ' · ' + compactText(event.date, 'без даты') + ' ' + compactText(event.time, ''),
+            summary: 'Отменено поставщиком · ' + attachmentSummary(event.attachments),
+            raw: event,
+            index: index,
+            storage: approvedEventKey
+          };
+        }).filter(Boolean);
+        return pending.concat(cancelledApproved);
       }
 
       function moderationItems() {
@@ -312,6 +333,7 @@
       function renderEventDetail(item) {
         var event = item.raw;
         var attachments = event.attachments || {};
+        var isCancelled = isCancelledEvent(event);
         var speakerPairs = Array.isArray(event.speakerPairs) ? event.speakerPairs.map(function (speaker, index) {
           var name = compactText(speaker.name, 'Спикер ' + (index + 1));
           var photo = compactText(speaker.photo, 'фото не загружено');
@@ -340,7 +362,9 @@
           '<div class="detail-section"><h4>Фотографии спикеров</h4>' + listItems(attachments.speakerPhotos || []) + '</div>' +
           '<div class="detail-section"><h4>Видео на загрузку</h4>' + listItems(attachments.videos || []) + '</div>' +
           '<div class="detail-section"><h4>Kinescope</h4>' + listItems(attachments.kinescope || []) + '</div>' +
-          '<div class="detail-actions"><button class="btn" type="button" data-approve-moderation="' + escapeHtml(item.id) + '">Одобрить</button></div>';
+          '<div class="detail-actions">' + (isCancelled
+            ? '<button class="btn danger" type="button" data-delete-cancelled-event="' + escapeHtml(item.id) + '">Удалить отменённое</button>'
+            : '<button class="btn" type="button" data-approve-moderation="' + escapeHtml(item.id) + '">Одобрить</button>') + '</div>';
       }
 
       function renderModerationDetail(item) {
@@ -396,6 +420,13 @@
           var index = Number(entityId);
           if (events[index]) {
             var event = events.splice(index, 1)[0];
+            if (isCancelledEvent(event)) {
+              toast('Отменённое мероприятие нельзя одобрить');
+              saveJson(supplierEventKey, events);
+              activeModerationId = '';
+              renderModeration();
+              return;
+            }
             event.status = 'Одобрено';
             event.approvedAt = new Date().toLocaleDateString('ru-RU');
             approved.unshift(event);
@@ -406,6 +437,19 @@
         }
         activeModerationId = '';
         renderModeration();
+      }
+
+      function deleteCancelledEvent(id) {
+        var type = id.split(':')[0];
+        var index = Number(id.slice(type.length + 1));
+        var key = type === 'approved-event' ? approvedEventKey : supplierEventKey;
+        var events = loadJson(key, []);
+        if (!events[index] || !isCancelledEvent(events[index])) return;
+        events.splice(index, 1);
+        saveJson(key, events);
+        activeModerationId = '';
+        renderModeration();
+        toast('Отменённое мероприятие удалено');
       }
 
       function render() {
@@ -503,8 +547,14 @@
 
       moderationDetail.addEventListener('click', function (event) {
         var approve = event.target.closest('[data-approve-moderation]');
-        if (!approve) return;
-        approveModerationItem(approve.getAttribute('data-approve-moderation'));
+        var remove = event.target.closest('[data-delete-cancelled-event]');
+        if (approve) {
+          approveModerationItem(approve.getAttribute('data-approve-moderation'));
+          return;
+        }
+        if (remove) {
+          deleteCancelledEvent(remove.getAttribute('data-delete-cancelled-event'));
+        }
       });
 
       window.addEventListener('ts-academy-admin-accounts-change', render);

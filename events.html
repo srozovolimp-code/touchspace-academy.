@@ -36,6 +36,7 @@
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 15px; border: 0; border-radius: 15px; background: var(--blue); color: #fff; font-weight: 950; box-shadow: 0 12px 28px rgba(10,132,255,.22); }
     .btn.secondary { border: 1px solid var(--line); background: #fff; color: #177be8; box-shadow: none; }
     .btn.ghost { border: 1px solid var(--line); background: #f7faff; color: #4b5870; box-shadow: none; }
+    .btn.danger { border: 1px solid rgba(220,38,38,.18); background: #fff6f6; color: #b42323; box-shadow: none; }
     .btn.is-joined { background: #ecfbf5; color: #16865a; box-shadow: none; }
     .featured { position: relative; display: grid; align-content: space-between; gap: 18px; min-height: 330px; padding: 24px; border: 1px solid rgba(10,132,255,.18); border-radius: 28px; background: linear-gradient(135deg,#fff 0%,#f7fbff 54%,#eaf4ff 100%); box-shadow: var(--shadow-strong); overflow: hidden; }
     .featured:before { content: ""; position: absolute; right: -70px; top: -80px; width: 220px; height: 220px; border-radius: 70px; background: linear-gradient(135deg,rgba(10,132,255,.18),rgba(35,196,131,.12)); transform: rotate(18deg); }
@@ -77,14 +78,22 @@
     .event-side { display: grid; justify-items: end; gap: 8px; min-width: 150px; }
     .seats { color: var(--muted); font-size: 12px; font-weight: 850; }
     .event-card.is-past .event-image img,
+    .event-card.is-cancelled .event-image img,
     .event-card.is-past .event-date,
+    .event-card.is-cancelled .event-date,
     .detail-page.is-past .detail-image img,
+    .detail-page.is-cancelled .detail-image img,
     .detail-page.is-past .featured-meta .pill:first-child { filter: grayscale(1); }
     .event-card.is-past .event-image,
+    .event-card.is-cancelled .event-image,
     .event-card.is-past .event-date,
-    .detail-page.is-past .detail-image { position: relative; }
+    .event-card.is-cancelled .event-date,
+    .detail-page.is-past .detail-image,
+    .detail-page.is-cancelled .detail-image { position: relative; }
     .event-card.is-past .event-image:after,
+    .event-card.is-cancelled .event-image:after,
     .event-card.is-past .event-date:after,
+    .event-card.is-cancelled .event-date:after,
     .detail-page.is-past .detail-image:after {
       content: "";
       position: absolute;
@@ -93,10 +102,15 @@
       pointer-events: none;
     }
     .event-card.is-past .event-date:after { border-radius: inherit; }
+    .event-card.is-cancelled .event-date:after { border-radius: inherit; }
     .event-card.is-past .event-image:after,
-    .detail-page.is-past .detail-image:after { border-radius: inherit; }
+    .event-card.is-cancelled .event-image:after,
+    .detail-page.is-past .detail-image:after,
+    .detail-page.is-cancelled .detail-image:after { border-radius: inherit; }
     .event-card.is-past .btn[disabled],
-    .detail-page.is-past .btn[disabled] {
+    .event-card.is-cancelled .btn[disabled],
+    .detail-page.is-past .btn[disabled],
+    .detail-page.is-cancelled .btn[disabled] {
       background: #eef2f7;
       color: #7b8797;
       box-shadow: none;
@@ -310,8 +324,10 @@
     .muted { color: var(--muted); font-size: 13px; font-weight: 800; }
     .moderation-list { display: grid; gap: 8px; margin-top: 14px; }
     .moderation-item { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 12px; border: 1px solid #dfeafe; border-radius: 18px; background: #fff; }
+    .moderation-item.is-cancelled { border-color: rgba(220,38,38,.18); background: #fff8f8; }
     .moderation-item strong { display: block; font-size: 14px; line-height: 1.2; }
     .moderation-item span:not(.pill) { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; font-weight: 750; }
+    .moderation-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; }
     .supplier-event-modal {
       position: fixed;
       inset: 0;
@@ -554,6 +570,7 @@
                 <div class="view-toggle" aria-label="Статус мероприятий">
                   <button class="view-button is-active" type="button" data-status="current">Текущие</button>
                   <button class="view-button" type="button" data-status="past">Прошедшие</button>
+                  <button class="view-button" type="button" data-status="cancelled">Отменённые</button>
                 </div>
                 <span class="pill" data-count>0 событий</span>
               </div>
@@ -704,6 +721,10 @@
         }
       }
 
+      function saveApprovedEvents(items) {
+        localStorage.setItem(approvedEventKey, JSON.stringify(items));
+      }
+
       function parseEventDate(value) {
         var match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
         if (!match) return null;
@@ -770,7 +791,9 @@
           speakers: approvedSpeakers(item).length ? approvedSpeakers(item) : ["brand"],
           agenda: description ? [description] : ["Программа мероприятия будет уточнена поставщиком."],
           attachments: item.attachments || {},
-          approved: true
+          approved: true,
+          status: item.status || "Одобрено",
+          cancelledAt: item.cancelledAt || ""
         };
       }
 
@@ -805,12 +828,27 @@
         return parts.length ? parts.join(" · ") : "Материалы не прикреплены";
       }
 
+      function eventStatusLabel(item) {
+        var status = String(item.status || "").toLowerCase();
+        if (status.indexOf("отмен") >= 0 || item.cancelledAt) return "отменено";
+        if (status.indexOf("одобр") >= 0 || item.approvedAt) return "опубликовано";
+        return "на модерации";
+      }
+
       function renderSupplierEvents() {
         if (!supplierEventList) return;
-        var items = loadSupplierEvents();
-        supplierEventList.innerHTML = items.length ? items.map(function (item) {
-          return '<article class="moderation-item"><div><strong>' + item.title + '</strong><span>' + item.type + ' · ' + item.date + ' ' + item.time + ' · ' + item.format + '</span><span>' + attachmentSummary(item) + '</span></div><span class="pill">на модерации</span></article>';
-        }).join("") : '<div class="moderation-item"><div><strong>Нет мероприятий на модерации</strong><span>После отправки заявка появится здесь.</span></div></div>';
+        var pending = loadSupplierEvents().map(function (item, index) {
+          return { item: item, source: "pending", index: index };
+        });
+        var approved = loadApprovedEvents().map(function (item, index) {
+          return { item: item, source: "approved", index: index };
+        });
+        var items = pending.concat(approved);
+        supplierEventList.innerHTML = items.length ? items.map(function (entry) {
+          var item = entry.item;
+          var isCancelled = eventStatusLabel(item) === "отменено";
+          return '<article class="moderation-item' + (isCancelled ? ' is-cancelled' : '') + '"><div><strong>' + esc(item.title || "Мероприятие") + '</strong><span>' + esc(item.type || "Мероприятие") + ' · ' + esc(item.date || "без даты") + ' ' + esc(item.time || "") + ' · ' + esc(item.format || "") + '</span><span>' + esc(attachmentSummary(item)) + '</span></div><div class="moderation-actions"><span class="pill">' + eventStatusLabel(item) + '</span>' + (isCancelled ? '' : '<button class="btn danger" type="button" data-cancel-supplier-event="' + entry.source + ':' + entry.index + '">Отменить</button>') + '</div></article>';
+        }).join("") : '<div class="moderation-item"><div><strong>Нет мероприятий</strong><span>После отправки заявка появится здесь.</span></div></div>';
       }
 
       function setupSupplierEvents() {
@@ -980,6 +1018,24 @@
         });
       }
 
+      function cancelSupplierEvent(target) {
+        var parts = String(target || "").split(":");
+        var source = parts[0];
+        var index = Number(parts[1]);
+        var items = source === "approved" ? loadApprovedEvents() : loadSupplierEvents();
+        if (!items[index]) return;
+        items[index].status = "Отменено поставщиком";
+        items[index].cancelledAt = new Date().toLocaleDateString("ru-RU");
+        if (source === "approved") {
+          saveApprovedEvents(items);
+        } else {
+          saveSupplierEvents(items);
+        }
+        renderSupplierEvents();
+        renderEvents();
+        toast("Мероприятие отменено");
+      }
+
       function matchesFilter(event) {
         if (activeFilter === "all") return true;
         if (activeFilter === "brand") return event.type === "brand";
@@ -1003,7 +1059,14 @@
         return eventDate(event) < today;
       }
 
+      function isCancelledEvent(event) {
+        var status = String(event.status || "").toLowerCase();
+        return status.indexOf("отмен") >= 0 || Boolean(event.cancelledAt);
+      }
+
       function matchesStatus(event) {
+        if (activeStatus === "cancelled") return isCancelledEvent(event);
+        if (isCancelledEvent(event)) return false;
         return activeStatus === "past" ? isPastEvent(event) : !isPastEvent(event);
       }
 
@@ -1017,15 +1080,18 @@
       function eventTemplate(event) {
         var isJoined = joined.has(event.id);
         var isPast = isPastEvent(event);
+        var isCancelled = isCancelledEvent(event);
         var tags = event.tags.map(function (tag) { return '<span class="pill">' + tag + '</span>'; }).join("");
-        var joinButton = isPast
+        var joinButton = isCancelled
+          ? '<button class="btn secondary" type="button" disabled aria-disabled="true">Отменено</button>'
+          : isPast
           ? '<button class="btn secondary" type="button" disabled aria-disabled="true">Мероприятие прошло</button>'
           : '<button class="btn secondary' + (isJoined ? " is-joined" : "") + '" type="button" data-join="' + event.id + '">' + (isJoined ? "Вы записаны" : "Записаться") + '</button>';
-        return '<article class="event-card' + (isPast ? ' is-past' : '') + '" data-open-event="' + event.id + '">' +
+        return '<article class="event-card' + (isPast ? ' is-past' : '') + (isCancelled ? ' is-cancelled' : '') + '" data-open-event="' + event.id + '">' +
           '<div class="event-image"><img src="' + event.image + '" alt=""></div>' +
           '<div class="event-date"><div><b>' + event.day + '</b><span>' + event.month + '</span></div></div>' +
           '<div class="event-content"><h3>' + event.title + '</h3><p>' + event.desc + '</p><div class="meta"><span class="pill green">' + event.format + '</span><span class="pill">' + event.time + '</span><span class="pill">' + event.location + '</span>' + tags + '</div></div>' +
-          '<div class="event-side"><span class="seats">' + (isPast ? "завершено" : (event.seats - event.booked) + " свободно") + '</span>' + joinButton + '<button class="btn ghost" type="button" data-details="' + event.id + '">Подробнее</button></div>' +
+          '<div class="event-side"><span class="seats">' + (isCancelled ? "отменено" : isPast ? "завершено" : (event.seats - event.booked) + " свободно") + '</span>' + joinButton + '<button class="btn ghost" type="button" data-details="' + event.id + '">Подробнее</button></div>' +
         '</article>';
       }
 
@@ -1167,7 +1233,10 @@
         var freeSeats = item.seats - item.booked;
         var isJoined = joined.has(item.id);
         var isPast = isPastEvent(item);
-        var joinButton = isPast
+        var isCancelled = isCancelledEvent(item);
+        var joinButton = isCancelled
+          ? '<button class="btn" type="button" disabled aria-disabled="true">Мероприятие отменено</button>'
+          : isPast
           ? '<button class="btn" type="button" disabled aria-disabled="true">Мероприятие прошло</button>'
           : '<button class="btn' + (isJoined ? " is-joined" : "") + '" type="button" data-join="' + item.id + '">' + (isJoined ? "Вы записаны" : "Записаться") + '</button>';
         var detail = document.querySelector("[data-event-detail]");
@@ -1181,7 +1250,7 @@
               '</div>' +
               '<div class="detail-stats">' +
                 '<div class="detail-stat"><strong>' + item.seats + '</strong><span>всего мест</span></div>' +
-                '<div class="detail-stat"><strong>' + (isPast ? "0" : freeSeats) + '</strong><span>' + (isPast ? "запись закрыта" : "свободно") + '</span></div>' +
+                '<div class="detail-stat"><strong>' + (isPast || isCancelled ? "0" : freeSeats) + '</strong><span>' + (isCancelled ? "отменено" : isPast ? "запись закрыта" : "свободно") + '</span></div>' +
                 '<div class="detail-stat"><strong>' + item.duration + '</strong><span>длительность</span></div>' +
                 '<div class="detail-stat"><strong>' + item.time + '</strong><span>начало</span></div>' +
               '</div>' +
@@ -1194,6 +1263,7 @@
             '<aside class="detail-section"><h3>Место проведения</h3><p>' + item.location + '</p><div class="speaker-list" style="margin-top:16px">' + item.speakers.map(speakerTemplate).join("") + '</div></aside>' +
           '</div>';
         document.querySelector("[data-detail-page]").classList.toggle("is-past", isPast);
+        document.querySelector("[data-detail-page]").classList.toggle("is-cancelled", isCancelled);
         detail.classList.add("is-open");
         detail.setAttribute("aria-hidden", "false");
       }
@@ -1281,6 +1351,10 @@
         if (join) {
           var id = join.getAttribute("data-join");
           var item = allEvents().find(function (event) { return event.id === id; });
+          if (item && isCancelledEvent(item)) {
+            toast("Мероприятие отменено");
+            return;
+          }
           if (item && isPastEvent(item)) {
             toast("Запись на прошедшее мероприятие закрыта");
             return;
@@ -1375,6 +1449,13 @@
           ensureSpeakerRows();
         });
         resetSpeakerRows();
+      }
+      if (supplierEventList) {
+        supplierEventList.addEventListener("click", function (event) {
+          var cancel = event.target.closest("[data-cancel-supplier-event]");
+          if (!cancel) return;
+          cancelSupplierEvent(cancel.getAttribute("data-cancel-supplier-event"));
+        });
       }
       supplierEventModal.addEventListener("click", function (event) {
         if (event.target === supplierEventModal) closeEventCreateModal();
